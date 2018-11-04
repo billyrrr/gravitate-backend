@@ -30,4 +30,4 @@ class HelloWorldTest(unittest.TestCase):
 
 class RideRequestTest(unittest.TestCase):
     def test_add_ride_request(self):
-        response = app.post_json('/rideRequests', dict(id=1, value='value'))
+        response = app.post_json('/contextTest', dict(id=1, value='value'))

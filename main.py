@@ -23,6 +23,16 @@ from google.cloud import firestore
 from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
 
+# [START] Firebase Admin SDK
+
+import firebase_admin
+from firebase_admin import credentials, auth
+
+cred = credentials.Certificate("./cse110-vibe-firebase-adminsdk-ib702-3d408a5927.json")
+firebase_admin.initialize_app(cred)
+
+# [END] Firebase Admin SDK
+
 firebase_request_adapter = requests.Request()
 
 app = Flask(__name__)
@@ -32,6 +42,13 @@ db = firestore.Client()
 def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
+
+@app.route('/createRideRequest', methods=['POST', 'PUT'])
+def createRideRequest():
+    # TODO implement
+    return 
+
+@app.route('/')
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data(): 
@@ -55,9 +72,65 @@ def add_noauth_test_data():
     current_ride_request_ref.set(current_ride_request_json)
     return current_ride_request_id, 200
 
+@app.route('/authTest', methods=['POST', 'PUT'])
+def add_auth_test_data():
+    """
+    * Example Method provided by Google
+    Adds a note to the user's notebook. The request should be in this format:
+
+        {
+            "message": "note message."
+        }
+    """
+
+    # Verify Firebase auth.
+    
+    id_token = request.headers['Authorization'].split(' ').pop()
+
+    # [Start] provided by Google
+    try:
+        # Verify the ID token while checking if the token is revoked by
+        # passing check_revoked=True.
+        decoded_token = auth.verify_id_token(id_token, check_revoked=True)
+        # Token is valid and not revoked.
+        uid = decoded_token['uid']
+    except auth.AuthError as exc:
+        if exc.code == 'ID_TOKEN_REVOKED':
+            # Token revoked, inform the user to reauthenticate or signOut().
+            pass
+        else:
+            # Token is invalid
+            pass
+    # [End]
+
+    # if not claims:
+    #     return 'Unauthorized', 401
+    
+    uid = decoded_token['uid']
+    
+
+    # [START gae_python_create_entity]
+    data = request.get_json()
+
+    # # Populates note properties according to the model,
+    # # with the user ID as the key name.
+    # note = Note(
+    #     parent=ndb.Key(Note, claims['sub']),
+    #     message=data['message'])
+
+    # # Some providers do not provide one of these so either can be used.
+    # note.friendly_id = claims.get('name', claims.get('email', 'Unknown'))
+    # # [END gae_python_create_entity]
+
+    # # Stores note in database.
+    # note.put()
+
+    return json.dumps({'uid':uid, 'request_data':data}), 200
+
 @app.route('/notes', methods=['POST', 'PUT'])
 def add_note():
     """
+    * Example Method provided by Google
     Adds a note to the user's notebook. The request should be in this format:
 
         {
