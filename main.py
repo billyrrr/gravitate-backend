@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO adapt with https://flask-restful.readthedocs.io/en/latest/quickstart.html#a-minimal-api
+
 # [START gae_flex_quickstart]
 import logging
 
@@ -48,8 +50,6 @@ def createRideRequest():
     # TODO implement
     return 
 
-@app.route('/')
-
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data(): 
 
@@ -75,12 +75,12 @@ def add_noauth_test_data():
 @app.route('/authTest', methods=['POST', 'PUT'])
 def add_auth_test_data():
     """
-    * Example Method provided by Google
-    Adds a note to the user's notebook. The request should be in this format:
-
-        {
-            "message": "note message."
-        }
+    * This method handles a POST/PUT call to './authTest' to test that front end Auth
+        is set up correctly. 
+    If the id_token included in 'Authorization' is verified, the user id (uid)
+        corresponding to the id_token will be returned along with other information. 
+    Otherwise, an exception is thrown
+    
     """
 
     # Verify Firebase auth.
@@ -101,29 +101,11 @@ def add_auth_test_data():
         else:
             # Token is invalid
             pass
-    # [End]
-
-    # if not claims:
-    #     return 'Unauthorized', 401
+    # [End] provided by google
     
     uid = decoded_token['uid']
     
-
-    # [START gae_python_create_entity]
     data = request.get_json()
-
-    # # Populates note properties according to the model,
-    # # with the user ID as the key name.
-    # note = Note(
-    #     parent=ndb.Key(Note, claims['sub']),
-    #     message=data['message'])
-
-    # # Some providers do not provide one of these so either can be used.
-    # note.friendly_id = claims.get('name', claims.get('email', 'Unknown'))
-    # # [END gae_python_create_entity]
-
-    # # Stores note in database.
-    # note.put()
 
     return json.dumps({'uid':uid, 'request_data':data}), 200
 
