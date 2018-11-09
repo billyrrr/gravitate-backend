@@ -30,7 +30,7 @@ from google.oauth2.id_token import verify_firebase_token
 import firebase_admin
 from firebase_admin import credentials, auth
 
-cred = credentials.Certificate("./cse110-vibe-firebase-adminsdk-ib702-3d408a5927.json")
+cred = credentials.Certificate("./gravitate-e5d01-firebase-adminsdk-kq5i4-b6110cf4f0.json")
 firebase_admin.initialize_app(cred)
 
 # [END] Firebase Admin SDK
