@@ -8,7 +8,7 @@ class RideRequest:
 
 
 
-    def __init__(self, dictionary):
+    def __init__(self):
 
         """ Description
             Initializes a RideRequest Object with python dictionary
@@ -25,5 +25,5 @@ class RideRequest:
         :rtype:
         """        
 	#instantiate dictionary
-	self.dictionary = dictionary
 	self.dictionary = {"rideCategory":"", "rId":1, "driverStatus":False, "pickupAddress":"", "hasCheckedIn": False, "eventId": 1, "orbitId": 1, "target": "", "pricing": 1, "flightTime": 1, "flightNumber": 1, "airportLocation": 1, "baggages": "", "disabilities": {}, "requestCompletion": False}	
+	self.ticket = {"rideRequestId":1, "userWillDrive": False, "hasCheckedIn": False, "inChat": True, "pickupAddress": ""}
