@@ -1,12 +1,12 @@
 from models.orbit import Orbit
-from models.ride_request import RideRequest
-from data_access.ride_request_dao import RideRequestDao
+from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
+from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.orbit_dao import OrbitDao
 from google.cloud.firestore import *
 from usersHelper.placeInOrbit import placeInOrbit
+from typing import Type
 
-
-def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, preDecisionRideRequest: RideRequest,
+def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, preDecisionRideRequest: Type[RideRequest],
                            orbitRef: DocumentReference, preDecisionOrbit: Orbit):
     """ Description
     This function joins a rideRequest to an orbit in the database. 
@@ -35,7 +35,7 @@ def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, pr
     # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
     transaction = client.transaction()
 
-    rideRequestDao = RideRequestDao(client)
+    rideRequestDao = RideRequestGenericDao(client)
     rideRequest = rideRequestDao.getRideRequestWithTransaction(
         transaction, rideRequestRef)
     orbitDao = OrbitDao(client)
