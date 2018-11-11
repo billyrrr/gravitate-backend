@@ -18,7 +18,7 @@ class Orbit:
     def from_dict(initial_data):
         return Orbit(initial_data)
 
-    def toDict(self):
+    def to_dict(self):
         return vars(self)
 
     def __init__(self, initial_data):

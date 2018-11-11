@@ -17,7 +17,7 @@ class RideRequest:
     def from_dict(initial_data):
         return RideRequest(initial_data)
 
-    def toDict(self):
+    def to_dict(self):
         return vars(self)
 
     def __init__(self, initial_data):
@@ -37,5 +37,6 @@ class RideRequest:
         :rtype:
         """        
 
+        # Convert from dict to RideRequest object
         for key in initial_data:
             setattr(self, key, initial_data[key])

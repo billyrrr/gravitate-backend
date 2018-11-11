@@ -6,7 +6,7 @@ from models.ride_request import RideRequest
 import google
 
 
-class RideRequestDAO:
+class RideRequestDao:
     """ Description	
         Database access object for ride request
 
