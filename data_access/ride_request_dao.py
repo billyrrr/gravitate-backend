@@ -2,11 +2,11 @@
 """
 
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
-from models.ride_request import RideRequest
+from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest, RideRequest, RideRequestFactory
 import google
+from typing import Type
 
-
-class RideRequestDao:
+class RideRequestGenericDao:
     """ Description	
         Database access object for ride request
 
@@ -17,7 +17,7 @@ class RideRequestDao:
         self.rideRequestCollectionRef = client.collection(u'RideRequests')
 
     @transactional
-    def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> RideRequest:
+    def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -40,7 +40,8 @@ class RideRequestDao:
             snapshot: DocumentSnapshot = rideRequestRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            rideRequest = RideRequest(snapshotDict)
+            rideRequestType = snapshotDict['rideCategory']
+            rideRequest = RideRequestFactory.createRideRequest(rideRequestType, snapshotDict)
             return rideRequest
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
@@ -52,9 +53,59 @@ class RideRequestDao:
         transaction.commit()
         return rideRequestResult
 
-    def createRideRequest(self, rideRequest: RideRequest):
+    def createRideRequest(self, rideRequest: Type[RideRequest]):
+        """ Description
+        :type self:
+        :param self:
+
+        :type rideRequest:Type[RideRequest]:
+        :param rideRequest:Type[RideRequest]:
+
+        :raises:
+
+        :rtype:
+        """
         return self.rideRequestCollectionRef.add(rideRequest.toDict())
 
+
+    def deleteRideRequest(self, singleRideRequestRef: DocumentReference):
+        """ Description
+            This function deletes a ride request from the database
+
+        :type self:
+        :param self:
+
+        :type singleRideRequestRef:DocumentReference:
+        :param singleRideRequestRef:DocumentReference:
+
+        :raises:
+
+        :rtype:
+        """
+        return singleRideRequestRef.delete()
+
+
     @transactional
-    def setRideRequestWithTransaction(self, transaction: Transaction, newRideRequest: RideRequest, rideRequestRef: DocumentReference):
-        transaction.set(rideRequestRef, newRideRequest)
+    def setRideRequestWithTransaction(self, transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
+        """ Description
+            Note that a read action must have taken place before anything is set with that transaction. 
+        
+        :type self:
+        :param self:
+
+        :type transaction:Transaction:
+        :param transaction:Transaction:
+
+        :type newRideRequest:Type[RideRequest]:
+        :param newRideRequest:Type[RideRequest]:
+
+        :type rideRequestRef:DocumentReference:
+        :param rideRequestRef:DocumentReference:
+
+        :raises:
+
+        :rtype:
+        """
+        
+        return transaction.set(rideRequestRef, newRideRequest)
+
