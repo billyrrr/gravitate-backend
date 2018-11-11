@@ -1,0 +1,32 @@
+{
+        "orbit": {
+                "oID": 100001,
+                "orbitCategory": "airport",
+                "eventID": 100001,
+                "userTicketPairs" : [
+                        
+                                {"uID": 100001, 
+                                        "Ticket": {
+                                                "rID" : 100001,
+                                                "userWillDrive" : false,
+                                                "userWillRide" : true,
+                                                "hasCheckedIn" : false,
+                                                "inChat" : false,
+                                                "pickUpAddress" : "9450 Gilman Dr, La Jolla, CA 92093"
+                                        }
+                                },
+                                {"uID": 100002, 
+                                        "Ticket": {
+                                                "rID" : 100001,
+                                                "userWillDrive" : false,
+                                                "userWillRide" : true,
+                                                "hasCheckedIn" : false,
+                                                "inChat" : false,
+                                                "pickUpAddress" : "9450 Gilman Dr, La Jolla, CA 92093"
+                                        }
+                                }
+                ],
+                "chatRoomID": 100001
+        }
+}
+

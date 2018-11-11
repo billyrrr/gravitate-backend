@@ -1,5 +1,5 @@
-import RideRequest from models.ride_request.py
-import Orbit from models.orbit.py
+from models.ride_request import RideRequest
+from models.orbit import Orbit 
 #places RideRequest into the Orbit
 #only works if orbit's orbitId, orbitCategory, and eventId is already instantiated
 def placeInOrbit(r = RideRequest(), o = Orbit()):
@@ -14,3 +14,6 @@ def placeInOrbit(r = RideRequest(), o = Orbit()):
 	ticket = o.Ticket{ "rideRequestId": d[rId], "userWillDrive": d[driverStatus], "hasCheckedIn": d[hasCheckedIn], "inChat": True, "pickupAdress": d[pickupAddress] }
 	o.dictionary[userTicketPairs].append(ticket)
 	return r.dictionary, o.dictionary
+
+	# TODO: change the method to adapt to new RideRequest and Orbit object structure
+	# TODO: change rideRequest.dictionary to rideRequest

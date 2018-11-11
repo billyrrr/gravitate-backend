@@ -1,0 +1,11 @@
+{
+        "event": {
+                "eID": 100001,
+                "eventCategory": "airport",
+                "participants": [100001, 100002],
+                "eventLocation": 100001,
+                "startTime": { point_in_time: 1111111},
+                "endTime": { point_in_time: 1112111},
+                "pricing": 100
+        }
+}

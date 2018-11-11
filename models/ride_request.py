@@ -1,14 +1,26 @@
+"""Author: Zixuan Rao, Andrew Kim
+"""
+
+
+from google.cloud.firestore import DocumentReference
+
 class RideRequest:
     
+    firestoreRef: DocumentReference = None
     
     """ Description	
         This class represents a RideRequest object
     
     """
 
+    @staticmethod
+    def from_dict(initial_data):
+        return RideRequest(initial_data)
 
+    def toDict(self):
+        return vars(self)
 
-    def __init__(self):
+    def __init__(self, initial_data):
 
         """ Description
             Initializes a RideRequest Object with python dictionary
@@ -24,6 +36,6 @@ class RideRequest:
     
         :rtype:
         """        
-	#instantiate dictionary
-	self.dictionary = {"rideCategory":"", "rId":1, "driverStatus":False, "pickupAddress":"", "hasCheckedIn": False, "eventId": 1, "orbitId": 1, "target": "", "pricing": 1, "flightTime": 1, "flightNumber": 1, "airportLocation": 1, "baggages": "", "disabilities": {}, "requestCompletion": False}	
-	self.ticket = {"rideRequestId":1, "userWillDrive": False, "hasCheckedIn": False, "inChat": True, "pickupAddress": ""}
+
+        for key in initial_data:
+            setattr(self, key, initial_data[key])

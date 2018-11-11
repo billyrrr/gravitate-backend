@@ -1,0 +1,36 @@
+{
+        "rideRequest": {
+                "rideCategory": "airportRide",
+                "rID": 100001,
+                "eventID": 100001,
+                "orbitID": 100001,
+                "target": 
+                        {
+                                "eventCategory": "airport",
+                                "toEvent": true,
+                                "leaveEvent": { "TimeRange": null},
+                                "arriveAtEventTime":{
+                                        "TimeRange":{
+                                                "earliest": {
+                                                        "point_in_time":1541880135
+                                                },
+                                                "latest": {
+                                                        "point_in_time":1541882069
+                                                }
+                                        }
+                                }
+        
+        
+        
+                        },
+        
+                "pricing": 100,
+                "fightTime": {
+                        "point_in_time": 1541892069
+                },
+                "flightNumber": "AA123",
+                "airportLocation": 100001,
+                "bagageCount": 1,
+                "disabilities": null 
+        }
+}

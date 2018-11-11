@@ -1,0 +1,14 @@
+{
+        "user": {
+                "uid": 100001,
+                "firstName": "Johnny",
+                "lastName": "Appleseed",
+                "pictureID": 100000001,
+                "friendList": [],
+                "eventSchedule": []
+        
+        }
+}
+
+
+

@@ -1,0 +1,10 @@
+{
+        "location": {
+                "locationID": 100001,
+                "coordinates": {
+                        "latitude" : 33.944630,
+                        "longitude": -118.398193
+                },
+                "eventName": "LAX"
+        }
+}
