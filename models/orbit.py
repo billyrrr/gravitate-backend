@@ -11,29 +11,23 @@ class Orbit(object):
     
     """
 
-    firestoreRef: DocumentReference = None
+    __firestoreRef: DocumentReference = None
+
+    def setFirestoreRef(self, firestoreRef: str):
+        self.__firestoreRef = firestoreRef 
+    
+    def getFirestoreRef(self):
+        return self.__firestoreRef
 
     @staticmethod
-    def from_dict(initial_data):
-        return Orbit(initial_data)
+    def fromDict(orbitDict):
+        # TODO implement
+        return Orbit()
 
-    def to_dict(self):
-        return vars(self)
+    def toDict(self):
+        # TODO implment
+        pass
 
-    def __init__(self, initial_data):
-        """ Description
-            Initializes a RideRequest Object with python dictionary
-
-        :type self:
-        :param self:
-
-        :type dictionary:
-        :param dictionary:
-
-        :raises:
-
-        :rtype:
-        """
-
-        for key in initial_data:
-            setattr(self, key, initial_data[key])
+    def __init__(self):
+        # TODO implement
+        pass

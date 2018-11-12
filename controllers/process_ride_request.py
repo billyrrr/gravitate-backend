@@ -17,5 +17,5 @@ def createRideRequestFromForm(form: dict):
     # TODO populate rideRequestDict with default service data
     rideRequestDict['hasCheckedIn'] = False
 
-    rideRequest = RideRequest.from_dict(rideRequestDict)
+    rideRequest = RideRequest.fromDict(rideRequestDict)
     return rideRequest

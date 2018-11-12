@@ -10,6 +10,6 @@ class OrbitTest(unittest.TestCase):
     def testInitWithDict(self):
         initialData = {"rideCategory": "", "rRef": 1, "driverStatus": False, "pickupAddress": "", "hasCheckedIn": False, "eventId": 1, "orbitId": 1,
                        "target": "", "pricing": 1, "flightTime": 1, "flightNumber": 1, "airportLocation": 1, "baggages": "", "disabilities": {}, "requestCompletion": False}
-        newOrbit = Orbit.from_dict(initialData)
-        dictNewOrbit = newOrbit.to_dict()
+        newOrbit = Orbit.fromDict(initialData)
+        dictNewOrbit = newOrbit.toDict()
         self.assertEquals(initialData, dictNewOrbit)

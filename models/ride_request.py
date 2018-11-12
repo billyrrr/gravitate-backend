@@ -28,7 +28,12 @@ class RideRequest(object):
 
     @staticmethod
     def fromDict(rideRequestDict):
-        
+        """ Description
+            This function creates AirportRideRequest or SocialEventRideRequest. 
+                (RideRequest Factory)
+
+            :param rideRequestDict: 
+        """   
         rideRequestType = rideRequestDict['rideCategory']
 
         driverStatus = rideRequestDict['driverStatus']
@@ -66,20 +71,18 @@ class RideRequest(object):
         return rideRequestDict
 
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
-
         """ Description
-            Initializes a RideRequest Object with python dictionary
+            This function initializes a RideRequest Object. 
+            Note that this function should not be called directly. 
 
-
-        :type self:
-        :param self:
-    
-        :type dictionary:
-        :param dictionary:
-    
-        :raises:
-    
-        :rtype:
+            :param self: 
+            :param driverStatus: 
+            :param pickupAddress: 
+            :param hasCheckedIn: 
+            :param eventRef: 
+            :param orbitRef: 
+            :param target: 
+            :param pricing: 
         """
 
         self.driverStatus = driverStatus
@@ -94,21 +97,25 @@ class AirportRideRequest(RideRequest):
 
     # TODO more arguments
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
-
         """ Description
-            Initializes an AirportRideRequest Object with python dictionary
+            Initializes an AirportRideRequest Object 
+            Note that this class should not be initialzed directly.
+            Use RideRequest.fromDict to create an AirportRideRequest.
 
-
-        :type self:
-        :param self:
-    
-        :type dictionary:
-        :param dictionary:
-    
-        :raises:
-    
-        :rtype:
-        """        
+            :param self: 
+            :param driverStatus: 
+            :param pickupAddress: 
+            :param hasCheckedIn: 
+            :param eventRef: 
+            :param orbitRef: 
+            :param target: 
+            :param pricing: 
+            :param flightLocalTime: 
+            :param flightNumber: 
+            :param airportLocation: 
+            :param baggages: 
+            :param disabilities: 
+        """
 
         super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing)
         self.rideCategory = 'airportRide'
@@ -119,7 +126,20 @@ class AirportRideRequest(RideRequest):
         self.disabilities = disabilities
 
     def toDict(self):
+        """ Description
+            This function returns the dictionary representation of a RideRequest object 
+                so that it can be stored in the database. 
+
+        :type self:
+        :param self:
+    
+        :raises:
+    
+        :rtype:
+        """
+
         rideRequestDict = super().toDict()
+        
         rideRequestDict['rideCategory'] = 'airportRide'
         rideRequestDict['flightLocalTime'] = self.flightLocalTime
         rideRequestDict['flightNumber'] =  self.flightNumber
@@ -134,8 +154,9 @@ class SocialEventRideRequest(RideRequest):
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
 
         """ Description
-            Initializes a SocialEventRideRequest Object with python dictionary
-
+            Initializes a SocialEventRideRequest Object
+            Note that this class should not be initialzed directly.
+            Use RideRequest.fromDict to create a SocialEventRideRequest.
 
         :type self:
         :param self:

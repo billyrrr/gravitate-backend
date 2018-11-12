@@ -2,7 +2,7 @@ from models.orbit import Orbit
 from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.orbit_dao import OrbitDao
-from google.cloud.firestore import *
+from google.cloud.firestore import DocumentReference, Client
 from usersHelper.placeInOrbit import placeInOrbit
 from typing import Type
 
@@ -50,9 +50,9 @@ def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, pr
     # Update database copy of rideRequest and orbit
     try:
         rideRequestDao.setRideRequestWithTransaction(
-            transaction, rideRequest, rideRequest.firestoreRef)
+            transaction, rideRequest, rideRequest.getFirestoreRef())
         orbitDao.setOrbitWithTransaction(
-            transaction, orbit, orbit.firestoreRef)
+            transaction, orbit, orbit.getFirestoreRef())
         # TODO: add other works to be done if any
         transaction.commit()
     except:

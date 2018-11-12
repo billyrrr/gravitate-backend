@@ -2,9 +2,10 @@
 """
 
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
-from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest, RideRequest, RideRequestFactory
+from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
 import google
 from typing import Type
+
 
 class RideRequestGenericDao:
     """ Description	
@@ -14,7 +15,7 @@ class RideRequestGenericDao:
 
     def __init__(self, client: Client):
         self.client = client
-        self.rideRequestCollectionRef = client.collection(u'RideRequests')
+        self.rideRequestCollectionRef = client.collection('RideRequests')
 
     @transactional
     def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
@@ -40,8 +41,7 @@ class RideRequestGenericDao:
             snapshot: DocumentSnapshot = rideRequestRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            rideRequestType = snapshotDict['rideCategory']
-            rideRequest = RideRequestFactory.createRideRequest(rideRequestType, snapshotDict)
+            rideRequest = RideRequest.fromDict(snapshotDict)
             return rideRequest
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
@@ -67,7 +67,6 @@ class RideRequestGenericDao:
         """
         return self.rideRequestCollectionRef.add(rideRequest.toDict())
 
-
     def deleteRideRequest(self, singleRideRequestRef: DocumentReference):
         """ Description
             This function deletes a ride request from the database
@@ -84,12 +83,11 @@ class RideRequestGenericDao:
         """
         return singleRideRequestRef.delete()
 
-
     @transactional
     def setRideRequestWithTransaction(self, transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
-        
+
         :type self:
         :param self:
 
