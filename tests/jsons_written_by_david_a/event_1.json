@@ -1,11 +1,16 @@
 {
+        "eventRef": "refE01",
         "event": {
-                "eID": 100001,
                 "eventCategory": "airport",
-                "participants": [100001, 100002],
-                "eventLocation": 100001,
-                "startTime": { point_in_time: 1111111},
-                "endTime": { point_in_time: 1112111},
-                "pricing": 100
-        }
+                "participants": [
+                        "refU01",
+                        "refU02"
+                ],
+                "eventLocation": "refL01",
+                "startTimestamp": 1545033600,
+                "startTimezone": "America/Los_Angeles",
+                "endTimestamp": 1545119999,
+                "endTimezone": "America/Los_Angeles"
+        },
+        "pricing": 100
 }

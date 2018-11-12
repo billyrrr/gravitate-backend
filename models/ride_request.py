@@ -3,24 +3,53 @@
 
 
 from google.cloud.firestore import DocumentReference
+from models.target import Target, ToEventTarget, FromEventTarget
 
-class RideRequest:
+class RideRequest(object):
     
-    firestoreRef: DocumentReference = None
+    __firestoreRef: DocumentReference = None
     
     """ Description	
         This class represents a RideRequest object
     
     """
 
+    def setFirestoreRef(self, firestoreRef: str):
+        self.__firestoreRef = firestoreRef 
+    
+    def getFirestoreRef(self):
+        return self.__firestoreRef
+
     @staticmethod
-    def from_dict(initial_data):
-        return RideRequest(initial_data)
+    def fromDictAndReference(rideRequestDict, rideRequestRef):
+        rideRequest = RideRequest.from_dict(rideRequestDict)
+        rideRequest.setFirestoreRef(rideRequestRef)
+        return rideRequest
+
+    @staticmethod
+    def from_dict(rideRequestDict):
+        
+        rideRequestType = rideRequestDict['rideCategory']
+
+        driverStatus = rideRequestDict['driverStatus']
+        pickupAddress = rideRequestDict['pickupAddress']
+        hasCheckedIn = rideRequestDict['hasCheckedIn']
+        eventRef = rideRequestDict['eventRef']
+        orbitRef = rideRequestDict['orbitRef']
+        target = Target.createTarget(rideRequestDict['target'])
+
+        if rideRequestType == 'airportRide':
+            return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
+        elif rideRequestType == 'eventRide':
+            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
+        else:
+            raise Exception('Not supported rideRequestType: {}'.format(rideRequestType))
 
     def to_dict(self):
+        # TODO implement
         return vars(self)
 
-    def __init__(self, initial_data):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target):
 
         """ Description
             Initializes a RideRequest Object with python dictionary
@@ -35,14 +64,19 @@ class RideRequest:
         :raises:
     
         :rtype:
-        """        
+        """
 
-        # Convert from dict to RideRequest object
-        for key in initial_data:
-            setattr(self, key, initial_data[key])
+        self.driverStatus = driverStatus
+        self.pickupAddress = pickupAddress
+        self.hasCheckedIn = hasCheckedIn
+        self.eventRef = eventRef
+        self.orbitRef = orbitRef
+        self.target = target
 
 class AirportRideRequest(RideRequest):
-    def __init__(self, initial_data):
+
+    # TODO more arguments
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target):
 
         """ Description
             Initializes an AirportRideRequest Object with python dictionary
@@ -59,11 +93,12 @@ class AirportRideRequest(RideRequest):
         :rtype:
         """        
 
-        super(initial_data)
+        super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
 
 class SocialEventRideRequest(RideRequest):
 
-    def __init__(self, initial_data):
+    # TODO more arguments
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target):
 
         """ Description
             Initializes a SocialEventRideRequest Object with python dictionary
@@ -80,15 +115,4 @@ class SocialEventRideRequest(RideRequest):
         :rtype:
         """        
 
-        super(initial_data)
-
-class RideRequestFactory:
-
-    @staticmethod
-    def createRideRequest(rideRequestType: str, rideRequestDict: dict):
-        if rideRequestType == 'airportRide':
-            return AirportRideRequest(rideRequestDict)
-        elif rideRequestType == 'eventRide':
-            return SocialEventRideRequest(rideRequestDict)
-        else:
-            raise Exception('Not supported rideRequestType: {}'.format(rideRequestType))
+        super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)

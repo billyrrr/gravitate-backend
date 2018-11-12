@@ -1,36 +1,29 @@
 {
+        "rideRequestRef": "refRR01",
         "rideRequest": {
                 "rideCategory": "airportRide",
-                "rID": 100001,
-                "eventID": 100001,
-                "orbitID": 100001,
-                "target": 
+                "driverStatus": false,
+                "pickupAddress": "",
+                "hasCheckedIn": false,
+                "eventRef": "refE01",
+                "orbitRef": "refO01",
+                "target":
                         {
                                 "eventCategory": "airport",
                                 "toEvent": true,
-                                "leaveEvent": { "TimeRange": null},
                                 "arriveAtEventTime":{
                                         "TimeRange":{
-                                                "earliest": {
-                                                        "point_in_time":1541880135
-                                                },
-                                                "latest": {
-                                                        "point_in_time":1541882069
-                                                }
+                                                "earliest": 1545066000,
+                                                "latest": 1545073200,
+                                                "timezone": "America/Los_Angeles"
                                         }
                                 }
-        
-        
-        
                         },
-        
                 "pricing": 100,
-                "fightTime": {
-                        "point_in_time": 1541892069
-                },
-                "flightNumber": "AA123",
-                "airportLocation": 100001,
-                "bagageCount": 1,
+                "fightLocalTime": "2018-12-17T12:00:00.000",
+                "flightNumber": "DL89",
+                "airportLocation": "refL01",
+                "bagagges": null,
                 "disabilities": null 
         }
 }

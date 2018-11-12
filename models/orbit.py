@@ -5,14 +5,13 @@ from google.cloud.firestore import DocumentReference
 
 # orbit class
 
-class Orbit:
-
-    firestoreRef: DocumentReference = None
-
+class Orbit(object):
     """ Description	
         This class represents a RideRequest object
     
     """
+
+    firestoreRef: DocumentReference = None
 
     @staticmethod
     def from_dict(initial_data):
@@ -24,7 +23,6 @@ class Orbit:
     def __init__(self, initial_data):
         """ Description
             Initializes a RideRequest Object with python dictionary
-
 
         :type self:
         :param self:

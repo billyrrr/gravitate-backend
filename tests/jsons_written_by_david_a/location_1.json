@@ -1,4 +1,6 @@
 {
+        
+        "locationRef": "refL01",
         "location": {
                 "locationID": 100001,
                 "coordinates": {

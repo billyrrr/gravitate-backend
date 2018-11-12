@@ -72,6 +72,18 @@ or, (not recommended due to compatibility issue with Python 3),
 
 https://cloud.google.com/appengine/docs/standard/python/tools/using-local-server
 
+## Key Terms
+
+### Timestamp and Datetime
+Timestamp has no offset, which is bijective to UTC time. 
+```
+Epoch timestamp: 1556773200
+Timestamp in milliseconds: 1556773200000
+Human time (GMT): Thursday, May 2, 2019 5:00:00 AM
+Human time (your time zone): Wednesday, May 1, 2019 10:00:00 PM GMT-07:00
+```
+
+
 ## Reference
 
 <https://help.github.com/articles/cloning-a-repository/#platform-windows>

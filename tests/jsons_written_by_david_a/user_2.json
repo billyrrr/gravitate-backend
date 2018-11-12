@@ -1,10 +1,14 @@
 {
-        "userRef": "refU01",
+        "userRef": "refU02",
         "user": {
-                "firstName": "Johnny",
+                "firstName": "Jane",
                 "lastName": "Appleseed",
-                "pictureID": 100000001,
+                "pictureID": 100000002,
                 "friendList": [],
                 "eventSchedule": []
+        
         }
 }
+
+
+

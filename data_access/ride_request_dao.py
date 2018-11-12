@@ -106,6 +106,4 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        
         return transaction.set(rideRequestRef, newRideRequest)
-
