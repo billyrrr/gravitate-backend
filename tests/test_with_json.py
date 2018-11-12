@@ -11,7 +11,8 @@ class JSONRideRequestTest(unittest.TestCase):
             rideRequestDict = data['rideRequest']
             rideRequestRef = data['rideRequestRef']
             airportRideRequest: AirportRideRequest = RideRequest.fromDictAndReference(rideRequestDict, rideRequestRef)
-            print(airportRideRequest.to_dict())
+            afterDict = airportRideRequest.toDict()
+            self.assertDictEqual(rideRequestDict, afterDict)
 
     def testNothing(self):
         print('nothing')

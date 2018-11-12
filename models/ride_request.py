@@ -22,12 +22,12 @@ class RideRequest(object):
 
     @staticmethod
     def fromDictAndReference(rideRequestDict, rideRequestRef):
-        rideRequest = RideRequest.from_dict(rideRequestDict)
+        rideRequest = RideRequest.fromDict(rideRequestDict)
         rideRequest.setFirestoreRef(rideRequestRef)
         return rideRequest
 
     @staticmethod
-    def from_dict(rideRequestDict):
+    def fromDict(rideRequestDict):
         
         rideRequestType = rideRequestDict['rideCategory']
 
@@ -39,15 +39,29 @@ class RideRequest(object):
         target = Target.createTarget(rideRequestDict['target'])
 
         if rideRequestType == 'airportRide':
+            flightLocalTime = rideRequestDict['flightLocalTime']
+            flightNumber = rideRequestDict['flightNumber']
+            airportLocation = rideRequestDict['airportLocation']
+            baggages = rideRequestDict['baggages']
+            disabilities = rideRequestDict['disabilities']
+
+            # TODO change function calls
             return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
         elif rideRequestType == 'eventRide':
             return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
         else:
             raise Exception('Not supported rideRequestType: {}'.format(rideRequestType))
 
-    def to_dict(self):
-        # TODO implement
-        return vars(self)
+    def toDict(self):
+        rideRequestDict = {
+            'driverStatus': self.driverStatus,
+            'pickupAddress': self.pickupAddress,
+            'hasCheckedIn': self.hasCheckedIn,
+            'eventRef': self.eventRef,
+            'orbitRef': self.orbitRef,
+            'target': self.target.toDict()
+        }
+        return rideRequestDict
 
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target):
 
@@ -94,6 +108,12 @@ class AirportRideRequest(RideRequest):
         """        
 
         super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
+        self.rideCategory = 'airportRide'
+
+    def toDict(self):
+        rideRequestDict = super().toDict()
+        rideRequestDict['rideCategory'] = 'airportRide'
+        return rideRequestDict
 
 class SocialEventRideRequest(RideRequest):
 
@@ -116,3 +136,9 @@ class SocialEventRideRequest(RideRequest):
         """        
 
         super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target)
+        self.rideCategory = 'eventRide'
+
+    def toDict(self):
+        rideRequestDict = super().toDict()
+        rideRequestDict['rideCategory'] = 'eventRide'
+        return rideRequestDict
