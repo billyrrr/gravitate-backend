@@ -75,14 +75,15 @@ https://cloud.google.com/appengine/docs/standard/python/tools/using-local-server
 ## Key Terms
 
 ### Timestamp and Datetime
-Timestamp has no offset, which is bijective to UTC time. 
+Timestamp has no offset and bijective to UTC time. We are less likely to make any mistake by storing time as timestamp and timezone ID. 
 ```
 Epoch timestamp: 1556773200
 Timestamp in milliseconds: 1556773200000
 Human time (GMT): Thursday, May 2, 2019 5:00:00 AM
 Human time (your time zone): Wednesday, May 1, 2019 10:00:00 PM GMT-07:00
 ```
-
+One exception is flightLocalTime, which is defined as local time without offset (since offset can be inferred from airport code). 
+```"2019-05-02T13:12:00.000"```
 
 ## Reference
 
