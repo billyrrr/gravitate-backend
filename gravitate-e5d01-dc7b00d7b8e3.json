@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gravitate-e5d01",
+  "private_key_id": "dc7b00d7b8e3c4739ed37f0198ff984b94dd7b58",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoJcsZZSRCQOAE\nmXReBjHkXyXe4QLU1WhJrqCRPvviNyNPT649k57BJjmqQnuGNuAIGHBZAarFPtmw\nQm/zH9FM7ZP3N4NFM+ucXy0fqTiUUjReE4TF/LfsAtGo13bZigljRPVAHuVOBaEL\n88AVzm/6B5b/iAa5/FEGAW8v85cVIsker3g1u1Ho1i8glk5KG1tcrZU86ZtgTIW9\nMZ0xhPKKhlFhiKF2zLd4nlZXrkefY7BwzNhK/q1mTHhzRnV7jqwbquhGGejR6CvU\nx5hgMIMiF286XtfsVGwjtqO3ulNVM1sCIkx34k4LR2quQRH3GSnwA0phcp2UBETa\nLMlO5YEJAgMBAAECggEAGXioJy+qv3KOZ4P2HGwke1YX1DG9DmVJh/0xC5pBPnJg\nd0TjEybdN0savyTqYK7ICdHnQERqtw3J8ikORlkSiUG6rAoNE5rwMl7kj1WWDDnW\nVE3xS1X4vS1sJH8x3Mr2mG1mGBGAu5dKCcJ3MuvJC1TCVfEoJl0HdQ5wkRCoWVC4\nKK8vezbfQ+fDj6eXCWQ/ZNvtRIExY5g5N3hLfO2RWAq1aGzvE4xAjzWhSYMHijnG\nO3wVA3g89d8s+y6GS0posqE6Xc7vQ2CFHhfMrYTLCXAT4G23hhAhHyqN0wzUxR4F\nNDPvzSMyQ8IOTHnHpglrlG74ZRhEj/72kNuUyvnfdQKBgQDlc2hs52UqNIXesK1V\nso1nCltnTpo+XTUkLykwI2IvsEvZKeqm5XKYy6ZuKNwprbmRN+3/k/DpYtHHTjsl\n7NOtSMAzqcgSmZMqAnXxweBRyZg4tXfi7Aw3jGp4H8K5tRA4k2sgBWuL0wnny2ui\nimGn4VFy0Q/ITLZ1d+kvUUmocwKBgQC7moQYAimim9DW4sj8jhVh01k3Q1nGdWm4\n6QdprhaQ0clH7JqYraYIV1os2UdZieZqjhqh9L7vDGgPijnedDrElpzWwnelhu0m\n69C7lU9p1oenfEYwGdQISm18mWuMrpms6uQlLGS00go/ByxrKE2sP3f23f64s0Rk\nYguekPhdkwKBgQDFL04BsUYmZCbbvtfnet+8OpFckZdKmw1tQD5USUQ7GXXFdhlb\nPnoiR3mK2ACErPB5lSgqaPgziaIgduGr8P/kvk222GTBX0uyYZT8o5Hkl6wCqCkU\nUakaH8jr3Neagrki9cWtKhtHeaDcm9uvPt83yBIX6wR2LT7sapVx/ZigcwKBgGCw\nTV5WVwEQz3zA25eW3xxRIk0iMDXhs8Bykbh82fJ/vP6NykvgS49G/hnZTjWupgvK\n+5z3GCT6PvOraRHm05cYjPL+vU2ZkcaaiTT0yj4hLD89BKur1CUFvxIVvGGAZ4HA\neh9SlwC+tDsxxkngNtAM0hZw6eRluF0ITzbFPsxzAoGAcKQe63SBzdg1Rn5wNS7x\neds/j0q37KpUM2G7HqtZV5okk2TEBGoE9cgoptkTD22WQCSD0/w1y5a9ZBCSLxmy\n+/RZuxCDni3D9XrWBc8k5jIuufr7YtBJNpirN4+lLJAMJ+L7JFENnGl55/RgqOmd\n3MkKizevpthK+hb8SGVwR1I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gravitate-backend@gravitate-e5d01.iam.gserviceaccount.com",
+  "client_id": "106278210566375978811",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gravitate-backend%40gravitate-e5d01.iam.gserviceaccount.com"
+}

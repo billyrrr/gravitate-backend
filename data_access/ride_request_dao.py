@@ -5,7 +5,7 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
 import google
 from typing import Type
-
+from main import db as dbClientRideRequestDao
 
 class RideRequestGenericDao:
     """ Description	
@@ -13,9 +13,8 @@ class RideRequestGenericDao:
 
     """
 
-    def __init__(self, client: Client):
-        self.client = client
-        self.rideRequestCollectionRef = client.collection('RideRequests')
+    def __init__(self):
+        self.rideRequestCollectionRef = dbClientRideRequestDao.collection('RideRequests')
 
     @transactional
     def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
@@ -47,7 +46,7 @@ class RideRequestGenericDao:
             raise Exception('No such document! ' + str(rideRequestRef.id))
 
     def getRideRequest(self, rideRequestRef: DocumentReference):
-        transaction = self.client.transaction()
+        transaction = dbClientRideRequestDao.transaction()
         rideRequestResult = self.getRideRequestWithTransaction(
             transaction, rideRequestRef)
         transaction.commit()
@@ -84,7 +83,8 @@ class RideRequestGenericDao:
         return singleRideRequestRef.delete()
 
     @transactional
-    def setRideRequestWithTransaction(self, transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
+    @staticmethod
+    def setRideRequestWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 

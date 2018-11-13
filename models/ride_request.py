@@ -2,24 +2,26 @@
 """
 
 
-from google.cloud.firestore import DocumentReference
+from google.cloud.firestore import DocumentReference, Transaction
 from models.target import Target, ToEventTarget, FromEventTarget
+from main import db
+
 
 class RideRequest(object):
-    
+
     __firestoreRef: DocumentReference = None
-    
+
     """ Description	
         This class represents a RideRequest object
     
     """
 
-    def setFirestoreRef(self, firestoreRef: str):
-        self.__firestoreRef = firestoreRef 
-    
+    def setFirestoreRef(self, firestoreRef):
+        self.__firestoreRef = firestoreRef
+
     def getFirestoreRef(self):
         return self.__firestoreRef
-
+    
     @staticmethod
     def fromDictAndReference(rideRequestDict, rideRequestRef):
         rideRequest = RideRequest.fromDict(rideRequestDict)
@@ -33,13 +35,13 @@ class RideRequest(object):
                 (RideRequest Factory)
 
             :param rideRequestDict: 
-        """   
+        """
         rideRequestType = rideRequestDict['rideCategory']
 
         driverStatus = rideRequestDict['driverStatus']
         pickupAddress = rideRequestDict['pickupAddress']
         hasCheckedIn = rideRequestDict['hasCheckedIn']
-        eventRef = rideRequestDict['eventRef']
+        eventRef = rideRequestDict['eventRef'] # TODO conversion to DocumentReference
         orbitRef = rideRequestDict['orbitRef']
         target = Target.createTarget(rideRequestDict['target'])
         pricing = rideRequestDict['pricing']
@@ -51,12 +53,15 @@ class RideRequest(object):
             baggages = rideRequestDict['baggages']
             disabilities = rideRequestDict['disabilities']
 
-            # TODO change function calls
-            return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities)
+            return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn,
+                                      eventRef, orbitRef, target, pricing, flightLocalTime, 
+                                      flightNumber, airportLocation, baggages, disabilities)
         elif rideRequestType == 'eventRide':
+            # TODO change function calls
             return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing)
         else:
-            raise Exception('Not supported rideRequestType: {}'.format(rideRequestType))
+            raise Exception(
+                'Not supported rideRequestType: {}'.format(rideRequestType))
 
     def toDict(self):
         rideRequestDict = {
@@ -93,6 +98,30 @@ class RideRequest(object):
         self.target = target
         self.pricing = pricing
 
+
+# class RideRequestActiveRecord(RideRequest):
+    
+#     @staticmethod
+#     def fromFirestoreRef(firestoreRef, rideRequestDAO: RideRequestGenericDao, transaction: Transaction = None):
+#         if (transaction):
+#             return rideRequestDAO.getRideRequestWithTransaction(transaction, firestoreRef)
+#         else:
+#             return rideRequestDAO.getRideRequest(firestoreRef)
+
+#     @staticmethod
+#     def createFromDict(rideRequestDict, rideRequestGenericDao = RideRequestGenericDao()):
+#         rideRequest = RideRequest.fromDict(rideRequestDict)
+#         timestamp, documentRef = rideRequestGenericDao.createRideRequest()
+#         rideRequest.setFirestoreRef(documentRef)
+#         return rideRequest
+    
+#     def saveWithTransaction(self, transaction: Transaction):
+#         # Save to database with ref specified instance variable
+#         if (not self.__firestoreRef):
+#             raise Exception('self.__firestoreRef not defined!')
+#         RideRequestGenericDao.setRideRequestWithTransaction(transaction, self, self.__firestoreRef)
+ 
+
 class AirportRideRequest(RideRequest):
 
     # TODO more arguments
@@ -117,10 +146,11 @@ class AirportRideRequest(RideRequest):
             :param disabilities: 
         """
 
-        super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing)
+        super().__init__(driverStatus, pickupAddress,
+                         hasCheckedIn, eventRef, orbitRef, target, pricing)
         self.rideCategory = 'airportRide'
         self.flightLocalTime = flightLocalTime
-        self.flightNumber =  flightNumber
+        self.flightNumber = flightNumber
         self.airportLocation = airportLocation
         self.baggages = baggages
         self.disabilities = disabilities
@@ -132,27 +162,27 @@ class AirportRideRequest(RideRequest):
 
         :type self:
         :param self:
-    
+
         :raises:
-    
+
         :rtype:
         """
 
         rideRequestDict = super().toDict()
-        
+
         rideRequestDict['rideCategory'] = 'airportRide'
         rideRequestDict['flightLocalTime'] = self.flightLocalTime
-        rideRequestDict['flightNumber'] =  self.flightNumber
+        rideRequestDict['flightNumber'] = self.flightNumber
         rideRequestDict['airportLocation'] = self.airportLocation
         rideRequestDict['baggages'] = self.baggages
         rideRequestDict['disabilities'] = self.disabilities
         return rideRequestDict
 
+
 class SocialEventRideRequest(RideRequest):
 
     # TODO more arguments
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
-
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialzed directly.
@@ -160,16 +190,17 @@ class SocialEventRideRequest(RideRequest):
 
         :type self:
         :param self:
-    
+
         :type dictionary:
         :param dictionary:
-    
-        :raises:
-    
-        :rtype:
-        """        
 
-        super().__init__(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing)
+        :raises:
+
+        :rtype:
+        """
+
+        super().__init__(driverStatus, pickupAddress,
+                         hasCheckedIn, eventRef, orbitRef, target, pricing)
         self.rideCategory = 'eventRide'
 
     def toDict(self):
