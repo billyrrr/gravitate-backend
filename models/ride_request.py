@@ -20,6 +20,10 @@ class RideRequest(object):
         self.__firestoreRef = firestoreRef
 
     def getFirestoreRef(self):
+        """
+            TODO refer to https://stackoverflow.com/questions/50012956/firestore-how-to-store-reference-to-document-how-to-retrieve-it
+            :param self: 
+        """   
         return self.__firestoreRef
     
     @staticmethod

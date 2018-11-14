@@ -14,7 +14,7 @@ class RideRequestGenericDao:
     """
 
     def __init__(self):
-        self.rideRequestCollectionRef = dbClientRideRequestDao.collection('RideRequests')
+        self.rideRequestCollectionRef = dbClientRideRequestDao.collection('rideRequests')
 
     @transactional
     def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
