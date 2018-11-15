@@ -5,7 +5,8 @@ import datetime
 class GroupUsers:
 
     @staticmethod
-    def groupUsers(arr, groupTime):
+    def groupUsers(arr, groupTime):     #array of pairs where the first elem is departure time
+                                        #second elem is unique user id.
 
         # sorted array by time in increasing order
         sortedArr = sorted(
@@ -50,7 +51,7 @@ class GroupUsers:
         print('paired list:', paired)
         print('unpaired list:', notpaired)
 
-        return 
+        return
 
 
 groupTime = 30  # maximum time difference of 30 minutes
