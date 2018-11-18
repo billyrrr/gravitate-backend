@@ -4,7 +4,6 @@
 
 from google.cloud.firestore import DocumentReference, Transaction
 from models.target import Target, ToEventTarget, FromEventTarget
-from main import db
 
 
 class RideRequest(object):
@@ -47,7 +46,7 @@ class RideRequest(object):
         hasCheckedIn = rideRequestDict['hasCheckedIn']
         eventRef = rideRequestDict['eventRef'] # TODO conversion to DocumentReference
         orbitRef = rideRequestDict['orbitRef']
-        target = Target.createTarget(rideRequestDict['target'])
+        target = Target.fromDict(rideRequestDict['target'])
         pricing = rideRequestDict['pricing']
 
         if rideRequestType == 'airportRide':

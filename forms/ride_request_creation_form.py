@@ -33,10 +33,11 @@ class RideRequestCreationForm(Form):
         ])
 
 
-    # TODO: Validate Airport
-    def validate_airport(form, airportLocation) {
-        # Find Airport Code Library
-        if airportLocation not in PACKAGE_NAME:
-            raise ValidationError("Not a valid Airport Code")
-    }
+    # # TODO: Validate Airport
+    # @staticmethod
+    # def validate_airport(form, airportLocation):
+    #     # Find Airport Code Library
+    #     if airportLocation not in PACKAGE_NAME:
+    #         raise ValidationError("Not a valid Airport Code")
+
     
