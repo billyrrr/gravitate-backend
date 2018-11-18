@@ -19,7 +19,13 @@ import logging
 
 import json
 
+from models.target import Target
+from datetime import datetime
+
 from flask import Flask, request
+from wtforms import Form
+from forms.ride_request_creation_form import RideRequestCreationForm
+from controllers.process_ride_request import createAirportRideRequestWithForm
 
 from google.cloud import firestore
 from google.auth.transport import requests
@@ -45,8 +51,18 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
-@app.route('/createRideRequest', methods=['POST', 'PUT'])
+@app.route('/createRideRequest', methods=['POST'])
 def createRideRequest():
+
+    formJson = request.get_json()
+    form:RideRequestCreationForm = RideRequestCreationForm.from_json(formJson)
+    if (form.validate()):
+        createAirportRideRequestWithForm(form)
+    else: 
+        # TODO return error code for invalid form and corresponding warnings
+        pass
+
+
     # TODO implement
 
     form = RideRequestCreationForm(request.POST)

@@ -52,7 +52,7 @@ class RideRequestGenericDao:
         transaction.commit()
         return rideRequestResult
 
-    def createRideRequest(self, rideRequest: Type[RideRequest]):
+    def createRideRequest(self, rideRequest: Type[RideRequest])->DocumentReference:
         """ Description
         :type self:
         :param self:
@@ -64,7 +64,8 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        return self.rideRequestCollectionRef.add(rideRequest.toDict())
+        _, rideRequestRef = self.rideRequestCollectionRef.add(rideRequest.toDict())
+        return rideRequestRef
 
     def deleteRideRequest(self, singleRideRequestRef: DocumentReference):
         """ Description
