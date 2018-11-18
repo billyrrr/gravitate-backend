@@ -16,6 +16,5 @@ def create(rideRequestCreationForm: RideRequestCreationForm):
     """
     
     rideRequest = buildAirportRideRequestWithForm(rideRequestCreationForm)
-    
     rideRequestRef = RideRequestGenericDao().createRideRequest(rideRequest)
     return rideRequestRef

@@ -1,5 +1,6 @@
 from models.ride_request import RideRequest, AirportRideRequest, Target
 from forms.ride_request_creation_form import RideRequestCreationForm
+from ride_request_service.exceptions import *
 from google.cloud.firestore import DocumentReference
 from datetime import datetime, timezone
 import pytz
@@ -36,7 +37,11 @@ def buildAirportRideRequestWithForm(form: RideRequestCreationForm) -> AirportRid
 
     # Set EventRef
     eventRef: DocumentReference = findEvent(form)
-    rideRequestDict['eventRef'] = eventRef
+    if (eventRef):
+        rideRequestDict['eventRef'] = eventRef
+    else:
+        raise EventNotFoundException('Cannot find event corresponding to the flightLocalTime. ')
+    
     airportLocationRef: DocumentReference = findLocation(form)
     rideRequestDict['airportLocation'] = airportLocationRef
 
