@@ -1,4 +1,4 @@
-from controllers.process_ride_request import createTarget, buildAirportRideRequestWithForm
+from ride_request_service.process_ride_request import createTarget, buildAirportRideRequestWithForm
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
 

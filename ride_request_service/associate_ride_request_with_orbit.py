@@ -35,7 +35,7 @@ def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, pr
     # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
     transaction = client.transaction()
 
-    rideRequestDao = RideRequestGenericDao(client)
+    rideRequestDao = RideRequestGenericDao()
     rideRequest = rideRequestDao.getRideRequestWithTransaction(
         transaction, rideRequestRef)
     orbitDao = OrbitDao(client)

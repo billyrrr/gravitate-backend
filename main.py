@@ -25,7 +25,7 @@ from datetime import datetime
 from flask import Flask, request
 from wtforms import Form
 from forms.ride_request_creation_form import RideRequestCreationForm
-from controllers.process_ride_request import createAirportRideRequestWithForm
+import ride_request_service.ride_request as rideRequestService
 
 from google.cloud import firestore
 from google.auth.transport import requests
@@ -53,11 +53,16 @@ def hello():
 
 @app.route('/createRideRequest', methods=['POST'])
 def createRideRequest():
+    """
+        TODO: migrate logics to services.ride_request.create
+        Example: https://github.com/Amsterdam/subsidieservice/blob/master/python-flask-server/swagger_server/controllers/subsidies_controller.py
+
+    """
 
     formJson = request.get_json()
     form:RideRequestCreationForm = RideRequestCreationForm.from_json(formJson)
     if (form.validate()):
-        createAirportRideRequestWithForm(form)
+        rideRequestService.create(form)
     else: 
         # TODO return error code for invalid form and corresponding warnings
         pass

@@ -1,4 +1,4 @@
-from controllers.associate_ride_request_with_orbit import joinOrbitToRideRequest
+from ride_request_service.associate_ride_request_with_orbit import joinOrbitToRideRequest
 from models.orbit import Orbit
 from google.cloud.firestore import Client
 
