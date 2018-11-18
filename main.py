@@ -26,6 +26,7 @@ from flask import Flask, request
 from wtforms import Form
 from forms.ride_request_creation_form import RideRequestCreationForm
 import ride_request_service.ride_request as rideRequestService
+from models.api_response.ride_request import RideRequestCreationResponse
 
 from google.cloud import firestore
 from google.auth.transport import requests
@@ -62,14 +63,16 @@ def createRideRequest():
     formJson = request.get_json()
     form:RideRequestCreationForm = RideRequestCreationForm.from_json(formJson)
     if (form.validate()):
-        rideRequestService.create(form)
+        try:
+            currentRideRequestRef = rideRequestService.create(form)
+            response = RideRequestCreationResponse(currentRideRequestRef)
+            return response, 200
+        except: 
+            # TODO, handle errors
+            return None, 402
     else: 
-        # TODO return error code for invalid form and corresponding warnings
-        pass
-
-
-    # TODO implement
-    return 
+        # TODO return error code for invalid form and corresponding warnings from form class
+        return None, 401
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data(): 
