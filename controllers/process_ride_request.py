@@ -4,33 +4,18 @@ from google.cloud.firestore import DocumentReference
 from datetime import datetime, timezone
 import pytz
 
-def createRideRequestFromForm(form: dict):
-    rideRequestDict = dict()
-
-    # TODO move data from the form frontend submitted to rideRequestDict
-    rideRequestDict['pickupAddress'] = form['pickupAddress']
-
-    # TODO fill unspecified options with default values
-    
-
-    # Populate rideRequestDict with default service data
-    rideRequestDict['hasCheckedIn'] = False
-
-
-    rideRequest = RideRequest.fromDict(rideRequestDict)
-    return rideRequest
-
-
 
 def buildAirportRideRequestWithForm(form: RideRequestCreationForm) -> AirportRideRequest:
 
     rideRequestDict = dict()
-
+    
     rideRequestDict['rideCategory'] = 'airportRide'
 
     # Move data from the form frontend submitted to rideRequestDict
-    rideRequestDict['pickupAddress'] = form['pickupAddress']
-    rideRequestDict['driverStatus'] = form['driverStatus']
+    rideRequestDict['pickupAddress'] = form.pickupAddress
+    rideRequestDict['driverStatus'] = form.driverStatus
+    rideRequestDict['flightLocalTime'] = form.flightLocalTime
+    rideRequestDict['flightNumber'] = form.flightNumber
 
     # Fields to be filled "immediately"
 
@@ -39,6 +24,7 @@ def buildAirportRideRequestWithForm(form: RideRequestCreationForm) -> AirportRid
 
     # Populate rideRequestDict with default service data
     rideRequestDict['disabilities'] = dict()
+    rideRequestDict['baggages'] = dict()
     rideRequestDict['hasCheckedIn'] = False
     rideRequestDict['orbitRef'] = None
 
@@ -46,11 +32,13 @@ def buildAirportRideRequestWithForm(form: RideRequestCreationForm) -> AirportRid
 
     # Set Target
     target = createTarget(form)
-    rideRequestDict['target'] = target
+    rideRequestDict['target'] = target.toDict()
 
     # Set EventRef
     eventRef: DocumentReference = findEvent(form)
     rideRequestDict['eventRef'] = eventRef
+    airportLocationRef: DocumentReference = findLocation(form)
+    rideRequestDict['airportLocation'] = airportLocationRef
 
     rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
 
@@ -72,6 +60,11 @@ def createTarget(form: RideRequestCreationForm):
     # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
     target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
+
+def findLocation(form: RideRequestCreationForm) -> DocumentReference:
+    # TODO [to assign]
+
+    return None
 
 def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     # TODO [to assign] 
