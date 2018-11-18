@@ -48,7 +48,32 @@ def hello():
 @app.route('/createRideRequest', methods=['POST', 'PUT'])
 def createRideRequest():
     # TODO implement
-    return 
+
+    form = RideRequestCreationForm(request.POST)
+    # POST REQUEST
+    if request.method == 'POST' and form.validate():
+
+        # Creates a RideRequest Object
+        flight_num = request.flightNumber
+        airport_loc = request.airportLocation
+        local_time = request.flightLocalTime
+        e_arrival = request.earliest
+        l_arrival = request.latest
+        start_loc = request.pickupAddress
+        
+        target = Target(airport_loc,e_arrival, l_arrival)
+        #DriverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
+        ride_request = AirportRideRequest(false, start_loc, False, None, None, target, None,local_time,flight_num,airport_loc,0,False)
+        
+        # Saves Ride_Request Object to Firestore
+             # ride_request.save()   should this be a function in RideRequest
+        ride_requests_ref = db.collection(u'RideRequest')
+        current_ride_request_ref = ride_requests_ref.document()
+        current_ride_request_id = current_ride_request_ref.id
+        current_ride_request_ref.set(ride_request)
+        return current_ride_request_id, 200
+
+
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data(): 

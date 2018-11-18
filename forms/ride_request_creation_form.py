@@ -5,38 +5,54 @@ from wtforms import StringField, PasswordField, DateTimeField
 
 from wtforms.validators import InputRequired,length
 
-class RideRequestCreationForm(Form):
-    # Flight Information (can be filled with Flightstats API)
-    pickupAddress = StringField(validators=[
-        InputRequired('Pickup address needs to be specified.'),
-        
+class RideRequestCreationForm(Form, RideRequest):
+
+    # Can be filled with Flightstats API
+    flightNumber = StringField(u'Flight Number', validators=[
+        InputRequired('Flight Number needs to be specified.'),
+
         
         ])
-    airportLocation = StringField(validators=[
+
+    airportLocation = StringField(u'Airport Location', validators=[
         InputRequired('Airport Location needs to be specified.'),
         
         ])
-    flightLocalTime = DateTimeField(validators=[
+    flightLocalTime = DateTimeField(u'Flight Local Time', validators=[
         InputRequired('Flight Local Time needs to be specified. '),
         
         ])
 
+    # Cannot be autofilled
+    pickupAddress = StringField(u'Pickup Address', validators=[
+        InputRequired('Pickup address needs to be specified.'),
+        
+        
+        ])
+
     # Used to create Target Object
-    earliest = DateTimeField(validators=[
+    earliest = DateTimeField(u'Earliest Arrival Time', validators=[
         InputRequired('Earliest Arrival needs to be specified.'),
         
         ])
 
-    latest = DateTimeField(validators=[
+    latest = DateTimeField(u'Latest Arrival Time', validators=[
         InputRequired('Latest Arrival needs to be specified. '),
         
         ])
 
-
-    # TODO: Validate Airport
+    # Calling validate will automatically call these functions of type "validate_fieldname"
+"""     # TODO: Validate Airport
     def validate_airport(form, airportLocation) {
         # Find Airport Code Library
         if airportLocation not in PACKAGE_NAME:
             raise ValidationError("Not a valid Airport Code")
     }
-    
+
+    # TODO: Validate Flight Number
+    def validate_flight(form, flightNumber) {
+        # Find Airport Code Library
+        if airportLocation not in PACKAGE_NAME:
+            raise ValidationError("Not a valid Airport Code")
+    }
+ """
