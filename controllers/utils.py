@@ -1,8 +1,18 @@
 from models.ride_request import RideRequest, AirportRideRequest, Target
 from forms.ride_request_creation_form import RideRequestCreationForm
-from google.cloud.firestore import DocumentReference
+from google.cloud.firestore import DocumentReference, Transaction
+from data_access.ride_request_dao import RideRequestGenericDao
 from datetime import datetime, timezone
 import pytz
+
+def saveRideRequest(rideRequest, transaction: Transaction = None):
+        if (rideRequest.getFirestoreRef()):
+            if not transaction:
+                raise Exception('transaction is not provided. ')
+            RideRequestGenericDao().setRideRequestWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
+        else:
+            newRef = RideRequestGenericDao().createRideRequest(rideRequest)
+            rideRequest.setFirestoreRef(newRef)
 
 def createTarget(form: RideRequestCreationForm):
     """

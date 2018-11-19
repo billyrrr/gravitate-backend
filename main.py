@@ -118,10 +118,10 @@ def createRideRequest():
         # Create RideRequest Object
         rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
 
-        # Saves Ride_Request Object to Firestore
-        rideRequestRef = rideRequest.save()
+        # Saves Ride_Request Object to Firestore TODO change to Active Record
+        utils.saveRideRequest(rideRequest)
         
-        return rideRequestRef, 200
+        return rideRequest.getFirestoreRef(), 200
 
 
 

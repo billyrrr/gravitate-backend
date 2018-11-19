@@ -2,10 +2,11 @@
 """
 
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
-from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
 import google
 from typing import Type
-from main import db as dbClientRideRequestDao
+from models.ride_request import RideRequest, AirportRideRequest
+
+db = Client()
 
 class RideRequestGenericDao:
     """ Description	
@@ -14,7 +15,7 @@ class RideRequestGenericDao:
     """
 
     def __init__(self):
-        self.rideRequestCollectionRef = dbClientRideRequestDao.collection('rideRequests')
+        self.rideRequestCollectionRef = db.collection('rideRequests')
 
     @transactional
     def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
@@ -46,7 +47,7 @@ class RideRequestGenericDao:
             raise Exception('No such document! ' + str(rideRequestRef.id))
 
     def getRideRequest(self, rideRequestRef: DocumentReference):
-        transaction = dbClientRideRequestDao.transaction()
+        transaction = db.transaction()
         rideRequestResult = self.getRideRequestWithTransaction(
             transaction, rideRequestRef)
         transaction.commit()
