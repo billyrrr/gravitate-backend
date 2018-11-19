@@ -4,7 +4,7 @@
 
 from google.cloud.firestore import DocumentReference, Transaction
 from models.target import Target, ToEventTarget, FromEventTarget
-
+from data_access.ride_request_dao import RideRequestGenericDao
 
 class RideRequest(object):
 
@@ -77,6 +77,16 @@ class RideRequest(object):
             'pricing': self.pricing
         }
         return rideRequestDict
+
+    def save(self, transaction: Transaction = None):
+        if (self.getFirestoreRef()):
+            if not transaction:
+                raise Exception('transaction is not provided. ')
+            RideRequestGenericDao().setRideRequestWithTransaction(transaction, self, self.getFirestoreRef())
+        else:
+            newRef = RideRequestGenericDao().createRideRequest(self)
+            self.setFirestoreRef(newRef)
+
 
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
         """ Description

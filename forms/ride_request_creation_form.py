@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, DateTimeField
 
 from wtforms.validators import InputRequired,length
 
-class RideRequestCreationForm(Form, RideRequest):
+class RideRequestCreationForm(Form):
 
     # Can be filled with Flightstats API
     flightNumber = StringField(u'Flight Number', validators=[
@@ -41,23 +41,6 @@ class RideRequestCreationForm(Form, RideRequest):
         
         ])
 
-<<<<<<< HEAD
-    # Calling validate will automatically call these functions of type "validate_fieldname"
-"""     # TODO: Validate Airport
-    def validate_airport(form, airportLocation) {
-        # Find Airport Code Library
-        if airportLocation not in PACKAGE_NAME:
-            raise ValidationError("Not a valid Airport Code")
-    }
-
-    # TODO: Validate Flight Number
-    def validate_flight(form, flightNumber) {
-        # Find Airport Code Library
-        if airportLocation not in PACKAGE_NAME:
-            raise ValidationError("Not a valid Airport Code")
-    }
- """
-=======
 
     # # TODO: Validate Airport
     # @staticmethod
@@ -67,4 +50,3 @@ class RideRequestCreationForm(Form, RideRequest):
     #         raise ValidationError("Not a valid Airport Code")
 
     
->>>>>>> 6be5de0e4cd1fcb3c131323b422c1300a8bd1900

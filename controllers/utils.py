@@ -4,46 +4,6 @@ from google.cloud.firestore import DocumentReference
 from datetime import datetime, timezone
 import pytz
 
-
-def buildAirportRideRequestWithForm(form: RideRequestCreationForm) -> AirportRideRequest:
-
-    rideRequestDict = dict()
-    
-    rideRequestDict['rideCategory'] = 'airportRide'
-
-    # Move data from the form frontend submitted to rideRequestDict
-    rideRequestDict['pickupAddress'] = form.pickupAddress
-    rideRequestDict['driverStatus'] = form.driverStatus
-    rideRequestDict['flightLocalTime'] = form.flightLocalTime
-    rideRequestDict['flightNumber'] = form.flightNumber
-
-    # Fields to be filled "immediately"
-
-    # TODO fill unspecified options with default values
-    rideRequestDict['pricing'] = 987654321 # TODO change
-
-    # Populate rideRequestDict with default service data
-    rideRequestDict['disabilities'] = dict()
-    rideRequestDict['baggages'] = dict()
-    rideRequestDict['hasCheckedIn'] = False
-    rideRequestDict['orbitRef'] = None
-
-    # Fields to be filled "after some thinking"
-
-    # Set Target
-    target = createTarget(form)
-    rideRequestDict['target'] = target.toDict()
-
-    # Set EventRef
-    eventRef: DocumentReference = findEvent(form)
-    rideRequestDict['eventRef'] = eventRef
-    airportLocationRef: DocumentReference = findLocation(form)
-    rideRequestDict['airportLocation'] = airportLocationRef
-
-    rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
-
-    return rideRequest
-
 def createTarget(form: RideRequestCreationForm):
     """
     Note that this method won't work if any datetime string represents a time when
@@ -62,9 +22,20 @@ def createTarget(form: RideRequestCreationForm):
     return target
 
 def findLocation(form: RideRequestCreationForm) -> DocumentReference:
-    # TODO [to assign]
+    """ Description
+        This function finds the locationRef for "LAX" or other airportLocation(s)
 
-    return None
+    :type form:RideRequestCreationForm:
+    :param form:RideRequestCreationForm:
+
+    :raises:
+
+    :rtype:
+    """
+
+    # TODO [to assign] implement
+    
+    return "/mocklocation" # TODO change
 
 def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     # TODO [to assign] 
@@ -80,7 +51,7 @@ def findEvent(form: RideRequestCreationForm) -> DocumentReference:
 
     :rtype:
     """
-    return None
+    return "/mockevent" # TODO change
 
 def setDisabilities(form: RideRequestCreationForm, rideRequestDict):
     if ('disabilities' in form):
