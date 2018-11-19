@@ -7,7 +7,7 @@ from google.cloud.firestore import DocumentReference
 
 class Orbit(object):
     """ Description	
-        This class represents a RideRequest object
+        This class represents a Orbit object
     
     """
 
