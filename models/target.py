@@ -7,12 +7,26 @@ class Target(object):
         self.eventCategory = eventCategory
 
     @staticmethod
-    def createTarget(targetDict: dict):
+    def fromDict(targetDict: dict):
         toEvent = targetDict['toEvent']
         if (toEvent):
             return ToEventTarget(targetDict['eventCategory'], targetDict['arriveAtEventTime'])
         else:
             return FromEventTarget(targetDict['eventCategory'], targetDict['leaveEventTime'])
+
+    @staticmethod
+    def createAirportEventTarget(toEvent: bool, earliest:int, latest:int):
+        if (toEvent):
+            return ToEventTarget('airportRide', {
+                'earliest': earliest,
+                'latest': latest,
+                # TODO add timezone
+            })
+        else:
+            return FromEventTarget('airportRide', {
+                'earliest': earliest,
+                'latest': latest
+            })
 
     def toDict(self):
         """ Description
