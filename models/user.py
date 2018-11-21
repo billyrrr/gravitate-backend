@@ -65,5 +65,3 @@ class User(object):
         eventSchedule = userDict['eventSchedule']
         
         return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
-# Do we need a Driver subclass?
-
