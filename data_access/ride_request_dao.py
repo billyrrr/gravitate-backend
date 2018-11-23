@@ -5,8 +5,11 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from models.ride_request import RideRequest, AirportRideRequest
+import data_access
 
-db = Client()
+CTX = data_access.config.Context
+
+db = CTX.db
 
 class RideRequestGenericDao:
     """ Description	
