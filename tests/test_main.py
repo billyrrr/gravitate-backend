@@ -1,17 +1,11 @@
+import main
+from flask.testing import FlaskClient
 from main import fillRideRequestDictWithForm
-from controllers.utils import createTarget
-from forms.ride_request_creation_form import RideRequestCreationForm
+from controllers.utils import createTarget, saveRideRequest
+from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
 from requests import request
-
-class MockFormTargetOnly:
-
-    def __init__(self):
-        self.earliest = "2018-12-17T09:00:00.000"
-        self.latest = "2018-12-17T11:00:00.000"
-        self.toEvent = True
-
 
 class MockForm:
 
@@ -33,14 +27,53 @@ class MockForm:
         return vars(self)
 
 
+class MainAppTestCase(TestCase):
+
+    app: FlaskClient = None
+
+    def setUp(self):
+
+        main.app.testing = True
+        self.app = main.app.test_client()
+
+    def testCreateRideRequest(self):
+
+        r = self.app.post(path='/rideRequests', data = MockForm().toDict())
+
+        assert r.status_code == 200
+        # assert 'Hello World' in r.data.decode('utf-8')
+
+
+
+    # Example:
+    #
+    # def test_empty_db(self):
+    #     rv = self.app.get('/')
+    #     assert b'No entries here so far' in rv.data
+
+
+class MockFormTargetOnly:
+
+    def __init__(self):
+        self.earliest = "2018-12-17T09:00:00.000"
+        self.latest = "2018-12-17T11:00:00.000"
+        self.toEvent = True
+
+
+
 class TestMockFormValidation(TestCase):
 
     def testCreation(self):
         formDict = MockForm().toDict()
-        print(formDict)
-        form:RideRequestCreationForm = RideRequestCreationForm(data=formDict)
+        form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertDictEqual(formDict, form.data)
+
+    def testValidate(self):
+        formDict = MockForm().toDict()
+        form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
+        form.validate()
+        self.assertEqual(form.validate(), True)
 
 class TestCreateRideRequestLogics(TestCase):
 
@@ -53,10 +86,14 @@ class TestCreateRideRequestLogics(TestCase):
                          {'earliest': 1545066000, 'latest': 1545073200}}
         self.assertDictEqual(targetDict, valueExpected)
 
+    def testSaveRideRequestToDb(self):
+        mockForm = MockForm()
+        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm))
+        saveRideRequest(result)
+
     def testCreateRideRequest(self):
         mockForm = MockForm()
         result = fillRideRequestDictWithForm(mockForm)
-        print(result)
         valueExpected = RideRequest.fromDict({
 
             'rideCategory': 'airportRide',

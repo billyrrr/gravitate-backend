@@ -24,8 +24,9 @@ from models.ride_request import RideRequest, AirportRideRequest
 from datetime import datetime
 
 from flask import Flask, request
+from flask_restful import reqparse, abort, Api, Resource
 from wtforms import Form
-from forms.ride_request_creation_form import RideRequestCreationForm
+from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from controllers import utils
 
 from google.cloud import firestore
@@ -36,62 +37,57 @@ from google.oauth2.id_token import verify_firebase_token
 
 import firebase_admin
 from firebase_admin import credentials, auth
+from config import Context
 
-cred = credentials.Certificate("./gravitate-e5d01-firebase-adminsdk-kq5i4-b6110cf4f0.json")
-firebase_admin.initialize_app(cred)
+
+# cred = credentials.Certificate("./gravitate-e5d01-firebase-adminsdk-kq5i4-b6110cf4f0.json")
+# firebase_admin.initialize_app(cred)
 
 # [END] Firebase Admin SDK
 
 firebase_request_adapter = requests.Request()
 
 app = Flask(__name__)
-db = firestore.Client()
+# db = firestore.Client()
+db = Context.db
+parser = reqparse.RequestParser()
 
 @app.route('/hello')
 def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
-@app.route('/createRideRequest', methods=['POST'])
-def createRideRequest():
 
-    # formJson = request.get_json()
-    # form:RideRequestCreationForm = RideRequestCreationForm.from_json(formJson)
-    # if (form.validate()):
-    #     createAirportRideRequestWithForm(form)
-    # else: 
-    #     # TODO return error code for invalid form and corresponding warnings
-    #     pass
+class RideRequestService(Resource):
+    
+    def post(self):
+        requestForm = request.form
+        # print(requestForm)
+        print(requestForm.to_dict())
+        validateForm = RideRequestCreationValidateForm(data=requestForm.to_dict())
 
+        # POST REQUEST
+        if validateForm.validate():
+            form = RideRequestCreationForm()
+            validateForm.populate_obj(form)
 
-    # TODO implement
+            rideRequestDict = fillRideRequestDictWithForm(form)
 
-    form = RideRequestCreationForm(request.POST)
-    # POST REQUEST
-    if form.validate():
+            # Create RideRequest Object
+            rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
+            print(rideRequest.toDict())
 
-        # # Creates a RideRequest Object
-        # flight_num = request.flightNumber
-        # airport_loc = request.airportLocation
-        # local_time = request.flightLocalTime
-        # e_arrival = request.earliest
-        # l_arrival = request.latest
-        # start_loc = request.pickupAddress
-        
-        # target = Target(airport_loc,e_arrival, l_arrival)
-        # #DriverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
-        # ride_request = AirportRideRequest(false, start_loc, False, None, None, target, None,local_time,flight_num,airport_loc,0,False)
-        
-        rideRequestDict = fillRideRequestDictWithForm(form)
+            # Saves Ride_Request Object to Firestore TODO change to Active Record
+            utils.saveRideRequest(rideRequest)
+            
+            return rideRequest.getFirestoreRef(), 200
+        else:
+            print(form.errors)
+            return form.errors, 201
+            
 
-        # Create RideRequest Object
-        rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
-
-        # Saves Ride_Request Object to Firestore TODO change to Active Record
-        utils.saveRideRequest(rideRequest)
-        
-        return rideRequest.getFirestoreRef(), 200
-
+api = Api(app)
+api.add_resource(RideRequestService, '/rideRequests')
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     rideRequestDict = dict()
