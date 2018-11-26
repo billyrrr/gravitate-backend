@@ -80,7 +80,7 @@ class RideRequestService(Resource):
             # Saves Ride_Request Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest)
             
-            return rideRequest.getFirestoreRef(), 200
+            return rideRequest.getFirestoreRef().id, 200
         else:
             print(form.errors)
             return form.errors, 201
