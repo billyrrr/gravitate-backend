@@ -1,5 +1,6 @@
-from flask_wtf import Form
-from wtforms import StringField, PasswordField, DateTimeField
+# from flask_wtf import Form
+# Note that Form is now imported from wtforms since it is more relevant to our usage of Form
+from wtforms import Form, StringField, PasswordField, DateTimeField, BooleanField
 #### DateTimeField does not have Timezone #### 
 
 
@@ -41,6 +42,15 @@ class RideRequestCreationForm(Form):
         
         ])
 
+    toEvent = BooleanField(u'wether the ride is heading to the event', validators=[
+        InputRequired('toEvent (wether the ride is heading to the event) needs to be specified. '),
+        
+        ])
+
+    driverStatus = BooleanField(u'wether the user want to be considered as a driver for the event', validators=[
+        # TODO update design use case to be more specific about what driverStatus means
+        InputRequired('driverStatus (wether the user want to be considered as a driver for the event) needs to be specified. ')
+    ])
 
     # # TODO: Validate Airport
     # @staticmethod

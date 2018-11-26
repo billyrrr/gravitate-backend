@@ -82,38 +82,7 @@ def createRideRequest():
         # #DriverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
         # ride_request = AirportRideRequest(false, start_loc, False, None, None, target, None,local_time,flight_num,airport_loc,0,False)
         
-        rideRequestDict = dict()
-
-        rideRequestDict['rideCategory'] = 'airportRide'
-
-        # Move data from the form frontend submitted to rideRequestDict
-        rideRequestDict['pickupAddress'] = form.pickupAddress
-        rideRequestDict['driverStatus'] = form.driverStatus
-        rideRequestDict['flightLocalTime'] = form.flightLocalTime
-        rideRequestDict['flightNumber'] = form.flightNumber
-
-        # Fields to be filled "immediately"
-
-        # TODO fill unspecified options with default values
-        rideRequestDict['pricing'] = 987654321 # TODO change
-
-        # Populate rideRequestDict with default service data
-        rideRequestDict['disabilities'] = dict()
-        rideRequestDict['baggages'] = dict()
-        rideRequestDict['hasCheckedIn'] = False
-        rideRequestDict['orbitRef'] = None
-
-        # Fields to be filled "after some thinking"
-
-        # Set Target
-        target = utils.createTarget(form)
-        rideRequestDict['target'] = target.toDict()
-
-        # Set EventRef
-        eventRef = utils.findEvent(form)
-        rideRequestDict['eventRef'] = eventRef
-        airportLocationRef = utils.findLocation(form)
-        rideRequestDict['airportLocation'] = airportLocationRef
+        rideRequestDict = fillRideRequestDictWithForm(form)
 
         # Create RideRequest Object
         rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
@@ -124,6 +93,41 @@ def createRideRequest():
         return rideRequest.getFirestoreRef(), 200
 
 
+def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
+    rideRequestDict = dict()
+
+    rideRequestDict['rideCategory'] = 'airportRide'
+
+    # Move data from the form frontend submitted to rideRequestDict
+    rideRequestDict['pickupAddress'] = form.pickupAddress
+    rideRequestDict['driverStatus'] = form.driverStatus
+    rideRequestDict['flightLocalTime'] = form.flightLocalTime
+    rideRequestDict['flightNumber'] = form.flightNumber
+
+    # Fields to be filled "immediately"
+
+    # TODO fill unspecified options with default values
+    rideRequestDict['pricing'] = 987654321 # TODO change
+
+    # Populate rideRequestDict with default service data
+    rideRequestDict['disabilities'] = dict()
+    rideRequestDict['baggages'] = dict()
+    rideRequestDict['hasCheckedIn'] = False
+    rideRequestDict['orbitRef'] = None
+
+    # Fields to be filled "after some thinking"
+
+    # Set Target
+    target = utils.createTarget(form)
+    rideRequestDict['target'] = target.toDict()
+
+    # Set EventRef
+    eventRef = utils.mockFindEvent(form)
+    rideRequestDict['eventRef'] = eventRef
+    airportLocationRef = utils.mockFindLocation(form) # todo change back to non-mock 
+    rideRequestDict['airportLocation'] = airportLocationRef
+
+    return rideRequestDict
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data(): 
