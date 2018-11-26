@@ -8,9 +8,7 @@
                 ],
                 "eventLocation": "refL01",
                 "startTimestamp": 1545033600,
-                "startTimezone": "America/Los_Angeles",
                 "endTimestamp": 1545119999,
-                "endTimezone": "America/Los_Angeles"
-        },
-        "pricing": 100
+                "pricing": 100
+        }
 }

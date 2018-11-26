@@ -25,12 +25,17 @@ class Context():
 
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
+    __instance = None
+
     
     def __init__(self, *args, **kwargs):
         raise NotImplementedError('Do not initialize this class, use the class methods and properties instead. ')
 
     def __new__(cls):
-        return cls
+        if cls.__instance is None:
+            cls.__instance = super(Context,cls).__new__(cls)
+            cls.__instance.__initialized = False
+        return cls.__instance
         
     @classmethod
     def read(cls):
@@ -66,7 +71,7 @@ class Context():
     @classmethod
     def _reloadFirestoreClient(cls):
         try:
-            cls.db = firestore.Client(project=cls.firebaseApp.project_id, credentials=cls.firebaseApp.credential)
+            cls.db = firestore.Client()
         except ValueError as e:
             logging.exception('Error initializing firestore client from cls.firebaseApp')
 

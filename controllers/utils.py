@@ -1,4 +1,5 @@
 from models.ride_request import RideRequest, AirportRideRequest, Target
+from models.event import Event
 from forms.ride_request_creation_form import RideRequestCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.ride_request_dao import RideRequestGenericDao
@@ -47,6 +48,9 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     
     return "/mocklocation" # TODO change
 
+def mockFindLocation(form: RideRequestCreationForm) -> str:
+    return '/locations/testairportlocationid1'
+
 def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     # TODO [to assign] 
     
@@ -62,6 +66,27 @@ def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     :rtype:
     """
     return "/mockevent" # TODO change
+
+def mockFindEvent(form: RideRequestCreationForm) -> str:
+
+    # Query to locate proper Event. Supposed to be only one for airport ride
+
+    # Event found and parsed from snapshot returned by query (not neccessary)
+    event = Event.fromDict({
+            "eventCategory": "airport",
+            "participants": [
+                    "refU01",
+                    "refU02"
+            ],
+            "eventLocation": "refL01",
+            "startTimestamp": 1545033600,
+            "endTimestamp": 1545119999,
+            "pricing": 100
+    })
+
+    # eventRef of type DocumentReference as returned by query
+    eventRef = '/events/testeventid1'
+    return eventRef
 
 def setDisabilities(form: RideRequestCreationForm, rideRequestDict):
     if ('disabilities' in form):
