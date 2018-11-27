@@ -3,8 +3,8 @@ from models.event import Event
 from forms.ride_request_creation_form import RideRequestCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.ride_request_dao import RideRequestGenericDao
-import datetime
-from datetime import timezone
+import iso8601
+import datetime as dt
 import pytz
 
 def saveRideRequest(rideRequest, transaction: Transaction = None):
@@ -25,9 +25,9 @@ def createTarget(form: RideRequestCreationForm):
         :param form:RideRequestCreationForm: 
     """
     tz = pytz.timezone('America/Los_Angeles')
-    earliestDatetime = datetime.datetime.fromisoformat(form.earliest).astimezone(tz)
+    earliestDatetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
     earliestTimestamp = int(earliestDatetime.timestamp())
-    latestDatetime = datetime.datetime.fromisoformat(form.latest).astimezone(tz)
+    latestDatetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
     latestTimestamp = int(latestDatetime.timestamp())
     # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
     target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
