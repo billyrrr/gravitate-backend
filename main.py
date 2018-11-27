@@ -21,7 +21,6 @@ import json
 
 from models.target import Target
 from models.ride_request import RideRequest, AirportRideRequest
-from datetime import datetime
 
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
@@ -55,7 +54,7 @@ class RideRequestService(Resource):
 
     def post(self):
         requestJson = request.get_json()
-        requestForm = json.loads(requestJson)
+        requestForm =  json.loads(requestJson) if (type(requestJson) != dict) else requestJson
 
         validateForm = RideRequestCreationValidateForm(
             data=requestForm)
