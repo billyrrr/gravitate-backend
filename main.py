@@ -21,9 +21,8 @@ import json
 
 from models.target import Target
 from models.ride_request import RideRequest, AirportRideRequest
-from datetime import datetime
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from wtforms import Form
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
@@ -54,11 +53,11 @@ def hello():
 class RideRequestService(Resource):
 
     def post(self):
-        requestForm = request.form['data']
-        # print(requestForm)
-        # print(requestForm.to_dict())
+        requestJson = request.get_json()
+        requestForm =  json.loads(requestJson) if (type(requestJson) != dict) else requestJson
+
         validateForm = RideRequestCreationValidateForm(
-            data=requestForm.to_dict())
+            data=requestForm)
 
         # POST REQUEST
         if validateForm.validate():
@@ -79,7 +78,7 @@ class RideRequestService(Resource):
 
             return rideRequest.getFirestoreRef().id, 200
         else:
-            print(form.errors)
+            print(validateForm.errors)
             return form.errors, 201
 
 
@@ -139,6 +138,7 @@ def add_noauth_test_data():
     """
 
     current_ride_request_json = request.get_json()
+    print(current_ride_request_json)
 
     ride_requests_ref = db.collection(u'contextText')
     current_ride_request_ref = ride_requests_ref.document()

@@ -19,7 +19,7 @@ import logging
 import firebase_admin
 from firebase_admin import credentials, auth
 
-FIREBASE_CERTIFICATE_JSON_PATH = "./gravitate-e5d01-firebase-adminsdk-kq5i4-b6110cf4f0.json"
+FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-d9464b836672.json"
 
 class Context():
 
@@ -58,20 +58,21 @@ class Context():
     @classmethod
     def _reloadFirebaseApp(cls, certificatePath):
 
-        try:
-            cred = credentials.Certificate(certificatePath)
-        except ValueError as e: 
-            logging.exception('Error initializing credentials.Certificate')
+        # try:
+        #     cred = credentials.Certificate(certificatePath)
+        # except ValueError as e: 
+        #     logging.exception('Error initializing credentials.Certificate')
+        # # TODO delete certificate path in function call
 
         try:
-            cls.firebaseApp = firebase_admin.initialize_app(cred)
+            cls.firebaseApp = firebase_admin.initialize_app()
         except ValueError as e:
             logging.exception('Error initializing firebaseApp')
 
     @classmethod
     def _reloadFirestoreClient(cls):
         try:
-            cls.db = firestore.Client()
+            cls.db = firestore.Client.from_service_account_json(FIREBASE_CERTIFICATE_JSON_PATH)
         except ValueError as e:
             logging.exception('Error initializing firestore client from cls.firebaseApp')
 
