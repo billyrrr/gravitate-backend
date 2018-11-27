@@ -52,6 +52,14 @@ def buildLaxTerminal(terminal: str):
     terminal = LaxBuilder()
     terminal.mergeDict(otherParams)
     airportLocation = terminal.exportToLocation()
-    print(airportLocation.toDict())
+    return airportLocation
 
-buildLaxTerminal('1')    
+def doWork():
+
+    terminals = ['1', '2', '3', '4', '5', '6', '7', '8', 'B']
+
+    for terminal in terminals:
+        airportLocation = buildLaxTerminal(terminal)
+        ref = LocationGenericDao().create(airportLocation)
+        airportLocation.setFirestoreRef(ref)
+        print(vars(airportLocation))

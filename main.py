@@ -54,7 +54,7 @@ def hello():
 class RideRequestService(Resource):
 
     def post(self):
-        requestForm = request.form
+        requestForm = request.form['data']
         # print(requestForm)
         # print(requestForm.to_dict())
         validateForm = RideRequestCreationValidateForm(

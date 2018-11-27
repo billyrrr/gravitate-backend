@@ -47,7 +47,7 @@ class AirportLocation(Location):
     """
 
     def __init__(self, coordinate, address, terminal, airportCode):
-        super(coordinate, address)
+        super().__init__(coordinate, address)
         self.locationCategory = 'airport'
         self.airportCode = airportCode
         self.terminal = terminal
