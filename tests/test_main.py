@@ -44,6 +44,10 @@ class MainAppTestCase(TestCase):
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
+    def testContextTest(self):
+        r = self.app.post(path='contextTest', data=json.dumps({'key1':'val1a'}))
+        assert r.status_code == 200
+
 
     # Example:
     #
