@@ -1,5 +1,6 @@
 import main
 from flask.testing import FlaskClient
+from flask import request, jsonify
 from main import fillRideRequestDictWithForm
 from controllers.utils import createTarget, saveRideRequest
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
@@ -39,13 +40,13 @@ class MainAppTestCase(TestCase):
 
     def testCreateRideRequest(self):
 
-        r = self.app.post(path='/rideRequests', data = MockForm().toDict())
+        r = self.app.post(path='/rideRequests', json = json.dumps(MockForm().toDict()))
 
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
     def testContextTest(self):
-        r = self.app.post(path='contextTest', data=json.dumps({'key1':'val1a'}))
+        r = self.app.post(path='/contextTest', json={'key1':'val1a'})
         assert r.status_code == 200
 
 
