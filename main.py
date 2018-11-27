@@ -39,18 +39,11 @@ import firebase_admin
 from firebase_admin import credentials, auth
 from config import Context
 
-
-# cred = credentials.Certificate("./gravitate-e5d01-firebase-adminsdk-kq5i4-b6110cf4f0.json")
-# firebase_admin.initialize_app(cred)
-
-# [END] Firebase Admin SDK
-
 firebase_request_adapter = requests.Request()
-
 app = Flask(__name__)
-# db = firestore.Client()
 db = Context.db
 parser = reqparse.RequestParser()
+
 
 @app.route('/hello')
 def hello():
@@ -59,35 +52,40 @@ def hello():
 
 
 class RideRequestService(Resource):
-    
+
     def post(self):
         requestForm = request.form
         # print(requestForm)
-        print(requestForm.to_dict())
-        validateForm = RideRequestCreationValidateForm(data=requestForm.to_dict())
+        # print(requestForm.to_dict())
+        validateForm = RideRequestCreationValidateForm(
+            data=requestForm.to_dict())
 
         # POST REQUEST
         if validateForm.validate():
+
+            # Transfer data from validateForm to an internal representation of the form
             form = RideRequestCreationForm()
             validateForm.populate_obj(form)
 
             rideRequestDict = fillRideRequestDictWithForm(form)
 
             # Create RideRequest Object
-            rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
-            print(rideRequest.toDict())
+            rideRequest: AirportRideRequest = RideRequest.fromDict(
+                rideRequestDict)
+            # print(rideRequest.toDict())
 
-            # Saves Ride_Request Object to Firestore TODO change to Active Record
+            # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest)
-            
+
             return rideRequest.getFirestoreRef().id, 200
         else:
             print(form.errors)
             return form.errors, 201
-            
+
 
 api = Api(app)
 api.add_resource(RideRequestService, '/rideRequests')
+
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     rideRequestDict = dict()
@@ -103,7 +101,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Fields to be filled "immediately"
 
     # TODO fill unspecified options with default values
-    rideRequestDict['pricing'] = 987654321 # TODO change
+    rideRequestDict['pricing'] = 987654321  # TODO change
 
     # Populate rideRequestDict with default service data
     rideRequestDict['disabilities'] = dict()
@@ -120,20 +118,21 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Set EventRef
     eventRef = utils.mockFindEvent(form)
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(form) # todo change back to non-mock 
+    airportLocationRef = utils.mockFindLocation(
+        form)  # TODO change back to non-mock
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict
 
-@app.route('/contextTest', methods=['POST', 'PUT'])
-def add_noauth_test_data(): 
 
+@app.route('/contextTest', methods=['POST', 'PUT'])
+def add_noauth_test_data():
     """ Description
         This endpoint receives a REST API "post_json" call and stores the 
             json in database collection contextText. If set up correctly, 
             the client receives the id of the json inserted. 
         Note that this call does not test Auth token. 
-    
+
     :raises:
 
     :rtype:
@@ -147,6 +146,7 @@ def add_noauth_test_data():
     current_ride_request_ref.set(current_ride_request_json)
     return current_ride_request_id, 200
 
+
 @app.route('/authTest', methods=['POST', 'PUT'])
 def add_auth_test_data():
     """
@@ -155,11 +155,11 @@ def add_auth_test_data():
     If the id_token included in 'Authorization' is verified, the user id (uid)
         corresponding to the id_token will be returned along with other information. 
     Otherwise, an exception is thrown
-    
+
     """
 
     # Verify Firebase auth.
-    
+
     id_token = request.headers['Authorization'].split(' ').pop()
 
     # [Start] provided by Google
@@ -177,12 +177,13 @@ def add_auth_test_data():
             # Token is invalid
             pass
     # [End] provided by google
-    
+
     uid = decoded_token['uid']
-    
+
     data = request.get_json()
 
-    return json.dumps({'uid':uid, 'request_data':data}), 200
+    return json.dumps({'uid': uid, 'request_data': data}), 200
+
 
 @app.route('/notes', methods=['POST', 'PUT'])
 def add_note():
