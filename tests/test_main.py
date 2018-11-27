@@ -6,6 +6,7 @@ from forms.ride_request_creation_form import RideRequestCreationForm, RideReques
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
 from requests import request
+import json
 
 class MockForm:
 
@@ -43,6 +44,9 @@ class MainAppTestCase(TestCase):
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
+    def testContextTest(self):
+        r = self.app.post(path='contextTest', data=json.dumps({'key1':'val1a'}))
+        assert r.status_code == 200
 
 
     # Example:
@@ -68,6 +72,10 @@ class TestMockFormValidation(TestCase):
         form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertDictEqual(formDict, form.data)
+
+    def testPrintMockForm(self):
+        formDict = MockForm().toDict()
+        print(json.dumps(formDict))
 
     def testValidate(self):
         formDict = MockForm().toDict()
