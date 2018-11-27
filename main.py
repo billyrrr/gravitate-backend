@@ -54,9 +54,9 @@ def hello():
 class RideRequestService(Resource):
 
     def post(self):
-        requestForm: dict = json.loads(request.get_json())
-        print(requestForm)
-        # print(requestForm)
+        requestJson = request.get_json()
+        requestForm = json.loads(requestJson)
+
         validateForm = RideRequestCreationValidateForm(
             data=requestForm)
 
