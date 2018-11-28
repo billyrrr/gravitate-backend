@@ -1,11 +1,13 @@
 from google.cloud.firestore import DocumentReference
 
-#user class
+# user class
+
+
 class User(object):
 	""" Description
 	this class represents the user object
 	"""
-	
+
 	__firestoreRef: DocumentReference = None
 
 	def setFirestoreRef(self, firestoreRef: str):
@@ -16,10 +18,10 @@ class User(object):
 
 	def __init__(self, uid, memberships, firstName, lastName, picture, friendList, eventSchedule):
 			""" Description
-				This function initializes a User Object. 
-				Note that this function should not be called directly. 
+				This function initializes a User Object.
+				Note that this function should not be called directly.
 
-				:param self: 
+				:param self:
 				:param uid: String
 				:param firstName: String
 				:param lastName: String
@@ -36,32 +38,32 @@ class User(object):
 			self.friendList = friendList
 			self.eventSchedule = eventSchedule
 
-    def toDict(self):
-        userDict = {
-            'uid': self.uid,
-            'memberships': self.memberships,
-            'firstName': self.firstName,
-            'lastName': self.lastName,
-            'picture': self.picture,
-            'friendList': self.friendList,
-            'eventSchedule': self.eventSchedule
-        }
-        return userDict
+	def toDict(self):
+		userDict = {
+			'uid': self.uid,
+			'memberships': self.memberships,
+			'firstName': self.firstName,
+			'lastName': self.lastName,
+			'picture': self.picture,
+			'friendList': self.friendList,
+			'eventSchedule': self.eventSchedule
+		}
+		return userDict
 
-    @staticmethod
-    def fromDict(userDict):
-        """ Description
-            This function creates User. 
-                (User Factory)
+	@staticmethod
+	def fromDict(userDict):
+		""" Description
+			This function creates User. 
+				(User Factory)
 
-            :param rideRequestDict: 
-        """
-        uid = userDict['uid']
-        memberships = userDict['memberships']
-        firstName = userDict['firstName']
-        lastName = userDict['lastName']
-        picture = userDict['picture']
-        friendList = userDict['friendList']
-        eventSchedule = userDict['eventSchedule']
-        
-        return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
+			:param rideRequestDict: 
+		"""
+		uid = userDict['uid']
+		memberships = userDict['memberships']
+		firstName = userDict['firstName']
+		lastName = userDict['lastName']
+		picture = userDict['picture']
+		friendList = userDict['friendList']
+		eventSchedule = userDict['eventSchedule']
+		
+		return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
