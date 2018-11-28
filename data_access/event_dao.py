@@ -27,9 +27,9 @@ class EventGenericDao:
         # Loop through each rideRequest
         for doc in eventDocs:
             # Check if the event is in a valid time frame
-            if(doc.eventRef.startTimeStamp < timestamp - timeDifference and doc.eventRef.endTimeStamp > timestamp
+            if doc.eventRef.startTimeStamp < (timestamp - timeDifference) and doc.eventRef.endTimeStamp > (timestamp
                 - timeDifference):
-                return doc.eventRef.toString()
+                return doc.eventRef.id()
 
 
         return
