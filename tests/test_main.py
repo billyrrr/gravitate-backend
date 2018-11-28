@@ -8,26 +8,7 @@ from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
 from requests import request
 import json
-
-class MockForm:
-
-    def __init__(self):
-        
-        
-        self.earliest = "2018-12-17T09:00:00.000"
-        self.latest = "2018-12-17T11:00:00.000"
-        self.toEvent = True
-        
-        self.driverStatus = False
-        self.pickupAddress = "Tenaya Hall, San Diego, CA 92161"
-
-        self.airportLocation = "LAX TBIT Terminal"
-        self.flightLocalTime = "2018-12-17T12:00:00.000"
-        self.flightNumber = "DL89"
-    
-    def toDict(self):
-        return vars(self)
-
+from tests.factory import FormDictFactory
 
 class MainAppTestCase(TestCase):
 
@@ -40,7 +21,7 @@ class MainAppTestCase(TestCase):
 
     def testCreateRideRequest(self):
 
-        r = self.app.post(path='/rideRequests', json = json.dumps(MockForm().toDict()))
+        r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create()))
 
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
@@ -69,17 +50,17 @@ class MockFormTargetOnly:
 class TestMockFormValidation(TestCase):
 
     def testCreation(self):
-        formDict = MockForm().toDict()
+        formDict = FormDictFactory().create()
         form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertDictEqual(formDict, form.data)
 
     def testPrintMockForm(self):
-        formDict = MockForm().toDict()
+        formDict = FormDictFactory().create()
         print(json.dumps(formDict))
 
     def testValidate(self):
-        formDict = MockForm().toDict()
+        formDict = FormDictFactory().create()
         form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertEqual(form.validate(), True)
@@ -96,12 +77,12 @@ class TestCreateRideRequestLogics(TestCase):
         self.assertDictEqual(targetDict, valueExpected)
 
     def testSaveRideRequestToDb(self):
-        mockForm = MockForm()
+        mockForm = FormDictFactory().createForm()
         result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm))
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
-        mockForm = MockForm()
+        mockForm = FormDictFactory().createForm()
         result = fillRideRequestDictWithForm(mockForm)
         valueExpected = RideRequest.fromDict({
 

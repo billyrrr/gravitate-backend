@@ -79,7 +79,7 @@ class RideRequestService(Resource):
             return rideRequest.getFirestoreRef().id, 200
         else:
             print(validateForm.errors)
-            return form.errors, 201
+            return validateForm.errors, 201
 
 
 api = Api(app)
