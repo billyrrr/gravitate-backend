@@ -25,13 +25,43 @@ def createTarget(form: RideRequestCreationForm):
         :param form:RideRequestCreationForm: 
     """
     tz = pytz.timezone('America/Los_Angeles')
+
     earliestDatetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
-    earliestTimestamp = int(earliestDatetime.timestamp())
     latestDatetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
+
+    earliestTimestamp = int(earliestDatetime.timestamp())
     latestTimestamp = int(latestDatetime.timestamp())
     # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
     target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
+
+def createTargetWithFlightLocalTime(form: RideRequestCreationForm, offsetLowAbsSec: int = 7200, offsetHighAbsSec: int = 18000):
+    assert offsetLowAbsSec >= 0
+    assert offsetHighAbsSec >= 0
+    assert offsetLowAbsSec <= offsetHighAbsSec # Check that offsetLow represents a greater than or equal to interval than offsetHigh
+    assert offsetLowAbsSec != offsetHighAbsSec # Check that there earliest and latest represents a range of time
+
+    tz = pytz.timezone('America/Los_Angeles')
+    flightLocalTime = iso8601.parse_date(form.flightLocalTime, default_timezone=None).astimezone(tz)
+
+    # Get timedelta object with seconds
+    offsetEarlierAbs = dt.timedelta(seconds=offsetHighAbsSec)
+    offsetLaterAbs = dt.timedelta(seconds=offsetLowAbsSec)
+
+    # Get earliest and latest datetime
+    earliest: dt.datetime = flightLocalTime - offsetEarlierAbs
+    latest: dt.datetime = flightLocalTime - offsetLaterAbs
+    
+    earliestTimestamp = int(earliest.timestamp())
+    latestTimestamp = int(latest.timestamp())
+
+    assert earliestTimestamp <= latestTimestamp # Check that "earliest" occurs earliest than "latest"
+    assert earliestTimestamp != latestTimestamp # Check that "earliest" is not the same as latest
+
+    target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
+
+    return target
+
 
 def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     """ Description

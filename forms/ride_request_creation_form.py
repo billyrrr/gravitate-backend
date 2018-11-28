@@ -15,10 +15,11 @@ class RideRequestCreationForm():
     # Cannot be autofilled
     pickupAddress = None
 
-    # Used to create Target Object
-    earliest = None
+    # Halted
+    # # Used to create Target Object
+    # earliest = None
+    # latest = None
 
-    latest = None
     toEvent = None
     driverStatus = None
 
@@ -48,16 +49,17 @@ class RideRequestCreationValidateForm(Form):
         
         ])
 
-    # Used to create Target Object
-    earliest = DateTimeField(u'Earliest Arrival Time', validators=[
-        DataRequired('Earliest Arrival needs to be specified.'),
+    # Halted
+    # # Used to create Target Object
+    # earliest = DateTimeField(u'Earliest Arrival Time', validators=[
+    #     DataRequired('Earliest Arrival needs to be specified.'),
         
-        ])
+    #     ])
 
-    latest = DateTimeField(u'Latest Arrival Time', validators=[
-        DataRequired('Latest Arrival needs to be specified. '),
+    # latest = DateTimeField(u'Latest Arrival Time', validators=[
+    #     DataRequired('Latest Arrival needs to be specified. '),
         
-        ])
+    #     ])
 
     toEvent = BooleanField(u'wether the ride is heading to the event')
 
