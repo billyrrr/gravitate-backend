@@ -2,6 +2,7 @@ from models.ride_request import RideRequest, AirportRideRequest, Target
 from forms.ride_request_creation_form import RideRequestCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.ride_request_dao import RideRequestGenericDao
+from data_access.event_dao import EventGenericDao
 from datetime import datetime, timezone
 import pytz
 
@@ -47,9 +48,7 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     
     return "/mocklocation" # TODO change
 
-def findEvent(form: RideRequestCreationForm) -> DocumentReference:
-    # TODO [to assign] 
-    
+def findEvent(form: RideRequestCreationForm) -> str:
     """ Description
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
@@ -61,7 +60,12 @@ def findEvent(form: RideRequestCreationForm) -> DocumentReference:
 
     :rtype:
     """
-    return "/mockevent" # TODO change
+    # Parse the flightLocalTime of the ride request form, then query database 
+    eventTime = (datetime.fromisoformat(form.flightLocalTime)).timestamp()
+    eventReference = EventGenericDao().locateAirportEvent(form.toEvent(), eventTime)
+    
+
+    return eventReference
 
 def setDisabilities(form: RideRequestCreationForm, rideRequestDict):
     if ('disabilities' in form):
