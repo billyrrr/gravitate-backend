@@ -2,7 +2,7 @@ import main
 from flask.testing import FlaskClient
 from flask import request, jsonify
 from main import fillRideRequestDictWithForm
-from controllers.utils import createTarget, saveRideRequest
+from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
@@ -20,8 +20,8 @@ class MainAppTestCase(TestCase):
         self.app = main.app.test_client()
 
     def testCreateRideRequest(self):
-
-        r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create()))
+ 
+        r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create(returnDict = True)))
 
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
@@ -50,22 +50,43 @@ class MockFormTargetOnly:
 class TestMockFormValidation(TestCase):
 
     def testCreation(self):
-        formDict = FormDictFactory().create()
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
         form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertDictEqual(formDict, form.data)
 
     def testPrintMockForm(self):
-        formDict = FormDictFactory().create()
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
         print(json.dumps(formDict))
 
     def testValidate(self):
-        formDict = FormDictFactory().create()
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
         form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
         form.validate()
         self.assertEqual(form.validate(), True)
 
+class TestCreationLogicsUtils(TestCase):
+
+    def testCreateAirportTargetWithFlightLocalTime(self):
+        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
+        targetDict = createTargetWithFlightLocalTime(mockForm, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
+        valueExpected = {'eventCategory': 'airportRide',
+                         'toEvent': True,
+                         'arriveAtEventTime':
+                         {'earliest': 1545066000, 'latest': 1545073200}}
+        self.assertDictEqual(targetDict, valueExpected)
+
+    def testSameResultDifferentCreateTargetFunc(self):
+        mockFormCTWFLT = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
+        targetDictCTWFLT = createTargetWithFlightLocalTime(mockFormCTWFLT, offsetLowAbsSec=7200, offsetHighAbsSec=18000).toDict()
+        mockFormCT = FormDictFactory().create(hasEarliestLatest = True, isE5L2=True, returnDict = False)
+        targetDictCT = createTarget(mockFormCT).toDict()
+        self.assertDictEqual(targetDictCTWFLT, targetDictCT)
+
 class TestCreateRideRequestLogics(TestCase):
+
+    def setUp(self):
+        self.maxDiff = None
 
     def testCreateAirportTarget(self):
         mockForm = MockFormTargetOnly()
@@ -77,12 +98,12 @@ class TestCreateRideRequestLogics(TestCase):
         self.assertDictEqual(targetDict, valueExpected)
 
     def testSaveRideRequestToDb(self):
-        mockForm = FormDictFactory().createForm()
+        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
         result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm))
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
-        mockForm = FormDictFactory().createForm()
+        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
         result = fillRideRequestDictWithForm(mockForm)
         valueExpected = RideRequest.fromDict({
 
@@ -93,7 +114,7 @@ class TestCreateRideRequestLogics(TestCase):
             'target': {'eventCategory': 'airportRide',
                          'toEvent': True,
                          'arriveAtEventTime':
-                         {'earliest': 1545066000, 'latest': 1545073200}},
+                         {'earliest': 1545058800, 'latest': 1545069600}},
             'eventRef': '/events/testeventid1',
             'hasCheckedIn': False,
             'pricing': 987654321,

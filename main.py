@@ -111,14 +111,13 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Fields to be filled "after some thinking"
 
     # Set Target
-    target = utils.createTarget(form)
+    target = utils.createTargetWithFlightLocalTime(form)
     rideRequestDict['target'] = target.toDict()
 
     # Set EventRef
     eventRef = utils.mockFindEvent(form)
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(
-        form)  # TODO change back to non-mock
+    airportLocationRef = utils.mockFindLocation(form)  # TODO change back to non-mock
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict
