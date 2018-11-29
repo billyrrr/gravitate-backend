@@ -1,6 +1,17 @@
 # Author: Tyler Song
 
 import datetime
+from models.ride_request import RideRequest, AirportRideRequest, ToEventTarget
+
+rideRequest: AirportRideRequest # TODO fill
+
+rrTarget: ToEventTarget = rideRequest.target
+
+arriveAtEventTime = rrTarget.arriveAtEventTime
+# is a dict {'earliest': 1545058800, 'latest': 1545069600}
+
+arriveAtEventTime['earliest']
+
 
 class GroupUsers:
 
