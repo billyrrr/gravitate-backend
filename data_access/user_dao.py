@@ -5,51 +5,99 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from models.user import User
+import data_access
+
+CTX = data_access.config.Context
+
+db = CTX.db
+
 
 class UserDao:
-	"""Description
-	   Database access object for user
-	"""
+    """Description
+       Database access object for user
+    """
 
-	def __init__(self, client: Client):
-		self.client = Client
-		self.orbitCollectionRef = client.collection(u'Users')
+    def __init__(self, client: Client):
+        self.client = Client
+        self.userCollectionRef = client.collection(u'Users')
 
-	@transactional
-	def getUserWithTransaction(self, transaction: Transaction, userRef: DocumentReference) -> User:
-		""" Description
-		    Note that this cannot take place if transaction already received write operation
-		:type self:
-		:param self:
+    @transactional
+    def getUserWithTransaction(self, transaction: Transaction, userRef: DocumentReference) -> User:
+        """ Description
+            Note that this cannot take place if transaction already received write operation
+        :type self:
+        :param self:
 
-		:type transaction:Transaction:
-		:param transaction:Transaction:
+        :type transaction:Transaction:
+        :param transaction:Transaction:
 
-		:type userRef:DocumentReference:
-		:param userRef:DocumentReference:
+        :type userRef:DocumentReference:
+        :param userRef:DocumentReference:
 
-		:raises:
-		
-		:rtype:
-		"""
+        :raises:
 
-		try:
-			snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
-			snapshotDict: dict = snapshot.to_dict()
-			user = User(snapshotDict)
-			return user
-		except google.cloud.execeptions.NotFound:
-			raise Exception('No such document! ' + str(userRef.id))
+        :rtype:
+        """
 
-	def getUser(self, userRef: DocumentReference):
-		transaction = self.client.transaction()
-		userResult = self.getUserWithTransaction(transaction, userRef)
-		transaction.commit()
-		return userResult
+        try:
+            snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
+            snapshotDict: dict = snapshot.to_dict()
+            user = User.fromDict(snapshotDict)
+            return user
+        except google.cloud.execeptions.NotFound:
+            raise Exception('No such document! ' + str(userRef.id))
 
-	def createUser(self, user: User):
-		return self.userCollectionRef.add(user.toDict())
+    def getUser(self, userRef: DocumentReference):
+        transaction = db.transaction()
+        userResult = self.getUserWithTransaction(transaction, userRef)
+        transaction.commit()
+        return userResult
 
-	@transactional
-	def setOrbitWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
-		transaction.set(userRef, newUser)
+    def createUser(self, user: User):
+        return self.userCollectionRef.add(user.toDict())
+
+    @transactional
+    def addToEventScheduleWithTransaction(self, transaction: Transaction, userRef: str, eventRef: str, toEventRideRequestRef: str):
+        """ Description
+                Add a event schedule to users/<userId>/eventSchedule
+				Note that the rideRequest will be overwritten without warning. 	
+
+        :type self:
+        :param self:
+
+        :type transaction:Transaction:
+        :param transaction:Transaction:
+
+        :type userRef:str:
+        :param userRef:str:
+
+        :type eventRef:str:
+        :param eventRef:str:
+
+        :type eventSchedule:dict:
+        :param eventSchedule:dict:
+
+        :raises:
+
+        :rtype:
+        """
+
+        userRef: DocumentReference = db.collection(u'users').document(userRef)
+
+        # Get the CollectionReference of the collection that contains EventSchedule's
+        eventSchedulesRef: CollectionReference = userRef.collection(
+            u'eventSchedules')
+
+        # Retrieve document id to be used as the key
+        eventId = DocumentReference(eventRef).id
+
+        # Get the DocumentReference for the EventSchedule
+        eventScheduleRef: DocumentReference = eventSchedulesRef.document(
+            eventId)
+        transaction.set(eventScheduleRef, {
+            'toEventRideRequestRef': toEventRideRequestRef
+        }, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
+
+    @transactional
+    def setOrbitWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
+        transaction.set(userRef, newUser)

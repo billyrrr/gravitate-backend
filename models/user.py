@@ -67,3 +67,10 @@ class User(object):
 		eventSchedule = userDict['eventSchedule']
 		
 		return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
+
+eventScheduleKey = "testeventid1" 
+eventScheduleValueExample = {
+	'toEventRideRequestRef': '/rideRequests/testriderequestref1',
+	# 'fromEventRideRequestRef': '/rideRequests/testriderequestref2'
+	# key reserved for MVP++
+}
