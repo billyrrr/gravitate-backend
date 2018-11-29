@@ -12,6 +12,7 @@ userDict: dict = {
     "lastName": "Appleseed",
     "picture": 100000001,
     "friendList": [],
+    "eventSchedule": [],
     'memberships': 'rider'
 
 }
