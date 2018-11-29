@@ -12,20 +12,22 @@ userDict: dict = {
     "lastName": "Appleseed",
     "picture": 100000001,
     "friendList": [],
-    "eventSchedule": [],
     'memberships': 'rider'
 
 }
 
-
 class UsersCollectionTest(unittest.TestCase):
 
     def setUp(self):
-        self.user = User.fromDict(userDict)
+        self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
 
     def testAddToEventSchedule(self):
-        # TODO Implement
-        pass
+        transaction = db.transaction()
+        UserDao().addToEventScheduleWithTransaction(
+            transaction, 
+            userRef=self.user.getFirestoreRef(), 
+            eventRef='/events/testeventid1', 
+            toEventRideRequestRef='/rideRequests/testriderequestid1')
 
 class UsersDAOTest(unittest.TestCase):
 
@@ -33,5 +35,5 @@ class UsersDAOTest(unittest.TestCase):
         self.user = User.fromDict(userDict)
 
     def testCreate(self):
-        userRef = UserDao().createUser(self.user)
+        userRef: firestore.DocumentReference = UserDao().createUser(self.user)
         print("userRef = {}".format(userRef))
