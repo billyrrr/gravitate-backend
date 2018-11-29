@@ -38,4 +38,3 @@ class RideRequestTest(unittest.TestCase):
     def testGet(self):
         rideRequestRef = self.db.collection('rideRequests').document('jhqdAdAhevewgMc7KLO1')
         rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
-        print(rideRequest.toDict())
