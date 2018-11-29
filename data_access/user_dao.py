@@ -17,9 +17,8 @@ class UserDao:
        Database access object for user
     """
 
-    def __init__(self, client: Client):
-        self.client = Client
-        self.userCollectionRef = client.collection(u'Users')
+    def __init__(self):
+        self.userCollectionRef = db.collection(u'users')
 
     @transactional
     def getUserWithTransaction(self, transaction: Transaction, userRef: DocumentReference) -> User:
@@ -54,7 +53,8 @@ class UserDao:
         return userResult
 
     def createUser(self, user: User):
-        return self.userCollectionRef.add(user.toDict())
+        timestamp, userRef = self.userCollectionRef.add(user.toDict())
+        return userRef
 
     @transactional
     def addToEventScheduleWithTransaction(self, transaction: Transaction, userRef: str, eventRef: str, toEventRideRequestRef: str):
