@@ -6,6 +6,7 @@ import google
 from typing import Type
 from models.user import User
 import data_access
+import warnings
 
 CTX = data_access.config.Context
 
@@ -17,12 +18,12 @@ class UserDao:
        Database access object for user
     """
 
-    def __init__(self, client: Client):
-        self.client = Client
-        self.userCollectionRef = client.collection(u'Users')
+    def __init__(self):
+        self.userCollectionRef = db.collection(u'users')
 
+    @staticmethod
     @transactional
-    def getUserWithTransaction(self, transaction: Transaction, userRef: DocumentReference) -> User:
+    def getUserWithTransaction(transaction, userRef):
         """ Description
             Note that this cannot take place if transaction already received write operation
         :type self:
@@ -44,23 +45,33 @@ class UserDao:
             snapshotDict: dict = snapshot.to_dict()
             user = User.fromDict(snapshotDict)
             return user
-        except google.cloud.execeptions.NotFound:
+        except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(userRef.id))
 
     def getUser(self, userRef: DocumentReference):
         transaction = db.transaction()
         userResult = self.getUserWithTransaction(transaction, userRef)
+        userResult.setFirestoreRef(userRef)
         transaction.commit()
         return userResult
 
-    def createUser(self, user: User):
-        return self.userCollectionRef.add(user.toDict())
+    def getUserById(self, userId: str):
+        userRef = self.userCollectionRef.document(userId)
+        return self.getUser(userRef)
 
+    def createUser(self, user: User):
+        timestamp, userRef = self.userCollectionRef.add(user.toDict())
+        user.setFirestoreRef(userRef)
+        return userRef
+
+    @staticmethod
     @transactional
-    def addToEventScheduleWithTransaction(self, transaction: Transaction, userRef: str, eventRef: str, toEventRideRequestRef: str):
+    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: str=None, toEventRideRequestRef: str=None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
-				Note that the rideRequest will be overwritten without warning. 	
+				Note that the toEventRideRequestRef will be 
+					overwritten without warning if already set. 
+					(Same for fromEventRideRequestRef.) 
 
         :type self:
         :param self:
@@ -82,14 +93,16 @@ class UserDao:
         :rtype:
         """
 
-        userRef: DocumentReference = db.collection(u'users').document(userRef)
+        # userRef: DocumentReference = db.collection(u'users').document(userRef)
 
         # Get the CollectionReference of the collection that contains EventSchedule's
         eventSchedulesRef: CollectionReference = userRef.collection(
             u'eventSchedules')
 
         # Retrieve document id to be used as the key
-        eventId = DocumentReference(eventRef).id
+        # eventId = DocumentReference(eventRef).id
+        eventId = 'testeventid1'
+        warnings.warn("Using mock/test event id. Must replace before release. ")
 
         # Get the DocumentReference for the EventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(

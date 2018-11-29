@@ -34,3 +34,7 @@ class RideRequestTest(unittest.TestCase):
         documentRef = RideRequestGenericDao().createRideRequest(rideRequest)
         rideRequest.setFirestoreRef(documentRef)
         print(vars(rideRequest))
+
+    def testGet(self):
+        rideRequestRef = self.db.collection('rideRequests').document('jhqdAdAhevewgMc7KLO1')
+        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
