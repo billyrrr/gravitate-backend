@@ -39,7 +39,8 @@ class Event(object):
 		startTimestamp = eventDict['startTimestamp']
 		endTimestamp = eventDict['endTimestamp']
 		pricing = eventDict['pricing']
-		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing)
+		locationRefs = eventDict['locationRefs']
+		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs)
 
 	def toDict(self):
 		eventDict = {
@@ -48,11 +49,12 @@ class Event(object):
 			'eventLocation': self.eventLocation,
 			'startTimestamp': self.startTimestamp,
 			'endTimestamp': self.endTimestamp,
-			'pricing': self.pricing
+			'pricing': self.pricing,
+			'locationRefs': self.locationRefs
 		}
 		return eventDict
 
-	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing):
+	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs):
 		"""Description
 		   This function initializes an Event object
 
@@ -63,6 +65,7 @@ class Event(object):
 		   :param startTimestamp:
 		   :param endTimestamp:
 		   :param pricing:
+		   :param locationRefs: a list of locationRef that corresponds to this event
 		"""
 		self.eventCategory = eventCategory
 		self.participants = participants
@@ -70,3 +73,4 @@ class Event(object):
 		self.startTimestamp = startTimestamp
 		self.endTimestamp = endTimestamp
 		self.pricing = pricing
+		self.locationRefs = locationRefs

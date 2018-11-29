@@ -11,7 +11,7 @@ eventDict = {
                 "participants": [
                 ],
                 "eventLocation": "LAX",
-                # "locationRefList": [],
+                "locationRefs": [],
                 "startTimestamp": 1545033600,
                 "endTimestamp": 1545119999,
                 "pricing": 100
@@ -42,7 +42,7 @@ class EventDAOTest(unittest.TestCase):
     def setUp(self):
         self.event = Event.fromDict(eventDict)
 
-    # def testCreate(self):
-    #     userRef: firestore.DocumentReference = EventDao().create()
-    #     self.user.setFirestoreRef(userRef)
-    #     print("userRef = {}".format(userRef))
+    def testCreate(self):
+        eventRef: firestore.DocumentReference = EventDao().create(self.event)
+        self.event.setFirestoreRef(eventRef)
+        print("eventRef = {}".format(eventRef))
