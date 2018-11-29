@@ -60,7 +60,9 @@ class UserDao:
     def addToEventScheduleWithTransaction(self, transaction: Transaction, userRef: str, eventRef: str, toEventRideRequestRef: str):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
-				Note that the rideRequest will be overwritten without warning. 	
+				Note that the toEventRideRequestRef will be 
+					overwritten without warning if already set. 
+					(Same for fromEventRideRequestRef.) 
 
         :type self:
         :param self:
