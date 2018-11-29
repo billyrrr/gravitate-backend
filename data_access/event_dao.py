@@ -26,16 +26,4 @@ class EventDao:
 
     def create(self, event: Event)->DocumentReference:
         _, eventRef = self.eventCollectionRef.add(event.toDict())
-        return event
-
-    def createAirportEvent(self):
-        eventDict = {
-                "eventCategory": "airport",
-                "participants": [
-                ],
-                "eventLocation": "LAX",
-                "locationRefList": [],
-                "startTimestamp": 1545033600,
-                "endTimestamp": 1545119999,
-                "pricing": 100
-        }
+        return eventRef
