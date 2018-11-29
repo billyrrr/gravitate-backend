@@ -12,7 +12,6 @@ userDict: dict = {
     "lastName": "Appleseed",
     "picture": 100000001,
     "friendList": [],
-    "eventSchedule": [],
     'memberships': 'rider'
 
 }
@@ -39,3 +38,7 @@ class UserDAOTest(unittest.TestCase):
         userRef: firestore.DocumentReference = UserDao().createUser(self.user)
         self.user.setFirestoreRef(userRef)
         print("userRef = {}".format(userRef))
+
+    def testGet(self):
+        userWithEventSchedules = UserDao().getUserById('SQytDq13q00e0N3H4agR')
+        

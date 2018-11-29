@@ -59,7 +59,8 @@ class UserDao:
 
     def getUserById(self, userId: str):
         userRef = self.userCollectionRef.document(userId)
-        return self.getUser(userRef)
+        user = self.getUser(userRef)
+        return user
 
     def createUser(self, user: User):
         timestamp, userRef = self.userCollectionRef.add(user.toDict())

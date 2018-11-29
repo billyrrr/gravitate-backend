@@ -16,10 +16,11 @@ class User(object):
 	def getFirestoreRef(self):
 		return self.__firestoreRef
 
-	def __init__(self, uid, memberships, firstName, lastName, picture, friendList, eventSchedule):
+	def __init__(self, uid, memberships, firstName, lastName, picture, friendList):
 			""" Description
 				This function initializes a User Object.
 				Note that this function should not be called directly.
+				Note that event schedule is not parsed with this class
 
 				:param self:
 				:param uid: String
@@ -27,7 +28,6 @@ class User(object):
 				:param lastName: String
 				:param picture: Image
 				:param friendList: List of Users
-				:param eventSchedule: List of Events
 			"""
 
 			self.uid = uid
@@ -36,7 +36,6 @@ class User(object):
 			self.lastName = lastName
 			self.picture = picture
 			self.friendList = friendList
-			self.eventSchedule = eventSchedule
 
 	def toDict(self):
 		userDict = {
@@ -46,7 +45,6 @@ class User(object):
 			'lastName': self.lastName,
 			'picture': self.picture,
 			'friendList': self.friendList,
-			'eventSchedule': self.eventSchedule
 		}
 		return userDict
 
@@ -64,9 +62,8 @@ class User(object):
 		lastName = userDict['lastName']
 		picture = userDict['picture']
 		friendList = userDict['friendList']
-		eventSchedule = userDict['eventSchedule']
 		
-		return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
+		return User(uid,memberships,firstName,lastName,picture,friendList)
 
 eventScheduleKey = "testeventid1" 
 eventScheduleValueExample = {
