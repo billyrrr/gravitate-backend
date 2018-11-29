@@ -110,6 +110,7 @@ def mockFindEvent(form: RideRequestCreationForm) -> str:
                     "refU02"
             ],
             "eventLocation": "refL01",
+            "locationRefs": [],
             "startTimestamp": 1545033600,
             "endTimestamp": 1545119999,
             "pricing": 100

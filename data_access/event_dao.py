@@ -26,4 +26,4 @@ class EventDao:
 
     def create(self, event: Event)->DocumentReference:
         _, eventRef = self.eventCollectionRef.add(event.toDict())
-        return event
+        return eventRef
