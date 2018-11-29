@@ -16,6 +16,8 @@ db = CTX.db
 class UserDao:
     """Description
        Database access object for user
+        # TODO delete object.setFirestoreRef()
+
     """
 
     def __init__(self):
@@ -61,7 +63,6 @@ class UserDao:
 
     def createUser(self, user: User):
         timestamp, userRef = self.userCollectionRef.add(user.toDict())
-        user.setFirestoreRef(userRef)
         return userRef
 
     @staticmethod

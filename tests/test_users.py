@@ -16,7 +16,7 @@ userDict: dict = {
 
 }
 
-class UsersCollectionTest(unittest.TestCase):
+class UserCollectionTest(unittest.TestCase):
 
     def setUp(self):
         self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
@@ -29,11 +29,12 @@ class UsersCollectionTest(unittest.TestCase):
             eventRef='/events/testeventid1', 
             toEventRideRequestRef='/rideRequests/testriderequestid1')
 
-class UsersDAOTest(unittest.TestCase):
+class UserDAOTest(unittest.TestCase):
 
     def setUp(self):
         self.user = User.fromDict(userDict)
 
     def testCreate(self):
         userRef: firestore.DocumentReference = UserDao().createUser(self.user)
+        self.user.setFirestoreRef(userRef)
         print("userRef = {}".format(userRef))
