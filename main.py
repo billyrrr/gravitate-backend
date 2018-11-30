@@ -25,12 +25,17 @@ from models.ride_request import RideRequest, AirportRideRequest
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from wtforms import Form
+import warnings
+
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from controllers import utils
 
 from google.cloud import firestore
 from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
+from data_access.ride_request_dao import RideRequestGenericDao
+from data_access.user_dao import UserDao
+from data_access.event_dao import EventDao
 
 # [START] Firebase Admin SDK
 
@@ -59,6 +64,11 @@ class RideRequestService(Resource):
         validateForm = RideRequestCreationValidateForm(
             data=requestForm)
 
+        # Mock userId and eventId. Delete before release
+        userId = 'SQytDq13q00e0N3H4agR'
+        eventId = '2SFSUUsmbYbF2BvGQYgA'
+        warnings.warn("using test user ids, delete before release")
+        
         # POST REQUEST
         if validateForm.validate():
 
@@ -73,8 +83,17 @@ class RideRequestService(Resource):
                 rideRequestDict)
             # print(rideRequest.toDict())
 
+            rideRequestId = utils.randomId()
+            rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(document_id=rideRequestId)
+            rideRequest.setFirestoreRef(rideRequestRef)
+            transaction = db.transaction()
+
             # Saves RideRequest Object to Firestore TODO change to Active Record
-            utils.saveRideRequest(rideRequest)
+            utils.saveRideRequest(rideRequest, transaction=transaction)
+            userRef = UserDao().userCollectionRef.document(userId)
+            eventRef = EventDao().eventCollectionRef.document(eventId)
+            UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
+            transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200
         else:
@@ -115,9 +134,9 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     rideRequestDict['target'] = target.toDict()
 
     # Set EventRef
-    eventRef = utils.mockFindEvent(form)
+    eventRef = utils.findEvent(form) 
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(form)  # TODO change back to non-mock
+    airportLocationRef = utils.mockFindLocation(form)
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict

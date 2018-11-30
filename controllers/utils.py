@@ -8,6 +8,16 @@ import iso8601
 import datetime as dt
 import pytz
 
+import random 
+import string 
+  
+# Generate a random string 
+# with 32 characters. 
+# https://www.geeksforgeeks.org/generating-random-ids-python/
+def randomId():
+    randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)]) 
+    return randomIdStr
+
 def saveRideRequest(rideRequest, transaction: Transaction = None):
         if (rideRequest.getFirestoreRef()):
             if not transaction:
@@ -98,10 +108,10 @@ def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     """
     # Parse the flightLocalTime of the ride request form, then query database 
     eventTime = iso8601.parse_date(form.flightLocalTime, default_timezone=None).timestamp()
-    eventReference = EventDao().locateAirportEvent(eventTime)
-    
+    # eventReference = EventDao().locateAirportEvent(eventTime)
+    event = EventDao().findByTimestamp(eventTime)
 
-    return eventReference
+    return event.getFirestoreRef()
 
 def mockFindEvent(form: RideRequestCreationForm) -> str:
 

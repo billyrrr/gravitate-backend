@@ -88,8 +88,8 @@ class RideRequestGenericDao:
         """
         return singleRideRequestRef.delete()
 
-    @transactional
     @staticmethod
+    @transactional
     def setRideRequestWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
@@ -110,4 +110,6 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        return transaction.set(rideRequestRef, newRideRequest)
+        print(newRideRequest)
+        print(newRideRequest.toDict())
+        return transaction.set(rideRequestRef, newRideRequest.toDict())

@@ -24,21 +24,27 @@ class EventDao:
             Uses the timestamp of an event to find the event reference
         """
 
-
-
         # Grab all of the events in the db
         eventDocs = self.eventCollectionRef.get()
 
 
         # Loop through each rideRequest
         for doc in eventDocs:
+            eventDict = doc.to_dict()
+            event = Event.fromDict(eventDict)
+            eventId = doc.id
             # Check if the event is in a valid time frame
-            if doc.eventRef.startTimeStamp < (timestamp - timeDifference) and doc.eventRef.endTimeStamp > (timestamp
+            if event.startTimestamp < (timestamp - timeDifference) and event.endTimestamp > (timestamp
                 - timeDifference):
-                return doc.eventRef.id
+                return eventId
 
         return
         
+    def findByTimestamp(self, timestamp):
+        eventId = self.locateAirportEvent(timestamp)
+        eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
+        event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
+        return event
 
     def __init__(self):
         self.eventCollectionRef = db.collection('events')
