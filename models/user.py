@@ -1,11 +1,13 @@
 from google.cloud.firestore import DocumentReference
 
-#user class
+# user class
+
+
 class User(object):
 	""" Description
 	this class represents the user object
 	"""
-	
+
 	__firestoreRef: DocumentReference = None
 
 	def setFirestoreRef(self, firestoreRef: str):
@@ -14,18 +16,18 @@ class User(object):
 	def getFirestoreRef(self):
 		return self.__firestoreRef
 
-	def __init__(self, uid, memberships, firstName, lastName, picture, friendList, eventSchedule):
+	def __init__(self, uid, memberships, firstName, lastName, picture, friendList):
 			""" Description
-				This function initializes a User Object. 
-				Note that this function should not be called directly. 
+				This function initializes a User Object.
+				Note that this function should not be called directly.
+				Note that event schedule is not parsed with this class
 
-				:param self: 
+				:param self:
 				:param uid: String
 				:param firstName: String
 				:param lastName: String
 				:param picture: Image
 				:param friendList: List of Users
-				:param eventSchedule: List of Events
 			"""
 
 			self.uid = uid
@@ -34,34 +36,38 @@ class User(object):
 			self.lastName = lastName
 			self.picture = picture
 			self.friendList = friendList
-			self.eventSchedule = eventSchedule
 
-    def toDict(self):
-        userDict = {
-            'uid': self.uid,
-            'memberships': self.memberships,
-            'firstName': self.firstName,
-            'lastName': self.lastName,
-            'picture': self.picture,
-            'friendList': self.friendList,
-            'eventSchedule': self.eventSchedule
-        }
-        return userDict
+	def toDict(self):
+		userDict = {
+			'uid': self.uid,
+			'memberships': self.memberships,
+			'firstName': self.firstName,
+			'lastName': self.lastName,
+			'picture': self.picture,
+			'friendList': self.friendList,
+		}
+		return userDict
 
-    @staticmethod
-    def fromDict(userDict):
-        """ Description
-            This function creates User. 
-                (User Factory)
+	@staticmethod
+	def fromDict(userDict):
+		""" Description
+			This function creates User. 
+				(User Factory)
 
-            :param rideRequestDict: 
-        """
-        uid = userDict['uid']
-        memberships = userDict['memberships']
-        firstName = userDict['firstName']
-        lastName = userDict['lastName']
-        picture = userDict['picture']
-        friendList = userDict['friendList']
-        eventSchedule = userDict['eventSchedule']
-        
-        return User(uid,memberships,firstName,lastName,picture,friendList,eventSchedule)
+			:param rideRequestDict: 
+		"""
+		uid = userDict['uid']
+		memberships = userDict['memberships']
+		firstName = userDict['firstName']
+		lastName = userDict['lastName']
+		picture = userDict['picture']
+		friendList = userDict['friendList']
+		
+		return User(uid,memberships,firstName,lastName,picture,friendList)
+
+eventScheduleKey = "testeventid1" 
+eventScheduleValueExample = {
+	'toEventRideRequestRef': '/rideRequests/testriderequestref1',
+	# 'fromEventRideRequestRef': '/rideRequests/testriderequestref2'
+	# key reserved for MVP++
+}

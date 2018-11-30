@@ -20,8 +20,9 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
+    @staticmethod
     @transactional
-    def getRideRequestWithTransaction(self, transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
+    def getRideRequestWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -87,8 +88,8 @@ class RideRequestGenericDao:
         """
         return singleRideRequestRef.delete()
 
-    @transactional
     @staticmethod
+    @transactional
     def setRideRequestWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
@@ -109,4 +110,6 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        return transaction.set(rideRequestRef, newRideRequest)
+        print(newRideRequest)
+        print(newRideRequest.toDict())
+        return transaction.set(rideRequestRef, newRideRequest.toDict())

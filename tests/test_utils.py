@@ -1,6 +1,6 @@
 import unittest
 from models.ride_request import RideRequest, AirportRideRequest
-from data_access.event_dao import EventGenericDao
+from data_access.event_dao import EventDao
 from google.cloud import firestore
 import json
 
@@ -13,5 +13,6 @@ class UtilsTest(unittest.TestCase):
             self.rideRequestData1 = json.load(json_file)
 
 
-    def testFindEvent(self):
-        self.assertEqual("refE01", findEvent(self))
+    # def testFindEvent(self):
+    #     self.assertEqual("refE01", findEvent(self))
+        

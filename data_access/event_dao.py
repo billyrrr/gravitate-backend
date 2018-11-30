@@ -31,9 +31,11 @@ class EventGenericDao:
                 - timeDifference):
                 return doc.eventRef.id
 
-
+        # If there are no valid events
         return None
 
+
+    
     
     # The maximum amount of time where a user can request a ride
         # Hard coded to be 1 day in seconds

@@ -7,6 +7,9 @@ from google.cloud.firestore import DocumentReference
 class Event(object):
 	""" Description
 	this class represents the event object
+		Note that reference to the object eventRef is deprecated. 
+		Get and set firestoreRef instead. 
+
 	"""
 	
 	__firestoreRef: DocumentReference = None
@@ -15,57 +18,59 @@ class Event(object):
 		self.__firestoreRef = firestoreRef
 
 	def getFirestoreRef(self):
-		return self.__firestoreref
+		return self.__firestoreRef
+	
 	@staticmethod
 	def fromDictAndReference(eventDict, eventRef):
 		event = Event.fromDict(eventDict)
 		event.setFirestoreRef(eventRef)
 		return event
 
+	@staticmethod
 	def fromDict(eventDict):
 		""" Description
 		    This function creates an event
 		    
 		    :param eventDict:
 		"""
-		eventRef = eventDict['eventRef']
 		eventCategory = eventDict['eventCategory']
-		participants = eventDict['particapants']
+		participants = eventDict['participants']
 		eventLocation = eventDict['eventLocation']
-		startTimeStamp = eventDict['startTimeStamp']
-		endTimeStamp = eventDict['endTimeStamp']
+		startTimestamp = eventDict['startTimestamp']
+		endTimestamp = eventDict['endTimestamp']
 		pricing = eventDict['pricing']
-		return Event(eventRef, eventCategory, participants, eventLocation, startTimeStamp, endTimeStamp, pricing)
+		locationRefs = eventDict['locationRefs']
+		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs)
 
 	def toDict(self):
 		eventDict = {
-			'eventRef' = self.eventRef
-			'eventCategory' = self.eventCategory
-			'participants' = self.participants
-			'eventLocation' = self.eventLocation
-			'startTimeStamp' = self.startTimeStamp
-			'endTimeStamp' = self.endTimeStamp
-			'pricing' = self.pricing
+			'eventCategory': self.eventCategory,
+			'participants': self.participants,
+			'eventLocation': self.eventLocation,
+			'startTimestamp': self.startTimestamp,
+			'endTimestamp': self.endTimestamp,
+			'pricing': self.pricing,
+			'locationRefs': self.locationRefs
 		}
 		return eventDict
 
-	def __init__(self, eventRef, eventCategory, participants, eventLocation, startTimeStamp, endTimeStamp, pricing):
+	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs):
 		"""Description
 		   This function initializes an Event object
 
 		   :param self:
-		   :param eventRef:
 		   :param eventCategory:
 		   :param participants:
 		   :param eventLocation:
-		   :param startTimeStamp:
-		   :param endTimeStamp:
+		   :param startTimestamp:
+		   :param endTimestamp:
 		   :param pricing:
+		   :param locationRefs: a list of locationRef that corresponds to this event
 		"""
-		self.eventRef = eventRef
 		self.eventCategory = eventCategory
 		self.participants = participants
 		self.eventLocation = eventLocation
-		self.startTimeStamp = startTimeStamp
-		self.endTimeStamp = endTimeStamp
+		self.startTimestamp = startTimestamp
+		self.endTimestamp = endTimestamp
 		self.pricing = pricing
+		self.locationRefs = locationRefs
