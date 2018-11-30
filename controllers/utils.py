@@ -60,10 +60,11 @@ def findEvent(form: RideRequestCreationForm) -> str:
 
     :rtype:
     """
-    # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = (datetime.fromisoformat(form.flightLocalTime)).timestamp()
+    # Parse the flightLocalTime of the ride request form, then query database
+    tz = pytz.timezone('America/Los_Angeles') 
+    eventTz = (datetime.fromisoformat(form.flightLocalTime)).astimezone(tz)
+    eventTime = eventTz.timestamp()
     eventReference = EventGenericDao().locateAirportEvent(form.toEvent(), eventTime)
-    
 
     return eventReference
 

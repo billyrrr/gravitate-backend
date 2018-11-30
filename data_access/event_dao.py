@@ -29,12 +29,13 @@ class EventGenericDao:
             # Check if the event is in a valid time frame
             if doc.eventRef.startTimeStamp < (timestamp - timeDifference) and doc.eventRef.endTimeStamp > (timestamp
                 - timeDifference):
-                return doc.eventRef.id()
+                return doc.eventRef.id
 
 
-        return
+        return None
 
+    
     # The maximum amount of time where a user can request a ride
         # Hard coded to be 1 day in seconds
-        timeDifference = 24*60*60    
+        timeDifference = 86400    
         
