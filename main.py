@@ -98,7 +98,7 @@ class RideRequestService(Resource):
             return rideRequest.getFirestoreRef().id, 200
         else:
             print(validateForm.errors)
-            return validateForm.errors, 201
+            return validateForm.errors, 400
 
 
 api = Api(app)
@@ -136,7 +136,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Set EventRef
     eventRef = utils.findEvent(form) 
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(form)
+    airportLocationRef = utils.mockFindLocation(form) # TODO replace mock data
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict
