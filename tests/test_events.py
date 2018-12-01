@@ -47,7 +47,14 @@ class EventDAOTest(unittest.TestCase):
 		self.event.setFirestoreRef(eventRef)
 		print("eventRef = {}".format(eventRef))
 
+	def testDelete(self):
+		eventRef: firestore.DocumentReference = EventDao().create(self.event)
+		self.event.setFirestoreRef(eventRef)
+		self.delete(eventRef)
+		# self.assertEquals()
+
 	def testFindByTimestamp(self):
 		eventRef: firestore.DocumentReference = EventDao().eventCollectionReference.document("2SFSUUsmbYbF2BvGQYgA")
-		self.assertEquals(eventRef, EventDao().findByTimestamp(1545399200))
+		self.assertEquals(eventRef.id, EventDao().findByTimestamp(1545399200))
+	
 	

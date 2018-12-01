@@ -79,8 +79,8 @@ class EventGenericDao:
 		:type self:
 		:param self:
 
-		:type event:Type[Location]:
-		:param event:Type[Location]:
+		:type event:Type[Event]:
+		:param event:Type[Event]:
 
 		:raises:
 
