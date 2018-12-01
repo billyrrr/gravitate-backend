@@ -60,7 +60,7 @@ class UserDao:
 
     @staticmethod
     @transactional
-    def setUserWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
+    def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
         transaction.set(userRef, newUser)
 
 
