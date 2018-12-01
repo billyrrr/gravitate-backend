@@ -79,8 +79,7 @@ class RideRequestService(Resource):
             rideRequestDict = fillRideRequestDictWithForm(form)
 
             # Create RideRequest Object
-            rideRequest: AirportRideRequest = RideRequest.fromDict(
-                rideRequestDict)
+            rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
             # print(rideRequest.toDict())
 
             rideRequestId = utils.randomId()

@@ -63,56 +63,12 @@ class UserDao:
         return user
 
     def createUser(self, user: User):
-        timestamp, userRef = self.userCollectionRef.add(user.toDict())
+        userRef = self.userCollectionRef.add(user.toDict())
         return userRef
-
+    
     @staticmethod
     @transactional
-    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: str=None, toEventRideRequestRef: str=None):
-        """ Description
-                Add a event schedule to users/<userId>/eventSchedule
-				Note that the toEventRideRequestRef will be 
-					overwritten without warning if already set. 
-					(Same for fromEventRideRequestRef.) 
-
-        :type self:
-        :param self:
-
-        :type transaction:Transaction:
-        :param transaction:Transaction:
-
-        :type userRef:str:
-        :param userRef:str:
-
-        :type eventRef:str:
-        :param eventRef:str:
-
-        :type eventSchedule:dict:
-        :param eventSchedule:dict:
-
-        :raises:
-
-        :rtype:
-        """
-
-        # userRef: DocumentReference = db.collection(u'users').document(userRef)
-
-        # Get the CollectionReference of the collection that contains EventSchedule's
-        eventSchedulesRef: CollectionReference = userRef.collection(
-            u'eventSchedules')
-
-        # Retrieve document id to be used as the key
-        # eventId = DocumentReference(eventRef).id
-        eventId = 'testeventid1'
-        warnings.warn("Using mock/test event id. Must replace before release. ")
-
-        # Get the DocumentReference for the EventSchedule
-        eventScheduleRef: DocumentReference = eventSchedulesRef.document(
-            eventId)
-        transaction.set(eventScheduleRef, {
-            'toEventRideRequestRef': toEventRideRequestRef
-        }, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
-
-    @transactional
-    def setOrbitWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
-        transaction.set(userRef, newUser)
+    def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
+    """         print(newUser)
+            print(newUser.toDict()) """
+        return transaction.set(userRef, User.toDict())
