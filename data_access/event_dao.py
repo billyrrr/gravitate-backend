@@ -3,6 +3,7 @@
 
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
 from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
+from models.event import Event
 import google
 from typing import Type
 import data_access
@@ -11,7 +12,7 @@ CTX = data_access.config.Context
 
 db = CTX.db
 
-class EventGenericDao:
+class EventDao:
 	""" Description	
 		Database access object for events
 
