@@ -5,9 +5,9 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from models.ride_request import RideRequest, AirportRideRequest
-import data_access
+import config
 
-CTX = data_access.config.Context
+CTX = config.Context
 
 db = CTX.db
 
@@ -110,6 +110,28 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        print(newRideRequest)
-        print(newRideRequest.toDict())
         return transaction.set(rideRequestRef, newRideRequest.toDict())
+
+    # @transactional
+    # @staticmethod
+    # def setWithTransaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
+    #     """ Description
+    #         Note that a read action must have taken place before anything is set with that transaction. 
+
+    #     :type self:
+    #     :param self:
+
+    #     :type transaction:Transaction:
+    #     :param transaction:Transaction:
+
+    #     :type newLocation:Type[Location]:
+    #     :param newLocation:Type[Location]:
+
+    #     :type locationRef:DocumentReference:
+    #     :param locationRef:DocumentReference:
+
+    #     :raises:
+
+    #     :rtype:
+    #     """
+    #     return transaction.set(eventRef, eventLocation)

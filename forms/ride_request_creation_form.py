@@ -9,7 +9,7 @@ from wtforms.validators import DataRequired,length
 class RideRequestCreationForm():
     flightNumber = None
 
-    airportLocation = None
+    airportCode = None
     flightLocalTime = None
 
     # Cannot be autofilled
@@ -32,8 +32,8 @@ class RideRequestCreationValidateForm(Form):
         
         ])
 
-    airportLocation = StringField(u'Airport Location', validators=[
-        DataRequired('Airport Location needs to be specified.'),
+    airportCode = StringField(u'Airport Code', validators=[
+        DataRequired('Airport Code needs to be specified.'),
         
         ])
     flightLocalTime = DateTimeField(u'Flight Local Time', validators=[

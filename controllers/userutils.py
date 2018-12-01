@@ -23,3 +23,9 @@ def saveUser(User, transaction: Transaction = None):
     else:
         newRef = UserDao().createUser(User)
         User.setFirestoreRef(newRef)
+
+def editUser(User, transaction: Transaction = None):
+    if (User.getFirestoreRef()):
+        if not transaction:
+            raise Exception('transactoin is not provided.')
+        
