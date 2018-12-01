@@ -18,7 +18,7 @@ class EventDao:
 
 	"""
 	def __init__(self):
-		self.eventCollectionRef = db.collection('event')
+		self.eventCollectionRef = db.collection('events')
 
 	@transactional
 	def getWithTransaction(self, transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
@@ -58,22 +58,32 @@ class EventDao:
 		return eventResult
 
 
-	def findByTimestamp(self, timestamp):
+	def locateAirportEvent(self, timestamp):
 		""" Description
 			Uses the timestamp of an event to find the event reference
 		"""
 
 		# Grab all of the events in the db
 		eventDocs = self.eventCollectionRef.get()
+		#eventDocs.where(u'endTimestamp', u'>=', timestamp)
 
 		# Loop through each rideRequest
 		for doc in eventDocs:
+			eventDict = doc.to_dict()
+			event = Event.fromDict(eventDict)
+			eventId = doc.id
 			# Check if the event is in a valid time frame
-			if doc.startTimeStamp < timestamp and doc.endTimeStamp > timestamp:
-				return doc.eventRef.id
+			if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
+				return eventId
 
 		# If there are no valid events
 		return None
+
+	def findByTimestamp(self, timestamp):
+		eventId = self.locateAirportEvent(timestamp)
+		eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
+		event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
+		return event
 
 	def create(self, event: Type[Event])->DocumentReference:
 		""" Description

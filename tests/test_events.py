@@ -54,7 +54,9 @@ class EventDAOTest(unittest.TestCase):
 	# 	# self.assertEquals()
 
 	def testFindByTimestamp(self):
-		eventRef: firestore.DocumentReference = EventDao().eventCollectionRef.document("2SFSUUsmbYbF2BvGQYgA")
-		self.assertEquals(eventRef.id, EventDao().findByTimestamp(1545399200))
+		eventRef: firestore.DocumentReference = EventDao().eventCollectionRef.document("eX6vuz0HoBhOA7PnflQm")
+		eventDict = eventRef.get().to_dict()
+		event = Event.fromDict(eventDict)
+		self.assertEquals(event, EventDao().findByTimestamp(2945073600))
 	
 	
