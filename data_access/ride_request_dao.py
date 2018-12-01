@@ -5,9 +5,9 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from models.ride_request import RideRequest, AirportRideRequest
-import data_access
+import config
 
-CTX = data_access.config.Context
+CTX = config.Context
 
 db = CTX.db
 
@@ -110,8 +110,6 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        print(newRideRequest)
-        print(newRideRequest.toDict())
         return transaction.set(rideRequestRef, newRideRequest.toDict())
 
     # @transactional

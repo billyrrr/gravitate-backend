@@ -95,20 +95,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         self.rideRequests = rideRequests
 
-    def testPairAlgorithm(self):
-        arr = self.arr
-
-        paired = []
-        unpaired = []
-
-        pair(arr=arr, paired=paired, unpaired=unpaired)
-        expectedPaired = [['A', 'B'], ['C', 'D']]
-        expectedUnpaired = [['G'], ['E'], ['F']]
-
-        self.assertListEqual(expectedPaired, paired, 'paired does not match')
-        self.assertListEqual(expectedUnpaired, unpaired,
-                             'unpaired does not match')
-
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
         tupleList = constructTupleList(rideRequests)
@@ -121,8 +107,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                   [RideRequestGenericDao().rideRequestCollectionRef.document('C'),  RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
         groups = list()
         constructGroups(groups, paired)
-        print('s')
-        print(groups)
 
 
     def testGrouping(self):

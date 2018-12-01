@@ -9,6 +9,9 @@ from models.ride_request import RideRequest, AirportRideRequest
 from requests import request
 import json
 from tests.factory import FormDictFactory
+import config
+
+db = config.Context.db
 
 class MainAppTestCase(TestCase):
 
@@ -24,7 +27,6 @@ class MainAppTestCase(TestCase):
     def testCreateRideRequest(self):
  
         r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create(returnDict = True)))
-
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
@@ -129,14 +131,16 @@ class TestCreateRideRequestLogics(TestCase):
                          'toEvent': True,
                          'arriveAtEventTime':
                          {'earliest': 1545058800, 'latest': 1545069600}},
-            'eventRef': '/events/testeventid1',
+            'eventRef': db.document('events','testeventid1'),
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": "/locations/testairportlocationid1"
+            "airportLocation": db.document("locations", "testairportlocationid1")
 
-        })
-        self.assertDictEqual(result, valueExpected.toDict())
+        }).toDict()
+        # self.assert(valueExpected, result)
+        self.assertIsNotNone(result["eventRef"])
+        self.assertIsNotNone(result["airportLocation"])

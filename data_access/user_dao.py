@@ -4,8 +4,9 @@ from typing import Type
 from models.user import User
 import data_access
 import warnings
+import config
 
-CTX = data_access.config.Context
+CTX = config.Context
 
 db = CTX.db
 
