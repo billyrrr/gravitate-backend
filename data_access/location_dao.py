@@ -1,15 +1,17 @@
 """Author: Zixuan Rao
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional, Query
 import google
 from typing import Type
 from models.location import Location, AirportLocation
 import data_access
+import warnings
 
 CTX = data_access.config.Context
 
 db = CTX.db
+
 
 class LocationGenericDao:
     """ Description	
@@ -55,6 +57,23 @@ class LocationGenericDao:
             transaction, locationRef)
         transaction.commit()
         return locationResult
+
+    def findByAirportCode(self, airportCode) -> AirportLocation:
+        query: Query = self.locationCollectionRef.where(
+            'airportCode', '==', airportCode)
+        airportLocations = list()
+        docs = query.get()
+        for doc in docs:
+            airportLocationDict = doc.to_dict()
+            airportLocation = AirportLocation.fromDict(airportLocationDict)
+            airportLocation.setFirestoreRef(doc.reference)
+            airportLocations.append(airportLocation)
+        if len(airportLocations)!= 1:
+            warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
+                airportLocations))
+
+        result = airportLocations.pop()
+        return result
 
     def query(self, airportCode, terminal) -> Location:
         # TODO implement

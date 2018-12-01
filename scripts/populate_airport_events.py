@@ -4,7 +4,7 @@ import datetime
 import pytz
 import iso8601
 import warnings
-
+from data_access.location_dao import LocationGenericDao
 
 class EventBuilder(Event):
 
@@ -34,10 +34,10 @@ class LaxEventBuilder(EventBuilder):
         self.eventCategory = "airport"
         self.eventLocation = "LAX"
         self.isClosed = False
+        self.locationRef = LocationGenericDao().findByAirportCode('LAX').getFirestoreRef()
 
     def buildLists(self):
         self.participants = []
-        self.locationRefs = []
 
     def buildExtraInfo(self):
         self.pricing = 100

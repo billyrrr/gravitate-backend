@@ -29,7 +29,7 @@ class MainAppTestCase(TestCase):
     def testCreateRideRequestFrontend(self):
  
         r = self.app.post(path='/rideRequests', json = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}')
-
+        print(r.data)
         assert r.status_code == 200
 
     def testContextTest(self):
