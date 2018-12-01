@@ -11,7 +11,7 @@ eventDict = {
                 "participants": [
                 ],
                 "eventLocation": "LAX",
-                "locationRefs": [],
+                "locationRef": "locations/testlocationid1",
                 "startTimestamp": 1545033600,
                 "endTimestamp": 1545119999,
                 "pricing": 100,
@@ -55,8 +55,6 @@ class EventDAOTest(unittest.TestCase):
 	# 	# self.assertEquals()
 
     def testFindByTimestamp(self):
-        eventRef: firestore.DocumentReference = EventDao().eventCollectionRef.document("pLyD1HNMB9vaehRQq4mj")
-        eventDict = eventRef.get().to_dict()
-        event = Event.fromDict(eventDict)
-        self.assertNotEqual(None, event)
+        eventRef: firestore.DocumentReference = EventDao().findByTimestamp(1543996805)
+        self.assertNotEqual(None, eventRef)
         

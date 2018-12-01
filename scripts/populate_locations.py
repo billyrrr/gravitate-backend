@@ -54,7 +54,7 @@ def buildLaxTerminal(terminal: str):
     airportLocation = terminal.exportToLocation()
     return airportLocation
 
-def doWork():
+def doWorkDeprecated():
 
     terminals = ['1', '2', '3', '4', '5', '6', '7', '8', 'B']
 
@@ -63,3 +63,10 @@ def doWork():
         ref = LocationGenericDao().create(airportLocation)
         airportLocation.setFirestoreRef(ref)
         print(vars(airportLocation))
+
+def doWork():
+
+    airportLocation = LaxBuilder().exportToLocation()
+    ref = LocationGenericDao().create(airportLocation)
+    airportLocation.setFirestoreRef(ref)
+    print(vars(airportLocation))

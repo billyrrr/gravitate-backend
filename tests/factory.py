@@ -12,7 +12,7 @@ class MockForm(object):
         self.driverStatus = None
         self.pickupAddress = None
 
-        self.airportLocation = None
+        self.airportCode = None
         self.flightLocalTime = None
         self.flightNumber = None
     
@@ -38,7 +38,7 @@ class MockFormBuilder(MockForm):
 class AMockFormBuilder(MockFormBuilder):
 
     def buildAirportInfo(self):
-        self.airportLocation = "LAX TBIT Terminal"
+        self.airportCode = "LAX"
 
     def buildUserTravelOptions(self):
         self.toEvent = True

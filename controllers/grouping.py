@@ -29,8 +29,6 @@ def groupRideRequests(rideRequests: list):
     
     for group in groups:
         group.doWork()
-        print('doing work')
-        print(group)
     
 
 def pairRideRequests(rideRequests: list):
@@ -87,7 +85,6 @@ class Group:
 
     def __init__(self, rideRequestArray:[]):
         self.rideRequestArray = rideRequestArray
-        print(rideRequestArray)
         # Note that the intended orbit will be in database, and hence possible to be modified by another thread
         self.intendedOrbit = None # TODO create an orbit (may need a factory pattern) and add to database
 

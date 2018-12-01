@@ -4,8 +4,9 @@ from typing import Type
 from models.user import User
 import data_access
 import warnings
+import config
 
-CTX = data_access.config.Context
+CTX = config.Context
 
 db = CTX.db
 
@@ -66,7 +67,7 @@ class UserDao:
 
     @staticmethod
     @transactional
-    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: str=None, toEventRideRequestRef: str=None):
+    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, toEventRideRequestRef: str=None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
 				Note that the toEventRideRequestRef will be 
@@ -93,9 +94,9 @@ class UserDao:
             u'eventSchedules')
 
         # Retrieve document id to be used as the key
-        # eventId = DocumentReference(eventRef).id
-        eventId = 'testeventid1'
-        warnings.warn("Using mock/test event id. Must replace before release. ")
+        eventId = eventRef.id
+        # eventId = 'testeventid1'
+        # warnings.warn("Using mock/test event id. Must replace before release. ")
 
         # Get the DocumentReference for the EventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(

@@ -17,8 +17,6 @@ def pair(arr = None, paired: list = None, unpaired: list = None):
 	"""
 	sortedArr = sorted(arr, key=lambda x: x[0])
 
-	print(sortedArr)
-
 	i=0
 	while i < len(sortedArr):
 

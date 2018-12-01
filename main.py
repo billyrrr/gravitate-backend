@@ -66,7 +66,6 @@ class RideRequestService(Resource):
 
         # Mock userId and eventId. Delete before release
         userId = 'SQytDq13q00e0N3H4agR'
-        eventId = '2SFSUUsmbYbF2BvGQYgA'
         warnings.warn("using test user ids, delete before release")
         
         # POST REQUEST
@@ -90,8 +89,7 @@ class RideRequestService(Resource):
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
-            eventRef = EventDao().eventCollectionRef.document(eventId)
-            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
+            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, toEventRideRequestRef=rideRequestRef)
             transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200
@@ -135,7 +133,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Set EventRef
     eventRef = utils.findEvent(form) 
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(form) # TODO replace mock data
+    airportLocationRef = utils.findLocation(form)
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict

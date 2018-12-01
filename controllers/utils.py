@@ -4,6 +4,7 @@ from forms.ride_request_creation_form import RideRequestCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.event_dao import EventDao
+from data_access.location_dao import LocationGenericDao
 import iso8601
 import datetime as dt
 import pytz
@@ -85,10 +86,7 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
 
     :rtype:
     """
-
-    # TODO [to assign] implement
-    
-    return "/mocklocation" # TODO change
+    return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
 
 def mockFindLocation(form: RideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'

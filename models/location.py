@@ -17,9 +17,8 @@ class Location:
         address = locationDict['address']
         locationCategory = locationDict['locationCategory']
         if locationCategory == 'airport':
-            terminal = locationDict['terminal']
             airportCode = locationDict['airportCode']
-            return AirportLocation(coordinates, address, terminal, airportCode)
+            return AirportLocation(coordinates, address, airportCode)
         elif locationCategory == 'event':
             # TODO generate event
             raise NotImplementedError(
@@ -40,17 +39,16 @@ class AirportLocation(Location):
     Description: 
         This class represennts an airport location. 
         Two airport locations are considered the same if 
-            their airportCode (ie. "LAX") and terminal (ie. "1")
+            their airportCode (ie. "LAX") 
             are identical. 
 
         :param Location: 
     """
 
-    def __init__(self, coordinate, address, terminal, airportCode):
+    def __init__(self, coordinate, address, airportCode):
         super().__init__(coordinate, address)
         self.locationCategory = 'airport'
         self.airportCode = airportCode
-        self.terminal = terminal
 
     __firestoreRef = None
 
@@ -65,10 +63,10 @@ class AirportLocation(Location):
 
     def toDict(self):
         return {
+            'locationCategory': self.locationCategory, 
             'coordinates': self.coordinates,
             'address': self.address,
             'airportCode': self.airportCode,
-            'terminal': self.terminal
         }
 
     def __eq__(self, other):
@@ -82,4 +80,4 @@ class AirportLocation(Location):
             :param other: 
         """
         if isinstance(other, AirportLocation):
-            return (self.airportCode == other.airportCode) and (self.terminal == other.terminal)
+            return (self.airportCode == other.airportCode) 
