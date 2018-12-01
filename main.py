@@ -91,7 +91,7 @@ class RideRequestService(Resource):
             utils.saveRideRequest(rideRequest, transaction=transaction)
             rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(userId)
             eventRef = EventDao().eventCollectionRef.document(eventId)
-            UserRideRequestGenericDaorDao().addToEventScheduleWithTransaction(transaction, rideRequestRef=rideRequestRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
+            UserRideRequestGenericDao().addToEventScheduleWithTransaction(transaction, rideRequestRef=rideRequestRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
             transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200
