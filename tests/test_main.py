@@ -9,6 +9,9 @@ from models.ride_request import RideRequest, AirportRideRequest
 from requests import request
 import json
 from tests.factory import FormDictFactory
+import config
+
+db = config.Context.db
 
 class MainAppTestCase(TestCase):
 
@@ -18,18 +21,31 @@ class MainAppTestCase(TestCase):
 
         main.app.testing = True
         self.app = main.app.test_client()
+        self.originalFrontendJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
+        self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
 
     def testCreateRideRequest(self):
  
         r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create(returnDict = True)))
-
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
+
+    def testCreateRideRequestFrontend(self):
+ 
+        r = self.app.post(path='/rideRequests', json = self.newJson)
+        print(r.data)
+        assert r.status_code == 200
 
     def testContextTest(self):
         r = self.app.post(path='/contextTest', json={'key1':'val1a'})
         assert r.status_code == 200
 
+    def testCreateUser(self):
+ 
+        r = self.app.post(path='/users', json = json.dumps(FormDictFactory().create(returnDict = True)))
+
+        assert r.status_code == 200
+        # assert 'Hello World' in r.data.decode('utf-8')
 
     # Example:
     #
@@ -115,14 +131,16 @@ class TestCreateRideRequestLogics(TestCase):
                          'toEvent': True,
                          'arriveAtEventTime':
                          {'earliest': 1545058800, 'latest': 1545069600}},
-            'eventRef': '/events/testeventid1',
+            'eventRef': db.document('events','testeventid1'),
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": "/locations/testairportlocationid1"
+            "airportLocation": db.document("locations", "testairportlocationid1")
 
-        })
-        self.assertDictEqual(result, valueExpected.toDict())
+        }).toDict()
+        # self.assert(valueExpected, result)
+        self.assertIsNotNone(result["eventRef"])
+        self.assertIsNotNone(result["airportLocation"])

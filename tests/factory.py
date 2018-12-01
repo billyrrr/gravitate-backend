@@ -1,3 +1,5 @@
+import models
+
 class MockForm(object):
 
     def __init__(self):
@@ -10,7 +12,7 @@ class MockForm(object):
         self.driverStatus = None
         self.pickupAddress = None
 
-        self.airportLocation = None
+        self.airportCode = None
         self.flightLocalTime = None
         self.flightNumber = None
     
@@ -36,7 +38,7 @@ class MockFormBuilder(MockForm):
 class AMockFormBuilder(MockFormBuilder):
 
     def buildAirportInfo(self):
-        self.airportLocation = "LAX TBIT Terminal"
+        self.airportCode = "LAX"
 
     def buildUserTravelOptions(self):
         self.toEvent = True
@@ -94,3 +96,31 @@ class FormDictFactory:
             return mockForm.toDict()
         else:
             return mockForm
+
+
+def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef='/rideRequests/testRef1'):
+    rideRequestDict = {
+
+            'rideCategory': 'airportRide',
+            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            'driverStatus': False,
+            'orbitRef': None,
+            'target': {'eventCategory': 'airportRide',
+                         'toEvent': True,
+                         'arriveAtEventTime':
+                         {'earliest': earliest, 'latest': latest}},
+            'eventRef': '/events/testeventid1',
+            'hasCheckedIn': False,
+            'pricing': 987654321,
+            "baggages": dict(),
+            "disabilities": dict(),
+            'flightLocalTime': "2018-12-17T12:00:00.000",
+            'flightNumber': "DL89",
+            "airportLocation": "/locations/testairportlocationid1"
+
+        }
+    rideRequestDict['target']['arriveAtEventTime']['earliest'] = earliest
+    rideRequestDict['target']['arriveAtEventTime']['latest'] = latest
+    rideRequest = models.ride_request.RideRequest.fromDict(rideRequestDict)
+    rideRequest.setFirestoreRef(firestoreRef)
+    return rideRequest
