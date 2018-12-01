@@ -112,6 +112,9 @@ class RideRequestGenericDao:
         """
         print(newRideRequest)
         print(newRideRequest.toDict())
+<<<<<<< HEAD
+        return transaction.set(rideRequestRef, newRideRequest.toDict())
+=======
         return transaction.set(rideRequestRef, newRideRequest.toDict())
 
     @transactional
@@ -137,3 +140,4 @@ class RideRequestGenericDao:
         :rtype:
         """
         return transaction.set(eventRef, eventLocation)
+>>>>>>> 2704ee6b203602787c2bfe9c321a0da65d4f2ceb

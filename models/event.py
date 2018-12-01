@@ -51,7 +51,7 @@ class Event(object):
 			'startTimestamp': self.startTimestamp,
 			'endTimestamp': self.endTimestamp,
 			'pricing': self.pricing,
-			'locationRefs': self.locationRefs
+			'locationRefs': self.locationRefs,
 			'isClosed': self.isClosed
 		}
 		return eventDict
