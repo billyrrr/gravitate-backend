@@ -34,8 +34,7 @@ class EventDao:
             event = Event.fromDict(eventDict)
             eventId = doc.id
             # Check if the event is in a valid time frame
-            if event.startTimestamp < (timestamp - timeDifference) and event.endTimestamp > (timestamp
-                - timeDifference):
+            if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
                 return eventId
 
         return
