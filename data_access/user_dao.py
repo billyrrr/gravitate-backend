@@ -69,6 +69,4 @@ class UserDao:
     @staticmethod
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
-    """         print(newUser)
-            print(newUser.toDict()) """
-        return transaction.set(userRef, User.toDict())
+        return transaction.set(userRef, newUser.toDict())

@@ -97,7 +97,7 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     return userDict
 
 api = Api(app)
-api.add_resource(RideRequestService, '/users')
+api.add_resource(UserService, '/users')
 
 @app.errorhandler(500)
 def server_error(e):
