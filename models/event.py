@@ -53,6 +53,21 @@ class Event(object):
 			'locationRefs': self.locationRefs
 		}
 		return eventDict
+	def setEventAsActive(self):
+		""" Definition
+		    Sets the eventStatus to True
+		    
+		    :param self:
+		"""
+		self.eventStatus = True
+
+	def setEventAsPassed(self):
+		""" Definition
+		    Sets the eventStatus to False
+		   
+		    :param self:
+		"""
+		self.eventStatus = False
 
 	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs):
 		"""Description
