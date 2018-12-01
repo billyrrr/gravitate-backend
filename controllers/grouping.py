@@ -5,8 +5,6 @@ from google.cloud.firestore import Client
 client = Client()
 
 def groupRideRequests():
-    
-    
     """ Description
         [Not Implemented]
         This function 
@@ -17,10 +15,15 @@ def groupRideRequests():
 
     :rtype:
     """
+
+
     
     # TODO Implement
 
     pass
+
+# def pairRideRequests(rideRequests: list, ):
+
 
 class Group:
 
