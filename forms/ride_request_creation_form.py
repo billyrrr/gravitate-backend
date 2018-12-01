@@ -29,7 +29,6 @@ class RideRequestCreationValidateForm(Form):
     # Can be filled with Flightstats API
     flightNumber = StringField(u'Flight Number', validators=[
         DataRequired('Flight Number needs to be specified.'),
-
         
         ])
 

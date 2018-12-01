@@ -68,7 +68,7 @@ class UserService(Resource):
             # Create User Object
             newUser: User = User.fromDict(userDict)
 
-            userId = utils.randomId()
+            userId = newUser.uid
             userRef = UserDao().userCollectionRef.document(document_id=userId)
             newUser.setFirestoreRef(userRef)
             transaction = db.transaction()
