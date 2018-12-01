@@ -29,9 +29,9 @@ class Event(object):
 	@staticmethod
 	def fromDict(eventDict):
 		""" Description
-		    This function creates an event
-		    
-		    :param eventDict:
+			This function creates an event
+			
+			:param eventDict:
 		"""
 		eventCategory = eventDict['eventCategory']
 		participants = eventDict['participants']
