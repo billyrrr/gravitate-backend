@@ -86,7 +86,7 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
 
     :rtype:
     """
-    LocationGenericDao()
+    return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
 
 def mockFindLocation(form: RideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'

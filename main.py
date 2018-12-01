@@ -133,7 +133,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     # Set EventRef
     eventRef = utils.findEvent(form) 
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.mockFindLocation(form) # TODO replace mock data
+    airportLocationRef = utils.findLocation(form)
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict

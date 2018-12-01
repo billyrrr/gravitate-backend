@@ -18,6 +18,8 @@ class MainAppTestCase(TestCase):
 
         main.app.testing = True
         self.app = main.app.test_client()
+        self.originalFrontendJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
+        self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
 
     def testCreateRideRequest(self):
  
@@ -28,7 +30,7 @@ class MainAppTestCase(TestCase):
 
     def testCreateRideRequestFrontend(self):
  
-        r = self.app.post(path='/rideRequests', json = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}')
+        r = self.app.post(path='/rideRequests', json = self.newJson)
         print(r.data)
         assert r.status_code == 200
 
