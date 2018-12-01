@@ -19,7 +19,7 @@ def saveUser(User, transaction: Transaction = None):
     if (User.getFirestoreRef()):
         if not transaction:
             raise Exception('transaction is not provided. ')
-        UserDao().setUserWithTransaction(transaction, User, User.getFirestoreRef())
+            UserDao.setUserWithTransaction(transaction, User, User.getFirestoreRef())
     else:
         newRef = UserDao().createUser(User)
         User.setFirestoreRef(newRef)

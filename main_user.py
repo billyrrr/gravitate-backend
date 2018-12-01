@@ -63,12 +63,10 @@ class UserService(Resource):
             # Transfer data from validateForm to an internal representation of the form
             form = UserCreationForm()
             validateForm.populate_obj(form)
-
             userDict = fillUserDictWithForm(form)
 
-            # Create RideRequest Object
+            # Create User Object
             newUser: User = User.fromDict(userDict)
-            # print(rideRequest.toDict())
 
             userId = utils.randomId()
             userRef = UserDao().userCollectionRef.document(document_id=userId)
