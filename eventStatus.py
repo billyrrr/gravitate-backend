@@ -17,3 +17,4 @@ class EventStatus:
 		if event.isClosed = False:
 			if ts >= event.startTimestamp + timeAfterEventStart:
 				event.isClosed = True
+
