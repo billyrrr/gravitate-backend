@@ -40,7 +40,8 @@ class Event(object):
 		endTimestamp = eventDict['endTimestamp']
 		pricing = eventDict['pricing']
 		locationRefs = eventDict['locationRefs']
-		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs)
+		isClosed = eventDict['isClosed']
+		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs, isClosed)
 
 	def toDict(self):
 		eventDict = {
@@ -51,25 +52,26 @@ class Event(object):
 			'endTimestamp': self.endTimestamp,
 			'pricing': self.pricing,
 			'locationRefs': self.locationRefs
+			'isClosed': self.isClosed
 		}
 		return eventDict
 	def setEventAsActive(self):
 		""" Definition
-		    Sets the eventStatus to True
+		    Sets the boolean isClosed to False
 		    
 		    :param self:
 		"""
-		self.eventStatus = True
+		self.isClosed = False
 
 	def setEventAsPassed(self):
 		""" Definition
-		    Sets the eventStatus to False
+		    Sets the boolean isClosed to True
 		   
 		    :param self:
 		"""
-		self.eventStatus = False
+		self.isClosed = True
 
-	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs):
+	def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRefs, isClosed):
 		"""Description
 		   This function initializes an Event object
 
@@ -81,6 +83,7 @@ class Event(object):
 		   :param endTimestamp:
 		   :param pricing:
 		   :param locationRefs: a list of locationRef that corresponds to this event
+		   :param isClosed: 
 		"""
 		self.eventCategory = eventCategory
 		self.participants = participants
@@ -89,3 +92,4 @@ class Event(object):
 		self.endTimestamp = endTimestamp
 		self.pricing = pricing
 		self.locationRefs = locationRefs
+		self.isClosed = isClosed
