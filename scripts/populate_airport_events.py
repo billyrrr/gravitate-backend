@@ -33,6 +33,7 @@ class LaxEventBuilder(EventBuilder):
     def buildBasicInfo(self):
         self.eventCategory = "airport"
         self.eventLocation = "LAX"
+        self.isClosed = False
 
     def buildLists(self):
         self.participants = []
