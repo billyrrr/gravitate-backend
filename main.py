@@ -89,9 +89,9 @@ class RideRequestService(Resource):
 
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest, transaction=transaction)
-            userRef = UserDao().userCollectionRef.document(userId)
+            rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(userId)
             eventRef = EventDao().eventCollectionRef.document(eventId)
-            UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
+            UseRideRequestGenericDaorDao().addToEventScheduleWithTransaction(transaction, rideRequestRef=rideRequestRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
             transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200
