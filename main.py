@@ -79,8 +79,7 @@ class RideRequestService(Resource):
             rideRequestDict = fillRideRequestDictWithForm(form)
 
             # Create RideRequest Object
-            rideRequest: AirportRideRequest = RideRequest.fromDict(
-                rideRequestDict)
+            rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
             # print(rideRequest.toDict())
 
             rideRequestId = utils.randomId()
@@ -92,7 +91,7 @@ class RideRequestService(Resource):
             utils.saveRideRequest(rideRequest, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
             eventRef = EventDao().eventCollectionRef.document(eventId)
-            UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
+            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, toEventRideRequestRef=rideRequestRef)
             transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200

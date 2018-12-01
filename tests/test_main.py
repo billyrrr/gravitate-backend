@@ -36,6 +36,12 @@ class MainAppTestCase(TestCase):
         r = self.app.post(path='/contextTest', json={'key1':'val1a'})
         assert r.status_code == 200
 
+    def testCreateUser(self):
+ 
+        r = self.app.post(path='/users', json = json.dumps(FormDictFactory().create(returnDict = True)))
+
+        assert r.status_code == 200
+        # assert 'Hello World' in r.data.decode('utf-8')
 
     # Example:
     #

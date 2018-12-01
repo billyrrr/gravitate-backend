@@ -1,6 +1,3 @@
-"""Author: Andrew Kim
-"""
-
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
 import google
 from typing import Type
@@ -17,7 +14,6 @@ class UserDao:
     """Description
        Database access object for user
         # TODO delete object.setFirestoreRef()
-
     """
 
     def __init__(self):
@@ -30,15 +26,11 @@ class UserDao:
             Note that this cannot take place if transaction already received write operation
         :type self:
         :param self:
-
         :type transaction:Transaction:
         :param transaction:Transaction:
-
         :type userRef:DocumentReference:
         :param userRef:DocumentReference:
-
         :raises:
-
         :rtype:
         """
 
@@ -63,8 +55,14 @@ class UserDao:
         return user
 
     def createUser(self, user: User):
-        timestamp, userRef = self.userCollectionRef.add(user.toDict())
+        userRef = self.userCollectionRef.add(user.toDict())
         return userRef
+
+    @staticmethod
+    @transactional
+    def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
+        transaction.set(userRef, newUser)
+
 
     @staticmethod
     @transactional
@@ -74,24 +72,17 @@ class UserDao:
 				Note that the toEventRideRequestRef will be 
 					overwritten without warning if already set. 
 					(Same for fromEventRideRequestRef.) 
-
         :type self:
         :param self:
-
         :type transaction:Transaction:
         :param transaction:Transaction:
-
         :type userRef:str:
         :param userRef:str:
-
         :type eventRef:str:
         :param eventRef:str:
-
         :type eventSchedule:dict:
         :param eventSchedule:dict:
-
         :raises:
-
         :rtype:
         """
 
