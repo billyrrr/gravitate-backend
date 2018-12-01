@@ -25,8 +25,9 @@ class EventDao:
         """
 
         # Grab all of the events in the db
-        eventDocs = self.eventCollectionRef.get()
-
+        # Queries for the valid range of events
+        eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp).get()
+        # validDocs = eventDocs.where("endTimestamp", ">", timestamp).get()
 
         # Loop through each rideRequest
         for doc in eventDocs:
