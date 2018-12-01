@@ -8,7 +8,8 @@ def setEventAsActive(e = Event()):
 	    :param e:
 	""" 
 	e.eventStatus = True
-	
+
+
 def setEventAsPast(e = Event()):
 	""" Definition
 	    Sets the event object's boolean flag to False
