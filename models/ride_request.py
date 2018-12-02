@@ -82,11 +82,8 @@ class RideRequest(object):
         return rideRequestDict
 
 
-<<<<<<< HEAD
+
     def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, requestCompletion):
-=======
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing):
->>>>>>> 8f93d2d24f28e0652b545bfc13fb187403876276
         """ Description
             This function initializes a RideRequest Object. 
             Note that this function should not be called directly. 
