@@ -213,7 +213,7 @@ class SocialEventRideRequest(RideRequest):
                          hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         self.rideCategory = 'eventRide'
 
-    def toDict(self):
+    def toDict(self): 
         rideRequestDict = super().toDict()
         rideRequestDict['rideCategory'] = 'eventRide'
         return rideRequestDict
