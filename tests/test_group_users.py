@@ -160,8 +160,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": db.document("locations", "testairportlocationid1")
-
+            "airportLocation": db.document("locations", "testairportlocationid1"),
+            "requestCompletion": False
         }
 
         rideRequest = RideRequest.fromDict(rideRequestDict)

@@ -58,11 +58,11 @@ class RideRequest(object):
             disabilities = rideRequestDict['disabilities']
 
             return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn,
-                                      eventRef, orbitRef, userId, target, pricing, flightLocalTime, 
+                                      eventRef, orbitRef, userId, target, pricing, requestCompletion, flightLocalTime, 
                                       flightNumber, airportLocation, baggages, disabilities)
         elif rideRequestType == 'eventRide':
             # TODO change function calls
-            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
+            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         else:
             raise Exception(
                 'Not supported rideRequestType: {}'.format(rideRequestType))
@@ -83,7 +83,7 @@ class RideRequest(object):
 
 
 
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, requestCompletion):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion):
         """ Description
             This function initializes a RideRequest Object. 
             Note that this function should not be called directly. 
@@ -135,7 +135,7 @@ class RideRequest(object):
 class AirportRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
         """ Description
             Initializes an AirportRideRequest Object 
             Note that this class should not be initialzed directly.
@@ -157,7 +157,7 @@ class AirportRideRequest(RideRequest):
         """
 
         super().__init__(driverStatus, pickupAddress,
-                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
+                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         self.rideCategory = 'airportRide'
         self.flightLocalTime = flightLocalTime
         self.flightNumber = flightNumber
@@ -192,7 +192,7 @@ class AirportRideRequest(RideRequest):
 class SocialEventRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion):
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialzed directly.
@@ -210,7 +210,7 @@ class SocialEventRideRequest(RideRequest):
         """
 
         super().__init__(driverStatus, pickupAddress,
-                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
+                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         self.rideCategory = 'eventRide'
 
     def toDict(self):

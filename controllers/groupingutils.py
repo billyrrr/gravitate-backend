@@ -36,5 +36,6 @@ def placeInOrbit(r: RideRequest, o: Orbit):
             "pickupAddress": r.pickupAddress
     }
     o.userTicketPairs[userId] = ticket
+    r.requestCompletion = True
 
     return

@@ -124,6 +124,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> dict:
     rideRequestDict['hasCheckedIn'] = False
     rideRequestDict['orbitRef'] = None
     rideRequestDict['userId'] = userId
+    rideRequestDict['requestCompletion'] = False
 
     # Fields to be filled "after some thinking"
 
