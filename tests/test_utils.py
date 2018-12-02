@@ -7,7 +7,11 @@ import config
 
 class UtilsTest(unittest.TestCase):
 	
+	def testFindLocation(self):
+		pass
+		#TODO write tests for findLocation
 	def testFindEvent(self):
 		pass
+		#TODO write tests for findEvent
 		#self.assertEqual(not None, findEvent())
 		
