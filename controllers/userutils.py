@@ -15,17 +15,21 @@ def randomId():
     randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)]) 
     return randomIdStr
 
-def saveUser(User, transaction: Transaction = None):
-    if (User.getFirestoreRef()):
+def saveUser(user, transaction: Transaction = None):
+    if (user.getFirestoreRef()):
         if not transaction:
             raise Exception('transaction is not provided. ')
-        UserDao().setUserWithTransaction(transaction, User, User.getFirestoreRef())
+        UserDao().setUserWithTransaction(transaction, user, user.getFirestoreRef())
     else:
-        newRef = UserDao().createUser(User)
-        User.setFirestoreRef(newRef)
+        newRef = UserDao().createUser(user)
+        user.setFirestoreRef(newRef)
 
-def editUser(User, transaction: Transaction = None):
-    if (User.getFirestoreRef()):
+
+# Do we need 1 for each thing that needs to be changed?
+        #Name, Contact Email, Phone, Address 
+def editUser(user, transaction: Transaction = None):
+    if (user.getFirestoreRef()):
         if not transaction:
-            raise Exception('transactoin is not provided.')
-        
+            raise Exception('transaction is not provided.')
+    else:
+        UserDao().getUserById(user.userId)
