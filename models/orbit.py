@@ -25,7 +25,7 @@ class Orbit(object):
         orbit.setFirestoreRef(orbitRef)
         return orbit
 
-    def __init__(self, orbitCategory, eventRef, userTicketPairs, chatRoomRef, costEstimate, status):
+    def __init__(self, orbitCategory, eventRef, userTicketPairs, chatroomRef, costEstimate, status):
         """ Description
         This function initializes the Orbit Object
         Note that this function should not be called directly
@@ -42,7 +42,7 @@ class Orbit(object):
         self.orbitCategory = orbitCategory
         self.eventRef = eventRef
         self.userTicketPairs = userTicketPairs
-        self.chatRoomRef = chatRoomRef
+        self.chatroomRef = chatroomRef
         self.costEstimate = costEstimate
         self.status = status
 
@@ -66,7 +66,7 @@ class Orbit(object):
         'orbitCategory': self.orbitCategory,
         'eventRef': self.eventRef,
         'userTicketPairs': self.userTicketPairs,
-        'chatRoomRef': self.chatRoomRef,
+        'chatroomRef': self.chatroomRef,
         'costEstimate': self.costEstimate,
         'status': self.status
         }

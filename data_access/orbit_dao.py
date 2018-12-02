@@ -15,26 +15,15 @@ class OrbitDao:
     """
 
     def __init__(self):
-        self.orbitCollectionRef = db.collection(u'Orbits')
+        self.orbitCollectionRef = db.collection('orbits')
 
+    @staticmethod
     @transactional
-    def getOrbitWithTransaction(self, transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
+    def getOrbitWithTransaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
 
-        :type self:
-        :param self:
-
-        :type transaction:Transaction:
-        :param transaction:Transaction:
-
-        :type orbitRef:DocumentReference:
-        :param orbitRef:DocumentReference:
-
-        :raises:
-
-        :rtype:
         """
 
         try:
@@ -53,10 +42,24 @@ class OrbitDao:
         transaction.commit()
         return orbitResult
 
-    def createOrbit(self, orbit: Orbit):
-        return self.orbitCollectionRef.add(orbit.toDict())
+    def createOrbit(self, orbit: Orbit)->DocumentReference:
+        """ Description
+        """
+        _, orbitRef = self.orbitCollectionRef.add(orbit.toDict())
+        return orbitRef
 
+    def deleteOrbit(self, singleOrbitRef: DocumentReference):
+        """ Description
+            This function deletes an orbit from the database
+            Note that this function should not be called directly from any logics, 
+                since you have to delete all references to it from RideRequest, Event, etc. 
+        """
+        return singleOrbitRef.delete()
+
+    @staticmethod
     @transactional
-    def setOrbitWithTransaction(self, transaction: Transaction,
-                                      newOrbit: Orbit, orbitRef: DocumentReference):
-        transaction.set(orbitRef, newOrbit)
+    def setOrbitWithTransaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
+        """ Description
+            Note that a read action must have taken place before anything is set with that transaction. 
+        """
+        return transaction.set(orbitRef, newOrbit.toDict())
