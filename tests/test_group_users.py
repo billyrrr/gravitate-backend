@@ -70,6 +70,7 @@ class TestGroupUsers(unittest.TestCase):
 class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def setUp(self):
+        self.maxDiff = None
         self.arr = [[12000000, 12005000, RideRequestGenericDao().rideRequestCollectionRef.document('A')],
                     [12000000, 12005000, RideRequestGenericDao(
                     ).rideRequestCollectionRef.document('B')],
@@ -133,13 +134,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             "orbitCategory": "airportRide",
             "eventRef": "testeventref1",
             "userTicketPairs": {
-                "testuserid1": {
-                    "rideRequestRef": None,
-                    "userWillDrive": False,
-                    "hasCheckedIn": False,
-                    "inChat": True,
-                    "pickupAddress": "testpickupaddress1"
-                }
             },
             "chatroomRef": "testchatroomref1",
             "costEstimate": 987654321,
@@ -166,8 +160,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": db.document("locations", "testairportlocationid1")
-
+            "airportLocation": db.document("locations", "testairportlocationid1"),
+            "requestCompletion": False
         }
 
         rideRequest = RideRequest.fromDict(rideRequestDict)
@@ -177,5 +171,12 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         groupingutils.placeInOrbit(rideRequest, orbit)
         userTicketPairsDict = orbit.toDict()["userTicketPairs"]
         expectedDict = {
-            "testuserid1": None
+            'SQytDq13q00e0N3H4agR' : {
+                "rideRequestRef": db.document('rideRequests', 'testriderequestid1'),
+                "userWillDrive": False,
+                "hasCheckedIn": False,
+                "inChat": False,
+                "pickupAddress": "Tenaya Hall, San Diego, CA 92161"
+            }
         }
+        self.assertDictEqual(userTicketPairsDict, expectedDict)

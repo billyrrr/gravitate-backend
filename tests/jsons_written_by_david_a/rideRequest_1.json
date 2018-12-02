@@ -25,6 +25,7 @@
                 "flightNumber": "DL89",
                 "airportLocation": "refL01",
                 "baggages": null,
-                "disabilities": null 
+                "disabilities": null,
+                "requestCompletion": false
         }
 }
