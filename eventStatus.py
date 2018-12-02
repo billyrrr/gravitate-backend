@@ -14,7 +14,7 @@ class EventStatus:
 		    :param timeAfterFlight:
 		"""
 		#check if eventStatus is True before proceeding
-		if event.isClosed = False:
+		if event.isClosed == False:
 			if ts >= event.startTimestamp + timeAfterEventStart:
 				event.isClosed = True
 

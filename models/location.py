@@ -1,5 +1,3 @@
-
-
 class Location:
 
     coordinates = {
@@ -20,12 +18,13 @@ class Location:
             airportCode = locationDict['airportCode']
             return AirportLocation(coordinates, address, airportCode)
         elif locationCategory == 'event':
-            # TODO generate event
             raise NotImplementedError(
-                'Event location is not yet implemented. ')
+                'Event location is not yet implemented.')
         else:
             raise NotImplementedError(
                 'Unsupported locationCategory ' + str(locationCategory) + '. ')
+                
+        return Location(coordinates, address)
     
     def toDict(self) -> dict:
         return {

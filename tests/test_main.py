@@ -141,6 +141,6 @@ class TestCreateRideRequestLogics(TestCase):
             "airportLocation": db.document("locations", "testairportlocationid1")
 
         }).toDict()
-        # self.assert(valueExpected, result)
+        self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])

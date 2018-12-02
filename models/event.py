@@ -41,6 +41,7 @@ class Event(object):
 		pricing = eventDict['pricing']
 		locationRef = eventDict['locationRef']
 		isClosed = eventDict['isClosed']
+		
 		return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRef, isClosed)
 
 	def toDict(self):
