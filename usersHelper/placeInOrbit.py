@@ -9,7 +9,7 @@ def placeInOrbit(r:RideRequest, o:Orbit) :
     r.requestCompletion = True
 
     # RideRequest's orbitId no longer null and references Orbit's oId
-    r.orbitId = o.orbitId
+    r.orbitRef = getFirestoreRef(o) 
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {"rideRequestId": r.rideRequestId, "userWillDrive": r.driverStatus,

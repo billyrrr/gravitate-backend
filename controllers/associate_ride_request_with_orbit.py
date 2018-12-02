@@ -57,4 +57,4 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
         transaction.commit()
     except:
         # Firestore rollsback operations automatically. No need for manual rollback.
-        raise
+       raise
