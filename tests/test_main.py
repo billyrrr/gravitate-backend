@@ -25,6 +25,7 @@ class MainAppTestCase(TestCase):
         self.app = main.app.test_client()
         self.originalFrontendJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
         self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
+        self.frontendFailedJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-12T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"Regents Rd, San Diego, CA, USA","toEvent":true,"driverStatus":false,"airportCode":"LAX"}'
 
     def testCreateRideRequest(self):
  
@@ -37,6 +38,12 @@ class MainAppTestCase(TestCase):
         r = self.app.post(path='/rideRequests', json = self.newJson)
         print(r.data)
         assert r.status_code == 200
+
+    def testCreateRideRequestFailedFrontend(self):
+ 
+        r = self.app.post(path='/rideRequests', json = self.frontendFailedJson)
+        print(r.data)
+        self.assertEqual(r.status_code, 200)
 
     def testContextTest(self):
         r = self.app.post(path='/contextTest', json={'key1':'val1a'})

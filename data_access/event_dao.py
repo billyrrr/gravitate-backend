@@ -27,7 +27,6 @@ class EventDao:
         # Grab all of the events in the db
         eventDocs = self.eventCollectionRef.get()
 
-
         # Loop through each rideRequest
         for doc in eventDocs:
             eventDict = doc.to_dict()
