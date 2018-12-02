@@ -85,6 +85,22 @@ Human time (your time zone): Wednesday, May 1, 2019 10:00:00 PM GMT-07:00
 One exception is flightLocalTime, which is defined as local time without offset (since offset can be inferred from airport code). 
 ```"2019-05-02T13:12:00.000"```
 
+##Users
+
+Handled by firebase-admin: 
+https://firebase.google.com/docs/auth/admin/verify-id-tokens
+
+|Property	|Type	|Description
+|uid	|string	|The uid to assign to the newly created user. Must be a string between 1 and 128 characters long, inclusive. If not provided, a random uid will be automatically generated.
+|email	|string	|The user's primary email. Must be a valid email address.
+|emailVerified	|boolean	Whether or not the user's primary email is verified. If not provided, the default is false.
+|phoneNumber    |string	|The user's primary phone number. Must be a valid E.164 spec compliant phone number.
+
+|photoURL	|string	|The user's photo URL.
+|disabled	|boolean	|Whether or not the user is disabled. true for disabled; false for enabled. If not provided, the default is false.
+
+|displayName	|string	|The users' display name.
+
 ## Reference
 
 <https://help.github.com/articles/cloning-a-repository/#platform-windows>
