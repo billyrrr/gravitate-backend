@@ -29,11 +29,11 @@ def placeInOrbit(r: RideRequest, o: Orbit):
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
-            "rideRequestId": r.rideRequestId,
+            "rideRequestRef": r.getFirestoreRef(),
             "userWillDrive": r.driverStatus,
             "hasCheckedIn": False,
-            "inChat": True,
-            "pickupAdress": r.pickupAddress
+            "inChat": False,
+            "pickupAddress": r.pickupAddress
     }
     o.userTicketPairs[userId] = ticket
 
