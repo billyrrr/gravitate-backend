@@ -5,8 +5,11 @@ from data_access.orbit_dao import OrbitDao
 from google.cloud.firestore import DocumentReference, Client
 from usersHelper.placeInOrbit import placeInOrbit
 from typing import Type
+import config
 
-def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, preDecisionRideRequest: Type[RideRequest],
+db = config.Context.db
+
+def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideRequest: Type[RideRequest],
                            orbitRef: DocumentReference, preDecisionOrbit: Orbit):
     """ Description
     This function joins a rideRequest to an orbit in the database. 
@@ -17,9 +20,6 @@ def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, pr
 
     [1] Note that decision maker should refresh local copies of the objects after each join, 
         since this function will raise an exception if they don't match. 
-
-    :type client:Client:
-    :param client:Client:
 
     :type rideRequestRef:DocumentReference:
     :param rideRequestRef:DocumentReference:
@@ -33,12 +33,12 @@ def joinOrbitToRideRequest(client: Client, rideRequestRef: DocumentReference, pr
     """
 
     # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
-    transaction = client.transaction()
+    transaction = db.transaction()
 
-    rideRequestDao = RideRequestGenericDao(client)
+    rideRequestDao = RideRequestGenericDao()
     rideRequest = rideRequestDao.getRideRequestWithTransaction(
         transaction, rideRequestRef)
-    orbitDao = OrbitDao(client)
+    orbitDao = OrbitDao()
     orbit = orbitDao.getOrbitWithTransaction(transaction, orbitRef)
 
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit

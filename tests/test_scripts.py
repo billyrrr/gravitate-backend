@@ -15,7 +15,7 @@ sampleLaxEventDict = {
     "participants": [
     ],
     "eventLocation": "LAX",
-    "locationRefs": [],
+    # "locationRef": [],
     "startTimestamp": 1545033600,
     "endTimestamp": 1545119999,
     "pricing": 100
@@ -26,7 +26,9 @@ class TestBuildLaxEvent(unittest.TestCase):
 
     def testBuildLaxSampleEvent(self):
         laxSampleEvent = SampleLaxEventBuilder()
-        self.assertDictEqual(laxSampleEvent.toDict(), sampleLaxEventDict)
+        laxSampleEventDict = laxSampleEvent.toDict()
+        self.assertDictContainsSubset(sampleLaxEventDict, laxSampleEventDict)
+        self.assertIn('locationRef', laxSampleEventDict.keys(), "Dict contains locationRef as key")
 
     def testGenerateStartDatetime(self):
         generateStartDatetime("2018-12-17T08:00:00.000")
@@ -45,5 +47,5 @@ class TestGenerateEvent(unittest.TestCase):
         timestampTupleList = generateTimestamps(startDatetime, 2)
         eventList = generateEvents(timestampTupleList)
         expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
-                             'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100, 'locationRefs': []}
-        self.assertDictEqual(eventList[1].toDict(), expectedDay2EventDict)
+                             'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100, 'isClosed':False}
+        self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].toDict())

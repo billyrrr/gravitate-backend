@@ -64,10 +64,3 @@ class User(object):
 		friendList = userDict['friendList']
 		
 		return User(uid,memberships,firstName,lastName,picture,friendList)
-
-eventScheduleKey = "testeventid1" 
-eventScheduleValueExample = {
-	'toEventRideRequestRef': '/rideRequests/testriderequestref1',
-	# 'fromEventRideRequestRef': '/rideRequests/testriderequestref2'
-	# key reserved for MVP++
-}

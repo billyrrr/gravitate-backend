@@ -4,7 +4,9 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
 from models.orbit import Orbit
 import google
+import config
 
+db = config.Context.db
 
 class OrbitDao:
     """ Description	
@@ -12,9 +14,8 @@ class OrbitDao:
 
     """
 
-    def __init__(self, client: Client):
-        self.client = client
-        self.orbitCollectionRef = client.collection(u'Orbits')
+    def __init__(self):
+        self.orbitCollectionRef = db.collection(u'Orbits')
 
     @transactional
     def getOrbitWithTransaction(self, transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
@@ -40,13 +41,13 @@ class OrbitDao:
             snapshot: DocumentSnapshot = orbitRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            orbit = Orbit(snapshotDict)
+            orbit = Orbit.fromDict(snapshotDict)
             return orbit
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(orbitRef.id))
 
     def getOrbit(self, orbitRef: DocumentReference):
-        transaction = self.client.transaction()
+        transaction = db.transaction()
         orbitResult = self.getOrbitWithTransaction(
             transaction, orbitRef)
         transaction.commit()

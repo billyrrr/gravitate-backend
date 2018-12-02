@@ -26,8 +26,8 @@ class UserCollectionTest(unittest.TestCase):
         UserDao().addToEventScheduleWithTransaction(
             transaction, 
             userRef=self.user.getFirestoreRef(), 
-            eventRef='/events/testeventid1', 
-            toEventRideRequestRef='/rideRequests/testriderequestid1')
+            eventRef=db.document('events', 'testeventid1'), 
+            toEventRideRequestRef=db.document('rideRequests', 'testriderequestid1'))
 
 class UserDAOTest(unittest.TestCase):
 
