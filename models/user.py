@@ -16,7 +16,7 @@ class User(object):
 	def getFirestoreRef(self):
 		return self.__firestoreRef
 
-	def __init__(self, uid, memberships, firstName, lastName, picture, friendList):
+	def __init__(self, uid, membership, phone_number, display_name, photo_url):
 			""" Description
 				This function initializes a User Object.
 				Note that this function should not be called directly.
@@ -24,29 +24,32 @@ class User(object):
 
 				:param self:
 				:param uid: String
-				:param firstName: String
-				:param lastName: String
-				:param picture: Image
+				:param display_name:String
+				:param photo_url: Image
 				:param friendList: List of Users
 			"""
 
 			self.uid = uid
-			self.memberships = memberships
-			self.firstName = firstName
-			self.lastName = lastName
-			self.picture = picture
-			self.friendList = friendList
+			self.membership = membership
+			self.display_name = display_name
+			self.phone_number = phone_number
+			self.photo_url = photo_url
 
 	def toDict(self):
 		userDict = {
 			'uid': self.uid,
-			'memberships': self.memberships,
-			'firstName': self.firstName,
-			'lastName': self.lastName,
-			'picture': self.picture,
-			'friendList': self.friendList,
+			'membership': self.membership,
+			'display_name': self.display_name,
+			'phone_number': self.phone_number,
+			'photo_url': self.photo_url
 		}
 		return userDict
+
+	def toFirestoreDict(self):
+		userFirestoreDict = {
+			'membership': self.membership,
+		}
+		return userFirestoreDict
 
 	@staticmethod
 	def fromDict(userDict):
@@ -57,10 +60,9 @@ class User(object):
 			:param rideRequestDict: 
 		"""
 		uid = userDict['uid']
-		memberships = userDict['memberships']
-		firstName = userDict['firstName']
-		lastName = userDict['lastName']
-		picture = userDict['picture']
-		friendList = userDict['friendList']
+		membership = userDict['membership']
+		phone_number = userDict['phone_number']
+		display_name = userDict['display_name']
+		photo_url = userDict['photo_url']
 		
-		return User(uid,memberships,firstName,lastName,picture,friendList)
+		return User(uid,membership,phone_number,display_name, photo_url)

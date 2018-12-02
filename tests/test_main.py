@@ -4,8 +4,10 @@ from flask import request, jsonify
 from main import fillRideRequestDictWithForm
 from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
+from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
+from models.user import User
 from requests import request
 import json
 from tests.factory import FormDictFactory
@@ -51,9 +53,10 @@ class MainAppTestCase(TestCase):
 
     def testCreateUser(self):
  
-        r = self.app.post(path='/users', json = json.dumps(FormDictFactory().create(returnDict = True)))
-
+        r = self.app.post(path='/users', json = {"uid": "refU01","fullName": "Johnny Appleseed","pictureID": "photo_url"} )
         assert r.status_code == 200
+
+        
         # assert 'Hello World' in r.data.decode('utf-8')
 
     # Example:
