@@ -47,7 +47,6 @@ class RideRequest(object):
         orbitRef = rideRequestDict['orbitRef']
         target = Target.fromDict(rideRequestDict['target'])
         pricing = rideRequestDict['pricing']
-        requestCompletion = rideRequestDict['requestCompletion']
 
         if rideRequestType == 'airportRide':
             flightLocalTime = rideRequestDict['flightLocalTime']
@@ -75,12 +74,11 @@ class RideRequest(object):
             'orbitRef': self.orbitRef,
             'target': self.target.toDict(),
             'pricing': self.pricing
-            'requestCompletion': self.requestCompletion
         }
         return rideRequestDict
 
 
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, requestCompletion):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
         """ Description
             This function initializes a RideRequest Object. 
             Note that this function should not be called directly. 
@@ -93,7 +91,6 @@ class RideRequest(object):
             :param orbitRef: 
             :param target: 
             :param pricing: 
-            :param requestCompletion:
         """
 
         self.driverStatus = driverStatus
@@ -103,7 +100,7 @@ class RideRequest(object):
         self.orbitRef = orbitRef
         self.target = target
         self.pricing = pricing
-        self.requestCompletion = requestCompletion
+
 
 # class RideRequestActiveRecord(RideRequest):
     
