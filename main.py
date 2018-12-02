@@ -75,7 +75,7 @@ class RideRequestService(Resource):
             form = RideRequestCreationForm()
             validateForm.populate_obj(form)
 
-            rideRequestDict = fillRideRequestDictWithForm(form)
+            rideRequestDict = fillRideRequestDictWithForm(form, userId)
 
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
@@ -102,7 +102,7 @@ api = Api(app)
 api.add_resource(RideRequestService, '/rideRequests')
 
 
-def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
+def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> dict:
     rideRequestDict = dict()
 
     rideRequestDict['rideCategory'] = 'airportRide'
@@ -123,6 +123,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm) -> dict:
     rideRequestDict['baggages'] = dict()
     rideRequestDict['hasCheckedIn'] = False
     rideRequestDict['orbitRef'] = None
+    rideRequestDict['userId'] = userId
 
     # Fields to be filled "after some thinking"
 

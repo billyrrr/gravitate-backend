@@ -45,6 +45,7 @@ class RideRequest(object):
         hasCheckedIn = rideRequestDict['hasCheckedIn']
         eventRef = rideRequestDict['eventRef'] # TODO conversion to DocumentReference
         orbitRef = rideRequestDict['orbitRef']
+        userId = rideRequestDict['userId']
         target = Target.fromDict(rideRequestDict['target'])
         pricing = rideRequestDict['pricing']
 
@@ -56,11 +57,11 @@ class RideRequest(object):
             disabilities = rideRequestDict['disabilities']
 
             return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn,
-                                      eventRef, orbitRef, target, pricing, flightLocalTime, 
+                                      eventRef, orbitRef, userId, target, pricing, flightLocalTime, 
                                       flightNumber, airportLocation, baggages, disabilities)
         elif rideRequestType == 'eventRide':
             # TODO change function calls
-            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing)
+            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
         else:
             raise Exception(
                 'Not supported rideRequestType: {}'.format(rideRequestType))
@@ -72,13 +73,14 @@ class RideRequest(object):
             'hasCheckedIn': self.hasCheckedIn,
             'eventRef': self.eventRef,
             'orbitRef': self.orbitRef,
+            'userId': self.userId,
             'target': self.target.toDict(),
             'pricing': self.pricing
         }
         return rideRequestDict
 
 
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing):
         """ Description
             This function initializes a RideRequest Object. 
             Note that this function should not be called directly. 
@@ -98,6 +100,7 @@ class RideRequest(object):
         self.hasCheckedIn = hasCheckedIn
         self.eventRef = eventRef
         self.orbitRef = orbitRef
+        self.userId = userId
         self.target = target
         self.pricing = pricing
 
@@ -128,7 +131,7 @@ class RideRequest(object):
 class AirportRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
         """ Description
             Initializes an AirportRideRequest Object 
             Note that this class should not be initialzed directly.
@@ -150,7 +153,7 @@ class AirportRideRequest(RideRequest):
         """
 
         super().__init__(driverStatus, pickupAddress,
-                         hasCheckedIn, eventRef, orbitRef, target, pricing)
+                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
         self.rideCategory = 'airportRide'
         self.flightLocalTime = flightLocalTime
         self.flightNumber = flightNumber
@@ -185,7 +188,7 @@ class AirportRideRequest(RideRequest):
 class SocialEventRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, target, pricing):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing):
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialzed directly.
@@ -203,7 +206,7 @@ class SocialEventRideRequest(RideRequest):
         """
 
         super().__init__(driverStatus, pickupAddress,
-                         hasCheckedIn, eventRef, orbitRef, target, pricing)
+                         hasCheckedIn, eventRef, orbitRef, userId, target, pricing)
         self.rideCategory = 'eventRide'
 
     def toDict(self):

@@ -1,6 +1,9 @@
 from controllers.group_user import pair
 from controllers.grouping import constructTupleList, pairRideRequests, constructGroups, groupRideRequests
 from data_access.ride_request_dao import RideRequestGenericDao
+from controllers import groupingutils
+from models.ride_request import RideRequest
+from models.orbit import Orbit
 import factory
 import unittest
 import config
@@ -108,7 +111,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         groups = list()
         constructGroups(groups, paired)
 
-
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),  RideRequestGenericDao().rideRequestCollectionRef.document('B')],
                           [RideRequestGenericDao().rideRequestCollectionRef.document('C'),  RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
@@ -124,3 +126,56 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def testPrimaryGroupingFunc(self):
         groupRideRequests(self.rideRequests)
+
+    def testPlaceInOrbit(self):
+
+        orbitDict = {
+            "orbitCategory": "airportRide",
+            "eventRef": "testeventref1",
+            "userTicketPairs": {
+                "testuserid1": {
+                    "rideRequestRef": None,
+                    "userWillDrive": False,
+                    "hasCheckedIn": False,
+                    "inChat": True,
+                    "pickupAddress": "testpickupaddress1"
+                }
+            },
+            "chatroomRef": "testchatroomref1",
+            "costEstimate": 987654321,
+            "status": 1
+        }
+
+        orbit = Orbit.fromDict(orbitDict)
+
+        rideRequestDict = {
+
+            'rideCategory': 'airportRide',
+            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            'driverStatus': False,
+            'orbitRef': None,
+            'target': {'eventCategory': 'airportRide',
+                       'toEvent': True,
+                       'arriveAtEventTime':
+                       {'earliest': 1545058800, 'latest': 1545069600}},
+            'eventRef': db.document('events', 'testeventid1'),
+            'userId': 'SQytDq13q00e0N3H4agR',
+            'hasCheckedIn': False,
+            'pricing': 987654321,
+            "baggages": dict(),
+            "disabilities": dict(),
+            'flightLocalTime': "2018-12-17T12:00:00.000",
+            'flightNumber': "DL89",
+            "airportLocation": db.document("locations", "testairportlocationid1")
+
+        }
+
+        rideRequest = RideRequest.fromDict(rideRequestDict)
+        rideRequest.setFirestoreRef(db.document(
+            'rideRequests', 'testriderequestid1'))
+
+        groupingutils.placeInOrbit(rideRequest, orbit)
+        userTicketPairsDict = orbit.toDict()["userTicketPairs"]
+        expectedDict = {
+            "testuserid1": None
+        }

@@ -110,6 +110,7 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
                          'arriveAtEventTime':
                          {'earliest': earliest, 'latest': latest}},
             'eventRef': '/events/testeventid1',
+            'userId': 'SQytDq13q00e0N3H4agR',
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),

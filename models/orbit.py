@@ -63,12 +63,12 @@ class Orbit(object):
 
     def toDict(self):
         orbitDict = {
-        'orbitCategory': self.orbitCategory,
-        'eventRef': self.eventRef,
-        'userTicketPairs': self.userTicketPairs,
-        'chatroomRef': self.chatroomRef,
-        'costEstimate': self.costEstimate,
-        'status': self.status
+            'orbitCategory': self.orbitCategory,
+            'eventRef': self.eventRef,
+            'userTicketPairs': self.userTicketPairs,
+            'chatroomRef': self.chatroomRef,
+            'costEstimate': self.costEstimate,
+            'status': self.status
         }
         return orbitDict
 

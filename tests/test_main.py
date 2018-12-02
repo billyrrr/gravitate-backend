@@ -13,6 +13,8 @@ import config
 
 db = config.Context.db
 
+userId = 'SQytDq13q00e0N3H4agR'
+
 class MainAppTestCase(TestCase):
 
     app: FlaskClient = None
@@ -115,12 +117,12 @@ class TestCreateRideRequestLogics(TestCase):
 
     def testSaveRideRequestToDb(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm))
+        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm, userId))
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = fillRideRequestDictWithForm(mockForm)
+        result = fillRideRequestDictWithForm(mockForm, userId)
         valueExpected = RideRequest.fromDict({
 
             'rideCategory': 'airportRide',
@@ -132,6 +134,7 @@ class TestCreateRideRequestLogics(TestCase):
                          'arriveAtEventTime':
                          {'earliest': 1545058800, 'latest': 1545069600}},
             'eventRef': db.document('events','testeventid1'),
+            'userId': 'SQytDq13q00e0N3H4agR',
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),

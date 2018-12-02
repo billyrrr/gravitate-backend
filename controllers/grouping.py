@@ -99,7 +99,7 @@ class Group:
             try:
                 # Trying to join one rideRequest to the orbit
                 raise NotImplementedError
-                # joinOrbitToRideRequest( rideRequest.firestoreRef, rideRequest, orbit.firestoreRef, orbit)
+                joinOrbitToRideRequest( rideRequest.firestoreRef, rideRequest, orbit.firestoreRef, orbit)
                 assert rideRequest.getFirestoreRef() != None
                 utils.saveRideRequest(rideRequest)
                 # Save orbit

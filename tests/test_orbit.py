@@ -4,19 +4,19 @@ import data_access
 from google.cloud import firestore
 import config
 
-orbitDict ={
+orbitDict = {
     "orbitCategory": "airportRide",
-    "eventRef":"testeventref1",
+    "eventRef": "testeventref1",
     "userTicketPairs": {
-        "testuserid1" : {
-            "rideRequestRef": None,
-            "userWillDrive": False, 
-            "hasCheckedIn": False,
-            "inChat": True,
-            "pickupAddress": "testpickupaddress1"
-        }      
+                "testuserid1": {
+                    "rideRequestRef": None,
+                    "userWillDrive": False,
+                    "hasCheckedIn": False,
+                    "inChat": True,
+                    "pickupAddress": "testpickupaddress1"
+                }
     },
-    "chatroomRef": "testchatroomref1", 
+    "chatroomRef": "testchatroomref1",
     "costEstimate": 987654321,
     "status": 1
 }
@@ -34,4 +34,4 @@ class OrbitTest(unittest.TestCase):
     def testCreateOrbit(self):
         newOrbit = Orbit.fromDict(orbitDict)
         orbitRef = data_access.OrbitDao().createOrbit(newOrbit)
-        self.assertEquals()
+        self.assertIsNotNone(orbitRef)

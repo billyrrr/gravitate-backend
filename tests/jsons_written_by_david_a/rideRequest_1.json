@@ -7,6 +7,7 @@
                 "hasCheckedIn": false,
                 "eventRef": "refE01",
                 "orbitRef": "refO01",
+                "userId": "testuserid1",
                 "target":
                         {
                                 "eventCategory": "airport",
