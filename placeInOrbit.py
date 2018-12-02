@@ -4,14 +4,24 @@ from models.orbit import Orbit
 #only works if orbit's orbitId, orbitCategory, and eventId is already instantiated
 def placeInOrbit(r = RideRequest(), o = Orbit()):
 	#set RideRequest's requestCompletion to true
-	r.dictionary["requestCompletion"] = True
+	r.requestCompletion = True
 
-	#RideRequest's orbitId no longer null and references Orbit's oId
-	r.dictionary["orbitId"] = o.dictionary["oId"]
-
-	#insert in to orbit's userTicketPairs	
-	o.dictionary["userTicketPairs"].append(r.ticket)
+	#RideRequest's orbitRef no longer null and references Orbit's documentReference
+	r.orbitRef = getFirestoreRef(o) 
 	
-	#return dictionaries
-	return r.dictionary, o.dictionary
+	#create a ticket to insert into userTicketPairs
+	ticket = {
+		'rideRequestRef': getFirestoreRef(r)
+		'userWillDrive': False
+		'hasCheckedIn': False
+		'inChat': True
+		'pickupAddress': r.pickupAddress
+	}
+	
+	#insert in to orbit's userTicketPair	
+	o.userTicketPairs.append(ticket)
+	
+	#done
+	return None
+	
 
