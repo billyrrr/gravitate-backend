@@ -8,13 +8,12 @@ ts = datetime.datetime.now().timestamp()
 class EventStatus:
 	
 	@staticmethod
-	def eventStatus(timeAfterEventStart):
+	def eventStatus():
 		""" Definition
 		    Sets the event to a past event category one day after the start time
-		    :param timeAfterFlight:
 		"""
 		#check if eventStatus is True before proceeding
 		if event.isClosed = False:
-			if ts >= event.startTimestamp + timeAfterEventStart:
+			if ts >= event.endTimestamp:
 				event.isClosed = True
 
