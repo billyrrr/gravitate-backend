@@ -1,20 +1,20 @@
 """Author: Zixuan Rao, David Nong
 """
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional, Query
+
+from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from models.ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
 from models.event import Event
 import google
-import config
-import warnings
 from typing import Type
+import data_access
+import warnings
 
-db = config.Context.db
+CTX = data_access.config.Context
 
-
-# The maximum amount of time where a user can request a ride
-# Hard coded to be 1 day in seconds
-timeDifference = 24*60*60
+db = CTX.db
 
 class EventDao:
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -99,43 +99,13 @@ class EventDao:
         return eventRef
 =======
 >>>>>>> origin/master
+=======
+
+>>>>>>> origin/master
 	""" Description	
 		Database access object for events
-
 	"""
-	def __locateAirportEvent(self, timestamp):
-		""" Description
-			Uses the timestamp of an event to find the event reference
-		"""
 
-		# Grab all of the events in the db
-		# Queries for the valid range of events
-		# Pre-condition: There is only one airport event, and no social events on the same day
-		eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp).order_by("startTimestamp", 
-			direction=Query.DESCENDING).limit(1).get()
-
-		# Loop through each rideRequest
-		for doc in eventDocs:
-			eventDict = doc.to_dict()
-			if(eventDict["eventCategory"] == "socialEvent"):
-				warnings.warn("The algorithm does not accomodate for social events yet!")
-
-			event = Event.fromDict(eventDict)
-			eventId = doc.id
-			# Check if the event is in a valid time frame
-			if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
-				return eventId
-
-		return None
-
-	def get(self, eventRef: DocumentReference):
-		transaction = db.transaction()
-		eventResult = self.getWithTransaction(
-			transaction, eventRef)
-		transaction.commit()
-		return eventResult
-
-	
 	@transactional
 	def getWithTransaction(self, transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
 		""" Description
@@ -185,6 +155,46 @@ class EventDao:
 		_, eventRef = self.eventCollectionRef.add(event.toDict())
 		return eventRef
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> optimizeTimeStamp
+>>>>>>> origin/master
+=======
+	""" Description	
+		Database access object for events
+
+	"""
+	def __locateAirportEvent(self, timestamp):
+		""" Description
+			Uses the timestamp of an event to find the event reference
+		"""
+
+		# Grab all of the events in the db
+		# Queries for the valid range of events
+		# Pre-condition: There is only one airport event, and no social events on the same day
+		eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp).order_by("startTimestamp", 
+			direction=Query.DESCENDING).limit(1).get()
+
+		# Loop through each rideRequest
+		for doc in eventDocs:
+			eventDict = doc.to_dict()
+			if(eventDict["eventCategory"] == "socialEvent"):
+				warnings.warn("The algorithm does not accomodate for social events yet!")
+
+			event = Event.fromDict(eventDict)
+			eventId = doc.id
+			# Check if the event is in a valid time frame
+			if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
+				return eventId
+
+		return None
+
+	def get(self, eventRef: DocumentReference):
+		transaction = db.transaction()
+		eventResult = self.getWithTransaction(
+			transaction, eventRef)
+		transaction.commit()
+		return eventResult
+
+		
 >>>>>>> origin/master
