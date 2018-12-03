@@ -1,13 +1,8 @@
 import unittest
-<<<<<<< HEAD
-from data_access import EventScheduleGenericDao
-from google.cloud.firestore import DocumentReference
-=======
 from tests import factory 
 from controllers import eventscheduleutils
 from data_access import EventScheduleGenericDao
 
->>>>>>> origin/master
 
 eventScheduleDict = {
 	"destName": None,
@@ -24,12 +19,6 @@ class EventScheduleDAOTest(unittest.TestCase):
 
 
     def testCreate(self):
-<<<<<<< HEAD
-        eventScheduleRef: DocumentReference = EventScheduleGenericDao().create(self.eventScheduleRef)
-        self.eventScheduleRef.setFirestoreRef(eventScheduleRef)
-        print("eventScheduleRef = {}".format(eventScheduleRef))
-=======
         rideRequest = factory.getMockRideRequest()
         eventSch = eventscheduleutils.buildEventSchedule(rideRequest)
         self.assertEquals(eventScheduleDict, eventSch.toDict())
->>>>>>> origin/master
