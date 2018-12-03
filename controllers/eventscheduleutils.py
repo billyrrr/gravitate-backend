@@ -34,3 +34,4 @@ def buildEventSchedule(rideRequest: AirportRideRequest):
     eventSchedule.buildRideRequest(rideRequest)
     return eventSchedule
 
+    
