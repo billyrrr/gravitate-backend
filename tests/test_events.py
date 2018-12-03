@@ -1,7 +1,7 @@
 import unittest
 from google.cloud import firestore
 from models.event import Event
-from data_access.event_dao import EventDao
+from data_access import EventDao
 import config
 
 db = config.Context.db

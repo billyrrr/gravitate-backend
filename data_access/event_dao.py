@@ -69,7 +69,6 @@ class EventDao:
 		return eventRef
 	""" Description	
 		Database access object for events
-
 	"""
 	def __locateAirportEvent(self, timestamp):
 		""" Description
@@ -102,5 +101,3 @@ class EventDao:
 			transaction, eventRef)
 		transaction.commit()
 		return eventResult
-
-		
