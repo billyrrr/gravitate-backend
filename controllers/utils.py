@@ -1,6 +1,5 @@
-from models.ride_request import RideRequest, AirportRideRequest, Target
-from models.event import Event
 from forms.ride_request_creation_form import RideRequestCreationForm
+from models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.event_dao import EventDao
@@ -77,6 +76,7 @@ def createTargetWithFlightLocalTime(form: RideRequestCreationForm, offsetLowAbsS
 
 def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     """ Description
+        **DEPRECATED**
         This function finds the locationRef for "LAX" or other airportLocation(s)
 
     :type form:RideRequestCreationForm:
@@ -87,6 +87,9 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     :rtype:
     """
     return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
+
+def getAirportLocation(form: RideRequestCreationForm) -> AirportLocation:
+    return LocationGenericDao().findByAirportCode(form.airportCode)
 
 def mockFindLocation(form: RideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'

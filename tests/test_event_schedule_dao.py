@@ -5,13 +5,14 @@ from data_access import EventScheduleGenericDao
 from models import EventSchedule
 
 eventScheduleDict = {
-	"destName": None,
+	"destName": "LAX",
 	"destTime": None,
     "flightTime": "2018-12-17T12:00:00.000",
     "memberProfilePhotoUrls": [],
     "pickupAddress": "Tenaya Hall, San Diego, CA 92161",
     "pending": True,
 	"rideRequestRef": "/rideRequests/testRef1",
+    "locationRef": "/locations/AedTfnR2FhaLnVHriAMn",
 	"orbitRef": None
 }
 

@@ -19,8 +19,7 @@ import logging
 
 import json
 
-from models.target import Target
-from models.ride_request import RideRequest, AirportRideRequest
+from models import RideRequest, AirportRideRequest, Target, AirportLocation
 
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
@@ -76,7 +75,7 @@ class RideRequestService(Resource):
             form = RideRequestCreationForm()
             validateForm.populate_obj(form)
 
-            rideRequestDict = fillRideRequestDictWithForm(form, userId)
+            rideRequestDict, location = fillRideRequestDictWithForm(form, userId)
 
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
@@ -90,7 +89,7 @@ class RideRequestService(Resource):
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
-            eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest)
+            eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location)
             UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
             transaction.commit()
 
@@ -104,7 +103,7 @@ api = Api(app)
 api.add_resource(RideRequestService, '/rideRequests')
 
 
-def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> dict:
+def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
     rideRequestDict = dict()
 
     rideRequestDict['rideCategory'] = 'airportRide'
@@ -137,10 +136,11 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> dict:
     # Set EventRef
     eventRef = utils.findEvent(form) 
     rideRequestDict['eventRef'] = eventRef
-    airportLocationRef = utils.findLocation(form)
+    location = utils.getAirportLocation(form)
+    airportLocationRef = location.getFirestoreRef()
     rideRequestDict['airportLocation'] = airportLocationRef
 
-    return rideRequestDict
+    return rideRequestDict, location
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
