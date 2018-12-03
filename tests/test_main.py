@@ -17,6 +17,7 @@ db = config.Context.db
 
 userId = 'SQytDq13q00e0N3H4agR'
 
+
 class MainAppTestCase(TestCase):
 
     app: FlaskClient = None
@@ -30,33 +31,44 @@ class MainAppTestCase(TestCase):
         self.frontendFailedJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-12T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"Regents Rd, San Diego, CA, USA","toEvent":true,"driverStatus":false,"airportCode":"LAX"}'
 
     def testCreateRideRequest(self):
- 
-        r = self.app.post(path='/rideRequests', json = json.dumps(FormDictFactory().create(returnDict = True)))
+
+        r = self.app.post(
+            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)))
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
     def testCreateRideRequestFrontend(self):
- 
-        r = self.app.post(path='/rideRequests', json = self.newJson)
+
+        r = self.app.post(path='/rideRequests', json=self.newJson)
         print(r.data)
         assert r.status_code == 200
 
     def testCreateRideRequestFailedFrontend(self):
- 
-        r = self.app.post(path='/rideRequests', json = self.frontendFailedJson)
+
+        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson)
+        print(r.data)
+        self.assertEqual(r.status_code, 200)
+
+    def testForceMatchRideRequests(self):
+        r = self.app.post(path='/devForceMatch',
+                          json=json.dumps({"rideRequestIds":
+                                           ["0Fbk2VLNuM3ne51KbsdPFw4lF8qx3DzD",
+                                               "0MFKquhCOtFmYDM1df69l5RasYfqPW2f"]
+                                           }
+                                          ))
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
     def testContextTest(self):
-        r = self.app.post(path='/contextTest', json={'key1':'val1a'})
+        r = self.app.post(path='/contextTest', json={'key1': 'val1a'})
         assert r.status_code == 200
 
     def testCreateUser(self):
- 
-        r = self.app.post(path='/users', json = {"uid": "refU01","fullName": "Johnny Appleseed","pictureID": "photo_url"} )
+
+        r = self.app.post(
+            path='/users', json={"uid": "refU01", "fullName": "Johnny Appleseed", "pictureID": "photo_url"})
         assert r.status_code == 200
 
-        
         # assert 'Hello World' in r.data.decode('utf-8')
 
     # Example:
@@ -74,30 +86,33 @@ class MockFormTargetOnly:
         self.toEvent = True
 
 
-
 class TestMockFormValidation(TestCase):
 
     def testCreation(self):
-        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
-        form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
+        form: RideRequestCreationValidateForm = RideRequestCreationValidateForm(
+            data=formDict)
         form.validate()
         self.assertDictEqual(formDict, form.data)
 
     def testPrintMockForm(self):
-        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
         print(json.dumps(formDict))
 
     def testValidate(self):
-        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict = True)
-        form:RideRequestCreationValidateForm = RideRequestCreationValidateForm(data=formDict)
+        formDict = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
+        form: RideRequestCreationValidateForm = RideRequestCreationValidateForm(
+            data=formDict)
         form.validate()
         self.assertEqual(form.validate(), True)
+
 
 class TestCreationLogicsUtils(TestCase):
 
     def testCreateAirportTargetWithFlightLocalTime(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        targetDict = createTargetWithFlightLocalTime(mockForm, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
+        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
+        targetDict = createTargetWithFlightLocalTime(
+            mockForm, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
         valueExpected = {'eventCategory': 'airportRide',
                          'toEvent': True,
                          'arriveAtEventTime':
@@ -105,11 +120,15 @@ class TestCreationLogicsUtils(TestCase):
         self.assertDictEqual(targetDict, valueExpected)
 
     def testSameResultDifferentCreateTargetFunc(self):
-        mockFormCTWFLT = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        targetDictCTWFLT = createTargetWithFlightLocalTime(mockFormCTWFLT, offsetLowAbsSec=7200, offsetHighAbsSec=18000).toDict()
-        mockFormCT = FormDictFactory().create(hasEarliestLatest = True, isE5L2=True, returnDict = False)
+        mockFormCTWFLT = FormDictFactory().create(
+            hasEarliestLatest=False, returnDict=False)
+        targetDictCTWFLT = createTargetWithFlightLocalTime(
+            mockFormCTWFLT, offsetLowAbsSec=7200, offsetHighAbsSec=18000).toDict()
+        mockFormCT = FormDictFactory().create(
+            hasEarliestLatest=True, isE5L2=True, returnDict=False)
         targetDictCT = createTarget(mockFormCT).toDict()
         self.assertDictEqual(targetDictCTWFLT, targetDictCT)
+
 
 class TestCreateRideRequestLogics(TestCase):
 
@@ -126,13 +145,13 @@ class TestCreateRideRequestLogics(TestCase):
         self.assertDictEqual(targetDict, valueExpected)
 
     def testSaveRideRequestToDb(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
+        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
         result = RideRequest.fromDict(rideRequestDict)
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
+        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         result, _ = fillRideRequestDictWithForm(mockForm, userId)
         valueExpected = RideRequest.fromDict({
 
@@ -141,10 +160,10 @@ class TestCreateRideRequestLogics(TestCase):
             'driverStatus': False,
             'orbitRef': None,
             'target': {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                         {'earliest': 1545058800, 'latest': 1545069600}},
-            'eventRef': db.document('events','testeventid1'),
+                       'toEvent': True,
+                       'arriveAtEventTime':
+                       {'earliest': 1545058800, 'latest': 1545069600}},
+            'eventRef': db.document('events', 'testeventid1'),
             'userId': 'SQytDq13q00e0N3H4agR',
             'hasCheckedIn': False,
             'pricing': 987654321,
