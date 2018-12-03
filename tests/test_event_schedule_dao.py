@@ -1,6 +1,6 @@
-mport unittest
-from data_access.eventSchedule_dao import EventScheduleGenericDao
-
+import unittest
+from data_access import EventScheduleGenericDao
+from google.cloud.firestore import DocumentReference
 
 class EventScheduleDAOTest(unittest.TestCase):
 
@@ -8,6 +8,6 @@ class EventScheduleDAOTest(unittest.TestCase):
     #     self.user = User.fromDict(userDict)
 
     def testCreate(self):
-        eventScheduleRef: firestore.DocumentReference = EventScheduleGenericDao().create(self.eventScheduleRef)
+        eventScheduleRef: DocumentReference = EventScheduleGenericDao().create(self.eventScheduleRef)
         self.eventScheduleRef.setFirestoreRef(eventScheduleRef)
         print("eventScheduleRef = {}".format(eventScheduleRef))
