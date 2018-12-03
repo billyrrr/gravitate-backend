@@ -28,6 +28,8 @@ import warnings
 
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from controllers import utils
+from controllers import group_user
+from controllers import grouping
 
 from google.cloud import firestore
 from google.auth.transport import requests
@@ -59,7 +61,8 @@ class RideRequestService(Resource):
 
     def post(self):
         requestJson = request.get_json()
-        requestForm =  json.loads(requestJson) if (type(requestJson) != dict) else requestJson
+        requestForm = json.loads(requestJson) if (
+            type(requestJson) != dict) else requestJson
 
         validateForm = RideRequestCreationValidateForm(
             data=requestForm)
@@ -67,7 +70,7 @@ class RideRequestService(Resource):
         # Mock userId and eventId. Delete before release
         userId = 'SQytDq13q00e0N3H4agR'
         warnings.warn("using test user ids, delete before release")
-        
+
         # POST REQUEST
         if validateForm.validate():
 
@@ -75,22 +78,27 @@ class RideRequestService(Resource):
             form = RideRequestCreationForm()
             validateForm.populate_obj(form)
 
-            rideRequestDict, location = fillRideRequestDictWithForm(form, userId)
+            rideRequestDict, location = fillRideRequestDictWithForm(
+                form, userId)
 
             # Create RideRequest Object
-            rideRequest: AirportRideRequest = RideRequest.fromDict(rideRequestDict)
+            rideRequest: AirportRideRequest = RideRequest.fromDict(
+                rideRequestDict)
             # print(rideRequest.toDict())
 
             rideRequestId = utils.randomId()
-            rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(document_id=rideRequestId)
+            rideRequestRef = RideRequestGenericDao(
+            ).rideRequestCollectionRef.document(document_id=rideRequestId)
             rideRequest.setFirestoreRef(rideRequestRef)
             transaction = db.transaction()
 
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
-            eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location)
-            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
+            eventSchedule = eventscheduleutils.buildEventSchedule(
+                rideRequest, location)
+            UserDao.addToEventScheduleWithTransaction(
+                transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
             transaction.commit()
 
             # rideRequest Response
@@ -102,8 +110,50 @@ class RideRequestService(Resource):
             return validateForm.errors, 400
 
 
+class OrbitForceMatchService(Resource):
+    def post(self):
+        requestJson = request.get_json()
+        requestForm = json.loads(requestJson) if (
+            type(requestJson) != dict) else requestJson
+
+        # requestForm = {
+        #     "rideRequestRefs": []
+        # }
+
+        rideRequestIds = requestForm["rideRequestIds"]
+        rideRequests = list()
+        for rideRequestId in rideRequestIds:
+            rideRequestRef = db.collection("rideRequests").document(rideRequestId)
+            rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
+            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequests.append(rideRequest)
+
+        numRideRequests = len(rideRequests)
+        assert numRideRequests >= 2
+        if numRideRequests >= 3:
+            warnings.warn(
+                "Orbit is only tested for matching 2 rideRequests. " +
+                "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
+                "Only rideRequests {} and {} are expected be matched. "
+                    .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
+
+        pairedTuples = [(rideRequests[0], rideRequests[1])]
+
+        groups = list()
+        grouping.constructGroups(groups, pairedTuples)
+        
+        group = groups[0]
+        notJoined = group.doWork()
+
+        # rideRequest Response
+        responseDict = {"notJoined": notJoined}
+        # return rideRequest.getFirestoreRef().id, 200
+        return json.dumps(responseDict), 200
+
+
 api = Api(app)
 api.add_resource(RideRequestService, '/rideRequests')
+api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
@@ -137,7 +187,7 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict,
     rideRequestDict['target'] = target.toDict()
 
     # Set EventRef
-    eventRef = utils.findEvent(form) 
+    eventRef = utils.findEvent(form)
     rideRequestDict['eventRef'] = eventRef
     location = utils.getAirportLocation(form)
     airportLocationRef = location.getFirestoreRef()
