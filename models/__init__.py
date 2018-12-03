@@ -5,3 +5,4 @@ from models.event import Event
 from models.orbit import Orbit
 from models.target import Target, ToEventTarget
 from models.user import User
+from models.event_schedule import EventSchedule

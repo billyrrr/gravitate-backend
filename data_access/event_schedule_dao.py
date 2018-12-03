@@ -17,9 +17,32 @@ class EventScheduleGenericDao:
         Database access object for eventSchedules
     """
 
-    def __init__(self):
-        self.eventScheduleCollectionRef = db.collection('eventSchedules')
+    def __init__(self, userId = None, userRef = None):
+        """ Description
+            Either userId or userRef must be specified
 
+            :type self:
+            :param self:
+
+            :type userId:
+            :param userId:
+
+            :type userRef:
+            :param userRef:
+
+            :raises:
+
+            :rtype:
+        """
+        assert (userId != None) or (userRef != None)
+        assert (userId == None) or (userRef == None)
+
+        if userId:
+            self.eventScheduleCollectionRef = db.collection('users').document(userId).collection('eventSchedules')
+        else:
+            self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
+
+    
     @transactional
     def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[EventSchedule]:
         """ Description
