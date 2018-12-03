@@ -1,4 +1,5 @@
 from models import EventSchedule, AirportRideRequest, Orbit
+import google.cloud.firestore
 
 class EventScheduleBuilder(EventSchedule):
 
@@ -34,4 +35,5 @@ def buildEventSchedule(rideRequest: AirportRideRequest):
     eventSchedule.buildRideRequest(rideRequest)
     return eventSchedule
 
-    
+def populateMemberProfiles(userRefs=None, userIds=None) -> [str]:
+    raise NotImplementedError()

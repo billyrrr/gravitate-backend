@@ -78,4 +78,3 @@ class EventSchedule(object):
         }
         return eventScheduleDict
 
-
