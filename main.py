@@ -92,7 +92,10 @@ class RideRequestService(Resource):
             UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, toEventRideRequestRef=rideRequestRef)
             transaction.commit()
 
-            return rideRequest.getFirestoreRef().id, 200
+            # rideRequest Response
+            responseDict = {"FirestoreRef": rideRequest.getFirestoreRef().id}
+            # return rideRequest.getFirestoreRef().id, 200
+            return json.dumps(responseDict), 200
         else:
             print(validateForm.errors)
             return validateForm.errors, 400
