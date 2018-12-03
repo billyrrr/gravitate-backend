@@ -57,8 +57,6 @@ class EventScheduleGenericDao:
         transaction.commit()
         return eventScheduleResult
 
-    
-
     def create(self, EventSchedule: Type[EventSchedule])->DocumentReference:
         """ Description
         :type self:
