@@ -62,15 +62,10 @@ class EventDao:
 		"""
 		return eventRef.delete()
 
-	def __init__(self):
-		self.eventCollectionRef = db.collection('events')
-
 	def create(self, event: Event)->DocumentReference:
 		_, eventRef = self.eventCollectionRef.add(event.toDict())
 		return eventRef
-	""" Description	
-		Database access object for events
-	"""
+
 	def __locateAirportEvent(self, timestamp):
 		""" Description
 			Uses the timestamp of an event to find the event reference
