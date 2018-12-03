@@ -6,8 +6,9 @@ class EventScheduleBuilder(EventSchedule):
     def __init__(self):
         super().__init__()
 
-    def buildEmptyArray(self):
+    def buildNoOrbit(self):
         self.memberProfilePhotoUrls = []
+        self.pending = True
 
     def buildRideRequest(self, airportRideRequest: AirportRideRequest):
         self.pickupAddress = airportRideRequest.pickupAddress
@@ -26,17 +27,9 @@ class EventScheduleBuilder(EventSchedule):
 
 
 def buildEventSchedule(rideRequest: AirportRideRequest):
-    # eventScheduleDict = {
-    #     "destName": "",
-    #     "destTime": "",
-    #     "flightTime": "",
-    #     "memberProfilePhotoUrls": [],
-    #     "pickupAddress": "",
-    #     "pending": None
-    # }
     eventSchedule = EventScheduleBuilder()
     eventSchedule.buildRideRequest(rideRequest)
-    eventSchedule.buildEmptyArray()
+    eventSchedule.buildNoOrbit()
     return eventSchedule
 
 def populateMemberProfiles(userRefs=None, userIds=None) -> [str]:

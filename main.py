@@ -33,6 +33,7 @@ from controllers import utils
 from google.cloud import firestore
 from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
+from controllers import eventscheduleutils
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.user_dao import UserDao
 from data_access.event_dao import EventDao
@@ -89,7 +90,8 @@ class RideRequestService(Resource):
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(rideRequest, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
-            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, toEventRideRequestRef=rideRequestRef)
+            eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest)
+            UserDao.addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
             transaction.commit()
 
             return rideRequest.getFirestoreRef().id, 200

@@ -10,7 +10,7 @@ eventScheduleDict = {
     "flightTime": "2018-12-17T12:00:00.000",
     "memberProfilePhotoUrls": [],
     "pickupAddress": "Tenaya Hall, San Diego, CA 92161",
-    "pending": None,
+    "pending": True,
 	"rideRequestRef": "/rideRequests/testRef1",
 	"orbitRef": None
 }
