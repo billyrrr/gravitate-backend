@@ -24,7 +24,7 @@ class EventSchedule(object):
         EventSchedule.setFirestoreRef(EventScheduleRef)
         return EventSchedule
 
-    def __init__(self, destName, destTime, flightName, memberProfilePhoto, pickupAddress, status):
+    def __init__(self, destName, destTime, flightName, memberProfilePhoto, pickupAddress, pending):
         """ Description
         This function initializes the EventSchedule Object
         Note that this function should not be called directly
@@ -35,7 +35,7 @@ class EventSchedule(object):
         :param flightName: The time of the flight
         :param memberProfilePhoto: An array of URLs of the other members in the orbit 
         :param pickupAddress: The pickup address of the user
-        :param status: "1" indicates not ready, "2" indicates ready
+        :param pending: "True" not matched into orbit, "False" matched into orbit
         """
 
         self.destName = destName
@@ -43,7 +43,7 @@ class EventSchedule(object):
         self.flightName = flightName
         self.memberProfilePhoto = memberProfilePhoto
         self.pickupAddress = pickupAddress
-        self.status = status
+        self.pending = pending
 
     @staticmethod
     def fromDict(EventScheduleDict):
@@ -57,8 +57,8 @@ class EventSchedule(object):
         flightName = EventScheduleDict['flightName']
         memberProfilePhoto = EventScheduleDict['memberProfilePhoto']
         pickupAddress = EventScheduleDict['pickupAddress']
-        status = EventScheduleDict['status']
-        return EventSchedule(destName, destTime, flightName, memberProfilePhoto, pickupAddress, status)
+        pending = EventScheduleDict['pending']
+        return EventSchedule(destName, destTime, flightName, memberProfilePhoto, pickupAddress, pending)
 
     def toDict(self):
         EventScheduleDict = {
@@ -67,7 +67,7 @@ class EventSchedule(object):
             'flightName': self.flightName,
             'memberProfilePhoto': self.memberProfilePhoto
             'pickupAddress': self.pickupAddress,
-            'status': self.status
+            'pending': self.pending
         }
         return EventScheduleDict
 
