@@ -21,9 +21,16 @@ class EventScheduleTest(unittest.TestCase):
         eventSchedule = EventSchedule.fromDict(eventScheduleDict)
         self.assertDictEqual(eventScheduleDict, eventSchedule.toDict())
 
-class EventScheduleDAOTest(unittest.TestCase):
-
     def testCreate(self):
         rideRequest = factory.getMockRideRequest()
         eventSch = eventscheduleutils.buildEventSchedule(rideRequest)
         self.assertEquals(eventScheduleDict, eventSch.toDict())
+
+    def testCreateCompletedRideRequest(self):
+        raise NotImplementedError
+        # rideRequest: make a mock ride request that is matched to an orbit
+        # orbit: make an orbit that is matched to a pair of users
+
+# class EventScheduleDAOTest(unittest.TestCase):
+
+    
