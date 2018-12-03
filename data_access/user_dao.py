@@ -4,6 +4,7 @@ from firebase_admin import auth
 import google
 from typing import Type
 from models.user import User
+from models.event_schedule import EventSchedule
 import data_access
 import warnings
 import config
@@ -74,7 +75,7 @@ class UserDao:
 
     @staticmethod
     @transactional
-    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, toEventRideRequestRef: str=None):
+    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, eventSchedule: EventSchedule=None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
 				Note that the toEventRideRequestRef will be 
@@ -106,11 +107,9 @@ class UserDao:
         # warnings.warn("Using mock/test event id. Must replace before release. ")
 
         # Get the DocumentReference for the EventSchedule
-        eventScheduleRef: DocumentReference = eventSchedulesRef.document(
-            eventId)
-        transaction.set(eventScheduleRef, {
-            'toEventRideRequestRef': toEventRideRequestRef
-        }, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
+        eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
+        eventScheduleDict = eventSchedule.toDict()
+        transaction.set(eventScheduleRef, eventScheduleDict, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
     @transactional
     def setOrbitWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):

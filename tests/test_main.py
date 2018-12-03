@@ -127,12 +127,13 @@ class TestCreateRideRequestLogics(TestCase):
 
     def testSaveRideRequestToDb(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm, userId))
+        rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
+        result = RideRequest.fromDict(rideRequestDict)
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = fillRideRequestDictWithForm(mockForm, userId)
+        result, _ = fillRideRequestDictWithForm(mockForm, userId)
         valueExpected = RideRequest.fromDict({
 
             'rideCategory': 'airportRide',

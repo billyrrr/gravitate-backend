@@ -99,9 +99,9 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     # Move data from the form frontend submitted to userDict
     userDict['uid'] = form.uid
     userDict['membership'] = form.membership
-    userDict['displayName'] = form.displayName
-    userDict['phoneNumber'] = form.phoneNumber
-    userDict['photoURL'] = form.photoURL
+    userDict['display_name'] = form.display_name
+    userDict['phone_number'] = form.phone_number
+    userDict['photo_url'] = form.photo_url
 
     return userDict
 

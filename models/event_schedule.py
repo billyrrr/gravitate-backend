@@ -33,7 +33,8 @@ class EventSchedule(object):
         pending = eventScheduleDict['pending']
         rideRequestRef = eventScheduleDict['rideRequestRef']
         orbitRef = eventScheduleDict['orbitRef']
-        return EventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending, rideRequestRef, orbitRef)
+        locationRef = eventScheduleDict['locationRef']
+        return EventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending, rideRequestRef, orbitRef, locationRef)
 
         
     @staticmethod
@@ -42,7 +43,7 @@ class EventSchedule(object):
         eventSchedule.setFirestoreRef(eventScheduleRef)
         return eventSchedule
 
-    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None, pending=None, rideRequestRef=None, orbitRef=None):
+    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None, pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
         """ Description
         This function initializes the EventSchedule Object
         Note that this function should not be called directly
@@ -64,6 +65,7 @@ class EventSchedule(object):
         self.pending = pending
         self.rideRequestRef = rideRequestRef
         self.orbitRef = orbitRef
+        self.locationRef = locationRef
 
     def toDict(self):
         eventScheduleDict = {
@@ -74,8 +76,8 @@ class EventSchedule(object):
             'pickupAddress': self.pickupAddress,
             'pending': self.pending, 
             'rideRequestRef': self.rideRequestRef, 
-            'orbitRef': self.orbitRef
+            'orbitRef': self.orbitRef,
+            'locationRef': self.locationRef
         }
         return eventScheduleDict
-
 

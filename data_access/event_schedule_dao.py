@@ -68,8 +68,8 @@ class EventScheduleGenericDao:
             snapshot: DocumentSnapshot = eventScheduleRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            EventSchedule = EventSchedule.fromDict(snapshotDict)
-            return EventSchedule
+            eventSchedule = EventSchedule.fromDict(snapshotDict)
+            return eventSchedule
 
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(eventScheduleRef.id))
@@ -81,21 +81,20 @@ class EventScheduleGenericDao:
         transaction.commit()
         return eventScheduleResult
 
-    def create(self, EventSchedule: Type[EventSchedule])->DocumentReference:
+    def create(self, eventSchedule: Type[EventSchedule])->DocumentReference:
         """ Description
         :type self:
         :param self:
 
-        :type EventSchedule
+        :type eventSchedule
         :Type[EventSchedule]:
-        :param EventSchedule
-        :Type[EventSchedule]:
+
 
         :raises:
 
         :rtype:
         """
-        _, eventScheduleRef = self.eventScheduleCollectionRef.add(EventSchedule.toDict())
+        _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.toDict())
         return eventScheduleRef
 
     def delete(self, singleEventScheduleRef: DocumentReference):

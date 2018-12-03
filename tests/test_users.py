@@ -15,11 +15,11 @@ import config
 db = config.Context.db
 
 userDict: dict = {
-    'uid': 'Ep7WCjZatagd1Nr50ToNkIp4WWt2',
-    'phoneNumber': '908-655-6098',
+    'uid': 'IC7a0Fm4LiMhtCF10BckQrv1Csb2',
+    'phone_number': '+17777777878',
     'membership': 'rider',
-    'displayName': 'Johnny Appleseed',
-    'photoURL': 'abcdefhijkl.com'
+    'display_name': 'Johnny Appleseed',
+    'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg'
 }
 
 # userDict: dict = {
@@ -73,15 +73,15 @@ class UserDAOTest(unittest.TestCase):
 
 class FirebaseUserTest(unittest.TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("LwkGgNe7HMRpFn6v9kcYCL7HBpx1")
+        user = auth.get_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2")
         print(user.display_name)
 
-    def testDeleteUser(self):
-        auth.delete_user("LwkGgNe7HMRpFn6v9kcYCL7HBpx1")
+    # def testDeleteUser(self):
+    #     auth.delete_user("LwkGgNe7HMRpFn6v9kcYCL7HBpx1")
 
     def testUpdateUser(self):
-        auth.update_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2",
-            phone_number = "+14155552671",
+        auth.update_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2",
+            phone_number = "+17777777877",
             display_name = "David Nong",
             disabled = False
         )
