@@ -38,8 +38,10 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
     rideRequestDao = RideRequestGenericDao()
     rideRequest = rideRequestDao.getRideRequestWithTransaction(
         transaction, rideRequestRef)
+    rideRequest.setFirestoreRef(rideRequestRef)
     orbitDao = OrbitDao()
     orbit = orbitDao.getOrbitWithTransaction(transaction, orbitRef)
+    orbit.setFirestoreRef(orbitRef)
 
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
@@ -51,9 +53,7 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
     try:
         rideRequestDao.setRideRequestWithTransaction(
             transaction, rideRequest, rideRequest.getFirestoreRef())
-        orbitDao.setOrbitWithTransaction(
-            transaction, orbit, orbit.getFirestoreRef())
-        # TODO: add other works to be done if any
+        orbitDao.setOrbitWithTransaction(transaction, orbit, orbit.getFirestoreRef())
         transaction.commit()
     except:
         # Firestore rollsback operations automatically. No need for manual rollback.
