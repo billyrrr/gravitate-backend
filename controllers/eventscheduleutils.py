@@ -1,6 +1,9 @@
 from models import EventSchedule, AirportRideRequest, Orbit
 
-class EventSchedulerBuilder(EventSchedule):
+class EventScheduleBuilder(EventSchedule):
+
+    def __init__(self):
+        super().__init__()
 
     def buildRideRequest(self, airportRideRequest: AirportRideRequest):
         self.pickupAddress = airportRideRequest.pickupAddress
@@ -18,12 +21,16 @@ class EventSchedulerBuilder(EventSchedule):
             # Set orbitId
 
 
-def createEventSchedule():
-    eventScheduleDict = {
-        "destName": "",
-        "destTime": "",
-        "flightTime": "",
-        "memberProfilePhotoUrls": [],
-        "pickupAddress": "",
-        "pending": None
-    }
+def buildEventSchedule(rideRequest: AirportRideRequest):
+    # eventScheduleDict = {
+    #     "destName": "",
+    #     "destTime": "",
+    #     "flightTime": "",
+    #     "memberProfilePhotoUrls": [],
+    #     "pickupAddress": "",
+    #     "pending": None
+    # }
+    eventSchedule = EventScheduleBuilder()
+    eventSchedule.buildRideRequest(rideRequest)
+    return eventSchedule
+
