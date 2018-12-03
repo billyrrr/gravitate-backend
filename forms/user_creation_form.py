@@ -7,9 +7,9 @@ from wtforms.validators import DataRequired,length
 class UserCreationForm():
     uid = None
     membership = None
-    displayName = None
-    phoneNumber = None
-    photoURL = None
+    display_name = None
+    phone_number = None
+    photo_url = None
 
 class UserCreationValidateForm(Form):
 
@@ -17,14 +17,14 @@ class UserCreationValidateForm(Form):
     uid = StringField(u'UID', validators=[
         DataRequired('UID needs to be specified.')])
 
-    phoneNumber = StringField(u'Phone Number',  validators=[
+    phone_number = StringField(u'Phone Number',  validators=[
         DataRequired('Phone Number needs to be specified.')])
 
     membership = StringField(u'Membership', validators=[
         DataRequired('Membership needs to be specified.')])
 
-    displayName = StringField(u'Name', validators=[
+    display_name = StringField(u'Name', validators=[
         DataRequired('Name needs to be specified.')])
 
-    photoURL = StringField(u'Photo URL', validators=[
+    photo_url = StringField(u'Photo URL', validators=[
         DataRequired('Photo URL needs to be specified.')])
