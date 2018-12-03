@@ -47,5 +47,5 @@ class TestGenerateEvent(unittest.TestCase):
         timestampTupleList = generateTimestamps(startDatetime, 2)
         eventList = generateEvents(timestampTupleList)
         expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
-                             'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100, 'isClosed':False}
+                             'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100, 'isClosed': False}
         self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].toDict())

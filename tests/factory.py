@@ -1,4 +1,7 @@
 import models
+import config
+
+db = config.Context.db
 
 class MockForm(object):
 
@@ -98,7 +101,14 @@ class FormDictFactory:
             return mockForm
 
 
-def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef='/rideRequests/testRef1'):
+def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600,  firestoreRef='/rideRequests/testRef1', userId='SQytDq13q00e0N3H4agR', useDocumentRef = False, returnDict = False, returnSubset = False):
+    
+    locationRefStr = "/locations/testairportlocationid1"
+    locationReference = db.collection("locations").document("testairportlocationid1")
+
+    eventRefStr = "/events/testeventid1"
+    eventReference = db.collection("events").document("testeventid")
+
     rideRequestDict = {
 
             'rideCategory': 'airportRide',
@@ -109,20 +119,26 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
                          'toEvent': True,
                          'arriveAtEventTime':
                          {'earliest': earliest, 'latest': latest}},
-            'eventRef': '/events/testeventid1',
-            'userId': 'SQytDq13q00e0N3H4agR',
+            
+            'userId': userId,
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": "/locations/testairportlocationid1",
+            
             "requestCompletion": False
 
         }
-    rideRequestDict['target']['arriveAtEventTime']['earliest'] = earliest
-    rideRequestDict['target']['arriveAtEventTime']['latest'] = latest
-    rideRequest = models.ride_request.RideRequest.fromDict(rideRequestDict)
-    rideRequest.setFirestoreRef(firestoreRef)
-    return rideRequest
+
+    if not returnSubset:
+        rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
+        rideRequestDict["eventRef"] = eventReference if useDocumentRef else eventRefStr
+
+    if returnDict:
+        return rideRequestDict
+    else:
+        rideRequest = models.ride_request.RideRequest.fromDict(rideRequestDict)
+        rideRequest.setFirestoreRef(firestoreRef)
+        return rideRequest

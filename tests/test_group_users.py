@@ -90,7 +90,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         for earliest, latest, firestoreRef in arr:
             rideRequest = factory.getMockRideRequest(
-                earliest=earliest, latest=latest, firestoreRef=firestoreRef)
+                earliest=earliest, latest=latest, firestoreRef=firestoreRef, userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
             transaction = db.transaction()
             RideRequestGenericDao().setRideRequestWithTransaction(
                 transaction, rideRequest, firestoreRef)
@@ -142,27 +142,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         orbit = Orbit.fromDict(orbitDict)
 
-        rideRequestDict = {
-
-            'rideCategory': 'airportRide',
-            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
-            'driverStatus': False,
-            'orbitRef': None,
-            'target': {'eventCategory': 'airportRide',
-                       'toEvent': True,
-                       'arriveAtEventTime':
-                       {'earliest': 1545058800, 'latest': 1545069600}},
-            'eventRef': db.document('events', 'testeventid1'),
-            'userId': 'SQytDq13q00e0N3H4agR',
-            'hasCheckedIn': False,
-            'pricing': 987654321,
-            "baggages": dict(),
-            "disabilities": dict(),
-            'flightLocalTime': "2018-12-17T12:00:00.000",
-            'flightNumber': "DL89",
-            "airportLocation": db.document("locations", "testairportlocationid1"),
-            "requestCompletion": False
-        }
+        rideRequestDict = factory.getMockRideRequest(
+            useDocumentRef=True, returnDict=True, returnSubset=False)
 
         rideRequest = RideRequest.fromDict(rideRequestDict)
         rideRequest.setFirestoreRef(db.document(
@@ -171,7 +152,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         groupingutils.placeInOrbit(rideRequest, orbit)
         userTicketPairsDict = orbit.toDict()["userTicketPairs"]
         expectedDict = {
-            'SQytDq13q00e0N3H4agR' : {
+            'SQytDq13q00e0N3H4agR': {
                 "rideRequestRef": db.document('rideRequests', 'testriderequestid1'),
                 "userWillDrive": False,
                 "hasCheckedIn": False,

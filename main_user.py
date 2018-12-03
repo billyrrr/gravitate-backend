@@ -18,8 +18,6 @@
 import logging
 import json
 
-from models.target import Target
-from models.ride_request import RideRequest, AirportRideRequest
 from models.user import User
 
 from flask import Flask, request, jsonify
@@ -34,6 +32,7 @@ from controllers import utils
 from controllers import userutils
 
 from google.cloud import firestore
+
 from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
 
@@ -50,10 +49,21 @@ db = Context.db
 parser = reqparse.RequestParser()
 
 class UserService(Resource):
-
+    
     def post(self):
         requestJson = request.get_json()
-        requestForm =  json.loads(requestJson) if (type(requestJson) != dict) else requestJson
+        requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
+
+        # if type(requestJson) == "dict":
+        #     requestForm = requestJson
+        # elif type(requestJson) == "ImmutableMultiDict":
+        #     requestForm = requestJson.to_dict()
+        # elif type(requestJson) == "str":
+        #     # Note that some strings can fail this condition
+        #     requestForm = json.loads(requestJson)
+        # else: 
+        #     warnings.warn("Receiving request json with expected type: {}".format(type(requestJson)))
+        #     requestForm = json.loads(requestJson)
 
         validateForm = UserCreationValidateForm(data=requestForm)
         
@@ -68,7 +78,7 @@ class UserService(Resource):
             # Create User Object
             newUser: User = User.fromDict(userDict)
 
-            userId = utils.randomId()
+            userId = newUser.uid
             userRef = UserDao().userCollectionRef.document(document_id=userId)
             newUser.setFirestoreRef(userRef)
             transaction = db.transaction()
@@ -81,7 +91,7 @@ class UserService(Resource):
             return newUser.getFirestoreRef().id, 200
         else:
             print(validateForm.errors)
-            return validateForm.errors, 201
+            return validateForm.errors, 400
 
 def fillUserDictWithForm(form: UserCreationForm) -> dict:
     userDict = dict()
@@ -89,8 +99,9 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     # Move data from the form frontend submitted to userDict
     userDict['uid'] = form.uid
     userDict['membership'] = form.membership
-    userDict['fullName'] = form.fullName
-    userDict['picture'] = form.picture
+    userDict['displayName'] = form.displayName
+    userDict['phoneNumber'] = form.phoneNumber
+    userDict['photoURL'] = form.photoURL
 
     return userDict
 
