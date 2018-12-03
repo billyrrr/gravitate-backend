@@ -2,7 +2,7 @@ import unittest
 from tests import factory 
 from controllers import eventscheduleutils
 from data_access import EventScheduleGenericDao
-
+from models import EventSchedule
 
 eventScheduleDict = {
 	"destName": None,
@@ -15,8 +15,13 @@ eventScheduleDict = {
 	"orbitRef": None
 }
 
-class EventScheduleDAOTest(unittest.TestCase):
+class EventScheduleTest(unittest.TestCase):
+    
+    def testFromAndToDict(self):
+        eventSchedule = EventSchedule.fromDict(eventScheduleDict)
+        self.assertDictEqual(eventScheduleDict, eventSchedule.toDict())
 
+class EventScheduleDAOTest(unittest.TestCase):
 
     def testCreate(self):
         rideRequest = factory.getMockRideRequest()
