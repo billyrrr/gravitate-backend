@@ -115,19 +115,19 @@ def mockFindEvent(form: RideRequestCreationForm) -> str:
 
     # Query to locate proper Event. Supposed to be only one for airport ride
 
-    # Event found and parsed from snapshot returned by query (not neccessary)
-    event = Event.fromDict({
-            "eventCategory": "airport",
-            "participants": [
-                    "refU01",
-                    "refU02"
-            ],
-            "eventLocation": "refL01",
-            "locationRefs": [],
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
-            "pricing": 100
-    })
+    """     # Event found and parsed from snapshot returned by query (not neccessary)
+        event = Event.fromDict({
+                "eventCategory": "airport",
+                "participants": [
+                        "refU01",
+                        "refU02"
+                ],
+                "eventLocation": "refL01",
+                "locationRefs": [],
+                "startTimestamp": 1545033600,
+                "endTimestamp": 1545119999,
+                "pricing": 100
+        }) """
 
     # eventRef of type DocumentReference as returned by query
     eventRef = '/events/testeventid1'

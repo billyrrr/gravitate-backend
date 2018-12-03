@@ -4,14 +4,18 @@ from flask import request, jsonify
 from main import fillRideRequestDictWithForm
 from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
+from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 from unittest import TestCase
 from models.ride_request import RideRequest, AirportRideRequest
+from models.user import User
 from requests import request
 import json
 from tests.factory import FormDictFactory
 import config
 
 db = config.Context.db
+
+userId = 'SQytDq13q00e0N3H4agR'
 
 class MainAppTestCase(TestCase):
 
@@ -23,6 +27,7 @@ class MainAppTestCase(TestCase):
         self.app = main.app.test_client()
         self.originalFrontendJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
         self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
+        self.frontendFailedJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-12T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"Regents Rd, San Diego, CA, USA","toEvent":true,"driverStatus":false,"airportCode":"LAX"}'
 
     def testCreateRideRequest(self):
  
@@ -36,15 +41,22 @@ class MainAppTestCase(TestCase):
         print(r.data)
         assert r.status_code == 200
 
+    def testCreateRideRequestFailedFrontend(self):
+ 
+        r = self.app.post(path='/rideRequests', json = self.frontendFailedJson)
+        print(r.data)
+        self.assertEqual(r.status_code, 200)
+
     def testContextTest(self):
         r = self.app.post(path='/contextTest', json={'key1':'val1a'})
         assert r.status_code == 200
 
     def testCreateUser(self):
  
-        r = self.app.post(path='/users', json = json.dumps(FormDictFactory().create(returnDict = True)))
-
+        r = self.app.post(path='/users', json = {"uid": "refU01","fullName": "Johnny Appleseed","pictureID": "photo_url"} )
         assert r.status_code == 200
+
+        
         # assert 'Hello World' in r.data.decode('utf-8')
 
     # Example:
@@ -115,12 +127,12 @@ class TestCreateRideRequestLogics(TestCase):
 
     def testSaveRideRequestToDb(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm))
+        result = RideRequest.fromDict(fillRideRequestDictWithForm(mockForm, userId))
         saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest = False, returnDict = False)
-        result = fillRideRequestDictWithForm(mockForm)
+        result = fillRideRequestDictWithForm(mockForm, userId)
         valueExpected = RideRequest.fromDict({
 
             'rideCategory': 'airportRide',
@@ -132,15 +144,17 @@ class TestCreateRideRequestLogics(TestCase):
                          'arriveAtEventTime':
                          {'earliest': 1545058800, 'latest': 1545069600}},
             'eventRef': db.document('events','testeventid1'),
+            'userId': 'SQytDq13q00e0N3H4agR',
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": db.document("locations", "testairportlocationid1")
+            "airportLocation": db.document("locations", "testairportlocationid1"),
+            "requestCompletion": False
 
         }).toDict()
-        # self.assert(valueExpected, result)
+        self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])

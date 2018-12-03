@@ -7,6 +7,7 @@
                 "hasCheckedIn": false,
                 "eventRef": "refE01",
                 "orbitRef": "refO01",
+                "userId": "testuserid1",
                 "target":
                         {
                                 "eventCategory": "airport",
@@ -24,6 +25,7 @@
                 "flightNumber": "DL89",
                 "airportLocation": "refL01",
                 "baggages": null,
-                "disabilities": null 
+                "disabilities": null,
+                "requestCompletion": false
         }
 }

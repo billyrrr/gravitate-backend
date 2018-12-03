@@ -110,13 +110,15 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
                          'arriveAtEventTime':
                          {'earliest': earliest, 'latest': latest}},
             'eventRef': '/events/testeventid1',
+            'userId': 'SQytDq13q00e0N3H4agR',
             'hasCheckedIn': False,
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
             'flightLocalTime': "2018-12-17T12:00:00.000",
             'flightNumber': "DL89",
-            "airportLocation": "/locations/testairportlocationid1"
+            "airportLocation": "/locations/testairportlocationid1",
+            "requestCompletion": False
 
         }
     rideRequestDict['target']['arriveAtEventTime']['earliest'] = earliest

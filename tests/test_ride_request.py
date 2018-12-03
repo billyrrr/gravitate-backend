@@ -1,9 +1,12 @@
 import unittest
 from models.ride_request import RideRequest, AirportRideRequest
 from data_access.ride_request_dao import RideRequestGenericDao
+from models.ride_request import RideRequest
+from models.orbit import Orbit
 from google.cloud import firestore
 import json
 import config
+db = config.Context.db
 
 class RideRequestTest(unittest.TestCase):
     def setUp(self):

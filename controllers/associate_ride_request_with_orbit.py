@@ -3,7 +3,7 @@ from models.ride_request import RideRequest, AirportRideRequest, SocialEventRide
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.orbit_dao import OrbitDao
 from google.cloud.firestore import DocumentReference, Client
-from usersHelper.placeInOrbit import placeInOrbit
+from controllers import groupingutils
 from typing import Type
 import config
 
@@ -45,7 +45,7 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
 
     # Modify local copies of rideRequest and orbit
-    placeInOrbit(rideRequest, orbit)
+    groupingutils.placeInOrbit(rideRequest, orbit)
 
     # Update database copy of rideRequest and orbit
     try:
@@ -57,4 +57,4 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
         transaction.commit()
     except:
         # Firestore rollsback operations automatically. No need for manual rollback.
-        raise
+       raise

@@ -1,4 +1,6 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from firebase_admin import auth
+
 import google
 from typing import Type
 from models.user import User
@@ -62,8 +64,13 @@ class UserDao:
     @staticmethod
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
-        transaction.set(userRef, newUser)
-
+        transaction.set(userRef, newUser.toFirestoreDict())
+        auth.update_user(newUser.uid,
+            phone_number = newUser.phone_number,
+            display_name  = newUser.display_name,
+            photo_url  = newUser.photo_url,
+            disabled = False
+        )
 
     @staticmethod
     @transactional

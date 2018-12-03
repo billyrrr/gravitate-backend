@@ -2,6 +2,7 @@ from controllers.associate_ride_request_with_orbit import joinOrbitToRideRequest
 from models.orbit import Orbit
 from data_access.ride_request_dao import RideRequestGenericDao
 from controllers.group_user import pair
+from controllers import utils
 from models.ride_request import RideRequest, Target, ToEventTarget
 import config
 
@@ -98,7 +99,10 @@ class Group:
             try:
                 # Trying to join one rideRequest to the orbit
                 raise NotImplementedError
-                # joinOrbitToRideRequest(client=None, rideRequest.firestoreRef, rideRequest, orbit.firestoreRef, orbit)
+                joinOrbitToRideRequest( rideRequest.firestoreRef, rideRequest, orbit.firestoreRef, orbit)
+                assert rideRequest.getFirestoreRef() != None
+                utils.saveRideRequest(rideRequest)
+                # Save orbit
             except:
                 # TODO when failing to join, move on to next
                 notJoined.append(rideRequest)
