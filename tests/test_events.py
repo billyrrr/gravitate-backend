@@ -7,23 +7,23 @@ import config
 db = config.Context.db
 
 eventDict = {
-                "eventCategory": "airport",
-                "participants": [
-                ],
-                "eventLocation": "LAX",
-                "locationRef": "locations/testlocationid1",
-                "startTimestamp": 1545033600,
-                "endTimestamp": 1545119999,
-                "pricing": 100,
-                "isClosed": False
+				"eventCategory": "airport",
+				"participants": [
+				],
+				"eventLocation": "LAX",
+				"locationRef": "locations/testlocationid1",
+				"startTimestamp": 1545033600,
+				"endTimestamp": 1545119999,
+				"pricing": 100,
+				"isClosed": False
 }
 
 class EventModelTest(unittest.TestCase):
-    
-    def testEventFactory(self):
-        event = Event.fromDict(eventDict)
-        # Assert that event converts to the same dict that generated the event
-        self.assertDictEqual(event.toDict(), eventDict)
+	
+	def testEventFactory(self):
+		event = Event.fromDict(eventDict)
+		# Assert that event converts to the same dict that generated the event
+		self.assertDictEqual(event.toDict(), eventDict)
 
 # class EventCollectionTest(unittest.TestCase):
 
@@ -40,23 +40,23 @@ class EventModelTest(unittest.TestCase):
 
 class EventDAOTest(unittest.TestCase):
 
-    def setUp(self):
-        self.event = Event.fromDict(eventDict)
+	def setUp(self):
+		self.event = Event.fromDict(eventDict)
 
-    def testCreate(self):
-        eventRef: firestore.DocumentReference = EventDao().create(self.event)
-        self.event.setFirestoreRef(eventRef)
-        print("eventRef = {}".format(eventRef))
+	def testCreate(self):
+		eventRef: firestore.DocumentReference = EventDao().create(self.event)
+		self.event.setFirestoreRef(eventRef)
+		print("eventRef = {}".format(eventRef))
 
-    # def testDelete(self):
+	# def testDelete(self):
 	# 	eventRef: firestore.DocumentReference = EventDao().create(self.event)
 	# 	self.event.setFirestoreRef(eventRef)
 	# 	self.delete(eventRef)
 	# 	# self.assertEquals()
 
-    def testFindByTimestamp(self):
-        event: Event = EventDao().findByTimestamp(1546504400)
-        # self.assertNotEqual(None, eventRef)
-        self.assertEquals(event.startTimestamp, 1546502400)
-        #self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
-        
+	def testFindByTimestamp(self):
+		event: Event = EventDao().findByTimestamp(1546504400)
+		# self.assertNotEqual(None, eventRef)
+		# self.assertEquals(event.startTimestamp, 1546502400)
+		#self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
+		
