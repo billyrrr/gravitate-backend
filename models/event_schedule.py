@@ -42,7 +42,7 @@ class EventSchedule(object):
         eventSchedule.setFirestoreRef(eventScheduleRef)
         return eventSchedule
 
-    def __init__(self, destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending, rideRequestRef, orbitRef):
+    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None, pending=None, rideRequestRef=None, orbitRef=None):
         """ Description
         This function initializes the EventSchedule Object
         Note that this function should not be called directly
