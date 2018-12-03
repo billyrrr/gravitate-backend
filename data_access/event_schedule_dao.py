@@ -4,7 +4,7 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional, Query
 import google
 from typing import Type
-from models.EventSchedule import EventSchedule
+from models import EventSchedule
 import config
 import warnings
 
@@ -34,6 +34,7 @@ class EventScheduleGenericDao:
 
             :rtype:
         """
+
         assert (userId != None) or (userRef != None)
         assert (userId == None) or (userRef == None)
 
@@ -86,11 +87,9 @@ class EventScheduleGenericDao:
         :param self:
 
         :type EventSchedule
-        :Type[EventSchedule
-        ]:
+        :Type[EventSchedule]:
         :param EventSchedule
-        :Type[EventSchedule
-        ]:
+        :Type[EventSchedule]:
 
         :raises:
 
