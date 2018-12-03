@@ -56,7 +56,7 @@ def buildEventScheduleOrbit(rideRequest: AirportRideRequest, location: AirportLo
     eventSchedule = eventScheduleBuilder.export()
     return eventSchedule
 
-def getMemberProfilePhotoUrls(orbit: orbit) -> [str]:
+def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     """ Description
         [Assigned to Leon]
         Don't have to follow the method signature, but the signature is required to get other code working. 

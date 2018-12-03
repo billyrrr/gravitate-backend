@@ -18,8 +18,9 @@ eventDict = {
 				"isClosed": False
 }
 
+
 class EventModelTest(unittest.TestCase):
-	
+
 	def testEventFactory(self):
 		event = Event.fromDict(eventDict)
 		# Assert that event converts to the same dict that generated the event
@@ -33,10 +34,11 @@ class EventModelTest(unittest.TestCase):
 #     def testAddToEventSchedule(self):
 #         transaction = db.transaction()
 #         UserDao().addToEventScheduleWithTransaction(
-#             transaction, 
-#             userRef=self.user.getFirestoreRef(), 
-#             eventRef='/events/testeventid1', 
+#             transaction,
+#             userRef=self.user.getFirestoreRef(),
+#             eventRef='/events/testeventid1',
 #             toEventRideRequestRef='/rideRequests/testriderequestid1')
+
 
 class EventDAOTest(unittest.TestCase):
 
@@ -54,9 +56,8 @@ class EventDAOTest(unittest.TestCase):
 	# 	self.delete(eventRef)
 	# 	# self.assertEquals()
 
-    def testFindByTimestamp(self):
-        event: Event = EventDao().findByTimestamp(1546504400)
-        # self.assertNotEqual(None, eventRef)
-        # self.assertEquals(event.startTimestamp, 1546502400)
-        #self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
-        
+	def testFindByTimestamp(self):
+		event: Event = EventDao().findByTimestamp(1546504400)
+		# self.assertNotEqual(None, eventRef)
+		# self.assertEquals(event.startTimestamp, 1546502400)
+		# self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
