@@ -18,6 +18,8 @@ class EventDao:
 	""" Description	
 		Database access object for events
 	"""
+	def __init__(self):
+		self.eventCollectionRef = db.collection('events')
 
 	@transactional
 	def getWithTransaction(self, transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
@@ -43,34 +45,13 @@ class EventDao:
 		except google.cloud.exceptions.NotFound:
 			raise Exception('No such document! ' + str(eventRef.id))    
 
-	def findByTimestamp(self, timestamp):
-		eventId = self.__locateAirportEvent(timestamp)
-		eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
-		event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
-		return event
+	def get(self, eventRef: DocumentReference):
+		transaction = db.transaction()
+		eventResult = self.getWithTransaction(
+			transaction, eventRef)
+		transaction.commit()
+		return eventResult
 
-	def delete(self, eventRef: DocumentReference):
-		""" Description
-			This function deletes a ride request from the database
-		:type self:
-		:param self:
-		:type eventRef:DocumentReference:
-		:param eventRef:DocumentReference:
-		:raises:
-		:rtype:
-		"""
-		return eventRef.delete()
-
-	def __init__(self):
-		self.eventCollectionRef = db.collection('events')
-
-	def create(self, event: Event)->DocumentReference:
-		_, eventRef = self.eventCollectionRef.add(event.toDict())
-		return eventRef
-	""" Description	
-		Database access object for events
-
-	"""
 	def __locateAirportEvent(self, timestamp):
 		""" Description
 			Uses the timestamp of an event to find the event reference
@@ -96,11 +77,26 @@ class EventDao:
 
 		return None
 
-	def get(self, eventRef: DocumentReference):
-		transaction = db.transaction()
-		eventResult = self.getWithTransaction(
-			transaction, eventRef)
-		transaction.commit()
-		return eventResult
+	def findByTimestamp(self, timestamp):
+		eventId = self.__locateAirportEvent(timestamp)
+		eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
+		event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
+		return event
+
+	def delete(self, eventRef: DocumentReference):
+		""" Description
+			This function deletes a ride request from the database
+		:type self:
+		:param self:
+		:type eventRef:DocumentReference:
+		:param eventRef:DocumentReference:
+		:raises:
+		:rtype:
+		"""
+		return eventRef.delete()
+
+	def create(self, event: Event)->DocumentReference:
+		_, eventRef = self.eventCollectionRef.add(event.toDict())
+		return eventRef
 
 		
