@@ -54,9 +54,9 @@ class EventDAOTest(unittest.TestCase):
 	# 	self.delete(eventRef)
 	# 	# self.assertEquals()
 
-	def testFindByTimestamp(self):
-		event: Event = EventDao().findByTimestamp(1546504400)
-		# self.assertNotEqual(None, eventRef)
-		# self.assertEquals(event.startTimestamp, 1546502400)
-		#self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
-		
+    def testFindByTimestamp(self):
+        event: Event = EventDao().findByTimestamp(1546504400)
+        # self.assertNotEqual(None, eventRef)
+        # self.assertEquals(event.startTimestamp, 1546502400)
+        #self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
+        

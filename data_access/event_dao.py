@@ -14,7 +14,6 @@ CTX = data_access.config.Context
 db = CTX.db
 
 class EventDao:
-
 	""" Description	
 		Database access object for events
 	"""
