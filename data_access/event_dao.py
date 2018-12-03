@@ -45,15 +45,6 @@ class EventDao:
 		except google.cloud.exceptions.NotFound:
 			raise Exception('No such document! ' + str(eventRef.id))    
 
-<<<<<<< HEAD
-	def get(self, eventRef: DocumentReference):
-		transaction = db.transaction()
-		eventResult = self.getWithTransaction(
-			transaction, eventRef)
-		transaction.commit()
-		return eventResult
-
-=======
 	def findByTimestamp(self, timestamp):
 		eventId = self.__locateAirportEvent(timestamp)
 		eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
@@ -81,7 +72,6 @@ class EventDao:
 	""" Description	
 		Database access object for events
 	"""
->>>>>>> 73181b04acf12429fb762fec95478e2dba6e1aa0
 	def __locateAirportEvent(self, timestamp):
 		""" Description
 			Uses the timestamp of an event to find the event reference
@@ -107,35 +97,9 @@ class EventDao:
 
 		return None
 
-<<<<<<< HEAD
-	def findByTimestamp(self, timestamp):
-		eventId = self.__locateAirportEvent(timestamp)
-		eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
-		event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
-		return event
-
-	def delete(self, eventRef: DocumentReference):
-		""" Description
-			This function deletes a ride request from the database
-		:type self:
-		:param self:
-		:type eventRef:DocumentReference:
-		:param eventRef:DocumentReference:
-		:raises:
-		:rtype:
-		"""
-		return eventRef.delete()
-
-	def create(self, event: Event)->DocumentReference:
-		_, eventRef = self.eventCollectionRef.add(event.toDict())
-		return eventRef
-
-		
-=======
 	def get(self, eventRef: DocumentReference):
 		transaction = db.transaction()
 		eventResult = self.getWithTransaction(
 			transaction, eventRef)
 		transaction.commit()
 		return eventResult
->>>>>>> 73181b04acf12429fb762fec95478e2dba6e1aa0
