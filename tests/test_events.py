@@ -61,4 +61,3 @@ class EventDAOTest(unittest.TestCase):
 		# self.assertNotEqual(None, eventRef)
 		# self.assertEquals(event.startTimestamp, 1546502400)
 		# self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
-		
