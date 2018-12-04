@@ -36,7 +36,7 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
     transaction = db.transaction()
 
     rideRequestDao = RideRequestGenericDao()
-    rideRequest = rideRequestDao.getRideRequestWithTransaction(
+    rideRequest = rideRequestDao.getWithTransaction(
         transaction, rideRequestRef)
     rideRequest.setFirestoreRef(rideRequestRef)
     orbitDao = OrbitDao()
@@ -51,7 +51,7 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
 
     # Update database copy of rideRequest and orbit
     try:
-        rideRequestDao.setRideRequestWithTransaction(
+        rideRequestDao.setWithTransaction(
             transaction, rideRequest, rideRequest.getFirestoreRef())
         orbitDao.setOrbitWithTransaction(transaction, orbit, orbit.getFirestoreRef())
         transaction.commit()

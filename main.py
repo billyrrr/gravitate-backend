@@ -150,7 +150,7 @@ class OrbitForceMatchService(Resource):
             grouping.groupManyRideRequests(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
-            allRideRequestIds = RideRequestGenericDao().getIds(isRequestCompletionFalse=True)
+            allRideRequestIds = RideRequestGenericDao().getIds(incomplete==True)
             grouping.groupManyRideRequests(allRideRequestIds)
             responseDict = {"success": True, "opeartionMode": "all"}
         else:

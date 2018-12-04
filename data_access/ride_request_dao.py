@@ -20,15 +20,15 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
-    def getIds(self, isRequestCompletionFalse = False):
+    def getIds(self, incomplete = False):
         """ Description
             Get the ids of RideRequests
         
         :type self:
         :param self:
     
-        :type isRequestCompletionFalse:
-        :param isRequestCompletionFalse: If set to true, only RideRequests with requestCompletion=False will be returned. 
+        :type incomplete: bool
+        :param incomplete: If set to true, only RideRequests with requestCompletion=False will be returned. 
     
         :raises:
     
@@ -37,7 +37,7 @@ class RideRequestGenericDao:
 
         docIds = list()
     
-        if isRequestCompletionFalse:
+        if incomplete:
             docs = self.rideRequestCollectionRef.where("requestCompletion", "==", False).get()
         else:
             docs = self.rideRequestCollectionRef.get()
@@ -48,7 +48,7 @@ class RideRequestGenericDao:
 
     @staticmethod
     @transactional
-    def getRideRequestWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
+    def getWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -76,14 +76,14 @@ class RideRequestGenericDao:
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
 
-    def getRideRequest(self, rideRequestRef: DocumentReference):
+    def get(self, rideRequestRef: DocumentReference):
         transaction = db.transaction()
-        rideRequestResult = self.getRideRequestWithTransaction(
+        rideRequestResult = self.getWithTransaction(
             transaction, rideRequestRef)
         transaction.commit()
         return rideRequestResult
 
-    def createRideRequest(self, rideRequest: Type[RideRequest])->DocumentReference:
+    def create(self, rideRequest: Type[RideRequest])->DocumentReference:
         """ Description
         :type self:
         :param self:
@@ -98,7 +98,7 @@ class RideRequestGenericDao:
         _, rideRequestRef = self.rideRequestCollectionRef.add(rideRequest.toDict())
         return rideRequestRef
 
-    def deleteRideRequest(self, singleRideRequestRef: DocumentReference):
+    def delete(self, singleRideRequestRef: DocumentReference):
         """ Description
             This function deletes a ride request from the database
 
@@ -116,7 +116,7 @@ class RideRequestGenericDao:
 
     @staticmethod
     @transactional
-    def setRideRequestWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
+    def setWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 

@@ -17,7 +17,7 @@ def groupManyRideRequests(rideRequestIds: list):
     rideRequests = list()
     for rideRequestId in rideRequestIds:
         rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
+        rideRequest = RideRequestGenericDao().get(rideRequestRef)
         rideRequest.setFirestoreRef(rideRequestRef)
         rideRequests.append(rideRequest)
     groupRideRequests(rideRequests)
@@ -27,7 +27,7 @@ def forceMatchTwoRideRequests(rideRequestIds: list):
     rideRequests = list()
     for rideRequestId in rideRequestIds:
         rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
+        rideRequest = RideRequestGenericDao().get(rideRequestRef)
         rideRequest.setFirestoreRef(rideRequestRef)
         rideRequests.append(rideRequest)
 
@@ -107,9 +107,9 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: li
 
     for firestoreRef1, firestoreRef2 in paired:
         # TODO change to transaction
-        rideRequest1 = RideRequestGenericDao().getRideRequest(firestoreRef1)
+        rideRequest1 = RideRequestGenericDao().get(firestoreRef1)
         rideRequest1.setFirestoreRef(firestoreRef1)
-        rideRequest2 = RideRequestGenericDao().getRideRequest(firestoreRef2)
+        rideRequest2 = RideRequestGenericDao().get(firestoreRef2)
         rideRequest2.setFirestoreRef(firestoreRef2)
         results.append([rideRequest1, rideRequest2])
     
