@@ -20,6 +20,32 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
+    def getIds(self, isRequestCompletionFalse = False):
+        """ Description
+            Get the ids of RideRequests
+        
+        :type self:
+        :param self:
+    
+        :type isRequestCompletionFalse:
+        :param isRequestCompletionFalse: If set to true, only RideRequests with requestCompletion=False will be returned. 
+    
+        :raises:
+    
+        :rtype:
+        """
+
+        docIds = list()
+    
+        if isRequestCompletionFalse:
+            docs = self.rideRequestCollectionRef.where("requestCompletion", "==", False).get()
+        else:
+            docs = self.rideRequestCollectionRef.get()
+        for doc in docs:
+            docId = doc.id
+            docIds.append(docId)
+        return docIds
+
     @staticmethod
     @transactional
     def getRideRequestWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:

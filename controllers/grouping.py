@@ -7,8 +7,50 @@ from controllers import utils
 from models.ride_request import RideRequest, Target, ToEventTarget
 import config
 from controllers import groupingutils
+import warnings
 
 db = config.Context.db
+
+
+
+def groupManyRideRequests(rideRequestIds: list):
+    rideRequests = list()
+    for rideRequestId in rideRequestIds:
+        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
+        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
+        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequests.append(rideRequest)
+    groupRideRequests(rideRequests)
+
+
+def forceMatchTwoRideRequests(rideRequestIds: list):
+    rideRequests = list()
+    for rideRequestId in rideRequestIds:
+        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
+        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
+        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequests.append(rideRequest)
+
+    numRideRequests = len(rideRequests)
+    assert numRideRequests >= 2
+    if numRideRequests >= 3:
+        warnings.warn(
+            "Orbit is only tested for matching 2 rideRequests. " +
+            "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
+            "Only rideRequests {} and {} are expected be matched. "
+                .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
+
+    pairedTuples = [(rideRequests[0], rideRequests[1])]
+
+    groups = list()
+    constructGroups(groups, pairedTuples)
+    
+    group = groups[0]
+    notJoined = group.doWork()
+
+    # rideRequest Response
+    responseDict = {"notJoined": notJoined}
+    return responseDict
 
 def groupRideRequests(rideRequests: list):
     """ Description
@@ -32,7 +74,6 @@ def groupRideRequests(rideRequests: list):
     
     for group in groups:
         group.doWork()
-    
 
 def pairRideRequests(rideRequests: list):
     tupleList = constructTupleList(rideRequests)
@@ -89,12 +130,16 @@ def constructTupleList(rideRequests: list):
     arr = list()
     
     for rideRequest in rideRequests:
-        toEventTarget: ToEventTarget = rideRequest.target
-        earliest = toEventTarget.arriveAtEventTime['earliest']
-        latest = toEventTarget.arriveAtEventTime['latest']
-        ref = rideRequest.getFirestoreRef()
-        tupleToAppend = [earliest, latest, ref]
-        arr.append(tupleToAppend)
+        try:
+            toEventTarget: ToEventTarget = rideRequest.target
+            earliest = toEventTarget.arriveAtEventTime['earliest']
+            latest = toEventTarget.arriveAtEventTime['latest']
+            ref = rideRequest.getFirestoreRef()
+            tupleToAppend = [earliest, latest, ref]
+            arr.append(tupleToAppend)
+        except Exception as e:
+            warnings.warn("failed to parse rideRequest: {}".format(rideRequest.toDict()) )
+            print("error: {}".format(e))
 
     return arr
 

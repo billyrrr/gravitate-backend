@@ -60,18 +60,42 @@ def hello():
 class RideRequestService(Resource):
 
     def post(self):
+
+        # Verify Firebase auth.
+
+        id_token = request.headers['Authorization'].split(' ').pop()
+        userId = None # will be filled with auth code
+
+        # Auth code provided by Google
+        try:
+            # Verify the ID token while checking if the token is revoked by
+            # passing check_revoked=True.
+            decoded_token = auth.verify_id_token(id_token, check_revoked=True)
+            # Token is valid and not revoked.
+            uid = decoded_token['uid']
+            # Set userId to firebaseUid 
+            userId = uid
+        except auth.AuthError as exc:
+            if exc.code == 'ID_TOKEN_REVOKED':
+                # Token revoked, inform the user to reauthenticate or signOut().
+                return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
+            else:
+                # Token is invalid
+                return 'Invalid token', 402
+
+        # Retrieve JSON 
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
             type(requestJson) != dict) else requestJson
 
+        # Create WTForm for validating the fields
         validateForm = RideRequestCreationValidateForm(
             data=requestForm)
 
-        # Mock userId and eventId. Delete before release
-        userId = 'SQytDq13q00e0N3H4agR'
-        warnings.warn("using test user ids, delete before release")
+        # # Mock userId and eventId. Delete before release
+        # userId = 'SQytDq13q00e0N3H4agR'
+        # warnings.warn("using test user ids, delete before release")
 
-        # POST REQUEST
         if validateForm.validate():
 
             # Transfer data from validateForm to an internal representation of the form
@@ -116,37 +140,23 @@ class OrbitForceMatchService(Resource):
         requestForm = json.loads(requestJson) if (
             type(requestJson) != dict) else requestJson
 
-        # requestForm = {
-        #     "rideRequestRefs": []
-        # }
+        operationMode = requestForm.get("operationMode", None)
+        rideRequestIds = requestForm.get("rideRequestIds", None) 
+        responseDict = None
 
-        rideRequestIds = requestForm["rideRequestIds"]
-        rideRequests = list()
-        for rideRequestId in rideRequestIds:
-            rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-            rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
-            rideRequest.setFirestoreRef(rideRequestRef)
-            rideRequests.append(rideRequest)
-
-        numRideRequests = len(rideRequests)
-        assert numRideRequests >= 2
-        if numRideRequests >= 3:
-            warnings.warn(
-                "Orbit is only tested for matching 2 rideRequests. " +
-                "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
-                "Only rideRequests {} and {} are expected be matched. "
-                    .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
-
-        pairedTuples = [(rideRequests[0], rideRequests[1])]
-
-        groups = list()
-        grouping.constructGroups(groups, pairedTuples)
+        if operationMode == "two" and rideRequestIds != None:
+            responseDict = grouping.forceMatchTwoRideRequests(rideRequestIds)
+        elif operationMode == "many" and rideRequestIds != None:
+            grouping.groupManyRideRequests(rideRequestIds)
+            responseDict = {"success": True, "operationMode": "many"}
+        elif operationMode == "all":
+            allRideRequestIds = RideRequestGenericDao().getIds(isRequestCompletionFalse=True)
+            grouping.groupManyRideRequests(allRideRequestIds)
+            responseDict = {"success": True, "opeartionMode": "all"}
+        else:
+            responseDict = {"error": "Not specified operation mode."}
+            return json.dumps(responseDict), 400
         
-        group = groups[0]
-        notJoined = group.doWork()
-
-        # rideRequest Response
-        responseDict = {"notJoined": notJoined}
         # return rideRequest.getFirestoreRef().id, 200
         return json.dumps(responseDict), 200
 
@@ -234,7 +244,7 @@ def add_auth_test_data():
 
     id_token = request.headers['Authorization'].split(' ').pop()
 
-    # [Start] provided by Google
+    # Auth code provided by Google
     try:
         # Verify the ID token while checking if the token is revoked by
         # passing check_revoked=True.
@@ -248,9 +258,6 @@ def add_auth_test_data():
         else:
             # Token is invalid
             return 'Invalid token', 402
-    # [End] provided by google
-
-    # uid = decoded_token['uid']
 
     data = request.get_json()
 
