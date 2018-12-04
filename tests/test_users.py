@@ -49,13 +49,13 @@ class UserCollectionTest(unittest.TestCase):
     def setUp(self):
         self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
 
-    def testAddToEventSchedule(self):
-        transaction = db.transaction()
-        UserDao().addToEventScheduleWithTransaction(
-            transaction, 
-            userRef=self.user.getFirestoreRef(), 
-            eventRef=db.document('events', 'testeventid1'), 
-            toEventRideRequestRef=db.document('rideRequests', 'testriderequestid1'))
+    # def testAddToEventSchedule(self):
+    #     transaction = db.transaction()
+    #     UserDao().addToEventScheduleWithTransaction(
+    #         transaction, 
+    #         userRef=self.user.getFirestoreRef(), 
+    #         eventRef=db.document('events', 'testeventid1'), 
+    #         toEventRideRequestRef=db.document('rideRequests', 'testriderequestid1'))
 
 class UserDAOTest(unittest.TestCase):
 

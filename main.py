@@ -244,13 +244,13 @@ def add_auth_test_data():
     except auth.AuthError as exc:
         if exc.code == 'ID_TOKEN_REVOKED':
             # Token revoked, inform the user to reauthenticate or signOut().
-            pass
+            return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
         else:
             # Token is invalid
-            pass
+            return 'Invalid token', 402
     # [End] provided by google
 
-    uid = decoded_token['uid']
+    # uid = decoded_token['uid']
 
     data = request.get_json()
 
