@@ -22,9 +22,9 @@ def saveRideRequest(rideRequest, transaction: Transaction = None):
         if (rideRequest.getFirestoreRef()):
             if not transaction:
                 raise Exception('transaction is not provided. ')
-            RideRequestGenericDao().setRideRequestWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
+            RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
         else:
-            newRef = RideRequestGenericDao().createRideRequest(rideRequest)
+            newRef = RideRequestGenericDao().create(rideRequest)
             rideRequest.setFirestoreRef(newRef)
 
 def createTarget(form: RideRequestCreationForm):

@@ -33,5 +33,5 @@ class OrbitTest(unittest.TestCase):
 
 	def testCreateOrbit(self):
 		newOrbit = Orbit.fromDict(orbitDict)
-		orbitRef = data_access.OrbitDao().createOrbit(newOrbit)
+		orbitRef = data_access.OrbitDao().create(newOrbit)
 		self.assertIsNotNone(orbitRef)

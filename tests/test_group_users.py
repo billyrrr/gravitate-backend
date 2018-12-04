@@ -92,7 +92,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             rideRequest = factory.getMockRideRequest(
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef, userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
             transaction = db.transaction()
-            RideRequestGenericDao().setRideRequestWithTransaction(
+            RideRequestGenericDao().setWithTransaction(
                 transaction, rideRequest, firestoreRef)
             rideRequest.setFirestoreRef(firestoreRef)
             rideRequests.append(rideRequest)

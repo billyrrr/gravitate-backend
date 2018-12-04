@@ -64,33 +64,33 @@ class MainAppTestCase(TestCase):
 
     def testCreateRideRequestFrontend(self):
 
-        r = self.app.post(path='/rideRequests', json=self.newJson)
-        print(r.data)
+        r = self.app.post(path='/rideRequests', json=self.newJson, headers=getAuthHeaders())
         assert r.status_code == 200
 
     def testCreateRideRequestFailedFrontend(self):
 
-        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson)
+        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson, headers=getAuthHeaders())
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
-    def testForceMatchRideRequests(self):
-        r = self.app.post(path='/devForceMatch',
-                          json=json.dumps({"rideRequestIds":
-                                           ["0Fbk2VLNuM3ne51KbsdPFw4lF8qx3DzD",
-                                               "0MFKquhCOtFmYDM1df69l5RasYfqPW2f"]
-                                           }
-                                          ))
-        print(r.data)
-        self.assertEqual(r.status_code, 200)
+    # def testForceMatchRideRequests(self):
+    #     r = self.app.post(path='/devForceMatch',
+    #                       json=json.dumps({"rideRequestIds":
+    #                                        ["0Fbk2VLNuM3ne51KbsdPFw4lF8qx3DzD",
+    #                                            "0MFKquhCOtFmYDM1df69l5RasYfqPW2f"],
+    #                                           "operationMode": "two"
+    #                                        }
+    #                                       ))
+    #     print(r.data)
+    #     self.assertEqual(r.status_code, 200)
 
-    def testGroupRideRequests(self):
-        r = self.app.post(path='/devForceMatch',
-                          json=json.dumps({"operationMode": "all"
-                                           }
-                                          ))
-        print(r.data)
-        self.assertEqual(r.status_code, 200)
+    # def testGroupRideRequests(self):
+    #     r = self.app.post(path='/devForceMatch',
+    #                       json=json.dumps({"operationMode": "all"
+    #                                        }
+    #                                       ))
+    #     print(r.data)
+    #     self.assertEqual(r.status_code, 200)
 
     def testContextTest(self):
         r = self.app.post(path='/contextTest', json={'key1': 'val1a'})

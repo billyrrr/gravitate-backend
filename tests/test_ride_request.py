@@ -34,7 +34,7 @@ class RideRequestTest(unittest.TestCase):
     def testCreation(self):
         rideRequestDict = self.rideRequestData1['rideRequest']
         rideRequest = RideRequest.fromDict(rideRequestDict)
-        documentRef = RideRequestGenericDao().createRideRequest(rideRequest)
+        documentRef = RideRequestGenericDao().create(rideRequest)
         rideRequest.setFirestoreRef(documentRef)
         print(vars(rideRequest))
 
