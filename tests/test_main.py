@@ -84,6 +84,14 @@ class MainAppTestCase(TestCase):
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
+    def testGroupRideRequests(self):
+        r = self.app.post(path='/devForceMatch',
+                          json=json.dumps({"operationMode": "all"
+                                           }
+                                          ))
+        print(r.data)
+        self.assertEqual(r.status_code, 200)
+
     def testContextTest(self):
         r = self.app.post(path='/contextTest', json={'key1': 'val1a'})
         assert r.status_code == 200

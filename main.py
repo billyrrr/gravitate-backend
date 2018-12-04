@@ -140,66 +140,26 @@ class OrbitForceMatchService(Resource):
         requestForm = json.loads(requestJson) if (
             type(requestJson) != dict) else requestJson
 
-        # requestForm = {
-        #     "rideRequestRefs": []
-        # }
         operationMode = requestForm.get("operationMode", None)
         rideRequestIds = requestForm.get("rideRequestIds", None) 
         responseDict = None
 
         if operationMode == "two" and rideRequestIds != None:
-            responseDict = forceMatchTwoRideRequests(rideRequestIds)
+            responseDict = grouping.forceMatchTwoRideRequests(rideRequestIds)
         elif operationMode == "many" and rideRequestIds != None:
-            forceMatchManyRideRequests(rideRequestIds)
+            grouping.groupManyRideRequests(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
             allRideRequestIds = RideRequestGenericDao().getIds(isRequestCompletionFalse=True)
-            forceMatchManyRideRequests(allRideRequestIds)
+            grouping.groupManyRideRequests(allRideRequestIds)
             responseDict = {"success": True, "opeartionMode": "all"}
         else:
-            return {"error": "Not specified operation mode."}, 400
+            responseDict = {"error": "Not specified operation mode."}
+            return json.dumps(responseDict), 400
         
         # return rideRequest.getFirestoreRef().id, 200
         return json.dumps(responseDict), 200
 
-def forceMatchManyRideRequests(rideRequestIds: list):
-    rideRequests = list()
-    for rideRequestId in rideRequestIds:
-        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
-        rideRequest.setFirestoreRef(rideRequestRef)
-        rideRequests.append(rideRequest)
-    grouping.groupRideRequests(rideRequests)
-
-
-def forceMatchTwoRideRequests(rideRequestIds: list):
-    rideRequests = list()
-    for rideRequestId in rideRequestIds:
-        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)
-        rideRequest.setFirestoreRef(rideRequestRef)
-        rideRequests.append(rideRequest)
-
-    numRideRequests = len(rideRequests)
-    assert numRideRequests >= 2
-    if numRideRequests >= 3:
-        warnings.warn(
-            "Orbit is only tested for matching 2 rideRequests. " +
-            "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
-            "Only rideRequests {} and {} are expected be matched. "
-                .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
-
-    pairedTuples = [(rideRequests[0], rideRequests[1])]
-
-    groups = list()
-    grouping.constructGroups(groups, pairedTuples)
-    
-    group = groups[0]
-    notJoined = group.doWork()
-
-    # rideRequest Response
-    responseDict = {"notJoined": notJoined}
-    return responseDict
 
 api = Api(app)
 api.add_resource(RideRequestService, '/rideRequests')
