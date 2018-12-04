@@ -3,7 +3,7 @@ import main_user
 from flask.testing import FlaskClient
 from flask import request, jsonify
 
-import unittest
+from unittest import TestCase
 from google.cloud import firestore
 from firebase_admin import auth
 
@@ -15,10 +15,10 @@ import config
 db = config.Context.db
 
 userDict: dict = {
-    'uid': 'IC7a0Fm4LiMhtCF10BckQrv1Csb2',
-    'phone_number': '+17777777878',
+    'uid': 'Ep7WCjZatagd1Nr50ToNkIp4WWt2',
+    'phone_number': '+17777777777',
     'membership': 'rider',
-    'display_name': 'Johnny Appleseed',
+    'display_name': 'Leon Wu',
     'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg'
 }
 
@@ -30,7 +30,7 @@ userDict: dict = {
 #     photoURL: "abcdefhijkl.com"
 # }
 
-class UserEndPointTest(unittest.TestCase):
+class UserEndPointTest(TestCase):
 
     app: FlaskClient = None
 
@@ -44,7 +44,7 @@ class UserEndPointTest(unittest.TestCase):
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
-class UserCollectionTest(unittest.TestCase):
+class UserCollectionTest(TestCase):
 
     def setUp(self):
         self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
@@ -57,7 +57,7 @@ class UserCollectionTest(unittest.TestCase):
     #         eventRef=db.document('events', 'testeventid1'), 
     #         toEventRideRequestRef=db.document('rideRequests', 'testriderequestid1'))
 
-class UserDAOTest(unittest.TestCase):
+class UserDAOTest(TestCase):
 
     def setUp(self):
         self.user = User.fromDict(userDict)
@@ -71,7 +71,7 @@ class UserDAOTest(unittest.TestCase):
         userWithEventSchedules = UserDao().getUserById('SQytDq13q00e0N3H4agR') """
         
 
-class FirebaseUserTest(unittest.TestCase):
+class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
         user = auth.get_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2")
         print(user.display_name)
@@ -85,3 +85,14 @@ class FirebaseUserTest(unittest.TestCase):
             display_name = "David Nong",
             disabled = False
         )
+
+class FirestoreUserTest(TestCase):
+
+    def testUserCollectionExists(self):
+        uid = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
+        user = UserDao().getUserById(uid)
+        self.assertEquals(user.uid == userDict["uid"])
+        self.assertEquals(user.membership == userDict["membership"])
+        self.assertEquals(user.phone_number == userDict["phone_number"])
+        self.assertEquals(user.photo_url == userDict["photo_url"])
+        self.assertEquals(user.display_name == userDict["display_name"])

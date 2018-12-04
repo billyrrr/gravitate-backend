@@ -1,10 +1,13 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
-from firebase_admin import auth
 
 import google
 from typing import Type
 from models.user import User
 from models.event_schedule import EventSchedule
+from controllers.userutils import getAuthInfo
+
+from firebase_admin import auth
+
 import data_access
 import warnings
 import config
@@ -25,7 +28,7 @@ class UserDao:
 
     @staticmethod
     @transactional
-    def getUserWithTransaction(transaction, userRef):
+    def getUserWithTransaction(transaction, userRef: DocumentReference):
         """ Description
             Note that this cannot take place if transaction already received write operation
         :type self:
@@ -38,20 +41,39 @@ class UserDao:
         :rtype:
         """
 
-        try:
-            snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
+        # try:
+
+        snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
+        if snapshot.exists:
             snapshotDict: dict = snapshot.to_dict()
-            user = User.fromDict(snapshotDict)
+            userDict = getAuthInfo(userRef.id, snapshotDict)
+            user = User.fromDict(userDict)
             return user
-        except google.cloud.exceptions.NotFound:
-            raise Exception('No such document! ' + str(userRef.id))
+        else:
+            return None
+        # except google.cloud.exceptions.NotFound:
+        #     raise Exception('No such document! ' + str(userRef.id))
+        # except:
+            # return None
+
+    # def checkUserById(self, userId: str):
+    #     userRef = self.userCollectionRef.document(userId)
+    #     try:
+    #         userRef.get()
+    #         return True
+    #     except:
+    #         return False
+
 
     def getUser(self, userRef: DocumentReference):
         transaction = db.transaction()
         userResult = self.getUserWithTransaction(transaction, userRef)
-        userResult.setFirestoreRef(userRef)
-        transaction.commit()
-        return userResult
+        if ( userResult != None ):
+            userResult.setFirestoreRef(userRef)
+            transaction.commit()
+            return userResult
+        else:
+            return None
 
     def getUserById(self, userId: str):
         userRef = self.userCollectionRef.document(userId)
@@ -66,12 +88,6 @@ class UserDao:
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
         transaction.set(userRef, newUser.toFirestoreDict())
-        auth.update_user(newUser.uid,
-            phone_number = newUser.phone_number,
-            display_name  = newUser.display_name,
-            photo_url  = newUser.photo_url,
-            disabled = False
-        )
 
     @staticmethod
     @transactional

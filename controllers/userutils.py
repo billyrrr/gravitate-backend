@@ -4,6 +4,7 @@ from forms.user_creation_form import UserCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
 from data_access.user_dao import UserDao
 from data_access.event_dao import EventDao
+from firebase_admin import auth
 
 import random 
 import string 
@@ -20,6 +21,12 @@ def saveUser(user, transaction: Transaction = None):
         if not transaction:
             raise Exception('transaction is not provided. ')
         UserDao().setUserWithTransaction(transaction, user, user.getFirestoreRef())
+        auth.update_user(user.uid,
+            phone_number = user.phone_number,
+            display_name  = user.display_name,
+            photo_url  = user.photo_url,
+            disabled = False
+        )
     else:
         newRef = UserDao().createUser(user)
         user.setFirestoreRef(newRef)
@@ -33,3 +40,15 @@ def editUser(user, transaction: Transaction = None):
             raise Exception('transaction is not provided.')
     else:
         UserDao().getUserById(user.userId)
+
+def getUser(uid:string):
+    UserDao().getUserById(uid)
+
+
+def getAuthInfo(uid:string, userDict:dict):
+    userRecord = auth.get_user(uid)
+    userDict["uid"] = userRecord.uid
+    userDict["phone_number"] = userRecord.phone_number
+    userDict["photo_url"] = userRecord.photo_url
+    userDict["display_name"] = userRecord.display_name
+    return userDict
