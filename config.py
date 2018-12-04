@@ -26,6 +26,7 @@ class Context():
 
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
+    _cred = None
     __instance = None
 
     
@@ -60,13 +61,13 @@ class Context():
     def _reloadFirebaseApp(cls, certificatePath):
 
         try:
-            cred = credentials.Certificate(certificatePath)
+            cls._cred = credentials.Certificate(certificatePath)
         except ValueError as e: 
             logging.exception('Error initializing credentials.Certificate')
         # TODO delete certificate path in function call
 
         try:
-            cls.firebaseApp = firebase_admin.initialize_app(credential=cred)
+            cls.firebaseApp = firebase_admin.initialize_app(credential=cls._cred)
         except ValueError as e:
             logging.exception('Error initializing firebaseApp')
 

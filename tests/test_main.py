@@ -12,13 +12,27 @@ from requests import request
 import json
 from tests.factory import FormDictFactory
 import config
+import warnings
 
 from firebase_admin import auth
+import firebase_admin
 
 db = config.Context.db
+firebaseApp = config.Context.firebaseApp
 
 userId = 'SQytDq13q00e0N3H4agR'
 
+cred = config.Context._cred
+
+def getAuthHeaders():
+    # user = auth.get_user(uid)
+    # userIdToken = user.tokens_valid_after_timestamp
+    # # userIdToken = auth.create_custom_token(uid=uid, app=firebaseApp)
+    # userIdTokenMock = userIdToken
+    # warnings.warn("Note that userIdTokenMock is temporary and the test may fail when the token is no longer valid.")
+    userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6IkRhdmlkIE5vbmciLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDYuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1GLTlmN1JzYS1PYy9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BR0Rndy1oenhseDd3elVacGNPWHJ3U0lvRFVULW1aaW9nL3M5Ni1jL3Bob3RvLmpwZyIsImF1ZCI6ImdyYXZpdGF0ZS1lNWQwMSIsImF1dGhfdGltZSI6MTU0MzgzODA3MCwidXNlcl9pZCI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJzdWIiOiJFcDdXQ2paYXRhZ2QxTnI1MFRvTmtJcDRXV3QyIiwiaWF0IjoxNTQzODgyNzI4LCJleHAiOjE1NDM4ODYzMjgsImVtYWlsIjoiYWx3MDY5QHVjc2QuZWR1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX251bWJlciI6IisxNDE1NTU1MjY3MSIsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTY5OTQ2NDM4NTc5OTc3OTQwMTMiXSwicGhvbmUiOlsiKzE0MTU1NTUyNjcxIl0sImVtYWlsIjpbImFsdzA2OUB1Y3NkLmVkdSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.FxXVWsw_ZPrhf1OKXx-zR3tbtla33VKgU9hW6s_uT9PLTK0O6sBSkuMlWyJGcdRMkClHPDSA5JetNS9ZER48bBXKS2LFzrMNe9oCweT3eyyq4t1DMKvjRjOSaDJAU750-ysHTRvkaHVHgHheCBpvpzWI85iRB7MFRwSJSJlXsRL5aIZ3muAa4InmON4kR2Vb-SI6hZTaPslmSDgkvd_oeAraTA4p3cHF1wVQJ--qZw90Vepfi-NVU_ZCxRU7kZHZZbHpKovCZvd5C9buMPg0dHEAcd0kAkSYGZ4LmpHN2UNTZtefaDz0Fsja7puBl3G2PW4AHBXFnCidNRAuohNoMA"
+    headers= { 'Authorization': userIdTokenMock }
+    return headers
 
 class MainAppTestCase(TestCase):
 
@@ -35,17 +49,16 @@ class MainAppTestCase(TestCase):
     def testCreateRideRequest(self):
 
         r = self.app.post(
-            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)))
+            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)), headers=getAuthHeaders())
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
     def testAuth(self):
+
         userIdMock = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
-        userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6IkRhdmlkIE5vbmciLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDYuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1GLTlmN1JzYS1PYy9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BR0Rndy1oenhseDd3elVacGNPWHJ3U0lvRFVULW1aaW9nL3M5Ni1jL3Bob3RvLmpwZyIsImF1ZCI6ImdyYXZpdGF0ZS1lNWQwMSIsImF1dGhfdGltZSI6MTU0MzgzODA3MCwidXNlcl9pZCI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJzdWIiOiJFcDdXQ2paYXRhZ2QxTnI1MFRvTmtJcDRXV3QyIiwiaWF0IjoxNTQzODgyNzI4LCJleHAiOjE1NDM4ODYzMjgsImVtYWlsIjoiYWx3MDY5QHVjc2QuZWR1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX251bWJlciI6IisxNDE1NTU1MjY3MSIsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTY5OTQ2NDM4NTc5OTc3OTQwMTMiXSwicGhvbmUiOlsiKzE0MTU1NTUyNjcxIl0sImVtYWlsIjpbImFsdzA2OUB1Y3NkLmVkdSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.FxXVWsw_ZPrhf1OKXx-zR3tbtla33VKgU9hW6s_uT9PLTK0O6sBSkuMlWyJGcdRMkClHPDSA5JetNS9ZER48bBXKS2LFzrMNe9oCweT3eyyq4t1DMKvjRjOSaDJAU750-ysHTRvkaHVHgHheCBpvpzWI85iRB7MFRwSJSJlXsRL5aIZ3muAa4InmON4kR2Vb-SI6hZTaPslmSDgkvd_oeAraTA4p3cHF1wVQJ--qZw90Vepfi-NVU_ZCxRU7kZHZZbHpKovCZvd5C9buMPg0dHEAcd0kAkSYGZ4LmpHN2UNTZtefaDz0Fsja7puBl3G2PW4AHBXFnCidNRAuohNoMA"
-        # print(userIdToken)
-        r = self.app.post(path='/authTest', json = json.dumps({'testAuth': True}), headers= { 'Authorization': userIdTokenMock } )
+        mockHeaders = getAuthHeaders()
+        r = self.app.post(path='/authTest', json = json.dumps({'testAuth': True}), headers= mockHeaders )
         responseDict:dict = json.loads(r.data)
-        print(responseDict)
         uid = responseDict['uid']
         self.assertEqual(uid, userIdMock)
 
