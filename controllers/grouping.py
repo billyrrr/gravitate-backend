@@ -95,7 +95,7 @@ def constructGroups(groups: list, paired: list):
             "costEstimate": 987654321,
             "status": 1
         })
-        orbitRef = data_access.OrbitDao().createOrbit(intendedOrbit)
+        orbitRef = data_access.OrbitDao().create(intendedOrbit)
         intendedOrbit.setFirestoreRef(orbitRef)
 
         group: Group = Group([rideRequest1, rideRequest2], intendedOrbit)

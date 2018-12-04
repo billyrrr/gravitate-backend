@@ -112,5 +112,5 @@ class UserDao:
         transaction.set(eventScheduleRef, eventScheduleDict, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
     @transactional
-    def setOrbitWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
+    def setWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
         transaction.set(userRef, newUser)
