@@ -67,6 +67,23 @@ class UserService(Resource):
         else:
             return "User Does not Exist", 400
 
+    def update(self, uid):
+        """ Description
+            Handles client FCM Token refresh
+                https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
+            Note that FCM refresh shall not override the user's settings for enabling notification (if specified in requirement). 
+
+        :type self:
+        :param self:
+
+        :type uid:
+        :param uid:
+
+        :raises:
+
+        :rtype:
+        """
+        raise NotImplementedError
 
     def post(self, uid):
         requestJson = request.get_json()
