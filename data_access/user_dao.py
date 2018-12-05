@@ -2,9 +2,9 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 
 import google
 from typing import Type
-from models.user import User
-from models.event_schedule import EventSchedule
-from controllers.userutils import getAuthInfo
+from models import User
+from models import EventSchedule
+#from controllers import userutils
 
 from firebase_admin import auth
 

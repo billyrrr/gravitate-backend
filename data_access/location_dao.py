@@ -5,8 +5,8 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from models.location import Location, AirportLocation
-import config
 import warnings
+import config
 
 CTX = config.Context
 

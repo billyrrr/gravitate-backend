@@ -7,10 +7,9 @@ from unittest import TestCase
 from google.cloud import firestore
 from firebase_admin import auth
 
-from models.user import User
-from data_access.user_dao import UserDao
+from models import User
+from data_access import UserDao
 import json
-import config
 
 db = config.Context.db
 

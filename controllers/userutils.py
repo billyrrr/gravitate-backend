@@ -1,9 +1,9 @@
-from models.user import User
-from models.orbit import Orbit
+from models import User
+from models import Orbit
 from forms.user_creation_form import UserCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
-from data_access.user_dao import UserDao
-from data_access.event_dao import EventDao
+from data_access import UserDao
+from data_access import EventDao
 from firebase_admin import auth
 
 import random 

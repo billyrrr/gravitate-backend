@@ -26,7 +26,7 @@ from wtforms import Form
 import warnings
 
 from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
-from data_access.user_dao import UserDao
+from data_access import UserDao
 
 from controllers import utils
 from controllers import userutils
