@@ -16,28 +16,28 @@
 
 # [START gae_flex_quickstart]
 import logging
-
 import json
-
-from models import RideRequest, AirportRideRequest, Target, AirportLocation
 
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from wtforms import Form
 import warnings
 
+
+from models import RideRequest, AirportRideRequest, Target, AirportLocation
+from models import User
+
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
-from controllers import utils
-from controllers import group_user
-from controllers import grouping
+from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
+
+from controllers import utils, userutils, group_user, grouping, eventscheduleutils
+
+from data_access import RideRequestGenericDao, UserDao, EventDao
 
 from google.cloud import firestore
 from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
-from controllers import eventscheduleutils
-from data_access.ride_request_dao import RideRequestGenericDao
-from data_access.user_dao import UserDao
-from data_access.event_dao import EventDao
+
 
 # [START] Firebase Admin SDK
 
@@ -56,6 +56,64 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
+class UserService(Resource):
+    
+    def get(self, uid):
+        # Check Firestore to see if UID Already Exists
+        user = UserDao().getUserById(uid)
+        if ( user != None ):
+            return json.dumps(user.toDict()), 200
+            # return user profile
+        else:
+            return "User Does not Exist", 400
+
+
+    def post(self, uid):
+        requestJson = request.get_json()
+        requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
+
+        validateForm = UserCreationValidateForm(data=requestForm)
+        
+        # POST REQUEST
+        if validateForm.validate():
+
+            # Transfer data from validateForm to an internal representation of the form
+            form = UserCreationForm()
+            validateForm.populate_obj(form)
+            userDict = fillUserDictWithForm(form)
+
+            # Create User Object
+            newUser: User = User.fromDict(userDict)
+
+            userId = newUser.uid
+            userRef = UserDao().userCollectionRef.document(document_id=userId)
+            newUser.setFirestoreRef(userRef)
+            transaction = db.transaction()
+
+            # Saves User Object to Firestore
+            userutils.saveUser(newUser, transaction=transaction)
+            userRef = UserDao().userCollectionRef.document(userId)
+            transaction.commit()
+
+            return newUser.getFirestoreRef().id, 200
+        else:
+            print(validateForm.errors)
+            return validateForm.errors, 400
+
+def fillUserDictWithForm(form: UserCreationForm) -> dict:
+    userDict = dict()
+
+    # Move data from the form frontend submitted to userDict
+    userDict['uid'] = form.uid
+    userDict['membership'] = form.membership
+    userDict['display_name'] = form.display_name
+    userDict['phone_number'] = form.phone_number
+    userDict['photo_url'] = form.photo_url
+
+    return userDict
+
+api = Api(app)
+api.add_resource(UserService, '/users/<string:uid>')
 
 class RideRequestService(Resource):
 

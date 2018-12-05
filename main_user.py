@@ -64,17 +64,6 @@ class UserService(Resource):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
 
-        # if type(requestJson) == "dict":
-        #     requestForm = requestJson
-        # elif type(requestJson) == "ImmutableMultiDict":
-        #     requestForm = requestJson.to_dict()
-        # elif type(requestJson) == "str":
-        #     # Note that some strings can fail this condition
-        #     requestForm = json.loads(requestJson)
-        # else: 
-        #     warnings.warn("Receiving request json with expected type: {}".format(type(requestJson)))
-        #     requestForm = json.loads(requestJson)
-
         validateForm = UserCreationValidateForm(data=requestForm)
         
         # POST REQUEST
