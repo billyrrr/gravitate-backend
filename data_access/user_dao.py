@@ -4,17 +4,25 @@ import google
 from typing import Type
 from models import User
 from models import EventSchedule
-#from controllers import userutils
 
 from firebase_admin import auth
 
 import data_access
+import string
 import warnings
 import config
 
 CTX = config.Context
 
 db = CTX.db
+
+def getAuthInfo(uid:string, userDict:dict):
+    userRecord = auth.get_user(uid)
+    userDict["uid"] = userRecord.uid
+    userDict["phone_number"] = userRecord.phone_number
+    userDict["photo_url"] = userRecord.photo_url
+    userDict["display_name"] = userRecord.display_name
+    return userDict
 
 
 class UserDao:
@@ -63,7 +71,6 @@ class UserDao:
     #         return True
     #     except:
     #         return False
-
 
     def getUser(self, userRef: DocumentReference):
         transaction = db.transaction()

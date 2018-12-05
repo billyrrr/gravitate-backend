@@ -11,6 +11,8 @@ from models import User
 from data_access import UserDao
 import json
 
+import config
+
 db = config.Context.db
 
 userDict: dict = {
@@ -38,8 +40,15 @@ class UserEndPointTest(TestCase):
         main_user.app.testing = True
         self.app = main_user.app.test_client()
 
+    def testGetUser(self):
+        path = '/user/' + userDict["uid"]
+        r = self.app.get(path=path)
+        # assert r.status_code == 200
+        print(r.status_code)
+
     def testCreateUser(self):
-        r = self.app.post(path='/users', json = json.dumps(userDict))
+        path = '/users/' + userDict["uid"]
+        r = self.app.post(path=path, json = json.dumps(userDict))
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
@@ -66,13 +75,14 @@ class UserDAOTest(TestCase):
         self.user.setFirestoreRef(userRef)
         print("userRef = {}".format(userRef))
 
-"""     def testGet(self):
-        userWithEventSchedules = UserDao().getUserById('SQytDq13q00e0N3H4agR') """
+    def testGetUserId(self):
+        user = UserDao().getUserById(userDict["uid"])
+        self.assertEquals(userDict['display_name'], user.display_name)
         
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2")
+        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2")
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -90,8 +100,8 @@ class FirestoreUserTest(TestCase):
     def testUserCollectionExists(self):
         uid = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
         user = UserDao().getUserById(uid)
-        self.assertEquals(user.uid == userDict["uid"])
-        self.assertEquals(user.membership == userDict["membership"])
-        self.assertEquals(user.phone_number == userDict["phone_number"])
-        self.assertEquals(user.photo_url == userDict["photo_url"])
-        self.assertEquals(user.display_name == userDict["display_name"])
+        self.assertEqual(user.uid, userDict["uid"])
+        self.assertEqual(user.membership, userDict["membership"])
+        self.assertEqual(user.phone_number, userDict["phone_number"])
+        self.assertEqual(user.photo_url, userDict["photo_url"])
+        self.assertEqual(user.display_name, userDict["display_name"])

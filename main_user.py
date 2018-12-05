@@ -52,19 +52,15 @@ class UserService(Resource):
     
     def get(self, uid):
         # Check Firestore to see if UID Already Exists
-        # if ( UserDao().checkUserById(uid) ){
-
-        # }
-
         user = UserDao().getUserById(uid)
         if ( user != None ):
-            return "", 200
+            return user.toDict, 200
             # return user profile
         else:
             return "User Does not Exist", 400
 
 
-    def post(self):
+    def post(self, uid):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
 
