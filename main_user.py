@@ -50,6 +50,20 @@ parser = reqparse.RequestParser()
 
 class UserService(Resource):
     
+    def get(self, uid):
+        # Check Firestore to see if UID Already Exists
+        # if ( UserDao().checkUserById(uid) ){
+
+        # }
+
+        user = UserDao().getUserById(uid)
+        if ( user != None ):
+            return "", 200
+            # return user profile
+        else:
+            return "User Does not Exist", 400
+
+
     def post(self):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
@@ -106,7 +120,7 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     return userDict
 
 api = Api(app)
-api.add_resource(UserService, '/users')
+api.add_resource(UserService, '/users/<string:uid>')
 
 @app.errorhandler(500)
 def server_error(e):
