@@ -41,7 +41,7 @@ class UserEndPointTest(TestCase):
         self.app = main_user.app.test_client()
 
     def testGetUser(self):
-        path = '/user/' + userDict["uid"]
+        path = '/users/' + userDict["uid"]
         r = self.app.get(path=path)
         # assert r.status_code == 200
         print(r.status_code)
@@ -78,6 +78,10 @@ class UserDAOTest(TestCase):
     def testGetUserId(self):
         user = UserDao().getUserById(userDict["uid"])
         self.assertEquals(userDict['display_name'], user.display_name)
+        self.assertEquals(userDict['phone_number'], user.phone_number)
+        self.assertEquals(userDict['uid'], user.uid)
+        self.assertEquals(userDict['membership'], user.membership)
+        self.assertEquals(userDict['photo_url'], user.photo_url)
         
 
 class FirebaseUserTest(TestCase):
@@ -105,3 +109,5 @@ class FirestoreUserTest(TestCase):
         self.assertEqual(user.phone_number, userDict["phone_number"])
         self.assertEqual(user.photo_url, userDict["photo_url"])
         self.assertEqual(user.display_name, userDict["display_name"])
+
+        print(json.dumps(user.toDict()))

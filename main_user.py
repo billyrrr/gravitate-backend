@@ -54,7 +54,7 @@ class UserService(Resource):
         # Check Firestore to see if UID Already Exists
         user = UserDao().getUserById(uid)
         if ( user != None ):
-            return user.toDict, 200
+            return json.dumps(user.toDict()), 200
             # return user profile
         else:
             return "User Does not Exist", 400

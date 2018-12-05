@@ -37,11 +37,11 @@ class User(object):
 
 	def toDict(self):
 		userDict = {
-			'uid': self.uid,
-			'membership': self.membership,
-			'display_name': self.display_name,
-			'phone_number': self.phone_number,
-			'photo_url': self.photo_url
+			"uid": self.uid,
+			"membership": self.membership,
+			"display_name": self.display_name,
+			"phone_number": self.phone_number,
+			"photo_url": self.photo_url
 		}
 		return userDict
 
