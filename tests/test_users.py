@@ -1,5 +1,4 @@
-import main_user
-
+import main
 from flask.testing import FlaskClient
 from flask import request, jsonify
 
@@ -38,8 +37,8 @@ class UserEndPointTest(TestCase):
 
     def setUp(self):
 
-        main_user.app.testing = True
-        self.app = main_user.app.test_client()
+        main.app.testing = True
+        self.app = main.app.test_client()
 
     def testGetUser(self):
         path = '/users/' + userDict["uid"]

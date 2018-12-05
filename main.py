@@ -67,6 +67,23 @@ class UserService(Resource):
         else:
             return "User Does not Exist", 400
 
+    def update(self, uid):
+        """ Description
+            Handles client FCM Token refresh
+                https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
+            Note that FCM refresh shall not override the user's settings for enabling notification (if specified in requirement). 
+
+        :type self:
+        :param self:
+
+        :type uid:
+        :param uid:
+
+        :raises:
+
+        :rtype:
+        """
+        raise NotImplementedError
 
     def post(self, uid):
         requestJson = request.get_json()
@@ -112,9 +129,6 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     userDict['pickupAddress'] = form.pickupAddress
 
     return userDict
-
-api = Api(app)
-api.add_resource(UserService, '/users/<string:uid>')
 
 class RideRequestService(Resource):
 
@@ -209,7 +223,7 @@ class OrbitForceMatchService(Resource):
             grouping.groupManyRideRequests(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
-            allRideRequestIds = RideRequestGenericDao().getIds(incomplete==True)
+            allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
             grouping.groupManyRideRequests(allRideRequestIds)
             responseDict = {"success": True, "opeartionMode": "all"}
         else:
@@ -220,7 +234,9 @@ class OrbitForceMatchService(Resource):
         return json.dumps(responseDict), 200
 
 
+
 api = Api(app)
+api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 
