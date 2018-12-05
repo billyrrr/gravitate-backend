@@ -39,7 +39,8 @@ userDict: dict = {
     'phone_number': '+17777777777',
     'membership': 'rider',
     'display_name': 'Leon Wu',
-    'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg'
+    'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg',
+    'pickupAddress': 'UCSD'
 }
 
 def getAuthHeaders():
