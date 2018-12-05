@@ -41,7 +41,7 @@ class UserEndPointTest(TestCase):
         self.app = main_user.app.test_client()
 
     def testGetUser(self):
-        path = '/user/' + userDict["uid"]
+        path = '/users/' + userDict["uid"]
         r = self.app.get(path=path)
         # assert r.status_code == 200
         print(r.status_code)
