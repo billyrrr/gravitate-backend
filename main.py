@@ -109,11 +109,9 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     userDict['display_name'] = form.display_name
     userDict['phone_number'] = form.phone_number
     userDict['photo_url'] = form.photo_url
+    userDict['pickupAddress'] = form.pickupAddress
 
     return userDict
-
-api = Api(app)
-api.add_resource(UserService, '/users/<string:uid>')
 
 class RideRequestService(Resource):
 
@@ -208,7 +206,7 @@ class OrbitForceMatchService(Resource):
             grouping.groupManyRideRequests(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
-            allRideRequestIds = RideRequestGenericDao().getIds(incomplete==True)
+            allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
             grouping.groupManyRideRequests(allRideRequestIds)
             responseDict = {"success": True, "opeartionMode": "all"}
         else:
@@ -219,7 +217,9 @@ class OrbitForceMatchService(Resource):
         return json.dumps(responseDict), 200
 
 
+
 api = Api(app)
+api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 
