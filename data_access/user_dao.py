@@ -44,6 +44,10 @@ class UserDao:
         else:
             return False
 
+    def userIdExists(self, userId: str ) :
+        userRef = self.userCollectionRef.document(userId)
+        return self.userExists(userRef)
+
     @staticmethod
     @transactional
     def getUserWithTransaction(transaction, userRef: DocumentReference):
@@ -100,6 +104,22 @@ class UserDao:
     def createUser(self, user: User):
         userRef = self.userCollectionRef.add(user.toDict())
         return userRef
+
+    def updateFcmToken(self, userId: str, token):
+        userRef: DocumentReference = self.userCollectionRef.document(userId)
+        deltaDict = {
+            "fcmToken": token
+        }
+        userRef.update(deltaDict) 
+        return
+
+    def getFcmToken(self, userId: str):
+        userRef: DocumentReference = self.userCollectionRef.document(userId)
+        userSnapshot: DocumentSnapshot = userRef.get()
+        userData = userSnapshot.to_dict()
+        fcmToken = userData["fcmToken"]
+        return FcmToken
+
 
     @staticmethod
     @transactional
