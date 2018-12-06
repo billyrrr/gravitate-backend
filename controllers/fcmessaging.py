@@ -1,8 +1,12 @@
 import config
 from firebase_admin import messaging
+import data_access
+import models
 
-# To make sure that Firebase App is initialized
-config.Context()
+
+def sendMessageToUser(userId, data):
+    fcmToken = data_access.UserDao().getFcmToken(userId)
+    sendMessage(fcmToken, data)
 
 def sendMessage(registration_token, data, dry_run=False):
     """ Description
@@ -26,7 +30,6 @@ def sendMessage(registration_token, data, dry_run=False):
     :rtype:
     """
     # This registration token comes from the client FCM SDKs.
-    registration_token = 'YOUR_REGISTRATION_TOKEN'
 
     # See documentation on defining a message payload.
     message = messaging.Message(
