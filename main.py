@@ -56,6 +56,14 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
+class UserExistsService(Resource):
+    def get(self,uid):
+        if( UserDao().userExists(uid)):
+            return 200
+        else:
+            return 400
+
+
 class UserService(Resource):
     
     def get(self, uid):

@@ -36,6 +36,14 @@ class UserDao:
         self.userCollectionRef = db.collection(u'users')
 
     @staticmethod
+    def userExists(userRef: DocumentReference):
+        snapshot: DocumentSnapshot = userRef.get()
+        if snapshot.exists:
+            return True
+        else:
+            return False
+
+    @staticmethod
     @transactional
     def getUserWithTransaction(transaction, userRef: DocumentReference):
         """ Description
