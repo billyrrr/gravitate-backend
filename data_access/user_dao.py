@@ -5,7 +5,7 @@ from typing import Type
 from models import User
 from models import EventSchedule
 
-from firebase_admin import auth
+# from config import auth
 
 import data_access
 import string
@@ -13,11 +13,12 @@ import warnings
 import config
 
 CTX = config.Context
+auth = config.auth
 
 db = CTX.db
 
 def getAuthInfo(uid:string, userDict:dict):
-    userRecord = auth.get_user(uid)
+    userRecord = auth.get_user(uid, app = CTX.firebaseApp)
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
     userDict["photo_url"] = userRecord.photo_url
