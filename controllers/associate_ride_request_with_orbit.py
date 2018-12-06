@@ -10,7 +10,7 @@ import config
 db = config.Context.db
 
 def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideRequest: Type[RideRequest],
-                           orbitRef: DocumentReference, preDecisionOrbit: Orbit):
+                           orbitRef: DocumentReference, preDecisionOrbit: Orbit) -> bool:
     """ Description
     This function joins a rideRequest to an orbit in the database. 
         Firstly, the function accesses database copy of the objects and download them as local copies
@@ -57,4 +57,4 @@ def joinOrbitToRideRequest(rideRequestRef: DocumentReference, preDecisionRideReq
         transaction.commit()
     except:
         # Firestore rollsback operations automatically. No need for manual rollback.
-       raise
+       return False

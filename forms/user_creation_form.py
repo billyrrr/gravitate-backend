@@ -31,4 +31,4 @@ class UserCreationValidateForm(Form):
         DataRequired('Photo URL needs to be specified.')])
 
     pickupAddress = StringField(u'Pickup Address', validators=[
-        DataRequired('Pickup Address needs to be specified')])    
+        DataRequired('Pickup Address needs to be specified.')])

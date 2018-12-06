@@ -35,7 +35,7 @@ userId = 'SQytDq13q00e0N3H4agR'
 cred = config.Context._cred
 
 userDict: dict = {
-    'uid': 'Ep7WCjZatagd1Nr50ToNkIp4WWt2',
+    'uid': '1GFLeGxBaaUvudqh3XYbFv2sRHx2',
     'phone_number': '+17777777777',
     'membership': 'rider',
     'display_name': 'Leon Wu',
@@ -74,7 +74,7 @@ class MainAppTestCase(TestCase):
 
     def testAuth(self):
 
-        userIdMock = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
+        userIdMock = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
         mockHeaders = getAuthHeaders()
         r = self.app.post(path='/endpointTest', json = json.dumps({'testAuth': True}), headers= mockHeaders )
         responseDict:dict = json.loads(r.data)
@@ -287,10 +287,11 @@ class UserDAOTest(TestCase):
         self.assertEquals(userDict['uid'], user.uid)
         self.assertEquals(userDict['membership'], user.membership)
         self.assertEquals(userDict['photo_url'], user.photo_url)
+        self.assertEquals(userDict['pickupAddress'], user.pickupAddress)
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2", app=config.Context.firebaseApp)
+        user = auth.get_user("1GFLeGxBaaUvudqh3XYbFv2sRHx2", app=config.Context.firebaseApp)
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -308,12 +309,13 @@ class FirebaseUserTest(TestCase):
 class FirestoreUserTest(TestCase):
 
     def testUserCollectionExists(self):
-        uid = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
+        uid = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
         user = UserDao().getUserById(uid)
         self.assertEqual(user.uid, userDict["uid"])
         self.assertEqual(user.membership, userDict["membership"])
         self.assertEqual(user.phone_number, userDict["phone_number"])
         self.assertEqual(user.photo_url, userDict["photo_url"])
         self.assertEqual(user.display_name, userDict["display_name"])
+        self.assertEqual(user.pickupAddress, userDict["pickupAddress"])
 
         print(json.dumps(user.toDict()))

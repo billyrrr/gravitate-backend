@@ -60,11 +60,10 @@ class UserService(Resource):
     
     def get(self, uid):
         # Check Firestore to see if UID Already Exists
-        user = UserDao().getUserById(uid)
-        if ( user != None ):
+        if( UserDao().userIdExists(uid)):
+            user = UserDao().getUserById(uid)
             userDict = user.toDict()
             return userDict, 200
-            # return user profile
         else:
             errorResponseDict = {
                 "error": "User Does not Exist"
