@@ -62,10 +62,14 @@ class UserService(Resource):
         # Check Firestore to see if UID Already Exists
         user = UserDao().getUserById(uid)
         if ( user != None ):
-            return json.dumps(user.toDict()), 200
+            userDict = user.toDict()
+            return userDict, 200
             # return user profile
         else:
-            return "User Does not Exist", 400
+            errorResponseDict = {
+                "error": "User Does not Exist"
+            }
+            return errorResponseDict, 400
 
     def update(self, uid):
         """ Description
@@ -112,6 +116,8 @@ class UserService(Resource):
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 
+            
+
             return newUser.getFirestoreRef().id, 200
         else:
             print(validateForm.errors)
@@ -142,7 +148,7 @@ class RideRequestService(Resource):
         try:
             # Verify the ID token while checking if the token is revoked by
             # passing check_revoked=True.
-            decoded_token = auth.verify_id_token(id_token, check_revoked=True)
+            decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
             # Token is valid and not revoked.
             uid = decoded_token['uid']
             # Set userId to firebaseUid 
@@ -200,7 +206,7 @@ class RideRequestService(Resource):
             # rideRequest Response
             responseDict = {"FirestoreRef": rideRequest.getFirestoreRef().id}
             # return rideRequest.getFirestoreRef().id, 200
-            return json.dumps(responseDict), 200
+            return responseDict, 200
         else:
             print(validateForm.errors)
             return validateForm.errors, 400
@@ -227,10 +233,46 @@ class OrbitForceMatchService(Resource):
             responseDict = {"success": True, "opeartionMode": "all"}
         else:
             responseDict = {"error": "Not specified operation mode."}
-            return json.dumps(responseDict), 400
+            return responseDict, 400
         
         # return rideRequest.getFirestoreRef().id, 200
-        return json.dumps(responseDict), 200
+        return responseDict, 200
+
+
+class EndpointTestService(Resource):
+    def post(self):
+        """
+        * This method handles a POST/PUT call to './authTest' to test that front end Auth
+            is set up correctly. 
+        If the id_token included in 'Authorization' is verified, the user id (uid)
+            corresponding to the id_token will be returned along with other information. 
+        Otherwise, an exception is thrown
+
+        """
+
+        # Verify Firebase auth.
+
+        id_token = request.headers['Authorization'].split(' ').pop()
+
+        # Auth code provided by Google
+        try:
+            # Verify the ID token while checking if the token is revoked by
+            # passing check_revoked=True.
+            decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
+            # Token is valid and not revoked.
+            uid = decoded_token['uid']
+        except auth.AuthError as exc:
+            if exc.code == 'ID_TOKEN_REVOKED':
+                # Token revoked, inform the user to reauthenticate or signOut().
+                return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
+            else:
+                # Token is invalid
+                return 'Invalid token', 402
+
+        data = request.get_json()
+        responseDict = {'uid': uid, 'request_data': data}
+
+        return responseDict, 200
 
 
 
@@ -238,6 +280,7 @@ api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
+api.add_resource(EndpointTestService, '/endpointTest')
 
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
@@ -302,42 +345,6 @@ def add_noauth_test_data():
     current_ride_request_ref.set(current_ride_request_json)
     return current_ride_request_id, 200
 
-
-@app.route('/authTest', methods=['POST', 'PUT'])
-def add_auth_test_data():
-    """
-    * This method handles a POST/PUT call to './authTest' to test that front end Auth
-        is set up correctly. 
-    If the id_token included in 'Authorization' is verified, the user id (uid)
-        corresponding to the id_token will be returned along with other information. 
-    Otherwise, an exception is thrown
-
-    """
-
-    # Verify Firebase auth.
-
-    id_token = request.headers['Authorization'].split(' ').pop()
-
-    # Auth code provided by Google
-    try:
-        # Verify the ID token while checking if the token is revoked by
-        # passing check_revoked=True.
-        decoded_token = auth.verify_id_token(id_token, check_revoked=True)
-        # Token is valid and not revoked.
-        uid = decoded_token['uid']
-    except auth.AuthError as exc:
-        if exc.code == 'ID_TOKEN_REVOKED':
-            # Token revoked, inform the user to reauthenticate or signOut().
-            return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
-        else:
-            # Token is invalid
-            return 'Invalid token', 402
-
-    data = request.get_json()
-
-    return json.dumps({'uid': uid, 'request_data': data}), 200
-
-
 @app.route('/notes', methods=['POST', 'PUT'])
 def add_note():
     """
@@ -372,7 +379,7 @@ def add_note():
     # # Stores note in database.
     # note.put()
 
-    return json.dumps(data), 200
+    return data, 200
 
 
 @app.errorhandler(500)

@@ -4,7 +4,6 @@ from flask import request, jsonify
 
 from unittest import TestCase
 from google.cloud import firestore
-from firebase_admin import auth
 
 from models import User
 from data_access import UserDao
@@ -13,6 +12,7 @@ import json
 import config
 
 db = config.Context.db
+auth = config.auth
 
 userDict: dict = {
     'uid': 'Ep7WCjZatagd1Nr50ToNkIp4WWt2',
@@ -85,7 +85,7 @@ class UserDAOTest(TestCase):
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2")
+        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2", app=config.Context.firebaseApp)
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -95,7 +95,8 @@ class FirebaseUserTest(TestCase):
         auth.update_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2",
             phone_number = "+17777777877",
             display_name = "David Nong",
-            disabled = False
+            disabled = False, 
+            app=config.Context.firebaseApp
         )
 
 class FirestoreUserTest(TestCase):
