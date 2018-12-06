@@ -6,9 +6,9 @@ import models
 # To make sure that Firebase App is initialized
 config.Context()
 
-# def sendMessageToUser(userId, data):
-#     fcmToken = data_access.UserDao
-    
+def sendMessageToUser(userId, data):
+    fcmToken = data_access.UserDao().getFcmToken(userId)
+    sendMessage(fcmToken, data)
     
 
 def sendMessage(registration_token, data, dry_run=False):

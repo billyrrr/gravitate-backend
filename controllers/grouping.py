@@ -169,8 +169,6 @@ class Group:
         userIds = orbit.userTicketPairs.keys()
 
         # for userId in userIds:
-        #     fcmessaging.
-        # TODO: add messaging
-
+        #     fcmessaging.sendMessageToUser(userId, "You are matched. ")
         return notJoined
         
