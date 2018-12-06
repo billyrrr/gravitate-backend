@@ -39,8 +39,7 @@ userDict: dict = {
     'phone_number': '+17777777777',
     'membership': 'rider',
     'display_name': 'Leon Wu',
-    'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg',
-    'pickupAddress': 'UCSD'
+    'photo_url': 'https://www.gstatic.com/webp/gallery/1.jpg'
 }
 
 def getAuthHeaders():
@@ -287,7 +286,6 @@ class UserDAOTest(TestCase):
         self.assertEquals(userDict['uid'], user.uid)
         self.assertEquals(userDict['membership'], user.membership)
         self.assertEquals(userDict['photo_url'], user.photo_url)
-        self.assertEquals(userDict['pickupAddress'], user.pickupAddress)
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
@@ -314,6 +312,5 @@ class FirestoreUserTest(TestCase):
         self.assertEqual(user.phone_number, userDict["phone_number"])
         self.assertEqual(user.photo_url, userDict["photo_url"])
         self.assertEqual(user.display_name, userDict["display_name"])
-        self.assertEquals(user.pickupAddress, userDict["pickupAddress"])
 
         print(json.dumps(user.toDict()))

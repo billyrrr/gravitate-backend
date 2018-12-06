@@ -16,7 +16,7 @@ class User(object):
 	def getFirestoreRef(self):
 		return self.__firestoreRef
 
-	def __init__(self, uid, membership, phone_number, display_name, photo_url, pickupAddress):
+	def __init__(self, uid, membership, phone_number, display_name, photo_url):
 			""" Description
 				This function initializes a User Object.
 				Note that this function should not be called directly.
@@ -26,7 +26,6 @@ class User(object):
 				:param uid: String
 				:param display_name:String
 				:param photo_url: Image
-				:param pickupAddress: String
 				:param friendList: List of Users
 			"""
 
@@ -35,7 +34,6 @@ class User(object):
 			self.display_name = display_name
 			self.phone_number = phone_number
 			self.photo_url = photo_url
-			self.pickupAddress = pickupAddress
 
 	def toDict(self):
 		userDict = {
@@ -43,15 +41,13 @@ class User(object):
 			"membership": self.membership,
 			"display_name": self.display_name,
 			"phone_number": self.phone_number,
-			"photo_url": self.photo_url,
-			"pickupAddress": self.pickupAddress
+			"photo_url": self.photo_url
 		}
 		return userDict
 
 	def toFirestoreDict(self):
 		userFirestoreDict = {
-			'membership': self.membership,
-			'pickupAddress': self.pickupAddress
+			'membership': self.membership
 		}
 		return userFirestoreDict
 
@@ -68,6 +64,5 @@ class User(object):
 		phone_number = userDict['phone_number']
 		display_name = userDict['display_name']
 		photo_url = userDict['photo_url']
-		pickupAddress = userDict['pickupAddress']
 		
-		return User(uid,membership,phone_number,display_name, photo_url, pickupAddress)
+		return User(uid,membership,phone_number,display_name, photo_url)
