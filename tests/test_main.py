@@ -49,7 +49,7 @@ def getAuthHeaders():
     # # userIdToken = auth.create_custom_token(uid=uid, app=firebaseApp)
     # userIdTokenMock = userIdToken
     # warnings.warn("Note that userIdTokenMock is temporary and the test may fail when the token is no longer valid.")
-    userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6IkRhdmlkIE5vbmciLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDYuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1GLTlmN1JzYS1PYy9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BR0Rndy1oenhseDd3elVacGNPWHJ3U0lvRFVULW1aaW9nL3M5Ni1jL3Bob3RvLmpwZyIsImF1ZCI6ImdyYXZpdGF0ZS1lNWQwMSIsImF1dGhfdGltZSI6MTU0MzgzODA3MCwidXNlcl9pZCI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJzdWIiOiJFcDdXQ2paYXRhZ2QxTnI1MFRvTmtJcDRXV3QyIiwiaWF0IjoxNTQzODgyNzI4LCJleHAiOjE1NDM4ODYzMjgsImVtYWlsIjoiYWx3MDY5QHVjc2QuZWR1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX251bWJlciI6IisxNDE1NTU1MjY3MSIsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTY5OTQ2NDM4NTc5OTc3OTQwMTMiXSwicGhvbmUiOlsiKzE0MTU1NTUyNjcxIl0sImVtYWlsIjpbImFsdzA2OUB1Y3NkLmVkdSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.FxXVWsw_ZPrhf1OKXx-zR3tbtla33VKgU9hW6s_uT9PLTK0O6sBSkuMlWyJGcdRMkClHPDSA5JetNS9ZER48bBXKS2LFzrMNe9oCweT3eyyq4t1DMKvjRjOSaDJAU750-ysHTRvkaHVHgHheCBpvpzWI85iRB7MFRwSJSJlXsRL5aIZ3muAa4InmON4kR2Vb-SI6hZTaPslmSDgkvd_oeAraTA4p3cHF1wVQJ--qZw90Vepfi-NVU_ZCxRU7kZHZZbHpKovCZvd5C9buMPg0dHEAcd0kAkSYGZ4LmpHN2UNTZtefaDz0Fsja7puBl3G2PW4AHBXFnCidNRAuohNoMA"
+    userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6Ikxlb24gV3UiLCJwaWN0dXJlIjoiaHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vd2VicC9nYWxsZXJ5LzEuanBnIiwiYXVkIjoiZ3Jhdml0YXRlLWU1ZDAxIiwiYXV0aF90aW1lIjoxNTQ0MDUxMzkyLCJ1c2VyX2lkIjoiRXA3V0NqWmF0YWdkMU5yNTBUb05rSXA0V1d0MiIsInN1YiI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJpYXQiOjE1NDQwNTQ2OTMsImV4cCI6MTU0NDA1ODI5MywiZW1haWwiOiJhbHcwNjlAdWNzZC5lZHUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfbnVtYmVyIjoiKzE3Nzc3Nzc3Nzc3IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjk5NDY0Mzg1Nzk5Nzc5NDAxMyJdLCJwaG9uZSI6WyIrMTc3Nzc3Nzc3NzciXSwiZW1haWwiOlsiYWx3MDY5QHVjc2QuZWR1Il19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.UOJMNnsj2waK1BXqHksPeZJnu1RyEdVSMPWKpu0ZzOYy5HJCeHByJUeF_y-bnKWAiPx5EwcT4AbrDDmDCYz1Y4U2w91xtSnfdmlDkXk1jrtt39VWVkTeNpBEKF0GQGGoPO8xHuWVO8kOmUpmUW9ScC9SwyklfNwx_hOPHwjWFkZNoGWtYPS-oRS7w65t5-ccDAml0cqCwvoLoYBSGmHyQ9pN3CFzYAkGbkHNltV_y9ayyNq6TN-ubJ4mVeI5aePip0jklGs4oiSuyr4UJpYTrSWpPySMk9Yh9GVQQev1h4bXzHw5eovfnkJCrek9aanMaxXQnyouBico3dUVsnn9mQ"
     headers= { 'Authorization': userIdTokenMock }
     return headers
 
@@ -76,7 +76,7 @@ class MainAppTestCase(TestCase):
 
         userIdMock = "Ep7WCjZatagd1Nr50ToNkIp4WWt2"
         mockHeaders = getAuthHeaders()
-        r = self.app.post(path='/authTest', json = json.dumps({'testAuth': True}), headers= mockHeaders )
+        r = self.app.post(path='/endpointTest', json = json.dumps({'testAuth': True}), headers= mockHeaders )
         responseDict:dict = json.loads(r.data)
         uid = responseDict['uid']
         self.assertEqual(uid, userIdMock)
@@ -111,9 +111,9 @@ class MainAppTestCase(TestCase):
     #     print(r.data)
     #     self.assertEqual(r.status_code, 200)
 
-    def testContextTest(self):
-        r = self.app.post(path='/contextTest', json={'key1': 'val1a'})
-        assert r.status_code == 200
+    # def testContextTest(self):
+    #     r = self.app.post(path='/contextTest', json={'key1': 'val1a'})
+    #     assert r.status_code == 200
 
     def testGetUser(self):
         path = '/users/' + userDict["uid"]
@@ -291,17 +291,19 @@ class UserDAOTest(TestCase):
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2")
+        user = auth.get_user("Ep7WCjZatagd1Nr50ToNkIp4WWt2", app=config.Context.firebaseApp)
         print(user.display_name)
 
     # def testDeleteUser(self):
     #     auth.delete_user("LwkGgNe7HMRpFn6v9kcYCL7HBpx1")
+    # Note that the code needs to be adapted to specify app = config.Context.firebase App
 
     def testUpdateUser(self):
         auth.update_user("JTKWXo5HZkab9dqQbaOaqHiSNDH2",
             phone_number = "+17777777877",
             display_name = "David Nong",
-            disabled = False
+            disabled = False,
+            app=config.Context.firebaseApp
         )
 
 class FirestoreUserTest(TestCase):

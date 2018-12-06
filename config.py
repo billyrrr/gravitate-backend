@@ -19,8 +19,15 @@ import logging
 import firebase_admin
 from firebase_admin import credentials, auth
 
+# Original Firebase set-up certs
 FIRESTORE_CRED_JSON_PATH = "gravitate-d9464b836672.json"
 FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json"
+APP_NAME = "gravitate-e5d01"
+
+# # New project-id: gravitate-dev certs
+# FIRESTORE_CRED_JSON_PATH = ""
+# FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
+# APP_NAME = "gravitate-dev"
 
 class Context():
 
@@ -53,7 +60,7 @@ class Context():
 
         :rtype:
         """
-        cls._reloadFirebaseApp(FIRESTORE_CRED_JSON_PATH)
+        cls._reloadFirebaseApp(FIREBASE_CERTIFICATE_JSON_PATH)
         cls._reloadFirestoreClient(FIREBASE_CERTIFICATE_JSON_PATH)
         return cls
 
@@ -67,7 +74,7 @@ class Context():
         # TODO delete certificate path in function call
 
         try:
-            cls.firebaseApp = firebase_admin.initialize_app(credential=cls._cred)
+            cls.firebaseApp = firebase_admin.initialize_app(credential=cls._cred, name=APP_NAME)
         except ValueError as e:
             logging.exception('Error initializing firebaseApp')
 
