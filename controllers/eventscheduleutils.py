@@ -83,4 +83,8 @@ def populateMemberProfilePhotoUrls(userRefs=None, userIds=None) -> [str]:
 
     :rtype:
     """
+<<<<<<< HEAD
     raise NotImplementedError()
+=======
+    raise NotImplementedError()
+>>>>>>> origin/ayk038

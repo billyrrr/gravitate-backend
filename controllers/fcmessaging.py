@@ -1,16 +1,22 @@
 import config
 from firebase_admin import messaging
+<<<<<<< HEAD
 import data_access
 import models
+=======
+>>>>>>> origin/ayk038
 
 # To make sure that Firebase App is initialized
 config.Context()
 
+<<<<<<< HEAD
 # def sendMessageToUser(userId, data):
 #     fcmToken = data_access.UserDao
     
     
 
+=======
+>>>>>>> origin/ayk038
 def sendMessage(registration_token, data, dry_run=False):
     """ Description
         This method sends notifications to front-end. 
@@ -45,4 +51,8 @@ def sendMessage(registration_token, data, dry_run=False):
     # registration token.
     response = messaging.send(message, dry_run=dry_run)
 
+<<<<<<< HEAD
     return response
+=======
+    return response
+>>>>>>> origin/ayk038
