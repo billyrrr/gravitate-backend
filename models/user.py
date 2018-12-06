@@ -27,9 +27,8 @@ class User(object):
 				:param display_name:String
 				:param photo_url: Image
 				:param pickupAddress: String
-				:param friendList: List of Users
 			"""
-			#fcmToken
+
 			self.uid = uid
 			self.membership = membership
 			self.display_name = display_name
@@ -44,7 +43,7 @@ class User(object):
 			"display_name": self.display_name,
 			"phone_number": self.phone_number,
 			"photo_url": self.photo_url,
-			"pickupAddress": self.pickupAddress
+			"pickupAddress": self.pickupAddress,
 		}
 		return userDict
 
