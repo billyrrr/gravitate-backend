@@ -56,23 +56,14 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
-class UserExistsService(Resource):
-    def get(self,uid):
-        if( UserDao().userExists(uid)):
-            return 200
-        else:
-            return 400
-
-
 class UserService(Resource):
     
     def get(self, uid):
         # Check Firestore to see if UID Already Exists
-        user = UserDao().getUserById(uid)
-        if ( user != None ):
+        if( UserDao().userExists(uid)):
+            user = UserDao().getUserById(uid)
             userDict = user.toDict()
             return userDict, 200
-            # return user profile
         else:
             errorResponseDict = {
                 "error": "User Does not Exist"
@@ -286,7 +277,6 @@ class EndpointTestService(Resource):
 
 
 api = Api(app)
-api.add_resource(UserExistsService, '/exists/<string:uid>')
 api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
