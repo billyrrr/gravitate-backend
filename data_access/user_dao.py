@@ -22,6 +22,7 @@ def getAuthInfo(uid:string, userDict:dict):
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
     userDict["photo_url"] = userRecord.photo_url
+    userDict["email"] = userRecord.email
     userDict["display_name"] = userRecord.display_name
     return userDict
 

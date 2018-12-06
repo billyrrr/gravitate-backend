@@ -286,6 +286,7 @@ class EndpointTestService(Resource):
 
 
 api = Api(app)
+api.add_resource(UserExistsService, '/exists/<string:uid>')
 api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
