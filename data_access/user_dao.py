@@ -44,6 +44,10 @@ class UserDao:
         else:
             return False
 
+    def userIdExists(self, userId: str ) :
+        userRef = self.userCollectionRef.document(userId)
+        return self.userExists(userRef)
+
     @staticmethod
     @transactional
     def getUserWithTransaction(transaction, userRef: DocumentReference):
