@@ -10,6 +10,7 @@ class UserCreationForm():
     display_name = None
     phone_number = None
     photo_url = None
+    pickupAddress = None
 
 class UserCreationValidateForm(Form):
 
@@ -28,3 +29,6 @@ class UserCreationValidateForm(Form):
 
     photo_url = StringField(u'Photo URL', validators=[
         DataRequired('Photo URL needs to be specified.')])
+
+    pickupAddress = StringField(u'Pickup Address', validators=[
+        DataRequired('Pickup Address needs to be specified.')])

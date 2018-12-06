@@ -132,6 +132,7 @@ def fillUserDictWithForm(form: UserCreationForm) -> dict:
     userDict['display_name'] = form.display_name
     userDict['phone_number'] = form.phone_number
     userDict['photo_url'] = form.photo_url
+    userDict['pickupAddress'] = form.pickupAddress
 
     return userDict
 
