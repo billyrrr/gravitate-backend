@@ -19,13 +19,13 @@ import logging
 import firebase_admin
 from firebase_admin import credentials, auth
 
-# Original Firebase set-up certs
-FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json"
-APP_NAME = "gravitate-e5d01"
+# # Original Firebase set-up certs
+# FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json"
+# APP_NAME = "gravitate-e5d01"
 
-# # New project-id: gravitate-dev certs
-# FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
-# APP_NAME = "gravitate-dev"
+# New project-id: gravitate-dev certs
+FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
+APP_NAME = "gravitate-dev"
 
 class Context():
 
