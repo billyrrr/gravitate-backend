@@ -22,6 +22,7 @@ def getAuthInfo(uid:string, userDict:dict):
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
     userDict["photo_url"] = userRecord.photo_url
+    userDict["email"] = userRecord.email
     userDict["display_name"] = userRecord.display_name
     return userDict
 
@@ -34,6 +35,18 @@ class UserDao:
 
     def __init__(self):
         self.userCollectionRef = db.collection(u'users')
+
+    @staticmethod
+    def userExists(userRef: DocumentReference):
+        snapshot: DocumentSnapshot = userRef.get()
+        if snapshot.exists:
+            return True
+        else:
+            return False
+
+    def userIdExists(self, userId: str ) :
+        userRef = self.userCollectionRef.document(userId)
+        return self.userExists(userRef)
 
     @staticmethod
     @transactional
