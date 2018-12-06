@@ -6,7 +6,7 @@ from controllers.group_user import pair
 from controllers import utils
 from models.ride_request import RideRequest, Target, ToEventTarget
 import config
-from controllers import groupingutils
+from controllers import groupingutils, fcmessaging
 import warnings
 
 db = config.Context.db
@@ -158,16 +158,19 @@ class Group:
         notJoined = []
 
         for rideRequest in self.rideRequestArray:
-            try:
-                groupingutils.placeInOrbit(rideRequest, self.intendedOrbit)
-                # Trying to join one rideRequest to the orbit
-                # raise NotImplementedError
-                joinOrbitToRideRequest( rideRequest.getFirestoreRef(), rideRequest, orbit.getFirestoreRef(), orbit)
-                # Save orbit
-            except:
-                # TODO when failing to join, move on to next
+
+            # Trying to join one rideRequest to the orbit
+            isJoined = joinOrbitToRideRequest( rideRequest.getFirestoreRef(), rideRequest, orbit.getFirestoreRef(), orbit)
+
+            if not isJoined:
+                # when failing to join, move on to next
                 notJoined.append(rideRequest)
-                raise
+
+        userIds = orbit.userTicketPairs.keys()
+
+        # for userId in userIds:
+        #     fcmessaging.
+        # TODO: add messaging
 
         return notJoined
         

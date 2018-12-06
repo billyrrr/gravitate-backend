@@ -1,19 +1,17 @@
 #Author: Andrew Kim
 import datetime
-from models.event import Event
+from models import Event
 
-event: Event
-ts = datetime.datetime.now().timestamp()
+def eventStatus(event: Event):
+	""" Definition
+		Sets the event to a past event category one day after the start time 
+	"""
+	ts = datetime.datetime.now().timestamp()
+	#check if eventStatus is True before proceeding
+	if not event.isClosed and ts >= event.endTimestamp:
+		return True
+	else:
+		return False
 
-class EventStatus:
-	
-	@staticmethod
-	def eventStatus():
-		""" Definition
-		    Sets the event to a past event category one day after the start time 
-		"""
-		#check if eventStatus is True before proceeding
-		if event.isClosed == False:
-			if ts >= event.endTimestamp:
-				event.isClosed = True
-
+def closeEvent(event: Event):
+	event.isClosed = True

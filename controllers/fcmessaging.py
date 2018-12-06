@@ -1,8 +1,15 @@
 import config
 from firebase_admin import messaging
+import data_access
+import models
 
 # To make sure that Firebase App is initialized
 config.Context()
+
+# def sendMessageToUser(userId, data):
+#     fcmToken = data_access.UserDao
+    
+    
 
 def sendMessage(registration_token, data, dry_run=False):
     """ Description
