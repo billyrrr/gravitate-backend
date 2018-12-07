@@ -252,6 +252,28 @@ class OrbitForceMatchService(Resource):
         return responseDict, 200
 
 
+class DeleteMatchService(Resource):
+    def post(self):
+        requestJson = request.get_json()
+        requestForm = json.loads(requestJson) if (
+            type(requestJson) != dict) else requestJson
+
+        rideRequestId = requestForm.get("rideRequestId", None) 
+        responseDict = None
+
+        try: 
+            rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+            grouping.remove(rideRequestRef)
+            responseDict = {"success":True}
+        except Exception as e:
+            responseDict = {"error":dict(e)}
+            return responseDict, 500
+
+        # return rideRequest.getFirestoreRef().id, 200
+        return responseDict, 200
+
+
+
 class EndpointTestService(Resource):
     def post(self):
         """
@@ -294,6 +316,7 @@ api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 api.add_resource(EndpointTestService, '/endpointTest')
+api.add_resource(DeleteMatchService, '/deleteMatch')
 
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
