@@ -42,7 +42,7 @@ if the data is not uniform. In that case, examine the firestore closely to see w
 
 ``` {"rideRequestId":"7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"} ```
 
-You can call it by ```curl -X POST -H "Content-Type: application/json" -d @delete_match.json https://gravitate-e5d01.appspot.com/deleteMatchh ``` 
+You can call it by ```curl -X POST -H "Content-Type: application/json" -d @delete_match.json https://gravitate-e5d01.appspot.com/deleteMatch ``` 
 in ```gravitate-backend/tests/jsons_to_post_to_endpoint/```
 
 ### Other information
