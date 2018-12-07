@@ -48,6 +48,10 @@ class UserDao:
         userRef = self.userCollectionRef.document(userId)
         return self.userExists(userRef)
 
+    def getRef(self, userId: str) -> DocumentReference:
+        ref: DocumentReference = self.userCollectionRef.document(userId)
+        return ref
+
     @staticmethod
     @transactional
     def getUserWithTransaction(transaction, userRef: DocumentReference):
@@ -63,13 +67,13 @@ class UserDao:
         :rtype:
         """
 
-        # try:
+        userExists = UserDao.userExists(userRef)
 
-        snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
-        if snapshot.exists:
-            snapshotDict: dict = snapshot.to_dict()
-            userDict = getAuthInfo(userRef.id, snapshotDict)
+        if userExists:
+            snapshot = userRef.get(transaction=transaction)
+            userDict = getAuthInfo(userRef.id, snapshot)
             user = User.fromDict(userDict)
+            user.setFirestoreRef(userRef)
             return user
         else:
             return None
@@ -101,6 +105,11 @@ class UserDao:
         user = self.getUser(userRef)
         return user
 
+    def getByIdWithTransaction(self, transaction: Transaction, userId: str) -> User:
+        userRef = self.userCollectionRef.document(userId)
+        user = self.getUserWithTransaction(transaction, userRef)
+        return user
+
     def createUser(self, user: User):
         userRef = self.userCollectionRef.add(user.toDict())
         return userRef
@@ -118,7 +127,7 @@ class UserDao:
         userSnapshot: DocumentSnapshot = userRef.get()
         userData = userSnapshot.to_dict()
         fcmToken = userData["fcmToken"]
-        return FcmToken
+        return fcmToken
 
 
     @staticmethod

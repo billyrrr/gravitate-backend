@@ -21,8 +21,9 @@ class EventDao:
 	def __init__(self):
 		self.eventCollectionRef = db.collection('events')
 
+	@staticmethod
 	@transactional
-	def getWithTransaction(self, transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
+	def getWithTransaction( transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
 		""" Description
 			Note that this cannot take place if transaction already received write operations. 
 			"If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."

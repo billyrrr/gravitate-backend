@@ -22,8 +22,9 @@ class LocationGenericDao:
 	def __init__(self):
 		self.locationCollectionRef = db.collection('locations')
 
+	@staticmethod
 	@transactional
-	def getWithTransaction(self, transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
+	def getWithTransaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
 		""" Description
 			Note that this cannot take place if transaction already received write operations. 
 			"If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -47,6 +48,7 @@ class LocationGenericDao:
 				transaction=transaction)
 			snapshotDict: dict = snapshot.to_dict()
 			location = Location.fromDict(snapshotDict)
+			location.setFirestoreRef(locationRef)
 			return location
 		except google.cloud.exceptions.NotFound:
 			raise Exception('No such document! ' + str(locationRef.id))
@@ -71,6 +73,7 @@ class LocationGenericDao:
 		if len(airportLocations)!= 1:
 			warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
 				airportLocations))
+			return None
 
 		result = airportLocations.pop()
 		return result

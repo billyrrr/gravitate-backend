@@ -1,7 +1,7 @@
 from controllers.group_user import pair
-from controllers.grouping import constructTupleList, pairRideRequests, constructGroups, groupRideRequests
+from controllers.grouping import constructTupleList, pairRideRequests, constructGroups, groupRideRequests, forceMatchTwoRideRequests
+from controllers.associate_ride_request_with_orbit import placeInOrbit
 from data_access.ride_request_dao import RideRequestGenericDao
-from controllers import groupingutils
 from models.ride_request import RideRequest
 from models.orbit import Orbit
 import factory
@@ -10,6 +10,15 @@ import config
 from google.cloud import firestore
 
 db = config.Context.db
+
+rideRequestIds = ["gganvzHRUCyGiLf2tZAle5Z11HicZ6dR", "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO"]
+
+class TestTempForceGroupUsers(unittest.TestCase):
+
+    def testMatchTwo(self):
+        result = forceMatchTwoRideRequests(rideRequestIds)
+        print(result)
+        self.assertIsNone(result) # So that we see debug log
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -149,7 +158,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         rideRequest.setFirestoreRef(db.document(
             'rideRequests', 'testriderequestid1'))
 
-        groupingutils.placeInOrbit(rideRequest, orbit)
+        placeInOrbit(rideRequest, orbit)
         userTicketPairsDict = orbit.toDict()["userTicketPairs"]
         expectedDict = {
             'SQytDq13q00e0N3H4agR': {
