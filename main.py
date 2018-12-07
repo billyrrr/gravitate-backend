@@ -30,7 +30,7 @@ from models import User
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 
-from controllers import utils, userutils, group_user, grouping, eventscheduleutils
+from controllers import utils, userutils, grouping, eventscheduleutils
 
 from data_access import RideRequestGenericDao, UserDao, EventDao
 
@@ -115,9 +115,9 @@ class UserService(Resource):
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 
-            
+            responseDict = {"userId": newUser.getFirestoreRef().id}
 
-            return newUser.getFirestoreRef().id, 200
+            return responseDict, 200
         else:
             print(validateForm.errors)
             return validateForm.errors, 400
@@ -156,10 +156,16 @@ class RideRequestService(Resource):
         except auth.AuthError as exc:
             if exc.code == 'ID_TOKEN_REVOKED':
                 # Token revoked, inform the user to reauthenticate or signOut().
-                return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
+                errorResponseDict = {
+                    'error': 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). '
+                }
+                return errorResponseDict, 401
             else:
                 # Token is invalid
-                return 'Invalid token', 402
+                errorResponseDict = {
+                    'error': "Invalid token"
+                }
+                return errorResponseDict, 402
 
         # Retrieve JSON 
         requestJson = request.get_json()
@@ -182,6 +188,13 @@ class RideRequestService(Resource):
 
             rideRequestDict, location = fillRideRequestDictWithForm(
                 form, userId)
+            if not location:
+                errorResponseDict = {
+                    "error": "invalid airport code or error finding airport location in backend",
+                    "parsedResult": rideRequestDict,
+                    "originalForm": requestForm
+                }
+                return errorResponseDict, 400
 
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(
@@ -204,7 +217,7 @@ class RideRequestService(Resource):
             transaction.commit()
 
             # rideRequest Response
-            responseDict = {"FirestoreRef": rideRequest.getFirestoreRef().id}
+            responseDict = {"firestoreRef": rideRequest.getFirestoreRef().id}
             # return rideRequest.getFirestoreRef().id, 200
             return responseDict, 200
         else:
@@ -317,6 +330,8 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict,
     eventRef = utils.findEvent(form)
     rideRequestDict['eventRef'] = eventRef
     location = utils.getAirportLocation(form)
+    if not location:
+        return rideRequestDict, None
     airportLocationRef = location.getFirestoreRef()
     rideRequestDict['airportLocation'] = airportLocationRef
 

@@ -48,6 +48,10 @@ class UserDao:
         userRef = self.userCollectionRef.document(userId)
         return self.userExists(userRef)
 
+    def getRef(self, userId: str) -> DocumentReference:
+        ref: DocumentReference = self.userCollectionRef.document(userId)
+        return ref
+
     @staticmethod
     @transactional
     def getUserWithTransaction(transaction, userRef: DocumentReference):
@@ -63,13 +67,14 @@ class UserDao:
         :rtype:
         """
 
-        # try:
+        userExists = UserDao.userExists(userRef)
 
-        snapshot: DocumentSnapshot = userRef.get(transaction=transaction)
-        if snapshot.exists:
-            snapshotDict: dict = snapshot.to_dict()
-            userDict = getAuthInfo(userRef.id, snapshotDict)
+        if userExists:
+            snapshot = userRef.get(transaction=transaction)
+            userDict = snapshot.to_dict()
+            getAuthInfo(userRef.id, userDict)
             user = User.fromDict(userDict)
+            user.setFirestoreRef(userRef)
             return user
         else:
             return None
@@ -101,6 +106,11 @@ class UserDao:
         user = self.getUser(userRef)
         return user
 
+    def getByIdWithTransaction(self, transaction: Transaction, userId: str) -> User:
+        userRef = self.userCollectionRef.document(userId)
+        user = self.getUserWithTransaction(transaction, userRef)
+        return user
+
     def createUser(self, user: User):
         userRef = self.userCollectionRef.add(user.toDict())
         return userRef
@@ -118,13 +128,19 @@ class UserDao:
         userSnapshot: DocumentSnapshot = userRef.get()
         userData = userSnapshot.to_dict()
         fcmToken = userData["fcmToken"]
-        return FcmToken
+        return fcmToken
 
 
     @staticmethod
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
         transaction.set(userRef, newUser.toFirestoreDict())
+
+    @staticmethod
+    @transactional
+    def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference =None, orbitId: str = None):
+        eventScheduleRef: DocumentReference = userRef.collection("eventSchedules").document(orbitId)
+        transaction.delete(eventScheduleRef)
 
     @staticmethod
     @transactional
@@ -164,6 +180,6 @@ class UserDao:
         eventScheduleDict = eventSchedule.toDict()
         transaction.set(eventScheduleRef, eventScheduleDict, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
-    @transactional
+    
     def setWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
         transaction.set(userRef, newUser)
