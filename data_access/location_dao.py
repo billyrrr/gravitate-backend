@@ -113,7 +113,7 @@ class LocationGenericDao:
 		"""
 		return singleLocationRef.delete()
 
-	@transactional
+	
 	@staticmethod
 	def setWithTransaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
 		""" Description

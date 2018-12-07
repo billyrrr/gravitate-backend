@@ -30,7 +30,7 @@ from models import User
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 
-from controllers import utils, userutils, group_user, grouping, eventscheduleutils
+from controllers import utils, userutils, grouping, eventscheduleutils
 
 from data_access import RideRequestGenericDao, UserDao, EventDao
 

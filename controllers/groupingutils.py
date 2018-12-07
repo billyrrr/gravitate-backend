@@ -1,23 +1,24 @@
 from models import RideRequest, AirportRideRequest, SocialEventRideRequest, Location, Orbit, Event
 from data_access import RideRequestGenericDao, OrbitDao, UserDao, LocationGenericDao
 from google.cloud.firestore import DocumentReference, Client, transactional, Transaction
-from controllers import  eventscheduleutils
+from controllers import eventscheduleutils
 from typing import Type
 import config
 
 db = config.Context.db
 
+
 @transactional
 def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideRequest],  orbit: Orbit) -> bool:
     """ Description
     This function joins a rideRequest to an orbit in the database. 
-        Firstly, the function accesses database copy of the objects and download them as local copies
-        Secondly, the function validates that the database copy of the object matches those passed along by the decision maker[1]
-        Thirdly, the function modifies local copies so that a rideRequest is joined to an orbit
-        Fourthly, the function updates database copy of the objects, and throw an error if they changed since last read
+            Firstly, the function accesses database copy of the objects and download them as local copies
+            Secondly, the function validates that the database copy of the object matches those passed along by the decision maker[1]
+            Thirdly, the function modifies local copies so that a rideRequest is joined to an orbit
+            Fourthly, the function updates database copy of the objects, and throw an error if they changed since last read
 
     [1] Note that decision maker should refresh local copies of the objects after each join, 
-        since this function will raise an exception if they don't match. 
+            since this function will raise an exception if they don't match. 
 
     :type rideRequestRef:DocumentReference:
     :param rideRequestRef:DocumentReference:
@@ -48,22 +49,35 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
     placeInOrbit(rideRequest, orbit)
 
     # Update database copy of rideRequest and orbit
-    try:
-        
-        RideRequestGenericDao.setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
-        OrbitDao.setWithTransaction(transaction, orbit, orbit.getFirestoreRef())
 
+    RideRequestGenericDao.setWithTransaction(
+        transaction, rideRequest, rideRequest.getFirestoreRef())
+    OrbitDao.setWithTransaction(
+        transaction, orbit, orbit.getFirestoreRef())
+
+    return True
+
+@transactional
+def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
+
+    removeFromOrbit(rideRequest, orbit)
+
+    try:
+        RideRequestGenericDao().setWithTransaction(
+            transaction, rideRequest, rideRequest.getFirestoreRef())
+        OrbitDao.setWithTransaction(
+            transaction, orbit, orbit.getFirestoreRef())
     except Exception as e:
         print(e)
         return False
 
     return True
 
-@transactional
-def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
+
+def updateEventSchedule(rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
     """ Description
 
-        Populate eventSchedule (client view model)
+            Populate eventSchedule (client view model)
 
 
     :type transaction:Transaction:
@@ -84,23 +98,27 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
     userRef = UserDao().getRef(userId)
     eventRef = event.getFirestoreRef()
 
-    eventSchedule = eventscheduleutils.buildEventScheduleOrbit(rideRequest=rideRequest, location=location, orbit=orbit)
-    UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+    eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
+        rideRequest=rideRequest, location=location, orbit=orbit)
+    transaction = db.transaction()
+    UserDao().addToEventScheduleWithTransaction(transaction,
+                                                userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+
 
 def placeInOrbit(r: RideRequest, o: Orbit):
     """ Description
-        :type uid:str:
-        :param uid:str:
+            :type uid:str:
+            :param uid:str:
 
-        :type r:RideRequest:
-        :param r:RideRequest:
+            :type r:RideRequest:
+            :param r:RideRequest:
 
-        :type o:Orbit:
-        :param o:Orbit:
+            :type o:Orbit:
+            :param o:Orbit:
 
-        :raises:
+            :raises:
 
-        :rtype:
+            :rtype:
     """
     # set RideRequest's requestCompletion to true
     r.requestCompletion = True
@@ -112,13 +130,24 @@ def placeInOrbit(r: RideRequest, o: Orbit):
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
-            "rideRequestRef": r.getFirestoreRef(),
-            "userWillDrive": r.driverStatus,
-            "hasCheckedIn": False,
-            "inChat": False,
-            "pickupAddress": r.pickupAddress
+        "rideRequestRef": r.getFirestoreRef(),
+        "userWillDrive": r.driverStatus,
+        "hasCheckedIn": False,
+        "inChat": False,
+        "pickupAddress": r.pickupAddress
     }
     o.userTicketPairs[userId] = ticket
     r.requestCompletion = True
 
     return
+
+
+def removeFromOrbit(r: RideRequest, o: Orbit):
+    # remove userRef from orbitRef's userTicketPairs
+    # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+    userIds = list(o.userTicketPairs.keys())
+    for userId in userIds:
+        if userId == r.userId:
+            o.userTicketPairs.pop(userId)
+    r.orbitRef = None
+    r.requestCompletion = False

@@ -36,7 +36,7 @@ class EventScheduleBuilder():
             # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
             # memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
             # self.eventSchedule.memberProfilePhotoUrls = memberProfilePhotoUrls
-            self.orbitRef = orbit.getFirestoreRef()
+            self.eventSchedule.orbitRef = orbit.getFirestoreRef()
 
     def export(self) -> EventSchedule:
         return self.eventSchedule

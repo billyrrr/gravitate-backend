@@ -42,6 +42,7 @@ class EventDao:
 				transaction=transaction)
 			snapshotDict: dict = snapshot.to_dict()
 			event = Event.fromDict(snapshotDict)
+			event.setFirestoreRef(eventRef)
 			return event
 		except google.cloud.exceptions.NotFound:
 			raise Exception('No such document! ' + str(eventRef.id))    

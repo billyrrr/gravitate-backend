@@ -71,7 +71,8 @@ class UserDao:
 
         if userExists:
             snapshot = userRef.get(transaction=transaction)
-            userDict = getAuthInfo(userRef.id, snapshot)
+            userDict = snapshot.to_dict()
+            getAuthInfo(userRef.id, userDict)
             user = User.fromDict(userDict)
             user.setFirestoreRef(userRef)
             return user
@@ -137,6 +138,12 @@ class UserDao:
 
     @staticmethod
     @transactional
+    def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference =None, orbitId: str = None):
+        eventScheduleRef: DocumentReference = userRef.collection("eventSchedules").document(orbitId)
+        transaction.delete(eventScheduleRef)
+
+    @staticmethod
+    @transactional
     def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, eventSchedule: EventSchedule=None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
@@ -173,6 +180,6 @@ class UserDao:
         eventScheduleDict = eventSchedule.toDict()
         transaction.set(eventScheduleRef, eventScheduleDict, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
-    @transactional
+    
     def setWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
         transaction.set(userRef, newUser)

@@ -59,7 +59,7 @@ class OrbitDao:
         return singleOrbitRef.delete()
 
     @staticmethod
-    @transactional
+    # @transactional
     def setWithTransaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 

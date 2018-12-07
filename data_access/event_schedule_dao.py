@@ -44,7 +44,7 @@ class EventScheduleGenericDao:
             self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
 
     
-    @transactional
+    
     def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[EventSchedule]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
@@ -113,7 +113,7 @@ class EventScheduleGenericDao:
         """
         return singleEventScheduleRef.delete()
 
-    @transactional
+    
     @staticmethod
     def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule], eventScheduleRef: DocumentReference):
         """ Description

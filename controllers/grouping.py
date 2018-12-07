@@ -1,16 +1,13 @@
-from controllers.associate_ride_request_with_orbit import joinOrbitToRideRequest, updateEventSchedule
-from models import Orbit, Event, Location
-from data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao
-from controllers.group_user import pair
+from controllers import groupingutils
+from models import Orbit, Event, Location, RideRequest, Target, ToEventTarget
+from data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao, UserDao
 from controllers import utils
-from models.ride_request import RideRequest, Target, ToEventTarget
 import config
-from controllers import fcmessaging
+from controllers import fcmessaging, eventscheduleutils
 import warnings
 from google.cloud.firestore import Transaction, transactional, DocumentReference
 
 db = config.Context.db
-
 
 
 def groupManyRideRequests(rideRequestIds: list):
@@ -107,8 +104,12 @@ def constructGroups(groups: list, paired: list):
         event = EventDao().get(eventRef)
         locationRef: DocumentReference = event.locationRef
         location = LocationGenericDao().get(locationRef)
+        
+        rideRequests = list()
+        rideRequests.append(rideRequest1)
+        rideRequests.append(rideRequest2)
 
-        group: Group = Group([rideRequest1, rideRequest2], intendedOrbit, event, location)
+        group: Group = Group(rideRequests, intendedOrbit, event, location)
         groups.append(group)
 
     return
@@ -153,6 +154,45 @@ def constructTupleList(rideRequests: list):
 
     return arr
 
+def remove(rideRequestRef: DocumentReference) -> bool:
+
+    transaction = db.transaction()
+    rideRequest = RideRequestGenericDao().getWithTransaction(transaction, rideRequestRef)
+    rideRequest.setFirestoreRef(rideRequestRef)
+
+    userId = rideRequest.userId
+    userRef = UserDao().getRef(userId)
+    # user = UserDao().getUserWithTransaction(transaction, userRef)
+
+    orbitRef = rideRequest.orbitRef
+
+    assert orbitRef != None
+
+    orbitId = orbitRef.id
+    orbit = OrbitDao().getWithTransaction(transaction, orbitRef)
+    orbit.setFirestoreRef(orbitRef)
+
+    eventRef = orbit.eventRef
+
+    locationRef: DocumentReference = rideRequest.airportLocation
+    location = LocationGenericDao().getWithTransaction(transaction, locationRef)
+    
+    transaction = db.transaction()
+    groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
+    transaction = db.transaction()
+    UserDao().removeEventScheduleWithTransaction(transaction, userRef=userRef, orbitId=orbitId)
+    
+    transaction = db.transaction()
+    eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
+    transaction = db.transaction()
+    UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+
+    # transaction.commit()
+
+    return True
+
+
+
 class Group:
 
     def __init__(self, rideRequestArray:[], intendedOrbit: Orbit, event: Event, location: Location):
@@ -170,12 +210,16 @@ class Group:
         orbit = self.intendedOrbit
 
         # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
-        transaction = db.transaction()
+        print(self.rideRequestArray)
 
         for rideRequest in self.rideRequestArray:
 
+            print(rideRequest.toDict())
+            transaction: Transaction = db.transaction()
+
             # Trying to join one rideRequest to the orbit
-            isJoined = joinOrbitToRideRequest(transaction, rideRequest, orbit)
+            isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
+            transaction.commit()
 
             # when failing to join, record and move on to the next
             if isJoined:
@@ -184,19 +228,54 @@ class Group:
                 self.notJoined.append(rideRequest)
 
         # refresh event schedule for each user
-        self.refreshEventSchedules(transaction)
-        transaction.commit()
+        self.refreshEventSchedules(self.joined, self.intendedOrbit, self.event, self.location)
 
         return self.notJoined
 
-    def refreshEventSchedules(self, transaction: Transaction):
-        rideRequests =  self.joined
+    @staticmethod
+    def refreshEventSchedules(joined, intendedOrbit, event, location):
+        rideRequests =  joined
         for rideRequest in rideRequests:
             # Note that profile photos may not be populated even after the change is committed
-            updateEventSchedule(transaction, rideRequest, self.intendedOrbit, self.event, self.location)
+            groupingutils.updateEventSchedule(rideRequest, intendedOrbit, event, location)
 
     def sendNotifications(self):
         raise NotImplementedError
         # for userId in userIds:
         #     fcmessaging.sendMessageToUser(userId, "You are matched. ")
         
+
+"""
+
+	Author: Tyler, Zixuan Rao
+
+"""
+
+def pair(arr = None, paired: list = None, unpaired: list = None):
+	"""
+	Description: 
+
+		Author: Tyler
+
+		:param arr:  an array of ride requests
+			[the first is earliest allowable time, second is latest time, third is firestore reference]
+		:param paired: 
+		:param unpaired: 
+	"""
+	sortedArr = sorted(arr, key=lambda x: x[0])
+
+	i=0
+	while i < len(sortedArr):
+
+		if i == len(sortedArr) - 1:
+			unpaired.insert(len(unpaired), [sortedArr[i][2]])
+			i+=1
+		else:
+			if(sortedArr[i][1] >= sortedArr[i+1][0]):
+
+				paired.insert(len(paired), [sortedArr[i][2], sortedArr[i+1][2]])
+				i+=1
+			else:
+
+				unpaired.insert(len(unpaired), [sortedArr[i][2]])
+			i+=1
