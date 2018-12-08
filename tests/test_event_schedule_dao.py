@@ -3,6 +3,15 @@ from tests import factory
 from controllers import eventscheduleutils
 from data_access import EventScheduleGenericDao
 from models import EventSchedule
+from controllers.eventscheduleutils import getMemberProfilePhotoUrls
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from models.orbit import Orbit
+import config
+
+CTX = config.Context
+auth = config.auth
+
+db = CTX.db
 
 eventScheduleDict = {
 	"destName": "LAX",
@@ -11,8 +20,8 @@ eventScheduleDict = {
     "memberProfilePhotoUrls": [],
     "pickupAddress": "Tenaya Hall, San Diego, CA 92161",
     "pending": True,
-	"rideRequestRef": "/rideRequests/testRef1",
-    "locationRef": "/locations/AedTfnR2FhaLnVHriAMn",
+	"rideRequestRef": "/rideRequests/testA",
+    "locationRef": "/locations/Bdn07rFaesdlg8whfjpV",
 	"orbitRef": None
 }
 
@@ -26,6 +35,16 @@ class EventScheduleTest(unittest.TestCase):
         rideRequest = factory.getMockRideRequest()
         eventSch = eventscheduleutils.buildEventSchedule(rideRequest)
         self.assertEquals(eventScheduleDict, eventSch.toDict())
+
+    def testPopulateProfileUrls(self):
+        orbitRef: DocumentReference = db.collection(u'orbits').document("WQiIEsGlVbU8a8F1la45")
+        snapshot: DocumentSnapshot = orbitRef.get()
+        if snapshot.exists:
+            orbit: Orbit = Orbit.fromDict(snapshot.to_dict())
+            print(getMemberProfilePhotoUrls(orbit))
+        else:
+            print("Not Found")
+            return False
 
     def testCreateCompletedRideRequest(self):
         raise NotImplementedError

@@ -1,4 +1,5 @@
 from models import EventSchedule, AirportRideRequest, Orbit, AirportLocation
+from data_access import UserDao
 import warnings
 import google.cloud.firestore
 
@@ -34,8 +35,7 @@ class EventScheduleBuilder():
             self.eventSchedule.pending = False
             self.eventSchedule.memberProfilePhotoUrls = []
             # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
-            # memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
-            # self.eventSchedule.memberProfilePhotoUrls = memberProfilePhotoUrls
+            # self.eventSchedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
             self.eventSchedule.orbitRef = orbit.getFirestoreRef()
 
     def export(self) -> EventSchedule:
@@ -68,21 +68,34 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
 
     :rtype:
     """
-    raise NotImplementedError()
+    # Must go through each userTicketPair (key = userIDs)
+    photo_urls = [];
+    for uid in orbit.userTicketPairs:
+        user = UserDao().getUserById(uid)
+        photo_url = user.photo_url
+        photo_urls.append(photo_url)
+
+    return photo_urls
 
     
-def populateMemberProfilePhotoUrls(userRefs=None, userIds=None) -> [str]:    
-    """ Description
-        [Assigned to Leon]
+# def populateMemberProfilePhotoUrls(ticketPairs:dict) -> [str]:    
+#     """ Description
+#         [Assigned to Leon]
 
-    :type userRefs:
-    :param userRefs:
+#     :type userRefs:
+#     :param userRefs:
 
-    :type userIds:
-    :param userIds:
+#     :type userIds:
+#     :param userIds:
 
-    :raises:
+#     :raises:
 
-    :rtype:
-    """
-    raise NotImplementedError()
+#     :rtype:
+#     """
+#     photo_urls = [];
+#     for uid in ticketPairs:
+#         user = UserDao().getUserById(uid)
+#         photo_url = user.photo_url
+#         photo_urls.append(photo_url)
+
+#     return photo_urls
