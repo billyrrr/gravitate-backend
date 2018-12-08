@@ -35,7 +35,7 @@ class EventScheduleBuilder():
             self.eventSchedule.pending = False
             self.eventSchedule.memberProfilePhotoUrls = []
             # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
-            # self.eventSchedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
+            self.eventSchedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
             self.eventSchedule.orbitRef = orbit.getFirestoreRef()
 
     def export(self) -> EventSchedule:
@@ -69,7 +69,7 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     :rtype:
     """
     # Must go through each userTicketPair (key = userIDs)
-    photo_urls = [];
+    photo_urls = []
     for uid in orbit.userTicketPairs:
         user = UserDao().getUserById(uid)
         photo_url = user.photo_url
