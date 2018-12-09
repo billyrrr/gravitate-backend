@@ -202,11 +202,10 @@ class RideRequestService(Resource):
             if not location:
                 errorResponseDict = {
                     "error": "invalid airport code or error finding airport location in backend",
-                    "parsedResult": rideRequestDict,
                     "originalForm": requestForm
                 }
                 return errorResponseDict, 400
-
+            
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(
                 rideRequestDict)
@@ -217,12 +216,27 @@ class RideRequestService(Resource):
             ).rideRequestCollectionRef.document(document_id=rideRequestId)
             rideRequest.setFirestoreRef(rideRequestRef)
 
+            # Do Validation Tasks before saving rideRequest
+            # 1. Check that rideRequest is not submitted by the same user 
+            #       for the flight on the same day alreaddy
+            duplicateEvent = utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef)
+            if duplicateEvent:
+                errorResponseDict = {
+                        "error": "Ride request on the same day (for the same event) already exists",
+                        "originalForm": requestForm
+                    }
+                return errorResponseDict, 400
+            # Ends validation tasks
+
+            # Starts database operations to save rideRequest and update user's eventSchedule
+            # Save rideRequest
             transaction = db.transaction()
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(transaction, rideRequest)
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 
+            # Update the user's eventSchedule
             transaction = db.transaction()
             eventSchedule = eventscheduleutils.buildEventSchedule(
                 rideRequest, location)
@@ -320,10 +334,8 @@ class EndpointTestService(Resource):
 
         data = request.get_json()
         responseDict = {'uid': uid, 'request_data': data}
-
         return responseDict, 200
-
-
+		
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')

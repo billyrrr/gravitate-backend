@@ -4,7 +4,7 @@ from flask import request, jsonify
 
 from main import fillRideRequestDictWithForm
 
-from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest
+from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest, hasDuplicateEvent
 
 from forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
 from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
@@ -13,7 +13,7 @@ from models import RideRequest, AirportRideRequest
 from models import User
 from requests import request
 
-from data_access import UserDao
+from data_access import UserDao, EventDao
 
 from google.cloud import firestore
 from firebase_admin import auth
@@ -62,7 +62,7 @@ class MainAppTestCase(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.originalFrontendJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
-        self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-04T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
+        self.newJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-21T12:00:00.000","airportCode":"LAX","pickupAddress":"9500 Gilman Dr, La Jolla, CA 92093, USA","toEvent":true,"driverStatus":false}'
         self.frontendFailedJson = '{"flightNumber":"DL89","flightLocalTime":"2018-12-12T12:00:00.000","airportLocation":"One World Way,Los Angeles,CA,90045-5803","pickupAddress":"Regents Rd, San Diego, CA, USA","toEvent":true,"driverStatus":false,"airportCode":"LAX"}'
 
     def testCreateRideRequest(self):
@@ -71,6 +71,10 @@ class MainAppTestCase(TestCase):
             path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)), headers=getAuthHeaders())
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
+
+    def testCheckDuplicateEvent(self):
+        # TODO: Write a test for duplicate ride request
+        pass
 
     def testAuth(self):
 
@@ -84,7 +88,7 @@ class MainAppTestCase(TestCase):
     def testCreateRideRequestFrontend(self):
 
         r = self.app.post(path='/rideRequests', json=self.newJson, headers=getAuthHeaders())
-        assert r.status_code == 200
+        self.assertEqual(r.status_code, 400)
 
     def testCreateRideRequestFailedFrontend(self):
 
@@ -191,6 +195,15 @@ class TestCreateRideRequestLogics(TestCase):
 
     def setUp(self):
         self.maxDiff = None
+
+    def testHasDuplicateEvent(self):
+        userId: str = "44lOjfDJoifnq1IMRdk4VKtPutF3"
+        eventId: str = "8GKfUA2AbGCrgRo7n6Rt"
+        eventRef: firestore.DocumentReference = EventDao().getRef(eventId)
+        result = hasDuplicateEvent(userId, eventRef)
+        # Assert that hasDuplicateEvent is False since we have an entry 
+        #   with equal eventRef and userId field in the database 
+        self.assertNotEqual(result, False)
 
     def testCreateAirportTarget(self):
         mockForm = MockFormTargetOnly()
