@@ -20,7 +20,8 @@ class TestTempForceGroupUsers(unittest.TestCase):
         self.assertIsNone(result) # So that we see debug log
 
     def testRemoveMatch(self):
-        rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
+        # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
+        rideRequestId = "pQhkYYht8fzLe612yMh7U7XlcE5zT3vg"
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
         grouping.remove(rideRequestRef)
 

@@ -293,6 +293,11 @@ class UserDAOTest(TestCase):
         self.user.setFirestoreRef(userRef)
         print("userRef = {}".format(userRef))
 
+    def testGetUser(self):
+        uid = "bUAHG6TxmENRrftWVJeGNK6qOFq2"
+        user = UserDao().getUserById(uid)
+        print(user.toDict())
+
     def testGetUserId(self):
         user = UserDao().getUserById(userDict["uid"])
         self.assertEquals(userDict['display_name'], user.display_name)
