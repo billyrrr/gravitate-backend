@@ -206,18 +206,6 @@ class RideRequestService(Resource):
                     "originalForm": requestForm
                 }
                 return errorResponseDict, 400
-
-            """
-            # Check if the ride request is not for a ride request that already exists
-            checkDuplicate = RideRequestGenericDao.fromDict(rideRequestDict)
-            if checkDuplicate.getFirestoreRef() != None:
-                errorResponseDict = {
-                    "error": "Ride request already exists",
-                    "parsedResult": rideRequestDict,
-                    "originalForm": requestForm
-                }
-                return errorResponseDict, 400
-            """
             
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(
@@ -332,10 +320,25 @@ class EndpointTestService(Resource):
 
         data = request.get_json()
         responseDict = {'uid': uid, 'request_data': data}
-
         return responseDict, 200
 
 
+def checkDuplicateEvent(self, userId: str, eventRef: DocumentReference):
+	"""
+		Description: Returns a boolean whether the user is trying to make a duplicate ride request
+		True: it is a duplicate, 
+		False: it is not a duplicate
+	"""
+	# TODO: Get relation from userId to events
+	
+	eventDocs = EventDao().eventCollectionRef.get()
+
+	# Loop through each rideRequest
+	for doc in eventDocs:
+		if eventRef.id == doc.id:
+			return True
+
+	return False			
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
