@@ -201,11 +201,11 @@ class TestCreateRideRequestLogics(TestCase):
                          {'earliest': 1545066000, 'latest': 1545073200}}
         self.assertDictEqual(targetDict, valueExpected)
 
-    def testSaveRideRequestToDb(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
-        result = RideRequest.fromDict(rideRequestDict)
-        saveRideRequest(result)
+    # def testSaveRideRequestToDb(self):
+    #     mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
+    #     rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
+    #     result = RideRequest.fromDict(rideRequestDict)
+    #     saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
