@@ -72,6 +72,13 @@ class MainAppTestCase(TestCase):
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 
+    def testDuplicateRideRequest(self):
+        r = self.app.post(
+            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)), headers=getAuthHeaders())
+        r = self.app.post(
+            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)), headers=getAuthHeaders())
+        assert r.status_code == 400
+
     def testAuth(self):
 
         userIdMock = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
