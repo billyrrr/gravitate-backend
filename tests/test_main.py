@@ -88,7 +88,7 @@ class MainAppTestCase(TestCase):
     def testCreateRideRequestFrontend(self):
 
         r = self.app.post(path='/rideRequests', json=self.newJson, headers=getAuthHeaders())
-        assert r.status_code == 200
+        self.assertEqual(r.status_code, 400)
 
     def testCreateRideRequestFailedFrontend(self):
 

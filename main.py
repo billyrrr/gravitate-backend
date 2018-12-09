@@ -152,32 +152,31 @@ class RideRequestService(Resource):
 
         # Verify Firebase auth.
 
-        userId = "44lOjfDJoifnq1IMRdk4VKtPutF3"
-        # userId = None # will be filled with auth code
-        # id_token = request.headers['Authorization'].split(' ').pop()
+        userId = None # will be filled with auth code
+        id_token = request.headers['Authorization'].split(' ').pop()
 
-        # # Auth code provided by Google
-        # try:
-        #     # Verify the ID token while checking if the token is revoked by
-        #     # passing check_revoked=True.
-        #     decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
-        #     # Token is valid and not revoked.
-        #     uid = decoded_token['uid']
-        #     # Set userId to firebaseUid 
-        #     userId = uid
-        # except auth.AuthError as exc:
-        #     if exc.code == 'ID_TOKEN_REVOKED':
-        #         # Token revoked, inform the user to reauthenticate or signOut().
-        #         errorResponseDict = {
-        #             'error': 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). '
-        #         }
-        #         return errorResponseDict, 401
-        #     else:
-        #         # Token is invalid
-        #         errorResponseDict = {
-        #             'error': "Invalid token"
-        #         }
-        #         return errorResponseDict, 402
+        # Auth code provided by Google
+        try:
+            # Verify the ID token while checking if the token is revoked by
+            # passing check_revoked=True.
+            decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
+            # Token is valid and not revoked.
+            uid = decoded_token['uid']
+            # Set userId to firebaseUid 
+            userId = uid
+        except auth.AuthError as exc:
+            if exc.code == 'ID_TOKEN_REVOKED':
+                # Token revoked, inform the user to reauthenticate or signOut().
+                errorResponseDict = {
+                    'error': 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). '
+                }
+                return errorResponseDict, 401
+            else:
+                # Token is invalid
+                errorResponseDict = {
+                    'error': "Invalid token"
+                }
+                return errorResponseDict, 402
 
         # Retrieve JSON 
         requestJson = request.get_json()
@@ -203,7 +202,6 @@ class RideRequestService(Resource):
             if not location:
                 errorResponseDict = {
                     "error": "invalid airport code or error finding airport location in backend",
-                    "parsedResult": rideRequestDict,
                     "originalForm": requestForm
                 }
                 return errorResponseDict, 400
@@ -225,7 +223,6 @@ class RideRequestService(Resource):
             if duplicateEvent:
                 errorResponseDict = {
                         "error": "Ride request on the same day (for the same event) already exists",
-                        "parsedResult": rideRequestDict,
                         "originalForm": requestForm
                     }
                 return errorResponseDict, 400
