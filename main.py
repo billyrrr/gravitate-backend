@@ -32,7 +32,7 @@ from forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 
 from controllers import utils, userutils, grouping, eventscheduleutils
 
-from data_access import RideRequestGenericDao, UserDao, EventDao
+from data_access import RideRequestGenericDao, UserDao, EventDao, EventScheduleGenericDao
 
 from google.cloud import firestore
 from google.auth.transport import requests
@@ -283,7 +283,31 @@ class DeleteMatchService(Resource):
         # return rideRequest.getFirestoreRef().id, 200
         return responseDict, 200
 
+# Pending
+class DeleteRideRequestService(Resource):
+    def post(self):
+        requestJson = request.get_json();
+        requestForm = json.loads(requestJson) if (
+            type(requestJson) != dict) else requestJson
 
+        userRef = requestForm.get("userId", None)
+        eventRef = requestForm.get("eventId", None)
+        rideRequestRef = requestForm.get("rideRequestId", None)
+        responseDict = None
+        
+        try:
+            # Delete in User's Event Schedule
+            EventScheduleGenericDao(userRef=userRef).deleteEvent(eventRef)
+            # Delete in RideRequest Collection
+            RideRequestGenericDao().delete(rideRequestRef)
+
+        except Exception as e:
+            responseDict = {"error":dict(e)}
+            return responseDict, 500
+
+        return responseDict, 200
+            
+    
 
 class EndpointTestService(Resource):
     def post(self):
@@ -328,6 +352,7 @@ api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
+api.add_resource()
 
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
