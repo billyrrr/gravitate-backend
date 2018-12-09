@@ -46,16 +46,26 @@ from firebase_admin import credentials, auth
 from config import Context
 
 
+# APScheduler for automatic grouping per interval
+# Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
+from apscheduler.schedulers.background import BackgroundScheduler
+
+def refreshGroupAll():
+    allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
+    grouping.groupManyRideRequests(allRideRequestIds)
+
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(refreshGroupAll, 'interval', minutes=1)
+sched.start()
+
+
+# Initialize Flask
 firebase_request_adapter = requests.Request()
 app = Flask(__name__)
 db = Context.db
 parser = reqparse.RequestParser()
 
 
-@app.route('/hello')
-def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello World!'
 
 class UserService(Resource):
     
@@ -384,41 +394,6 @@ def add_noauth_test_data():
     current_ride_request_ref.set(current_ride_request_json)
     return current_ride_request_id, 200
 
-@app.route('/notes', methods=['POST', 'PUT'])
-def add_note():
-    """
-    * Example Method provided by Google
-    Adds a note to the user's notebook. The request should be in this format:
-
-        {
-            "message": "note message."
-        }
-    """
-
-    # Verify Firebase auth.
-    id_token = request.headers['Authorization'].split(' ').pop()
-    claims = verify_firebase_token(
-        id_token, firebase_request_adapter)
-    if not claims:
-        return 'Unauthorized', 401
-
-    # [START gae_python_create_entity]
-    data = request.get_json()
-
-    # # Populates note properties according to the model,
-    # # with the user ID as the key name.
-    # note = Note(
-    #     parent=ndb.Key(Note, claims['sub']),
-    #     message=data['message'])
-
-    # # Some providers do not provide one of these so either can be used.
-    # note.friendly_id = claims.get('name', claims.get('email', 'Unknown'))
-    # # [END gae_python_create_entity]
-
-    # # Stores note in database.
-    # note.put()
-
-    return data, 200
 
 
 @app.errorhandler(500)
