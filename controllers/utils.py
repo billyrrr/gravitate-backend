@@ -1,6 +1,6 @@
 from forms.ride_request_creation_form import RideRequestCreationForm
 from models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
-from google.cloud.firestore import DocumentReference, Transaction
+from google.cloud.firestore import DocumentReference, Transaction, transactional
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.event_dao import EventDao
 from data_access.location_dao import LocationGenericDao
@@ -18,7 +18,8 @@ def randomId():
     randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)]) 
     return randomIdStr
 
-def saveRideRequest(rideRequest, transaction: Transaction = None):
+@transactional
+def saveRideRequest(transaction, rideRequest):
         if (rideRequest.getFirestoreRef()):
             if not transaction:
                 raise Exception('transaction is not provided. ')
