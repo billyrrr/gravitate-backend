@@ -311,12 +311,14 @@ class DeleteRideRequestService(Resource):
         requestForm = json.loads(requestJson) if (
             type(requestJson) != dict) else requestJson
 
-        userRef = requestForm.get("userId", None)
-        eventRef = requestForm.get("eventId", None)
+        userId = requestForm.get("userId", None)
+        userRef = UserDao().getRef(userId)
+        eventId = requestForm.get("eventId", None)
+        eventRef = EventDao().getRef(eventId)
         rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        responseDict = None
         
+        responseDict = None
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
 
         # Validate that the ride request is not matched to an orbit
