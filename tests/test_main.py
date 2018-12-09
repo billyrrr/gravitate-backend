@@ -351,4 +351,4 @@ class DeleteRideRequestServiceTest(TestCase):
         r = self.app.post(
             path='/deleteRideRequest', json=self.newJson, headers=getAuthHeaders())
         print(r.response)
-        self.assertEqual(r.status, 200)
+        self.assertEqual(r.status_code, 200)
