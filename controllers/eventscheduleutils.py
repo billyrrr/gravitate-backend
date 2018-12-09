@@ -16,13 +16,13 @@ class EventScheduleBuilder():
         self.eventSchedule.flightTime = airportRideRequest.flightLocalTime
         self.eventSchedule.rideRequestRef = airportRideRequest.getFirestoreRef()
 
-        # try:
-        #     # Use destTime for sorting
-        #     target: ToEventTarget = airportRideRequest.target
-        #     destTime = target.arriveAtEventTime["latest"]
-        #     self.eventSchedule.destTime = destTime
-        # except Exception as e:
-        #     print(e)
+        try:
+            # Use destTime for sorting
+            target: ToEventTarget = airportRideRequest.target
+            destTime = target.arriveAtEventTime["latest"]
+            self.eventSchedule.destTime = destTime
+        except Exception as e:
+            print(e)
 
     def buildAirportLocation(self, location: AirportLocation):
         if not location:
