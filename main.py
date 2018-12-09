@@ -352,7 +352,7 @@ api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch' )
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
-api.add_resource()
+api.add_resource(DeleteRideRequestService, '/deleteRideRequest')
 
 
 def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
