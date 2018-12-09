@@ -313,7 +313,8 @@ class DeleteRideRequestService(Resource):
 
         userRef = requestForm.get("userId", None)
         eventRef = requestForm.get("eventId", None)
-        rideRequestRef = requestForm.get("rideRequestId", None)
+        rideRequestId = requestForm.get("rideRequestId", None)
+        rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
         responseDict = None
         
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
