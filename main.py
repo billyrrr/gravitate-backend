@@ -207,6 +207,17 @@ class RideRequestService(Resource):
                 }
                 return errorResponseDict, 400
 
+
+            # Check if the ride request is not for a ride request that already exists
+            checkDuplicate = RideRequestGenericDao.fromDict(rideRequestDict)
+            if checkDuplicate.getFirestoreRef() != None:
+                errorResponseDict = {
+                    "error": "Ride request already exists",
+                    "parsedResult": rideRequestDict,
+                    "originalForm": requestForm
+                }
+                return errorResponseDict, 400
+
             # Create RideRequest Object
             rideRequest: AirportRideRequest = RideRequest.fromDict(
                 rideRequestDict)
