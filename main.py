@@ -300,8 +300,12 @@ class DeleteMatchService(Resource):
         # return rideRequest.getFirestoreRef().id, 200
         return responseDict, 200
 
-# Pending
+
 class DeleteRideRequestService(Resource):
+    """ Description	
+        Deletes a ride request. 
+
+    """
     def post(self):
         requestJson = request.get_json();
         requestForm = json.loads(requestJson) if (
@@ -312,6 +316,15 @@ class DeleteRideRequestService(Resource):
         rideRequestRef = requestForm.get("rideRequestId", None)
         responseDict = None
         
+        rideRequest = RideRequestGenericDao().get(rideRequestRef)
+        
+        requestCompletion = rideRequest.requestCompletion
+        if requestCompletion:
+            responseDict = {
+                "error": "Ride request has requestCompletion as True. Unmatch from an orbit first. "
+            }
+            return responseDict, 500
+
         try:
             # Delete in User's Event Schedule
             EventScheduleGenericDao(userRef=userRef).deleteEvent(eventRef)
