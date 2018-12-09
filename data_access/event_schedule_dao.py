@@ -4,6 +4,7 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional, Query
 import google
 from typing import Type
+from data_access import EventDao
 from models import EventSchedule
 import warnings
 import config
@@ -113,7 +114,21 @@ class EventScheduleGenericDao:
         """
         return singleEventScheduleRef.delete()
 
-    
+    def deleteEvent(self, eventRef: DocumentReference):
+        """ Description
+            This function deletes an event from EventSchedules
+
+        :type self:
+        :param self:
+
+        :type singleEventScheduleRef:DocumentReference:
+        :param singleEventScheduleRef:DocumentReference:
+
+        :raises:
+
+        :rtype:"""
+        self.eventScheduleCollectionRef.document(eventRef).delete();
+
     @staticmethod
     def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule], eventScheduleRef: DocumentReference):
         """ Description
