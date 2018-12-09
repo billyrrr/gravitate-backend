@@ -317,7 +317,8 @@ class DeleteRideRequestService(Resource):
         responseDict = None
         
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
-        
+
+        # Validate that the ride request is not matched to an orbit
         requestCompletion = rideRequest.requestCompletion
         if requestCompletion:
             responseDict = {
