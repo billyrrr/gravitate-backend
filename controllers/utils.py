@@ -28,6 +28,25 @@ def saveRideRequest(transaction, rideRequest):
             newRef = RideRequestGenericDao().create(rideRequest)
             rideRequest.setFirestoreRef(newRef)
 
+def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
+    """
+        Description: Returns a boolean whether the user is trying to make a duplicate ride request
+        True: it is a duplicate, 
+        False: it is not a duplicate
+    """
+    rideRequests = RideRequestGenericDao().getByUser(userId)
+    eventDocId = eventRef.id
+
+	# Loop through each rideRequest
+    for rideRequest in rideRequests:
+        currentEventDocId = rideRequest.eventRef.id
+        if currentEventDocId == eventDocId:
+            return True
+    
+    # No rideRequest has the same eventRef as the rideRequest that is about to be added
+    return False
+
+
 def createTarget(form: RideRequestCreationForm):
     """
     Note that this method won't work if any datetime string represents a time when

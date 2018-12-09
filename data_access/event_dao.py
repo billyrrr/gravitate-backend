@@ -21,6 +21,10 @@ class EventDao:
 	def __init__(self):
 		self.eventCollectionRef = db.collection('events')
 
+	def getRef(self, id):
+		eventRef = self.eventCollectionRef.document(id)
+		return eventRef
+
 	@staticmethod
 	@transactional
 	def getWithTransaction( transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:

@@ -46,6 +46,31 @@ class RideRequestGenericDao:
             docIds.append(docId)
         return docIds
 
+    def getByUser(self, userId):
+        """ Description
+            Returns a list of rideRequests by a user
+
+        :type self:
+        :param self:
+    
+        :type userId:
+        :param userId:
+    
+        :raises:
+    
+        :rtype: a list of ride requests
+        """
+        docs = self.rideRequestCollectionRef.where("userId", "==", userId).get()
+        rideRequests = list()
+        for doc in docs:
+            rideRequestDict = doc.to_dict()
+            rideRequest = RideRequest.fromDict(rideRequestDict)
+            rideRequestRef: DocumentReference = doc.reference
+            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequests.append(rideRequest)
+        return rideRequests
+
+
     @staticmethod
     @transactional
     def getWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:

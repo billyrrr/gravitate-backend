@@ -152,31 +152,32 @@ class RideRequestService(Resource):
 
         # Verify Firebase auth.
 
-        userId = None # will be filled with auth code
-        id_token = request.headers['Authorization'].split(' ').pop()
+        userId = "44lOjfDJoifnq1IMRdk4VKtPutF3"
+        # userId = None # will be filled with auth code
+        # id_token = request.headers['Authorization'].split(' ').pop()
 
-        # Auth code provided by Google
-        try:
-            # Verify the ID token while checking if the token is revoked by
-            # passing check_revoked=True.
-            decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
-            # Token is valid and not revoked.
-            uid = decoded_token['uid']
-            # Set userId to firebaseUid 
-            userId = uid
-        except auth.AuthError as exc:
-            if exc.code == 'ID_TOKEN_REVOKED':
-                # Token revoked, inform the user to reauthenticate or signOut().
-                errorResponseDict = {
-                    'error': 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). '
-                }
-                return errorResponseDict, 401
-            else:
-                # Token is invalid
-                errorResponseDict = {
-                    'error': "Invalid token"
-                }
-                return errorResponseDict, 402
+        # # Auth code provided by Google
+        # try:
+        #     # Verify the ID token while checking if the token is revoked by
+        #     # passing check_revoked=True.
+        #     decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
+        #     # Token is valid and not revoked.
+        #     uid = decoded_token['uid']
+        #     # Set userId to firebaseUid 
+        #     userId = uid
+        # except auth.AuthError as exc:
+        #     if exc.code == 'ID_TOKEN_REVOKED':
+        #         # Token revoked, inform the user to reauthenticate or signOut().
+        #         errorResponseDict = {
+        #             'error': 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). '
+        #         }
+        #         return errorResponseDict, 401
+        #     else:
+        #         # Token is invalid
+        #         errorResponseDict = {
+        #             'error': "Invalid token"
+        #         }
+        #         return errorResponseDict, 402
 
         # Retrieve JSON 
         requestJson = request.get_json()
@@ -217,12 +218,28 @@ class RideRequestService(Resource):
             ).rideRequestCollectionRef.document(document_id=rideRequestId)
             rideRequest.setFirestoreRef(rideRequestRef)
 
+            # Do Validation Tasks before saving rideRequest
+            # 1. Check that rideRequest is not submitted by the same user 
+            #       for the flight on the same day alreaddy
+            duplicateEvent = utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef)
+            if duplicateEvent:
+                errorResponseDict = {
+                        "error": "Ride request on the same day (for the same event) already exists",
+                        "parsedResult": rideRequestDict,
+                        "originalForm": requestForm
+                    }
+                return errorResponseDict, 400
+            # Ends validation tasks
+
+            # Starts database operations to save rideRequest and update user's eventSchedule
+            # Save rideRequest
             transaction = db.transaction()
             # Saves RideRequest Object to Firestore TODO change to Active Record
             utils.saveRideRequest(transaction, rideRequest)
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 
+            # Update the user's eventSchedule
             transaction = db.transaction()
             eventSchedule = eventscheduleutils.buildEventSchedule(
                 rideRequest, location)
@@ -321,24 +338,7 @@ class EndpointTestService(Resource):
         data = request.get_json()
         responseDict = {'uid': uid, 'request_data': data}
         return responseDict, 200
-
-
-def checkDuplicateEvent(self, userId: str, eventRef: DocumentReference):
-	"""
-		Description: Returns a boolean whether the user is trying to make a duplicate ride request
-		True: it is a duplicate, 
-		False: it is not a duplicate
-	"""
-	# TODO: Get relation from userId to events
-	
-	eventDocs = EventDao().eventCollectionRef.get()
-
-	# Loop through each rideRequest
-	for doc in eventDocs:
-		if eventRef.id == doc.id:
-			return True
-
-	return False			
+		
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
