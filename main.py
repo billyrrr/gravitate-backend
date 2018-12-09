@@ -294,7 +294,8 @@ class DeleteMatchService(Resource):
             grouping.remove(rideRequestRef)
             responseDict = {"success":True}
         except Exception as e:
-            responseDict = {"error":dict(e)}
+            print(e)
+            responseDict = {"error":str(e)}
             return responseDict, 500
 
         # return rideRequest.getFirestoreRef().id, 200
@@ -333,10 +334,11 @@ class DeleteRideRequestService(Resource):
             EventScheduleGenericDao(userRef=userRef).deleteEventById(eventId)
             # Delete in RideRequest Collection
             RideRequestGenericDao().delete(rideRequestRef)
+            responseDict = {"success":True}
 
         except Exception as e:
-            print(e)
-            responseDict = {"error":"Error occured deleting rideRequest and eventSchedule"}
+            errStr = str(e)
+            responseDict = {"error":"Error occured deleting rideRequest and eventSchedule: " + errStr}
             return responseDict, 500
 
         return responseDict, 200
