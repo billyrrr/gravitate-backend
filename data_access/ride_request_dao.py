@@ -97,7 +97,7 @@ class RideRequestGenericDao:
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
             rideRequest = RideRequest.fromDict(snapshotDict)
-            riddeRequest.setFirestoreRef(rideRequestRef)
+            rideRequest.setFirestoreRef(rideRequestRef)
             return rideRequest
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
