@@ -307,14 +307,13 @@ class DeleteRideRequestService(Resource):
 
     """
     def post(self):
-        requestJson = request.get_json();
+        requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
             type(requestJson) != dict) else requestJson
 
         userId = requestForm.get("userId", None)
         userRef = UserDao().getRef(userId)
         eventId = requestForm.get("eventId", None)
-        eventRef = EventDao().getRef(eventId)
         rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
         
@@ -331,12 +330,13 @@ class DeleteRideRequestService(Resource):
 
         try:
             # Delete in User's Event Schedule
-            EventScheduleGenericDao(userRef=userRef).deleteEvent(eventRef)
+            EventScheduleGenericDao(userRef=userRef).deleteEventById(eventId)
             # Delete in RideRequest Collection
             RideRequestGenericDao().delete(rideRequestRef)
 
         except Exception as e:
-            responseDict = {"error":dict(e)}
+            print(e)
+            responseDict = {"error":"Error occured deleting rideRequest and eventSchedule"}
             return responseDict, 500
 
         return responseDict, 200

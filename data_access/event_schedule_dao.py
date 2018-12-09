@@ -114,20 +114,11 @@ class EventScheduleGenericDao:
         """
         return singleEventScheduleRef.delete()
 
-    def deleteEvent(self, eventRef: DocumentReference):
+    def deleteEventById(self, eventId: str):
         """ Description
             This function deletes an event from EventSchedules
-
-        :type self:
-        :param self:
-
-        :type singleEventScheduleRef:DocumentReference:
-        :param singleEventScheduleRef:DocumentReference:
-
-        :raises:
-
-        :rtype:"""
-        self.eventScheduleCollectionRef.document(eventRef).delete();
+        """
+        self.eventScheduleCollectionRef.document(eventId).delete()
 
     @staticmethod
     def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule], eventScheduleRef: DocumentReference):

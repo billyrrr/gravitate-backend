@@ -337,3 +337,18 @@ class FirestoreUserTest(TestCase):
         self.assertEqual(user.pickupAddress, userDict["pickupAddress"])
 
         print(json.dumps(user.toDict()))
+
+class DeleteRideRequestServiceTest(TestCase):
+    app: FlaskClient = None
+
+    def setUp(self):
+
+        main.app.testing = True
+        self.app = main.app.test_client()
+        self.newJson ='{"userId":"3NSyNVcwGhOyRyRN9f5hZonw0VQ2","eventId":"eQZMfpS0hODTGgfAn33Z","rideRequestId":"Hhbwg5oaxOkQ4fpBD9tJbPlyZxpiAaRB"}'
+        
+    def testDeleteRideRequest(self):
+        r = self.app.post(
+            path='/deleteRideRequest', json=self.newJson, headers=getAuthHeaders())
+        print(r.response)
+        self.assertEqual(r.status, 200)
