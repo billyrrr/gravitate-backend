@@ -39,11 +39,12 @@ from google.auth.transport import requests
 from google.oauth2.id_token import verify_firebase_token
 
 
-# [START] Firebase Admin SDK
+# Firebase Admin SDK
 
 import firebase_admin
 from firebase_admin import credentials, auth
 from config import Context
+
 
 firebase_request_adapter = requests.Request()
 app = Flask(__name__)

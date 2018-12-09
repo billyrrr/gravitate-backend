@@ -13,10 +13,17 @@ db = config.Context.db
 def groupManyRideRequests(rideRequestIds: list):
     rideRequests = list()
     for rideRequestId in rideRequestIds:
+        
         rideRequestRef = db.collection("rideRequests").document(rideRequestId)
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
         rideRequest.setFirestoreRef(rideRequestRef)
+
+        # Do not add to rideRequests queue if the request is complete
+        if rideRequest.requestCompletion: 
+            continue
+    
         rideRequests.append(rideRequest)
+
     groupRideRequests(rideRequests)
 
 

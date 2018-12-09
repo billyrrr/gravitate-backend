@@ -1,4 +1,4 @@
-from models import EventSchedule, AirportRideRequest, Orbit, AirportLocation
+from models import EventSchedule, AirportRideRequest, Orbit, AirportLocation, ToEventTarget
 from data_access import UserDao
 import warnings
 import google.cloud.firestore
@@ -15,7 +15,15 @@ class EventScheduleBuilder():
         self.eventSchedule.pickupAddress = airportRideRequest.pickupAddress
         self.eventSchedule.flightTime = airportRideRequest.flightLocalTime
         self.eventSchedule.rideRequestRef = airportRideRequest.getFirestoreRef()
-    
+
+        # try:
+        #     # Use destTime for sorting
+        #     target: ToEventTarget = airportRideRequest.target
+        #     destTime = target.arriveAtEventTime["latest"]
+        #     self.eventSchedule.destTime = destTime
+        # except Exception as e:
+        #     print(e)
+
     def buildAirportLocation(self, location: AirportLocation):
         if not location:
             warnings.warn("LAX is hardcoded. Adapt to read from location object before release. ")
