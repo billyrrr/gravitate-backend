@@ -2,7 +2,7 @@ import main
 from flask.testing import FlaskClient
 from flask import request, jsonify
 
-from main import fillRideRequestDictWithForm
+from services.ride_request_service import fillRideRequestDictWithForm
 
 from controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest, hasDuplicateEvent
 

@@ -10,6 +10,30 @@ While grouping users together is a main feature of Gravitate, it also provides m
 
 Ultimately, Gravitate is an app that aims to streamline the process of transportation for students. With the help of our app, students will no longer have to spend countless hours browsing through bulletin posts for rideshares or have to pay unreasonable amounts of money for an unshared Uber trip to LAX. Gravitate will help students not only save time by connecting them with others who have similar flight times but also save money by splitting the cost of transportation to LAX. With plans of extending from just airports to sporting events, concerts, etc., Gravitate will make every student’s journey more affordable, regardless of where they’re going. 
 
+## Gravitate By Team VIBE
+
+
+David Alexander - Project Manager
+
+Lauren Chang - Business Analyst
+
+Jason Chau - Senior System Analyst
+
+Kenneth Hua - User Experience and Interface Specialist
+
+Sam Huang - Quality Assurance Lead
+
+Andrew Kim - Database Specialist
+
+David Nong - Algorithm Specialist
+
+Billy Rao - Lead Software Architect
+
+Tyler Song - Algorithm Specialist
+
+Leon Wu - Lead Software Developer
+
+
 
 ## Force Matching for Development Purposes
 
