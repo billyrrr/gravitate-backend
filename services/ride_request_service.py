@@ -18,7 +18,7 @@ class RideRequestService(Resource):
 
         # Verify Firebase auth.
 
-        userId = None # will be filled with auth code
+        userId = None  # will be filled with auth code
         id_token = request.headers['Authorization'].split(' ').pop()
 
         # Auth code provided by Google
@@ -47,7 +47,7 @@ class RideRequestService(Resource):
         # Retrieve JSON
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
-            type(requestJson) != dict) else requestJson
+                type(requestJson) != dict) else requestJson
 
         # Create WTForm for validating the fields
         validateForm = RideRequestCreationValidateForm(
@@ -88,9 +88,9 @@ class RideRequestService(Resource):
             duplicateEvent = utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef)
             if duplicateEvent:
                 errorResponseDict = {
-                        "error": "Ride request on the same day (for the same event) already exists",
-                        "originalForm": requestForm
-                    }
+                    "error": "Ride request on the same day (for the same event) already exists",
+                    "originalForm": requestForm
+                }
                 return errorResponseDict, 400
             # Ends validation tasks
 
@@ -123,7 +123,7 @@ class DeleteMatchService(Resource):
     def post(self):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
-            type(requestJson) != dict) else requestJson
+                type(requestJson) != dict) else requestJson
 
         rideRequestId = requestForm.get("rideRequestId", None)
         responseDict = None
@@ -131,10 +131,10 @@ class DeleteMatchService(Resource):
         try:
             rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
             grouping.remove(rideRequestRef)
-            responseDict = {"success":True}
+            responseDict = {"success": True}
         except Exception as e:
             print(e)
-            responseDict = {"error":str(e)}
+            responseDict = {"error": str(e)}
             return responseDict, 500
 
         # return rideRequest.getFirestoreRef().id, 200
@@ -146,10 +146,11 @@ class DeleteRideRequestService(Resource):
         Deletes a ride request.
 
     """
+
     def post(self):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
-            type(requestJson) != dict) else requestJson
+                type(requestJson) != dict) else requestJson
 
         userId = requestForm.get("userId", None)
         userRef = UserDao().getRef(userId)
@@ -173,11 +174,11 @@ class DeleteRideRequestService(Resource):
             EventScheduleGenericDao(userRef=userRef).deleteEventById(eventId)
             # Delete in RideRequest Collection
             RideRequestGenericDao().delete(rideRequestRef)
-            responseDict = {"success":True}
+            responseDict = {"success": True}
 
         except Exception as e:
             errStr = str(e)
-            responseDict = {"error":"Error occured deleting rideRequest and eventSchedule: " + errStr}
+            responseDict = {"error": "Error occured deleting rideRequest and eventSchedule: " + errStr}
             return responseDict, 500
 
         return responseDict, 200

@@ -11,7 +11,7 @@ class OrbitForceMatchService(Resource):
     def post(self):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
-            type(requestJson) != dict) else requestJson
+                type(requestJson) != dict) else requestJson
 
         operationMode = requestForm.get("operationMode", None)
         rideRequestIds = requestForm.get("rideRequestIds", None)

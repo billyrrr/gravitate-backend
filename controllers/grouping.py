@@ -13,15 +13,15 @@ db = config.Context.db
 def groupManyRideRequests(rideRequestIds: list):
     rideRequests = list()
     for rideRequestId in rideRequestIds:
-        
+
         rideRequestRef = db.collection("rideRequests").document(rideRequestId)
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
         rideRequest.setFirestoreRef(rideRequestRef)
 
         # Do not add to rideRequests queue if the request is complete
-        if rideRequest.requestCompletion: 
+        if rideRequest.requestCompletion:
             continue
-    
+
         rideRequests.append(rideRequest)
 
     groupRideRequests(rideRequests)
@@ -42,23 +42,24 @@ def forceMatchTwoRideRequests(rideRequestIds: list):
             "Orbit is only tested for matching 2 rideRequests. " +
             "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
             "Only rideRequests {} and {} are expected be matched. "
-                .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
+            .format(rideRequests[0].toDict(), rideRequests[1].toDict()))
 
     pairedTuples = [(rideRequests[0], rideRequests[1])]
 
     groups = list()
     constructGroups(groups, pairedTuples)
-    
+
     group = groups[0]
     notJoined = group.doWork()
     notJoinedIds = list()
 
     for rideRequestNotJoined in notJoined:
-        notJoinedIds.append(rideRequestNotJoined.getFirestoreRef() )
+        notJoinedIds.append(rideRequestNotJoined.getFirestoreRef())
 
     # rideRequest Response
     responseDict = {"notJoined": notJoinedIds}
     return responseDict
+
 
 def groupRideRequests(rideRequests: list):
     """ Description
@@ -79,9 +80,10 @@ def groupRideRequests(rideRequests: list):
 
     groups = list()
     constructGroups(groups, pairedTuples)
-    
+
     for group in groups:
         group.doWork()
+
 
 def pairRideRequests(rideRequests: list):
     tupleList = constructTupleList(rideRequests)
@@ -90,10 +92,9 @@ def pairRideRequests(rideRequests: list):
     pair(arr=tupleList, paired=paired, unpaired=unpaired)
     return paired, unpaired
 
+
 def constructGroups(groups: list, paired: list):
-
     for rideRequest1, rideRequest2 in paired:
-
         assert rideRequest1.eventRef.id == rideRequest2.eventRef.id
         eventRef = rideRequest1.eventRef
 
@@ -111,7 +112,7 @@ def constructGroups(groups: list, paired: list):
         event = EventDao().get(eventRef)
         locationRef: DocumentReference = event.locationRef
         location = LocationGenericDao().get(locationRef)
-        
+
         rideRequests = list()
         rideRequests.append(rideRequest1)
         rideRequests.append(rideRequest2)
@@ -121,8 +122,8 @@ def constructGroups(groups: list, paired: list):
 
     return
 
-def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: list):
 
+def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: list):
     for firestoreRef1, firestoreRef2 in paired:
         # TODO change to transaction
         rideRequest1 = RideRequestGenericDao().get(firestoreRef1)
@@ -130,8 +131,9 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: li
         rideRequest2 = RideRequestGenericDao().get(firestoreRef2)
         rideRequest2.setFirestoreRef(firestoreRef2)
         results.append([rideRequest1, rideRequest2])
-    
+
     return
+
 
 def constructTupleList(rideRequests: list):
     """ Description
@@ -146,7 +148,7 @@ def constructTupleList(rideRequests: list):
         :rtype:
     """
     arr = list()
-    
+
     for rideRequest in rideRequests:
         try:
             toEventTarget: ToEventTarget = rideRequest.target
@@ -156,13 +158,13 @@ def constructTupleList(rideRequests: list):
             tupleToAppend = [earliest, latest, ref]
             arr.append(tupleToAppend)
         except Exception as e:
-            warnings.warn("failed to parse rideRequest: {}".format(rideRequest.toDict()) )
+            warnings.warn("failed to parse rideRequest: {}".format(rideRequest.toDict()))
             print("error: {}".format(e))
 
     return arr
 
-def remove(rideRequestRef: DocumentReference) -> bool:
 
+def remove(rideRequestRef: DocumentReference) -> bool:
     transaction = db.transaction()
     rideRequest = RideRequestGenericDao().getWithTransaction(transaction, rideRequestRef)
     rideRequest.setFirestoreRef(rideRequestRef)
@@ -183,26 +185,26 @@ def remove(rideRequestRef: DocumentReference) -> bool:
 
     locationRef: DocumentReference = rideRequest.airportLocation
     location = LocationGenericDao().getWithTransaction(transaction, locationRef)
-    
+
     transaction = db.transaction()
     groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
     transaction = db.transaction()
     UserDao().removeEventScheduleWithTransaction(transaction, userRef=userRef, orbitId=orbitId)
-    
+
     transaction = db.transaction()
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
     transaction = db.transaction()
-    UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+    UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef,
+                                                eventSchedule=eventSchedule)
 
     # transaction.commit()
 
     return True
 
 
-
 class Group:
 
-    def __init__(self, rideRequestArray:[], intendedOrbit: Orbit, event: Event, location: Location):
+    def __init__(self, rideRequestArray: [], intendedOrbit: Orbit, event: Event, location: Location):
         self.rideRequestArray = rideRequestArray
 
         # Note that the intended orbit will be in database, and hence possible to be modified by another thread
@@ -241,7 +243,7 @@ class Group:
 
     @staticmethod
     def refreshEventSchedules(joined, intendedOrbit, event, location):
-        rideRequests =  joined
+        rideRequests = joined
         for rideRequest in rideRequests:
             # Note that profile photos may not be populated even after the change is committed
             groupingutils.updateEventSchedule(rideRequest, intendedOrbit, event, location)
@@ -250,7 +252,7 @@ class Group:
         raise NotImplementedError
         # for userId in userIds:
         #     fcmessaging.sendMessageToUser(userId, "You are matched. ")
-        
+
 
 """
 
@@ -258,31 +260,32 @@ class Group:
 
 """
 
-def pair(arr = None, paired: list = None, unpaired: list = None):
-	"""
-	Description: 
 
-		Author: Tyler
+def pair(arr=None, paired: list = None, unpaired: list = None):
+    """
+    Description:
 
-		:param arr:  an array of ride requests
-			[the first is earliest allowable time, second is latest time, third is firestore reference]
-		:param paired: 
-		:param unpaired: 
-	"""
-	sortedArr = sorted(arr, key=lambda x: x[0])
+        Author: Tyler
 
-	i=0
-	while i < len(sortedArr):
+        :param arr:  an array of ride requests
+            [the first is earliest allowable time, second is latest time, third is firestore reference]
+        :param paired:
+        :param unpaired:
+    """
+    sortedArr = sorted(arr, key=lambda x: x[0])
 
-		if i == len(sortedArr) - 1:
-			unpaired.insert(len(unpaired), [sortedArr[i][2]])
-			i+=1
-		else:
-			if(sortedArr[i][1] >= sortedArr[i+1][0]):
+    i = 0
+    while i < len(sortedArr):
 
-				paired.insert(len(paired), [sortedArr[i][2], sortedArr[i+1][2]])
-				i+=1
-			else:
+        if i == len(sortedArr) - 1:
+            unpaired.insert(len(unpaired), [sortedArr[i][2]])
+            i += 1
+        else:
+            if (sortedArr[i][1] >= sortedArr[i + 1][0]):
 
-				unpaired.insert(len(unpaired), [sortedArr[i][2]])
-			i+=1
+                paired.insert(len(paired), [sortedArr[i][2], sortedArr[i + 1][2]])
+                i += 1
+            else:
+
+                unpaired.insert(len(unpaired), [sortedArr[i][2]])
+            i += 1

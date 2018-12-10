@@ -23,27 +23,26 @@ from firebase_admin import credentials, auth
 FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json"
 APP_NAME = "gravitate-e5d01"
 
+
 # # New project-id: gravitate-dev certs
 # FIREBASE_CERTIFICATE_JSON_PATH = "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
 # APP_NAME = "gravitate-dev"
 
 class Context():
-
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
     _cred = None
     __instance = None
 
-    
     def __init__(self, *args, **kwargs):
         raise NotImplementedError('Do not initialize this class, use the class methods and properties instead. ')
 
     def __new__(cls):
         if cls.__instance is None:
-            cls.__instance = super(Context,cls).__new__(cls)
+            cls.__instance = super(Context, cls).__new__(cls)
             cls.__instance.__initialized = False
         return cls.__instance
-        
+
     @classmethod
     def read(cls):
         """ Description
@@ -67,7 +66,7 @@ class Context():
 
         try:
             cls._cred = credentials.Certificate(certificatePath)
-        except ValueError as e: 
+        except ValueError as e:
             logging.exception('Error initializing credentials.Certificate')
         # TODO delete certificate path in function call
 
@@ -82,5 +81,3 @@ class Context():
             cls.db = firestore.Client.from_service_account_json(credPath)
         except ValueError as e:
             logging.exception('Error initializing firestore client from cls.firebaseApp')
-
-    

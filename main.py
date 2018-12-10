@@ -27,7 +27,6 @@ from google.auth.transport import requests
 from firebase_admin import auth
 from config import Context
 
-
 # APScheduler for automatic grouping per interval
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -39,7 +38,6 @@ from services.user_service import UserService
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(refreshGroupAll, 'interval', minutes=1)
 sched.start()
-
 
 # Initialize Flask
 firebase_request_adapter = requests.Request()
@@ -81,7 +79,7 @@ class EndpointTestService(Resource):
         data = request.get_json()
         responseDict = {'uid': uid, 'request_data': data}
         return responseDict, 200
-		
+
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
@@ -113,7 +111,6 @@ def add_noauth_test_data():
     current_ride_request_id = current_ride_request_ref.id
     current_ride_request_ref.set(current_ride_request_json)
     return current_ride_request_id, 200
-
 
 
 @app.errorhandler(500)
