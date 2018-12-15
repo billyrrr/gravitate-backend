@@ -172,7 +172,7 @@ class TestCreationLogicsUtils(TestCase):
     def testCreateAirportTargetWithFlightLocalTime(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         targetDict = createTargetWithFlightLocalTime(
-            mockForm, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
+            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
         valueExpected = {'eventCategory': 'airportRide',
                          'toEvent': True,
                          'arriveAtEventTime':
@@ -183,7 +183,7 @@ class TestCreationLogicsUtils(TestCase):
         mockFormCTWFLT = FormDictFactory().create(
             hasEarliestLatest=False, returnDict=False)
         targetDictCTWFLT = createTargetWithFlightLocalTime(
-            mockFormCTWFLT, offsetLowAbsSec=7200, offsetHighAbsSec=18000).toDict()
+            mockFormCTWFLT.flightLocalTime, mockFormCTWFLT.toEvent, offsetLowAbsSec=7200, offsetHighAbsSec=18000).toDict()
         mockFormCT = FormDictFactory().create(
             hasEarliestLatest=True, isE5L2=True, returnDict=False)
         targetDictCT = createTarget(mockFormCT).toDict()
