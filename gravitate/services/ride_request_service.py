@@ -158,7 +158,7 @@ class DeleteRideRequestService(Resource):
         rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
 
-        responseDict = None
+        responseDict = {}
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
 
         # Validate that the ride request is not matched to an orbit
@@ -211,13 +211,13 @@ def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict,
     # Fields to be filled "after some thinking"
 
     # Set Target
-    target = utils.createTargetWithFlightLocalTime(form)
+    target = utils.createTargetWithFlightLocalTime(form.flightLocalTime, form.toEvent)
     rideRequestDict['target'] = target.toDict()
 
     # Set EventRef
-    eventRef = utils.findEvent(form)
+    eventRef = utils.findEvent(form.flightLocalTime)
     rideRequestDict['eventRef'] = eventRef
-    location = utils.getAirportLocation(form)
+    location = utils.getAirportLocation(form.airportCode)
     if not location:
         return rideRequestDict, None
     airportLocationRef = location.getFirestoreRef()

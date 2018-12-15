@@ -65,14 +65,14 @@ def createTarget(form: RideRequestCreationForm):
     target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
 
-def createTargetWithFlightLocalTime(form: RideRequestCreationForm, offsetLowAbsSec: int = 7200, offsetHighAbsSec: int = 18000):
+def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200, offsetHighAbsSec: int = 18000):
     assert offsetLowAbsSec >= 0
     assert offsetHighAbsSec >= 0
     assert offsetLowAbsSec <= offsetHighAbsSec # Check that offsetLow represents a greater than or equal to interval than offsetHigh
     assert offsetLowAbsSec != offsetHighAbsSec # Check that there earliest and latest represents a range of time
 
     tz = pytz.timezone('America/Los_Angeles')
-    flightLocalTime = iso8601.parse_date(form.flightLocalTime, default_timezone=None).astimezone(tz)
+    flightLocalTime = iso8601.parse_date(flightLocalTime, default_timezone=None).astimezone(tz)
 
     # Get timedelta object with seconds
     offsetEarlierAbs = dt.timedelta(seconds=offsetHighAbsSec)
@@ -88,7 +88,7 @@ def createTargetWithFlightLocalTime(form: RideRequestCreationForm, offsetLowAbsS
     assert earliestTimestamp <= latestTimestamp # Check that "earliest" occurs earliest than "latest"
     assert earliestTimestamp != latestTimestamp # Check that "earliest" is not the same as latest
 
-    target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.createAirportEventTarget(toEvent, earliestTimestamp, latestTimestamp)
 
     return target
 
@@ -107,13 +107,13 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
     """
     return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
 
-def getAirportLocation(form: RideRequestCreationForm) -> AirportLocation:
-    return LocationGenericDao().findByAirportCode(form.airportCode)
+def getAirportLocation(airportCode) -> AirportLocation:
+    return LocationGenericDao().findByAirportCode(airportCode)
 
 def mockFindLocation(form: RideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'
 
-def findEvent(form: RideRequestCreationForm) -> DocumentReference:
+def findEvent(flight_local_time) -> DocumentReference:
     
     """ Description
     1. Find event reference by querying events with flightLocalTime
@@ -127,7 +127,7 @@ def findEvent(form: RideRequestCreationForm) -> DocumentReference:
     :rtype:
     """
     # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = iso8601.parse_date(form.flightLocalTime, default_timezone=None).timestamp()
+    eventTime = iso8601.parse_date(flight_local_time, default_timezone=None).timestamp()
     # eventReference = EventDao().locateAirportEvent(eventTime)
     event = EventDao().findByTimestamp(eventTime)
 
