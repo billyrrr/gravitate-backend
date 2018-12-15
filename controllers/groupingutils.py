@@ -57,6 +57,14 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
 
     return True
 
+class GroupOrbitInteractor(object):
+    """
+        TODO: replace functions with Command Pattern operations
+    """
+
+    def __init__(self):
+        pass
+
 @transactional
 def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
 
