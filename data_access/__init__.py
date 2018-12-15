@@ -1,6 +1,6 @@
-import config
-
-config.Context.read()
+# import config
+#
+# config.Context.read()
 
 from data_access.ride_request_dao import RideRequestGenericDao
 from data_access.event_dao import EventDao

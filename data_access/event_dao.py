@@ -10,7 +10,7 @@ import data_access
 import warnings
 import config
 
-CTX = data_access.config.Context
+CTX = config.Context
 
 db = CTX.db
 

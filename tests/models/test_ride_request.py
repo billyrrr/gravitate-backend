@@ -1,11 +1,8 @@
 import unittest
-from models.ride_request import RideRequest, AirportRideRequest
-from data_access.ride_request_dao import RideRequestGenericDao
+from models.ride_request import AirportRideRequest
 from models.ride_request import RideRequest
-from models.orbit import Orbit
-from google.cloud import firestore
 import json
-import config
+from tests import config
 db = config.Context.db
 
 class RideRequestTest(unittest.TestCase):
@@ -13,7 +10,7 @@ class RideRequestTest(unittest.TestCase):
         self.db = config.Context.db
 
         JSON_FILENAME = 'rideRequest_1.json'
-        with open('tests/jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:
+        with open('../jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:
             self.rideRequestData1 = json.load(json_file)
 
     # def testInitWithDict(self):
@@ -30,14 +27,3 @@ class RideRequestTest(unittest.TestCase):
         afterDict = airportRideRequest.toDict()
         self.assertDictEqual(rideRequestDict, afterDict, 
             "The dictionaries should equal if RideRequest was not modified. ")
-
-    def testCreation(self):
-        rideRequestDict = self.rideRequestData1['rideRequest']
-        rideRequest = RideRequest.fromDict(rideRequestDict)
-        documentRef = RideRequestGenericDao().create(rideRequest)
-        rideRequest.setFirestoreRef(documentRef)
-        print(vars(rideRequest))
-
-    # def testGet(self):
-    #     rideRequestRef = self.db.collection('rideRequests').document('jhqdAdAhevewgMc7KLO1')
-    #     rideRequest = RideRequestGenericDao().getRideRequest(rideRequestRef)

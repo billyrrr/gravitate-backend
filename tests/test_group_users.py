@@ -3,9 +3,9 @@ from controllers.groupingutils import placeInOrbit
 from data_access.ride_request_dao import RideRequestGenericDao
 from models.ride_request import RideRequest
 from models.orbit import Orbit
-import factory
+from tests import factory
 import unittest
-import config
+from tests import config
 from google.cloud import firestore
 
 db = config.Context.db

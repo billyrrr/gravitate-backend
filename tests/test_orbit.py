@@ -2,7 +2,7 @@ import unittest
 from models.orbit import Orbit
 import data_access
 from google.cloud import firestore
-import config
+from tests import config
 
 orbitDict = {
 	"orbitCategory": "airportRide",

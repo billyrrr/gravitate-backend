@@ -22,7 +22,7 @@ import firebase_admin
 from tests.factory import FormDictFactory
 from unittest import TestCase
 import json
-import config
+from tests import config
 import warnings
 
 

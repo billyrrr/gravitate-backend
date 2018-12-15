@@ -1,5 +1,5 @@
 import models
-import config
+from tests import config
 
 db = config.Context.db
 

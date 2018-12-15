@@ -3,7 +3,7 @@ from models.ride_request import RideRequest, AirportRideRequest
 from data_access.event_dao import EventDao
 from google.cloud import firestore
 import json
-import config
+from tests import config
 
 class UtilsTest(unittest.TestCase):
 	

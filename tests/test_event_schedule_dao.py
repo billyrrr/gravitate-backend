@@ -6,7 +6,7 @@ from models import EventSchedule
 from controllers.eventscheduleutils import getMemberProfilePhotoUrls
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
 from models.orbit import Orbit
-import config
+from tests import config
 
 CTX = config.Context
 auth = config.auth
