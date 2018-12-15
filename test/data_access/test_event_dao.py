@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 from gravitate.data_access import EventDao
 from gravitate.models import Event
-from test.models.test_event import eventDict
+from test.factory import eventDict
 
 
 class EventDAOTest(unittest.TestCase):

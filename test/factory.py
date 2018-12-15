@@ -3,24 +3,24 @@ from test import config
 
 db = config.Context.db
 
+
 class MockForm(object):
 
     def __init__(self):
-        
-        
         self.earliest = None
         self.latest = None
         self.toEvent = None
-        
+
         self.driverStatus = None
         self.pickupAddress = None
 
         self.airportCode = None
         self.flightLocalTime = None
         self.flightNumber = None
-    
+
     def toDict(self):
         return vars(self)
+
 
 class MockFormBuilder(MockForm):
 
@@ -38,6 +38,7 @@ class MockFormBuilder(MockForm):
     def buildFlight(self):
         raise NotImplementedError()
 
+
 class AMockFormBuilder(MockFormBuilder):
 
     def buildAirportInfo(self):
@@ -52,6 +53,7 @@ class AMockFormBuilder(MockFormBuilder):
         self.flightLocalTime = "2018-12-17T12:00:00.000"
         self.flightNumber = "DL89"
 
+
 class BMockFormBuilder(AMockFormBuilder):
 
     def __init__(self):
@@ -61,7 +63,8 @@ class BMockFormBuilder(AMockFormBuilder):
     def buildEarliestLatest(self):
         self.earliest = "2018-12-17T09:00:00.000"
         self.latest = "2018-12-17T11:00:00.000"
-    
+
+
 class CMockFormBuilder(AMockFormBuilder):
 
     def __init__(self):
@@ -71,6 +74,7 @@ class CMockFormBuilder(AMockFormBuilder):
     def buildEarliestLatest(self):
         self.earliest = "2018-12-17T07:00:00.000"
         self.latest = "2018-12-17T10:00:00.000"
+
 
 class FormDictFactory:
     def createDict(self):
@@ -83,7 +87,7 @@ class FormDictFactory:
         mockForm = MockFormBuilder()
         return mockForm
 
-    def create(self, hasEarliestLatest = False, isE5L2 = True, returnDict = True):
+    def create(self, hasEarliestLatest=False, isE5L2=True, returnDict=True):
 
         mockForm = None
 
@@ -94,15 +98,15 @@ class FormDictFactory:
                 mockForm = BMockFormBuilder()
         else:
             mockForm = AMockFormBuilder()
-        
+
         if returnDict:
             return mockForm.toDict()
         else:
             return mockForm
 
 
-def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600,  firestoreRef='/rideRequests/testRef1', userId='SQytDq13q00e0N3H4agR', useDocumentRef = False, returnDict = False, returnSubset = False):
-    
+def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef='/rideRequests/testRef1',
+                       userId='SQytDq13q00e0N3H4agR', useDocumentRef=False, returnDict=False, returnSubset=False):
     locationRefStr = "/locations/testairportlocationid1"
     locationReference = db.collection("locations").document("testairportlocationid1")
 
@@ -111,26 +115,26 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600,  fi
 
     rideRequestDict = {
 
-            'rideCategory': 'airportRide',
-            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
-            'driverStatus': False,
-            'orbitRef': None,
-            'target': {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                         {'earliest': earliest, 'latest': latest}},
-            
-            'userId': userId,
-            'hasCheckedIn': False,
-            'pricing': 987654321,
-            "baggages": dict(),
-            "disabilities": dict(),
-            'flightLocalTime': "2018-12-17T12:00:00.000",
-            'flightNumber': "DL89",
-            
-            "requestCompletion": False
+        'rideCategory': 'airportRide',
+        'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+        'driverStatus': False,
+        'orbitRef': None,
+        'target': {'eventCategory': 'airportRide',
+                   'toEvent': True,
+                   'arriveAtEventTime':
+                       {'earliest': earliest, 'latest': latest}},
 
-        }
+        'userId': userId,
+        'hasCheckedIn': False,
+        'pricing': 987654321,
+        "baggages": dict(),
+        "disabilities": dict(),
+        'flightLocalTime': "2018-12-17T12:00:00.000",
+        'flightNumber': "DL89",
+
+        "requestCompletion": False
+
+    }
 
     if not returnSubset:
         rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
@@ -142,3 +146,29 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600,  fi
         rideRequest = models.RideRequest.fromDict(rideRequestDict)
         rideRequest.setFirestoreRef(firestoreRef)
         return rideRequest
+
+
+eventDict = {
+    "eventCategory": "airport",
+    "participants": [
+    ],
+    "eventLocation": "LAX",
+    "locationRef": "locations/testlocationid1",
+    "startTimestamp": 1545033600,
+    "endTimestamp": 1545119999,
+    "pricing": 100,
+    "isClosed": False
+}
+
+
+eventScheduleDict = {
+    "destName": "LAX",
+    "destTime": None,
+    "flightTime": "2018-12-17T12:00:00.000",
+    "memberProfilePhotoUrls": [],
+    "pickupAddress": "Tenaya Hall, San Diego, CA 92161",
+    "pending": True,
+    "rideRequestRef": "/rideRequests/testA",
+    "locationRef": "/locations/Bdn07rFaesdlg8whfjpV",
+    "orbitRef": None
+}

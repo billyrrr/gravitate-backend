@@ -1,20 +1,9 @@
 import unittest
 from gravitate.models import Event
 from test import config
+from test.factory import eventDict
 
 db = config.Context.db
-
-eventDict = {
-				"eventCategory": "airport",
-				"participants": [
-				],
-				"eventLocation": "LAX",
-				"locationRef": "locations/testlocationid1",
-				"startTimestamp": 1545033600,
-				"endTimestamp": 1545119999,
-				"pricing": 100,
-				"isClosed": False
-}
 
 
 class EventModelTest(unittest.TestCase):

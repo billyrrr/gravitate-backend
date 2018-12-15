@@ -3,7 +3,7 @@ import unittest
 from gravitate.controllers import eventscheduleutils
 from gravitate.models import EventSchedule
 from test import factory
-from test.test_event_schedule_utils import eventScheduleDict
+from test.factory import eventScheduleDict
 
 
 class EventScheduleDaoTest(unittest.TestCase):
