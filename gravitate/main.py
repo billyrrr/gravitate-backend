@@ -17,10 +17,12 @@
 # [START gae_flex_quickstart]
 import logging
 
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_restful import reqparse, Api, Resource
 
 from google.auth.transport import requests
+
+from functools import wraps
 
 # Firebase Admin SDK
 
