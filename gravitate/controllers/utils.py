@@ -17,7 +17,6 @@ def randomId():
     randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)]) 
     return randomIdStr
 
-@transactional
 def saveRideRequest(transaction, rideRequest):
         if (rideRequest.getFirestoreRef()):
             if not transaction:

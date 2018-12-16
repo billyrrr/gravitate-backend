@@ -141,7 +141,7 @@ class UserDao:
         transaction.delete(eventScheduleRef)
 
     @staticmethod
-    @transactional
+    # @transactional
     def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, eventSchedule: EventSchedule=None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule

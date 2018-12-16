@@ -67,8 +67,12 @@ class MainAppTestCase(TestCase):
 
     def testCreateRideRequest(self):
 
+        form = FormDictFactory().create(returnDict=True)
+        form["testUserId"] = "mtAwePIxiKcccn9MUqSe"
         r = self.app.post(
-            path='/rideRequests', json=json.dumps(FormDictFactory().create(returnDict=True)), headers=getAuthHeaders())
+            path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
+        print(r.data)
+        self.fail()
         assert r.status_code == 200
         # assert 'Hello World' in r.data.decode('utf-8')
 

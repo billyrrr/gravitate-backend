@@ -35,6 +35,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
 from gravitate.services.ride_request_service import RideRequestService, DeleteMatchService, DeleteRideRequestService
+from gravitate.services.ride_request_service import RideRequestServiceTempTesting
 from gravitate.services.user_service import UserService
 
 sched = BackgroundScheduler(daemon=True)
@@ -85,7 +86,9 @@ class EndpointTestService(Resource):
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
-api.add_resource(RideRequestService, '/rideRequests')
+api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
+# TODO change back
+# api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')

@@ -25,3 +25,4 @@ class LocationDAOTest(unittest.TestCase):
         transaction = db.transaction()
         LocationGenericDao.setWithTransactionTransactional(transaction, model.getLocation(), model.mock1["locationFirestoreRef"])
         # transaction.commit()
+
