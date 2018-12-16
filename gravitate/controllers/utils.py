@@ -1,4 +1,4 @@
-from gravitate.forms.ride_request_creation_form import RideRequestCreationForm
+from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
 from google.cloud.firestore import DocumentReference, Transaction, transactional
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao
@@ -45,13 +45,13 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     return False
 
 
-def createTarget(form: RideRequestCreationForm):
+def createTarget(form: AirportRideRequestCreationForm):
     """
     Note that this method won't work if any datetime string represents a time when
         daylight saving ends (November 4 1:00AM-2:00AM). 
         since anytime in between corresponds to more than one possible UTC time. 
 
-        :param form:RideRequestCreationForm: 
+        :param form:AirportRideRequestCreationForm:
     """
     tz = pytz.timezone('America/Los_Angeles')
 
@@ -92,13 +92,13 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     return target
 
 
-def findLocation(form: RideRequestCreationForm) -> DocumentReference:
+def findLocation(form: AirportRideRequestCreationForm) -> DocumentReference:
     """ Description
         **DEPRECATED**
         This function finds the locationRef for "LAX" or other airportLocation(s)
 
-    :type form:RideRequestCreationForm:
-    :param form:RideRequestCreationForm:
+    :type form:AirportRideRequestCreationForm:
+    :param form:AirportRideRequestCreationForm:
 
     :raises:
 
@@ -109,7 +109,7 @@ def findLocation(form: RideRequestCreationForm) -> DocumentReference:
 def getAirportLocation(airportCode) -> AirportLocation:
     return LocationGenericDao().findByAirportCode(airportCode)
 
-def mockFindLocation(form: RideRequestCreationForm) -> str:
+def mockFindLocation(form: AirportRideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'
 
 def findEvent(flight_local_time) -> DocumentReference:
@@ -118,8 +118,8 @@ def findEvent(flight_local_time) -> DocumentReference:
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
 
-    :type form:RideRequestCreationForm:
-    :param form:RideRequestCreationForm:
+    :type form:AirportRideRequestCreationForm:
+    :param form:AirportRideRequestCreationForm:
 
     :raises:
 
@@ -132,7 +132,7 @@ def findEvent(flight_local_time) -> DocumentReference:
 
     return event.getFirestoreRef()
 
-def mockFindEvent(form: RideRequestCreationForm) -> str:
+def mockFindEvent(form: AirportRideRequestCreationForm) -> str:
 
     # Query to locate proper Event. Supposed to be only one for airport ride
 
@@ -154,7 +154,7 @@ def mockFindEvent(form: RideRequestCreationForm) -> str:
     eventRef = '/events/testeventid1'
     return eventRef
 
-def setDisabilities(form: RideRequestCreationForm, rideRequestDict):
+def setDisabilities(form: AirportRideRequestCreationForm, rideRequestDict):
     if ('disabilities' in form):
         # If 'disabilities' is defined in the form submitted
         rideRequestDict['disabilities'] = form['disabilities']

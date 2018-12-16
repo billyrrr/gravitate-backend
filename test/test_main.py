@@ -7,7 +7,7 @@ from gravitate.services.ride_request_service import fillRideRequestDictWithForm
 from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest, \
     hasDuplicateEvent
 
-from gravitate.forms.ride_request_creation_form import RideRequestCreationForm, RideRequestCreationValidateForm
+from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm, RideRequestCreationValidateForm
 from gravitate.forms.user_creation_form import UserCreationForm, UserCreationValidateForm
 
 from gravitate.models import RideRequest, AirportRideRequest, User

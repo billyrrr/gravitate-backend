@@ -7,7 +7,7 @@ from flask_restful import Resource
 from gravitate.config import Context
 from gravitate.controllers import utils, eventscheduleutils, grouping
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
-from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm, RideRequestCreationForm
+from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm, AirportRideRequestCreationForm
 from gravitate.models import AirportRideRequest, RideRequest, AirportLocation
 
 import warnings
@@ -38,7 +38,7 @@ class RideRequestServiceTempTesting(Resource):
         if validateForm.validate():
 
             # Transfer data from validateForm to an internal representation of the form
-            form = RideRequestCreationForm()
+            form = AirportRideRequestCreationForm()
             validateForm.populate_obj(form)
 
             rideRequestDict, location = fillRideRequestDictWithForm(
@@ -156,7 +156,7 @@ class RideRequestService(Resource):
         if validateForm.validate():
 
             # Transfer data from validateForm to an internal representation of the form
-            form = RideRequestCreationForm()
+            form = AirportRideRequestCreationForm()
             validateForm.populate_obj(form)
 
             rideRequestDict, location = fillRideRequestDictWithForm(
@@ -281,7 +281,7 @@ class DeleteRideRequestService(Resource):
         return responseDict, 200
 
 
-def fillRideRequestDictWithForm(form: RideRequestCreationForm, userId) -> (dict, AirportLocation):
+def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
     rideRequestDict = dict()
 
     rideRequestDict['rideCategory'] = 'airportRide'
