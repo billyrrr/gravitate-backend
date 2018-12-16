@@ -86,9 +86,8 @@ class EndpointTestService(Resource):
 
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
-api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
-# TODO change back
-# api.add_resource(RideRequestService, '/rideRequests')
+# api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
+api.add_resource(RideRequestService, '/rideRequests')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
@@ -131,4 +130,3 @@ if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
-# [END gae_flex_quickstart]
