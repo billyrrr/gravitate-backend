@@ -1,4 +1,5 @@
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
+    transactional
 
 import google
 from typing import Type
@@ -15,8 +16,11 @@ auth = config.auth
 
 db = CTX.db
 
-def getAuthInfo(uid:string, userDict:dict):
-    userRecord = auth.get_user(uid, app = CTX.firebaseApp)
+
+# TODO remove transactional and test
+
+def getAuthInfo(uid: string, userDict: dict):
+    userRecord = auth.get_user(uid, app=CTX.firebaseApp)
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
     userDict["photo_url"] = userRecord.photo_url
@@ -42,7 +46,7 @@ class UserDao:
         else:
             return False
 
-    def userIdExists(self, userId: str ) :
+    def userIdExists(self, userId: str):
         userRef = self.userCollectionRef.document(userId)
         return self.userExists(userRef)
 
@@ -79,20 +83,12 @@ class UserDao:
         # except google.cloud.exceptions.NotFound:
         #     raise Exception('No such document! ' + str(userRef.id))
         # except:
-            # return None
-
-    # def checkUserById(self, userId: str):
-    #     userRef = self.userCollectionRef.document(userId)
-    #     try:
-    #         userRef.get()
-    #         return True
-    #     except:
-    #         return False
+        # return None
 
     def getUser(self, userRef: DocumentReference):
         transaction = db.transaction()
         userResult = self.getUserWithTransaction(transaction, userRef)
-        if ( userResult != None ):
+        if (userResult != None):
             userResult.setFirestoreRef(userRef)
             transaction.commit()
             return userResult
@@ -118,7 +114,7 @@ class UserDao:
         deltaDict = {
             "fcmToken": token
         }
-        userRef.update(deltaDict) 
+        userRef.update(deltaDict)
         return
 
     def getFcmToken(self, userId: str):
@@ -128,20 +124,21 @@ class UserDao:
         fcmToken = userData["fcmToken"]
         return fcmToken
 
-
     @staticmethod
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
         transaction.set(userRef, newUser.toFirestoreDict())
 
     @staticmethod
-    def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference =None, orbitId: str = None):
+    def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference = None,
+                                           orbitId: str = None):
         eventScheduleRef: DocumentReference = userRef.collection("eventSchedules").document(orbitId)
         transaction.delete(eventScheduleRef)
 
     @staticmethod
     # @transactional
-    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str=None, eventRef: DocumentReference=None, eventSchedule: EventSchedule=None):
+    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str = None,
+                                          eventRef: DocumentReference = None, eventSchedule: EventSchedule = None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
 				Note that the toEventRideRequestRef will be 
@@ -175,8 +172,8 @@ class UserDao:
         # Get the DocumentReference for the EventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
         eventScheduleDict = eventSchedule.toDict()
-        transaction.set(eventScheduleRef, eventScheduleDict, merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
+        transaction.set(eventScheduleRef, eventScheduleDict,
+                        merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
-    
     def setWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
         transaction.set(userRef, newUser)

@@ -218,8 +218,8 @@ class TestEndpoints(TestCase):
         path = '/deleteRideRequest'
         requestDict = {
             "userId": "KlRLbJCAORfbZxCm8ou1SEBJLt62",
-            "eventId": "ya6O1oiYbltyg3dN2noB",
-            "rideRequestId": "dlBgVloScdJ7qLle0hCdElUR24TuSnyi"
+            "eventId": "CslkxeIBABOx39PXiwpT",
+            "rideRequestId": "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
         }
         r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
         self.assertEqual(r.status_code, 200, "rideRequest should be safely deleted")

@@ -95,6 +95,7 @@ class EventScheduleGenericDao:
 
         :rtype:
         """
+        # TODO fix
         _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.toDict())
         return eventScheduleRef
 
