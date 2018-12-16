@@ -11,6 +11,14 @@ db = config.Context.db
 
 
 def groupManyRideRequests(rideRequestIds: list):
+    """
+    This function tries to match rideRequests into groups with grouping algorithms.
+    Note that the rideRequests may be in different orbits, and rideRequests may not
+        be grouped into any orbit.
+
+    :param rideRequestIds:
+    :return:
+    """
     rideRequests = list()
     for rideRequestId in rideRequestIds:
 
@@ -28,6 +36,12 @@ def groupManyRideRequests(rideRequestIds: list):
 
 
 def forceMatchTwoRideRequests(rideRequestIds: list):
+    """
+    This function force matches two rideRequests into an orbit.
+
+    :param rideRequestIds: Two rideRequest Ids
+    :return:
+    """
     rideRequests = list()
     for rideRequestId in rideRequestIds:
         rideRequestRef = db.collection("rideRequests").document(rideRequestId)
@@ -63,8 +77,7 @@ def forceMatchTwoRideRequests(rideRequestIds: list):
 
 def groupRideRequests(rideRequests: list):
     """ Description
-        [Not Implemented]
-        This function 
+        This function
         1. reads all ride requests associated with an event
         2. puts ride requests into groups
         3. call join method on each group
@@ -86,6 +99,11 @@ def groupRideRequests(rideRequests: list):
 
 
 def pairRideRequests(rideRequests: list):
+    """
+    This function serves as an adaptor for grouping algorithms.
+    :param rideRequests:
+    :return:
+    """
     tupleList = constructTupleList(rideRequests)
     paired = list()
     unpaired = list()
@@ -124,6 +142,14 @@ def constructGroups(groups: list, paired: list):
 
 
 def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: list):
+    """
+    This function is an adaptor to convert tuples of rideRequestRef as returned by grouping
+        algorithm to tuples of rideRequest objects that the system may do operations on.
+
+    :param paired:
+    :param results:
+    :return:
+    """
     for firestoreRef1, firestoreRef2 in paired:
         # TODO change to transaction
         rideRequest1 = RideRequestGenericDao().get(firestoreRef1)
@@ -137,8 +163,9 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: li
 
 def constructTupleList(rideRequests: list):
     """ Description
-
-        Note that the rideRequest should only have ToEventTarget as Target
+        This function constructs tuple list consisting only variables relevant to the
+            grouping algorithm.
+        Note that this function only supports rideRequests with ToEventTarget as Target.
 
         :type rideRequests:list:
         :param rideRequests:list:
@@ -165,12 +192,25 @@ def constructTupleList(rideRequests: list):
 
 
 def remove(rideRequestRef: DocumentReference) -> bool:
+    """
+    This method removes/unmatches rideRequest from the orbit it associates with.
+
+    :param rideRequestRef:
+    :return: True if successful
+    """
     transaction = db.transaction()
     _remove(transaction, rideRequestRef)
     return True
 
 @transactional
 def _remove(transaction, rideRequestRef: DocumentReference):
+    """
+    This method removes/unmatches rideRequest from the orbit it associates with.
+
+    :param transaction:
+    :param rideRequestRef:
+    :return:
+    """
     rideRequest = RideRequestGenericDao().getWithTransaction(transaction, rideRequestRef)
     rideRequest.setFirestoreRef(rideRequestRef)
 
@@ -193,10 +233,12 @@ def _remove(transaction, rideRequestRef: DocumentReference):
 
     groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
 
+    # Delete current user eventSchedule that is associated with an orbit
     UserDao().removeEventScheduleWithTransaction(transaction, userRef=userRef, orbitId=orbitId)
 
     # TODO update eventSchedule of all participants
 
+    # Build new eventSchedule that is not associated with any orbit and marked as pending
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
     UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef,
                                                 eventSchedule=eventSchedule)
@@ -204,7 +246,19 @@ def _remove(transaction, rideRequestRef: DocumentReference):
 
 class Group:
 
+    """
+    This class stores rideRequests that will be grouped into the same orbit, and provides operations.
+
+    """
+
     def __init__(self, rideRequestArray: [], intendedOrbit: Orbit, event: Event, location: Location):
+        """
+
+        :param rideRequestArray: a list of rideRequests to be grouped into the orbit
+        :param intendedOrbit: the orbit object to group rideRequests into
+        :param event: the event object since we are matching "rideRequests that go to the same event"
+        :param location: the location object for the event (example: location representing LAX)
+        """
         self.rideRequestArray = rideRequestArray
 
         # Note that the intended orbit will be in database, and hence possible to be modified by another thread
@@ -216,11 +270,14 @@ class Group:
         self.notJoined = list()
 
     def doWork(self):
+        """
+        This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
+        :return: a list of rideRequests that are not joined
+        """
         orbit = self.intendedOrbit
 
-        # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
-        print(self.rideRequestArray)
-
+        # Create a transaction so that an exception is thrown when updating an object that is
+        #   changed since last read from database
         transaction: Transaction = db.transaction()
 
         for rideRequest in self.rideRequestArray:
@@ -230,6 +287,7 @@ class Group:
             # Trying to join one rideRequest to the orbit
             isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
 
+            # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
             if isJoined:
                 self.joined.append(rideRequest)
@@ -245,6 +303,16 @@ class Group:
 
     @staticmethod
     def refreshEventSchedules(transaction: Transaction, joined, intendedOrbit, event, location):
+        """
+        This function refresh event schedules of each rideRequests in joined
+
+        :param transaction:
+        :param joined: the rideRequests joined by the algorithm
+        :param intendedOrbit:
+        :param event:
+        :param location:
+        :return:
+        """
         rideRequests = joined
         for rideRequest in rideRequests:
             # Note that profile photos may not be populated even after the change is committed

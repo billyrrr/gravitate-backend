@@ -7,13 +7,25 @@ from wtforms import Form, StringField, PasswordField, DateTimeField, BooleanFiel
 from wtforms.validators import DataRequired,length
 
 
-class RideRequestBaseCreationForm():
+class RideRequestBaseCreationForm(object):
 
     eventCategory = None # "airport", "social", "city"
 
     pickupAddress = None
     toEvent = None
 
+
+class CityRideRequestCreationForm(RideRequestBaseCreationForm):
+
+    eventCategory = "city"
+
+    pickupAddress = None
+
+    toEvent = None
+
+    eventId = None # Event identifies both the day and the location
+
+    dropoffAddress = None # Specific dropoff address (optional)m
 
 
 class AirportRideRequestCreationForm():
