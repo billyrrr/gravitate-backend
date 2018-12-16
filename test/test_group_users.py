@@ -1,3 +1,4 @@
+import test.factory.model
 from gravitate.controllers import grouping
 from gravitate.controllers.groupingutils import placeInOrbit
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
@@ -42,7 +43,7 @@ class TestGroupUsers(unittest.TestCase):
         rideRequests = list()
 
         for earliest, latest, firestoreRef in arr:
-            rideRequest = factory.getMockRideRequest(
+            rideRequest = test.factory.model.getMockRideRequest(
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef)
             rideRequests.append(rideRequest)
 
@@ -103,7 +104,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         rideRequests = list()
 
         for earliest, latest, firestoreRef in arr:
-            rideRequest = factory.getMockRideRequest(
+            rideRequest = test.factory.model.getMockRideRequest(
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef,
                 userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
             transaction = db.transaction()
@@ -160,7 +161,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         orbit = Orbit.fromDict(orbitDict)
 
-        rideRequestDict = factory.getMockRideRequest(
+        rideRequestDict = test.factory.model.getMockRideRequest(
             useDocumentRef=True, returnDict=True, returnSubset=False)
 
         rideRequest = RideRequest.fromDict(rideRequestDict)

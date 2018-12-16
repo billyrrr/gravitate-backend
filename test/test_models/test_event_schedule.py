@@ -1,5 +1,6 @@
 import unittest
 
+import test.factory.model
 from gravitate.controllers import eventscheduleutils
 from gravitate.models import EventSchedule
 from test import factory
@@ -13,6 +14,7 @@ class EventScheduleDaoTest(unittest.TestCase):
         self.assertDictEqual(eventScheduleDict, eventSchedule.toDict())
 
     def testCreate(self):
-        rideRequest = factory.getMockRideRequest()
-        eventSch = eventscheduleutils.buildEventSchedule(rideRequest)
+        rideRequest = test.factory.model.getMockRideRequest()
+        location = test.factory.model.getLocation()
+        eventSch = eventscheduleutils.buildEventSchedule(rideRequest, location)
         self.assertEqual(eventScheduleDict, eventSch.toDict())

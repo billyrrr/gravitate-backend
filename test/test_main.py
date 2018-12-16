@@ -18,7 +18,7 @@ from google.cloud import firestore
 from firebase_admin import auth
 import firebase_admin
 
-from test.factory import FormDictFactory
+from test.factory.form import FormDictFactory
 from unittest import TestCase
 import json
 from test import config
