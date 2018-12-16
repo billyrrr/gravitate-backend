@@ -188,8 +188,12 @@ def remove(rideRequestRef: DocumentReference) -> bool:
 
     transaction = db.transaction()
     groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
+
+
     transaction = db.transaction()
     UserDao().removeEventScheduleWithTransaction(transaction, userRef=userRef, orbitId=orbitId)
+
+    # TODO update eventSchedule of all participants
 
     transaction = db.transaction()
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
