@@ -7,9 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/gravitate/data_access/strategy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test_data_access/test_transaction_strategy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/data_access/strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/data_access/strategy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/models/ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/ride_request.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -56,7 +56,7 @@
         <counts>
           <entry key="json" value="9" />
           <entry key="md" value="5" />
-          <entry key="py" value="230" />
+          <entry key="py" value="231" />
           <entry key="services" value="1" />
           <entry key="sh" value="3" />
         </counts>
@@ -66,20 +66,20 @@
           <entry key="JSON" value="9" />
           <entry key="Markdown" value="5" />
           <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Python" value="230" />
+          <entry key="Python" value="231" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="26" />
-          <entry key="py" value="5932" />
-          <entry key="txt" value="510" />
+          <entry key="py" value="6452" />
+          <entry key="txt" value="548" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="536" />
-          <entry key="Python" value="5932" />
+          <entry key="PLAIN_TEXT" value="574" />
+          <entry key="Python" value="6452" />
         </counts>
       </usages-collector>
     </session>
@@ -137,8 +137,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/data_access/strategy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="285">
+              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_data_access/test_transaction_strategy.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="29" lean-forward="true" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+                <marker date="1544932227628" expanded="true" signature="142:183" ph="..." />
+                <marker date="1544932227628" expanded="true" signature="245:291" ph="..." />
+                <marker date="1544932227628" expanded="true" signature="526:658" ph="..." />
+                <marker date="1544932227628" expanded="true" signature="653:654" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -190,18 +206,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/deprecated_test_create_ride_request_logics.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="62" column="56" selection-start-line="62" selection-start-column="56" selection-end-line="62" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#90#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -227,8 +231,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/gravitate/data_access/__init__.py" />
-        <option value="$PROJECT_DIR$/gravitate/data_access/event_schedule_dao.py" />
         <option value="$PROJECT_DIR$/gravitate/data_access/user_dao.py" />
         <option value="$PROJECT_DIR$/test/test_location_dao.py" />
         <option value="$PROJECT_DIR$/test/test_event_schedule_dao.py" />
@@ -277,6 +279,8 @@
         <option value="$PROJECT_DIR$/test/test_main.py" />
         <option value="$PROJECT_DIR$/gravitate/controllers/grouping.py" />
         <option value="$PROJECT_DIR$/gravitate/main.py" />
+        <option value="$PROJECT_DIR$/gravitate/data_access/test_transaction_strategy.py" />
+        <option value="$PROJECT_DIR$/test/test_data_access/test_transaction_strategy.py" />
         <option value="$PROJECT_DIR$/gravitate/data_access/strategy.py" />
       </list>
     </option>
@@ -339,6 +343,11 @@
               <item name="gravitate" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -360,11 +369,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/test_data_access" />
       <recent name="$PROJECT_DIR$/test/models" />
       <recent name="$PROJECT_DIR$/test/data_access" />
       <recent name="$PROJECT_DIR$/test/models/test_orbit.py" />
       <recent name="$PROJECT_DIR$/test/data_access/test_location_dao.py" />
-      <recent name="$PROJECT_DIR$/gravitate" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -379,7 +388,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for test_main.TestEndpoints">
+  <component name="RunManager" selected="Python tests.Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -453,34 +462,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_orbit_dao.OrbitDaoTest" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="gravitate-backend" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/test_data_access" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_orbit_dao.OrbitDaoTest&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unittests for test_orbit_dao.OrbitDaoTest.testMockCreateOrbit" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="gravitate-backend" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/test_data_access" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_orbit_dao.OrbitDaoTest.testMockCreateOrbit&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="Unittests for test.test_data_access.test_orbit_dao.OrbitDaoTest" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="gravitate-backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -510,12 +491,42 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in test_data_access" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="gravitate-backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_transaction_strategy.TestTransactionStrategy&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="gravitate-backend" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_transaction_strategy.TestTransactionStrategyExecuteAll&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test_data_access" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="gravitate-backend" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -542,19 +553,19 @@
     </configuration>
     <list>
       <item itemvalue="Python tests.Unittests for test.test_data_access.test_orbit_dao.OrbitDaoTest.testMockCreateOrbit" />
-      <item itemvalue="Python tests.Unittests for test_orbit_dao.OrbitDaoTest" />
       <item itemvalue="Python tests.Unittests in test_data_access" />
-      <item itemvalue="Python tests.Unittests for test_orbit_dao.OrbitDaoTest.testMockCreateOrbit" />
       <item itemvalue="Python tests.Unittests in test_models" />
       <item itemvalue="Python tests.Unittests for test_main.TestEndpoints" />
+      <item itemvalue="Python tests.Unittests for test_transaction_strategy.TestTransactionStrategy" />
+      <item itemvalue="Python tests.Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" />
+        <item itemvalue="Python tests.Unittests for test_transaction_strategy.TestTransactionStrategy" />
         <item itemvalue="Python tests.Unittests for test_main.TestEndpoints" />
         <item itemvalue="Python tests.Unittests in test_data_access" />
         <item itemvalue="Python tests.Unittests in test_models" />
-        <item itemvalue="Python tests.Unittests for test_orbit_dao.OrbitDaoTest.testMockCreateOrbit" />
-        <item itemvalue="Python tests.Unittests for test_orbit_dao.OrbitDaoTest" />
       </list>
     </recent_temporary>
   </component>
@@ -669,39 +680,46 @@
       <option name="project" value="LOCAL" />
       <updated>1544929101731</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add transaction strategy class">
+      <created>1544931526513</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1544931526513</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 12m 03s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 12m 23s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 12m 38s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 15m 01s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 29m 58s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_models - 2018.12.15 at 18h 38m 08s.xml">
-      <configuration name="Unittests in test_models" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_data_access - 2018.12.15 at 18h 38m 45s.xml">
-      <configuration name="Unittests in test_data_access" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_data_access - 2018.12.15 at 18h 39m 13s.xml">
-      <configuration name="Unittests in test_data_access" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_test_main_TestEndpoints - 2018.12.15 at 18h 50m 30s.xml">
-      <configuration name="Unittests for test_main.TestEndpoints" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_for_test_main_TestEndpoints - 2018.12.15 at 18h 56m 28s.xml">
       <configuration name="Unittests for test_main.TestEndpoints" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 47m 15s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 47m 29s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 47m 38s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 48m 26s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 48m 42s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategy - 2018.12.15 at 19h 50m 36s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategy" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategyExecuteAll - 2018.12.15 at 19h 50m 41s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategyExecuteAll - 2018.12.15 at 19h 51m 25s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_transaction_strategy_TestTransactionStrategyExecuteAll - 2018.12.15 at 19h 51m 37s.xml">
+      <configuration name="Unittests for test_transaction_strategy.TestTransactionStrategyExecuteAll" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
@@ -720,7 +738,7 @@
     <frame x="1080" y="358" width="2048" height="1064" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20572275" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20572275" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -729,7 +747,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49777997" weight="0.3281893" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.2983539" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.2983539" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49975333" weight="0.39917696" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -805,7 +823,8 @@
     <MESSAGE value="refactor test mock objects factory" />
     <MESSAGE value="add tests for endpoints" />
     <MESSAGE value="added TODO for eventSchedule" />
-    <option name="LAST_COMMIT_MESSAGE" value="added TODO for eventSchedule" />
+    <MESSAGE value="add transaction strategy class" />
+    <option name="LAST_COMMIT_MESSAGE" value="add transaction strategy class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -824,13 +843,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/lib/python3.7/site-packages/firebase_admin/credentials.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="82" selection-start-line="82" selection-end-line="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_data_access/test_event_dao.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1136,16 +1148,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_event_schedule_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_models/test_event_schedule.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -1161,6 +1163,16 @@
         <state>
           <folding>
             <element signature="e#27#154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_event_schedule_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1186,10 +1198,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_data_access/test_transaction_strategy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="29" lean-forward="true" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1544932227628" expanded="true" signature="142:183" ph="..." />
+            <marker date="1544932227628" expanded="true" signature="245:291" ph="..." />
+            <marker date="1544932227628" expanded="true" signature="526:658" ph="..." />
+            <marker date="1544932227628" expanded="true" signature="653:654" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/data_access/strategy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="285">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
         </state>
       </provider>
     </entry>
