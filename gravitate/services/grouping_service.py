@@ -25,7 +25,7 @@ class OrbitForceMatchService(Resource):
         elif operationMode == "all":
             allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
             grouping.groupManyRideRequests(allRideRequestIds)
-            responseDict = {"success": True, "opeartionMode": "all"}
+            responseDict = {"success": True, "operationMode": "all"}
         else:
             responseDict = {"error": "Not specified operation mode."}
             return responseDict, 400
