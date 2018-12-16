@@ -166,6 +166,11 @@ def constructTupleList(rideRequests: list):
 
 def remove(rideRequestRef: DocumentReference) -> bool:
     transaction = db.transaction()
+    _remove(transaction, rideRequestRef)
+    return True
+
+@transactional
+def _remove(transaction, rideRequestRef: DocumentReference):
     rideRequest = RideRequestGenericDao().getWithTransaction(transaction, rideRequestRef)
     rideRequest.setFirestoreRef(rideRequestRef)
 
@@ -195,10 +200,6 @@ def remove(rideRequestRef: DocumentReference) -> bool:
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
     UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef,
                                                 eventSchedule=eventSchedule)
-
-    transaction.commit()
-
-    return True
 
 
 class Group:

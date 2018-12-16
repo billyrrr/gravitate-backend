@@ -18,7 +18,7 @@ class OrbitDao:
         self.orbitCollectionRef = db.collection('orbits')
 
     @staticmethod
-    @transactional
+    # @transactional
     def getWithTransaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
         """ Description
             Note that this cannot take place if transaction already received write operations. 

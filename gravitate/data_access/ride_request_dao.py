@@ -72,7 +72,7 @@ class RideRequestGenericDao:
 
 
     @staticmethod
-    @transactional
+    # @transactional
     def getWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
@@ -103,11 +103,11 @@ class RideRequestGenericDao:
             raise Exception('No such document! ' + str(rideRequestRef.id))
 
     def get(self, rideRequestRef: DocumentReference):
-        transaction = db.transaction()
-        rideRequestResult = self.getWithTransaction(
-            transaction, rideRequestRef)
-        transaction.commit()
-        return rideRequestResult
+        snapshot: DocumentSnapshot = rideRequestRef.get()
+        snapshotDict: dict = snapshot.to_dict()
+        rideRequest = RideRequest.fromDict(snapshotDict)
+        rideRequest.setFirestoreRef(rideRequestRef)
+        return rideRequest
 
     def create(self, rideRequest: Type[RideRequest])->DocumentReference:
         """ Description

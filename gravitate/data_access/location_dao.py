@@ -25,7 +25,7 @@ class LocationGenericDao:
         self.locationCollectionRef = db.collection('locations')
 
     @staticmethod
-    @transactional
+    # @transactional
     def getWithTransaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
@@ -56,10 +56,11 @@ class LocationGenericDao:
             raise Exception('No such document! ' + str(locationRef.id))
 
     def get(self, locationRef: DocumentReference):
-        transaction = db.transaction()
-        locationResult = self.getWithTransaction(
-            transaction, locationRef)
-        transaction.commit()
+        snapshot: DocumentSnapshot = locationRef.get()
+        snapshotDict: dict = snapshot.to_dict()
+        location = Location.fromDict(snapshotDict)
+        location.setFirestoreRef(locationRef)
+        return location
         return locationResult
 
     def findByAirportCode(self, airportCode) -> AirportLocation:

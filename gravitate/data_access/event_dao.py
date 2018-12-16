@@ -24,7 +24,7 @@ class EventDao:
 		return eventRef
 
 	@staticmethod
-	@transactional
+	# @transactional
 	def getWithTransaction( transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
 		""" Description
 			Note that this cannot take place if transaction already received write operations. 
@@ -97,8 +97,9 @@ class EventDao:
 		return None
 
 	def get(self, eventRef: DocumentReference):
-		transaction = db.transaction()
-		eventResult = self.getWithTransaction(
-			transaction, eventRef)
-		transaction.commit()
+		snapshot: DocumentSnapshot = eventRef.get()
+		snapshotDict: dict = snapshot.to_dict()
+		event = Event.fromDict(snapshotDict)
+		event.setFirestoreRef(eventRef)
+		return event
 		return eventResult
