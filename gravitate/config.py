@@ -4,8 +4,8 @@ Reference: https://github.com/Amsterdam/subsidieservice/blob/master/subsidy_serv
 
 Usage:
 1. In testing or production, initialize Context singleton first by calling config.Context.read() in __init__.py of caller package
-2. In package (data_access as an example) __init__.py, add "import config"
-3. In files under the package: CTX = data_access.config.Context
+2. In package (test_data_access as an example) __init__.py, add "import config"
+3. In files under the package: CTX = test_data_access.config.Context
 
 """
 

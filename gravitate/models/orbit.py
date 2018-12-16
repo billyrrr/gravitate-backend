@@ -1,24 +1,16 @@
 """Author: Zixuan Rao, Andrew Kim
 """
 
-from google.cloud.firestore import DocumentReference
-
 # orbit class
+from models.firestore_object import FirestoreObject
 
-class Orbit(object):
+
+class Orbit(FirestoreObject):
     """ Description    
         This class represents a Orbit object
    
     """
 
-    __firestoreRef: DocumentReference = None
-
-    def setFirestoreRef(self, firestoreRef: str):
-        self.__firestoreRef = firestoreRef 
-    
-    def getFirestoreRef(self):
-        return self.__firestoreRef
-        
     @staticmethod
     def fromDictAndReference(orbitDict, orbitRef):
         orbit = Orbit.fromDict(orbitDict)

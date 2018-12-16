@@ -4,25 +4,15 @@
 
 from google.cloud.firestore import DocumentReference, Transaction
 from gravitate.models.target import Target, ToEventTarget, FromEventTarget
+from .firestore_object import FirestoreObject
 
-class RideRequest(object):
+class RideRequest(FirestoreObject):
 
-    __firestoreRef: DocumentReference = None
-
-    """ Description	
+    """ Description
         This class represents a RideRequest object
     
     """
 
-    def setFirestoreRef(self, firestoreRef):
-        self.__firestoreRef = firestoreRef
-
-    def getFirestoreRef(self):
-        """
-            TODO refer to https://stackoverflow.com/questions/50012956/firestore-how-to-store-reference-to-document-how-to-retrieve-it
-            :param self: 
-        """   
-        return self.__firestoreRef
     
     @staticmethod
     def fromDictAndReference(rideRequestDict, rideRequestRef):

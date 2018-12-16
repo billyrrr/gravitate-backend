@@ -1,4 +1,6 @@
-class Location:
+from .firestore_object import FirestoreObject
+
+class Location(FirestoreObject):
 
     coordinates = {
         'latitude': None,
@@ -48,14 +50,6 @@ class AirportLocation(Location):
         super().__init__(coordinate, address)
         self.locationCategory = 'airport'
         self.airportCode = airportCode
-
-    __firestoreRef = None
-
-    def setFirestoreRef(self, firestoreRef: str):
-        self.__firestoreRef = firestoreRef
-
-    def getFirestoreRef(self):
-        return self.__firestoreRef
 
     def isLax(self):
         return self.airportCode == 'LAX'

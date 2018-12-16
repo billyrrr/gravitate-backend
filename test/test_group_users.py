@@ -11,18 +11,20 @@ db = config.Context.db
 
 rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k"]
 
+
 class TestTempForceGroupUsers(unittest.TestCase):
 
     def testMatchTwo(self):
         result = grouping.forceMatchTwoRideRequests(rideRequestIds)
         print(result)
-        self.assertIsNone(result) # So that we see debug log
+        self.assertIsNone(result)  # So that we see debug log
 
     def testRemoveMatch(self):
         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
         rideRequestId = "pQhkYYht8fzLe612yMh7U7XlcE5zT3vg"
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
         grouping.remove(rideRequestRef)
+
 
 class TestGroupUsers(unittest.TestCase):
 
@@ -102,7 +104,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         for earliest, latest, firestoreRef in arr:
             rideRequest = factory.getMockRideRequest(
-                earliest=earliest, latest=latest, firestoreRef=firestoreRef, userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
+                earliest=earliest, latest=latest, firestoreRef=firestoreRef,
+                userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
             transaction = db.transaction()
             RideRequestGenericDao().setWithTransaction(
                 transaction, rideRequest, firestoreRef)
@@ -119,14 +122,18 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         self.assertListEqual(self.arr, tupleList)
 
     def testConstructGroup(self):
-        paired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),  RideRequestGenericDao().rideRequestCollectionRef.document('B')],
-                  [RideRequestGenericDao().rideRequestCollectionRef.document('C'),  RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
+        paired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
+                   RideRequestGenericDao().rideRequestCollectionRef.document('B')],
+                  [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
+                   RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
         groups = list()
         grouping.constructGroups(groups, paired)
 
     def testGrouping(self):
-        expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),  RideRequestGenericDao().rideRequestCollectionRef.document('B')],
-                          [RideRequestGenericDao().rideRequestCollectionRef.document('C'),  RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
+        expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
+                           RideRequestGenericDao().rideRequestCollectionRef.document('B')],
+                          [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
+                           RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
         expectedUnpaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('G')], [RideRequestGenericDao(
         ).rideRequestCollectionRef.document('E')], [RideRequestGenericDao().rideRequestCollectionRef.document('F')]]
 
@@ -141,7 +148,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         grouping.groupRideRequests(self.rideRequests)
 
     def testPlaceInOrbit(self):
-
         orbitDict = {
             "orbitCategory": "airportRide",
             "eventRef": "testeventref1",

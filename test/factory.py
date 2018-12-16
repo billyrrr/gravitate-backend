@@ -172,3 +172,21 @@ eventScheduleDict = {
     "locationRef": "/locations/Bdn07rFaesdlg8whfjpV",
     "orbitRef": None
 }
+
+
+orbitDict = {
+    "orbitCategory": "airportRide",
+    "eventRef": "testeventref1",
+    "userTicketPairs": {
+        "testuserid1": {
+            "rideRequestRef": None,
+            "userWillDrive": False,
+            "hasCheckedIn": False,
+            "inChat": True,
+            "pickupAddress": "testpickupaddress1"
+        }
+    },
+    "chatroomRef": "testchatroomref1",
+    "costEstimate": 987654321,
+    "status": 1
+}

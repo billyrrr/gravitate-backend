@@ -1,20 +1,12 @@
 from google.cloud.firestore import DocumentReference
+from .firestore_object import FirestoreObject
+
 
 # user class
-
-
-class User(object):
+class User(FirestoreObject):
 	""" Description
 	this class represents the user object
 	"""
-
-	__firestoreRef: DocumentReference = None
-
-	def setFirestoreRef(self, firestoreRef: str):
-		self.__firestoreRef = firestoreRef
-
-	def getFirestoreRef(self):
-		return self.__firestoreRef
 
 	def __init__(self, uid, membership, phone_number, display_name, photo_url, pickupAddress):
 			""" Description

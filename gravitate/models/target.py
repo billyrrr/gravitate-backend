@@ -1,7 +1,7 @@
 from typing import Type
+from .firestore_object import FirestoreObject
 
-
-class Target(object):
+class Target(FirestoreObject):
 
     def __init__(self, eventCategory):
         self.eventCategory = eventCategory

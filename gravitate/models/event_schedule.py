@@ -1,22 +1,14 @@
-"""Author: David Nong
+"""Author: David Nong, Zixuan Rao
 """
 
 from google.cloud.firestore import DocumentReference
-
+from .firestore_object import FirestoreObject
 # EventSchedule class
 
-class EventSchedule(object):
+class EventSchedule(FirestoreObject):
     """ Description    
         This class represents the schedule of events for a user
     """
-
-    __firestoreRef: DocumentReference = None
-
-    def setFirestoreRef(self, firestoreRef: str):
-        self.__firestoreRef = firestoreRef 
-    
-    def getFirestoreRef(self):
-        return self.__firestoreRef
     
     @staticmethod
     def fromDict(eventScheduleDict):
