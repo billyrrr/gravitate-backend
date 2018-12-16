@@ -19,6 +19,7 @@ from firebase_admin import auth
 import firebase_admin
 
 from test.factory.form import FormDictFactory
+import test.factory as factory
 from unittest import TestCase
 import json
 from test import config
@@ -165,6 +166,35 @@ class TestMockFormValidation(TestCase):
             data=formDict)
         form.validate()
         self.assertEqual(form.validate(), True)
+
+
+class TestEndpoints(TestCase):
+
+    def setUp(self):
+        main.app.testing = True
+        self.app = main.app.test_client()
+
+    def testDeleteRideRequest(self):
+        """
+            Test that rideRequest is deleted and unmatched from its orbit.
+        :return:
+        """
+
+        path = '/rideRequests/' + factory.mock1["rideRequestId"]
+        requestDict = {
+            "unmatch": True
+        }
+        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
+        self.assertEqual(r.status_code, 200, "rideRequest should be safely deleted")
+
+    def testUnmatchRideRequest(self):
+        """
+            Test that rideRequest is unmatched from its orbit
+        :return:
+        """
+        requestDict = {}
+        path = "/rideRequests/{}/unmatch".format(factory.mock1["rideRequestId"])
+        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
 
 
 class TestCreationLogicsUtils(TestCase):

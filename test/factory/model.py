@@ -7,13 +7,17 @@ db = config.Context.db
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",
                 userId="testuserid1", orbitId="testorbitid1"):
     keys = {
+        "rideRequestId": rideRequestId,
         "rideRequestRef": "/rideRequests/" + rideRequestId,
         "rideRequestFirestoreRef": db.collection("rideRequests").document(rideRequestId),
+        "locationId": locationId,
         "locationRef": "/locations/" + locationId,
         "locationFirestoreRef": db.collection("locations").document(locationId),
+        "eventId": eventId,
         "eventRef": "/events/" + eventId,
         "eventFirestoreRef": db.collection("events").document(eventId),
         "userId": userId,
+        "orbitId": orbitId,
         "orbitRef": "/orbits/" + orbitId,
         "orbitFirestoreRef": db.collection("orbits").document(orbitId)
     }
