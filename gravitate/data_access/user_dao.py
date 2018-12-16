@@ -135,7 +135,6 @@ class UserDao:
         transaction.set(userRef, newUser.toFirestoreDict())
 
     @staticmethod
-    @transactional
     def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference =None, orbitId: str = None):
         eventScheduleRef: DocumentReference = userRef.collection("eventSchedules").document(orbitId)
         transaction.delete(eventScheduleRef)

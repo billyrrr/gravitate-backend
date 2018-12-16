@@ -8,7 +8,7 @@ from gravitate import config
 db = config.Context.db
 
 
-@transactional
+# @transactional
 def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideRequest],  orbit: Orbit) -> bool:
     """ Description
     This function joins a rideRequest to an orbit in the database. 
@@ -65,7 +65,6 @@ class GroupOrbitInteractor(object):
     def __init__(self):
         pass
 
-@transactional
 def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
 
     removeFromOrbit(rideRequest, orbit)
@@ -82,7 +81,7 @@ def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbi
     return True
 
 
-def updateEventSchedule(rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
+def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
     """ Description
 
             Populate eventSchedule (client view model)
@@ -108,7 +107,6 @@ def updateEventSchedule(rideRequest: RideRequest, orbit: Orbit, event: Event, lo
 
     eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
         rideRequest=rideRequest, location=location, orbit=orbit)
-    transaction = db.transaction()
     UserDao().addToEventScheduleWithTransaction(transaction,
                                                 userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
 

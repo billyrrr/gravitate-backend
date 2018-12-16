@@ -186,22 +186,17 @@ def remove(rideRequestRef: DocumentReference) -> bool:
     locationRef: DocumentReference = rideRequest.airportLocation
     location = LocationGenericDao().getWithTransaction(transaction, locationRef)
 
-    transaction = db.transaction()
     groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
 
-
-    transaction = db.transaction()
     UserDao().removeEventScheduleWithTransaction(transaction, userRef=userRef, orbitId=orbitId)
 
     # TODO update eventSchedule of all participants
 
-    transaction = db.transaction()
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
-    transaction = db.transaction()
     UserDao().addToEventScheduleWithTransaction(transaction, userRef=userRef, eventRef=eventRef,
                                                 eventSchedule=eventSchedule)
 
-    # transaction.commit()
+    transaction.commit()
 
     return True
 
@@ -225,14 +220,14 @@ class Group:
         # Create a transaction so that an exception is thrown when updating an object that is changed since last read from database
         print(self.rideRequestArray)
 
+        transaction: Transaction = db.transaction()
+
         for rideRequest in self.rideRequestArray:
 
             print(rideRequest.toDict())
-            transaction: Transaction = db.transaction()
 
             # Trying to join one rideRequest to the orbit
             isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
-            transaction.commit()
 
             # when failing to join, record and move on to the next
             if isJoined:
@@ -241,16 +236,18 @@ class Group:
                 self.notJoined.append(rideRequest)
 
         # refresh event schedule for each user
-        self.refreshEventSchedules(self.joined, self.intendedOrbit, self.event, self.location)
+        self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
+
+        transaction.commit()
 
         return self.notJoined
 
     @staticmethod
-    def refreshEventSchedules(joined, intendedOrbit, event, location):
+    def refreshEventSchedules(transaction: Transaction, joined, intendedOrbit, event, location):
         rideRequests = joined
         for rideRequest in rideRequests:
             # Note that profile photos may not be populated even after the change is committed
-            groupingutils.updateEventSchedule(rideRequest, intendedOrbit, event, location)
+            groupingutils.updateEventSchedule(transaction, rideRequest, intendedOrbit, event, location)
 
     def sendNotifications(self):
         raise NotImplementedError
