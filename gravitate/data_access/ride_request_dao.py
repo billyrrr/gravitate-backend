@@ -1,15 +1,19 @@
 """Author: Zixuan Rao
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
+    transactional
 import google
 from typing import Type
 from gravitate.models import RideRequest, AirportRideRequest
 from gravitate import config
 
+from . import utils
+
 CTX = config.Context
 
 db = CTX.db
+
 
 class RideRequestGenericDao:
     """ Description	
@@ -20,7 +24,7 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
-    def getIds(self, incomplete = False):
+    def getIds(self, incomplete=False):
         """ Description
             Get the ids of RideRequests
         
@@ -36,7 +40,7 @@ class RideRequestGenericDao:
         """
 
         docIds = list()
-    
+
         if incomplete:
             docs = self.rideRequestCollectionRef.where("requestCompletion", "==", False).get()
         else:
@@ -69,7 +73,6 @@ class RideRequestGenericDao:
             rideRequest.setFirestoreRef(rideRequestRef)
             rideRequests.append(rideRequest)
         return rideRequests
-
 
     @staticmethod
     # @transactional
@@ -109,11 +112,11 @@ class RideRequestGenericDao:
         rideRequest.setFirestoreRef(rideRequestRef)
         return rideRequest
 
-    def create(self, rideRequest: Type[RideRequest])->DocumentReference:
+
+    def create(self, rideRequest: Type[RideRequest]) -> Type[RideRequest]:
         """ Description
         :type self:
         :param self:
-
         :type rideRequest:Type[RideRequest]:
         :param rideRequest:Type[RideRequest]:
 
@@ -121,8 +124,11 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        _, rideRequestRef = self.rideRequestCollectionRef.add(rideRequest.toDict())
-        return rideRequestRef
+        rideRequestId = utils.randomId()
+        rideRequestRef = RideRequestGenericDao(
+        ).rideRequestCollectionRef.document(document_id=rideRequestId)
+        rideRequest.setFirestoreRef(rideRequestRef)
+        return rideRequest
 
     def delete(self, singleRideRequestRef: DocumentReference):
         """ Description
@@ -142,7 +148,8 @@ class RideRequestGenericDao:
 
     @staticmethod
     # @transactional
-    def setWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest], rideRequestRef: DocumentReference):
+    def setWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest],
+                           rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 

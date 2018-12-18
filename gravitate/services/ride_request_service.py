@@ -55,10 +55,7 @@ class RideRequestServiceTempTesting(Resource):
                 rideRequestDict)
             # print(rideRequest.toDict())
 
-            rideRequestId = utils.randomId()
-            rideRequestRef = RideRequestGenericDao(
-            ).rideRequestCollectionRef.document(document_id=rideRequestId)
-            rideRequest.setFirestoreRef(rideRequestRef)
+            self.create(rideRequest)
 
             # Do Validation Tasks before saving rideRequest
             # 1. Check that rideRequest is not submitted by the same user
@@ -105,7 +102,6 @@ class RideRequestServiceTempTesting(Resource):
         else:
             print(validateForm.errors)
             return validateForm.errors, 400
-
 
 
 class RideRequestService(Resource):
@@ -173,10 +169,7 @@ class RideRequestService(Resource):
                 rideRequestDict)
             # print(rideRequest.toDict())
 
-            rideRequestId = utils.randomId()
-            rideRequestRef = RideRequestGenericDao(
-            ).rideRequestCollectionRef.document(document_id=rideRequestId)
-            rideRequest.setFirestoreRef(rideRequestRef)
+            RideRequestGenericDao().create(rideRequest)
 
             # Do Validation Tasks before saving rideRequest
             # 1. Check that rideRequest is not submitted by the same user

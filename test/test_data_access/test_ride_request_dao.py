@@ -18,8 +18,7 @@ class RideRequestDaoTest(unittest.TestCase):
     def testCreate(self):
         rideRequestDict = self.rideRequestData1['rideRequest']
         rideRequest = RideRequest.fromDict(rideRequestDict)
-        documentRef = RideRequestGenericDao().create(rideRequest)
-        rideRequest.setFirestoreRef(documentRef)
+        RideRequestGenericDao().create(rideRequest)
         resultDict = rideRequest.toDict()
         self.assertEqual(rideRequestDict, resultDict)
 

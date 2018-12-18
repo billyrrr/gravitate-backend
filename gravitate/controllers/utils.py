@@ -7,15 +7,6 @@ import iso8601
 import datetime as dt
 import pytz
 
-import random 
-import string 
-  
-# Generate a random string 
-# with 32 characters. 
-# https://www.geeksforgeeks.org/generating-random-ids-python/
-def randomId():
-    randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)]) 
-    return randomIdStr
 
 def saveRideRequest(transaction, rideRequest):
         if (rideRequest.getFirestoreRef()):
@@ -23,13 +14,11 @@ def saveRideRequest(transaction, rideRequest):
                 raise Exception('transaction is not provided. ')
             RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
         else:
-            newRef = RideRequestGenericDao().create(rideRequest)
-            rideRequest.setFirestoreRef(newRef)
+            RideRequestGenericDao().create(rideRequest)
 
 def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     """
-        Description: Returns a boolean whether the user is trying to make a duplicate ride request
-        True: it is a duplicate, 
+        Description: Returns a boolean whether the user is trying to make a duplicate ride request        True: it is a duplicate,
         False: it is not a duplicate
     """
     rideRequests = RideRequestGenericDao().getByUser(userId)

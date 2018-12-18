@@ -17,7 +17,7 @@ auth = config.auth
 db = CTX.db
 
 
-# TODO remove transactional and test
+# TODO remove transactional and add test
 
 def getAuthInfo(uid: string, userDict: dict):
     userRecord = auth.get_user(uid, app=CTX.firebaseApp)
