@@ -8,6 +8,7 @@ import iso8601
 import datetime as dt
 import pytz
 
+
 def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     """ Description: Returns a boolean whether the user is trying to make a duplicate ride request
 
@@ -26,6 +27,7 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
 
     # No rideRequest has the same eventRef as the rideRequest that is about to be added
     return False
+
 
 @transactional
 def addRideRequest(transaction, rideRequest, location, userId):
@@ -72,11 +74,15 @@ def createTarget(form: AirportRideRequestCreationForm):
     target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
 
-def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200, offsetHighAbsSec: int = 18000):
+
+def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200,
+                                    offsetHighAbsSec: int = 18000):
     assert offsetLowAbsSec >= 0
     assert offsetHighAbsSec >= 0
-    assert offsetLowAbsSec <= offsetHighAbsSec # Check that offsetLow represents a greater than or equal to interval than offsetHigh
-    assert offsetLowAbsSec != offsetHighAbsSec # Check that there earliest and latest represents a range of time
+    # Check that offsetLow represents a greater than or equal to interval than offsetHigh
+    assert offsetLowAbsSec <= offsetHighAbsSec
+    # Check that there earliest and latest represents a range of time
+    assert offsetLowAbsSec != offsetHighAbsSec
 
     tz = pytz.timezone('America/Los_Angeles')
     flightLocalTime = iso8601.parse_date(flightLocalTime, default_timezone=None).astimezone(tz)
@@ -92,8 +98,8 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     earliestTimestamp = int(earliest.timestamp())
     latestTimestamp = int(latest.timestamp())
 
-    assert earliestTimestamp <= latestTimestamp # Check that "earliest" occurs earliest than "latest"
-    assert earliestTimestamp != latestTimestamp # Check that "earliest" is not the same as latest
+    assert earliestTimestamp <= latestTimestamp  # Check that "earliest" occurs earliest than "latest"
+    assert earliestTimestamp != latestTimestamp  # Check that "earliest" is not the same as latest
 
     target = Target.createAirportEventTarget(toEvent, earliestTimestamp, latestTimestamp)
 
@@ -114,14 +120,12 @@ def findLocation(form: AirportRideRequestCreationForm) -> DocumentReference:
     """
     return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
 
+
 def getAirportLocation(airportCode) -> AirportLocation:
     return LocationGenericDao().findByAirportCode(airportCode)
 
-def mockFindLocation(form: AirportRideRequestCreationForm) -> str:
-    return '/locations/testairportlocationid1'
 
 def findEvent(flight_local_time) -> DocumentReference:
-
     """ Description
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
@@ -140,27 +144,6 @@ def findEvent(flight_local_time) -> DocumentReference:
 
     return event.getFirestoreRef()
 
-def mockFindEvent(form: AirportRideRequestCreationForm) -> str:
-
-    # Query to locate proper Event. Supposed to be only one for airport ride
-
-    """     # Event found and parsed from snapshot returned by query (not neccessary)
-        event = Event.fromDict({
-                "eventCategory": "airport",
-                "participants": [
-                        "refU01",
-                        "refU02"
-                ],
-                "eventLocation": "refL01",
-                "locationRefs": [],
-                "startTimestamp": 1545033600,
-                "endTimestamp": 1545119999,
-                "pricing": 100
-        }) """
-
-    # eventRef of type DocumentReference as returned by query
-    eventRef = '/events/testeventid1'
-    return eventRef
 
 def setDisabilities(form: AirportRideRequestCreationForm, rideRequestDict):
     if ('disabilities' in form):
