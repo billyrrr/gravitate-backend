@@ -1,5 +1,5 @@
 from gravitate import config
-import models as models
+import gravitate.models as models
 
 db = config.Context.db
 

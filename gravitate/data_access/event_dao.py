@@ -123,6 +123,7 @@ class EventDao:
 
         return None
 
+
     def get(self, eventRef: DocumentReference):
         snapshot: DocumentSnapshot = eventRef.get()
         snapshotDict: dict = snapshot.to_dict()
