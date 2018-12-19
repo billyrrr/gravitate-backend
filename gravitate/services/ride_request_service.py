@@ -108,7 +108,7 @@ class RideRequestService(Resource):
 
 
 def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
-    """ Description:
+    """ Description
         This method fills a rideRequest dict that can later be used to call RideRequest().fromDict method.
 
     :param form:

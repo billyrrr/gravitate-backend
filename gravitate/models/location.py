@@ -36,13 +36,13 @@ class Location(FirestoreObject):
 
 
 class CityLocation(Location):
-    """ Description:
+    """ Description
         This class represents a city location.
     """
     pass
 
 class UcLocation(CityLocation):
-    """ Description:
+    """ Description
         This class represents a UC campus in another city.
     """
     pass
@@ -50,7 +50,7 @@ class UcLocation(CityLocation):
 
 class AirportLocation(Location):
     """
-    Description: 
+    Description
         This class represents an airport location.
         Two airport locations are considered the same if 
             their airportCode (ie. "LAX") 
@@ -76,7 +76,7 @@ class AirportLocation(Location):
 
     def __eq__(self, other):
         """
-        Description:
+        Description
             This method overrides python '==' operator and returns true if 
                 this and the other location is identical. 
             Note that we are using python3 so overriding __neq__ is not necessary. 

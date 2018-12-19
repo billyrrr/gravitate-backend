@@ -10,7 +10,7 @@ import pytz
 
 
 def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
-    """ Description: Returns a boolean whether the user is trying to make a duplicate ride request
+    """ Description Returns a boolean whether the user is trying to make a duplicate ride request
 
     :param userId:
     :param eventRef:
@@ -31,7 +31,7 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
 
 @transactional
 def addRideRequest(transaction, rideRequest, location, userId):
-    """ Description:
+    """ Description
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
         Note that transaction.commit() is not required after this method is called if this method is decorated
@@ -125,7 +125,7 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
 
 
 def getAirportLocation(airportCode) -> AirportLocation:
-    """ Description:
+    """ Description
         This method returns an airportLocation with airportCode.
 
     :param airportCode:
@@ -135,7 +135,7 @@ def getAirportLocation(airportCode) -> AirportLocation:
 
 
 def findEvent(flight_local_time) -> DocumentReference:
-    """ Description:
+    """ Description
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
 

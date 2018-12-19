@@ -23,7 +23,7 @@ class EventDao:
         self.eventCollectionRef = db.collection('events')
 
     def getRef(self, id) -> DocumentReference:
-        """ Description:
+        """ Description
             This method returns EventRef with EventId provided.
             Example: converts "testeventid1" to "/events/testeventid1" of type DocumentReference
 
@@ -38,9 +38,9 @@ class EventDao:
     def getWithTransaction(transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
-            "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
-        :type self:
-        :param self:
+            "If a transaction is used and it already has write operations added, this method cannot be used
+            (i.e. read-after-write is not allowed)."
+
         :type transaction:Transaction:
         :param transaction:Transaction:
         :type eventRef:DocumentReference:
@@ -60,7 +60,7 @@ class EventDao:
             raise Exception('No such document! ' + str(eventRef.id))
 
     def findByTimestamp(self, timestamp):
-        """ Description:
+        """ Description
             This method finds an airportEvent that "overlaps" with the timestamp provided.
 
         :param timestamp: the point-in-time that the eventSchedule has to include.

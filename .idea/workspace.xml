@@ -7,10 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/billyrao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/billyrao.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/controllers/grouping.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/grouping.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/controllers/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/data_access/event_dao.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/data_access/event_dao.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/models/location.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/location.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/models/ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/ride_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/scripts/populate_locations.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/scripts/populate_locations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/user_service.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -76,15 +81,15 @@
         <counts>
           <entry key="dummy" value="40" />
           <entry key="md" value="14" />
-          <entry key="py" value="13713" />
-          <entry key="txt" value="1361" />
+          <entry key="py" value="13720" />
+          <entry key="txt" value="1369" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="14" />
-          <entry key="PLAIN_TEXT" value="1401" />
-          <entry key="Python" value="13713" />
+          <entry key="PLAIN_TEXT" value="1409" />
+          <entry key="Python" value="13720" />
         </counts>
       </usages-collector>
     </session>
@@ -139,8 +144,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+            <state relative-caret-position="480">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
             </state>
           </provider>
         </entry>
@@ -197,13 +202,16 @@
       <find>eventSchedule</find>
       <find>testCreate</find>
       <find>event</find>
+      <find>Description:</find>
     </findStrings>
     <replaceStrings>
       <replace>12</replace>
+      <replace>Description</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/tests</dir>
       <dir>$PROJECT_DIR$/gravitate</dir>
+      <dir>$PROJECT_DIR$</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -848,7 +856,14 @@
       <option name="project" value="LOCAL" />
       <updated>1545196953087</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Add docs">
+      <created>1545197118172</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1545197118172</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -897,7 +912,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="974" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16515973" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -993,9 +1007,9 @@
     <MESSAGE value="Add skeleton code" />
     <MESSAGE value="Rename EventSchedule to AirportEventSchedule" />
     <MESSAGE value="Extract EventSchedule Superclass" />
-    <MESSAGE value="Add docs" />
     <MESSAGE value="Reformat code and docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reformat code and docs" />
+    <MESSAGE value="Add docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add docs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1105,7 +1119,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/scripts/populate_airport_events.py">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/scripts/populate_locations.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1205,6 +1225,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="19" column="26" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+          <folding>
+            <marker date="1544953316080" expanded="true" signature="516:728" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1261,7 +1284,7 @@
         <state relative-caret-position="705">
           <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
           <folding>
-            <marker date="1545195546882" expanded="true" signature="1272:1372" ph="..." />
+            <marker date="1545197185973" expanded="true" signature="1271:1370" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1350,8 +1373,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
+        <state relative-caret-position="480">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>

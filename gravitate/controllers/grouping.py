@@ -333,7 +333,7 @@ class Group:
 
 def pair(arr=None, paired: list = None, unpaired: list = None):
     """
-    Description:
+    Description
 
         Author: Tyler
 

@@ -27,7 +27,7 @@ class LocationBuilder(object):
 
 class LaxBuilder(LocationBuilder):
     """
-    Description: This class builds an LAX location
+    Description This class builds an LAX location
     
         Note that buildAirportInfo does not build airportLocation, the user is expected to provide that. 
 
