@@ -1,13 +1,60 @@
 """Author: David Nong, Zixuan Rao
 """
+from abc import ABCMeta, abstractmethod
 
-from google.cloud.firestore import DocumentReference
+from gravitate.models.firestore_object import FirestoreObject
 from .firestore_object import FirestoreObject
 
 
 # AirportEventSchedule class
 
-class AirportEventSchedule(FirestoreObject):
+class EventSchedule(FirestoreObject, metaclass=ABCMeta, metaclass=ABCMeta, metaclass=ABCMeta):
+    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
+                 pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
+        """ Description
+        This function initializes the AirportEventSchedule Object
+        Note that this function should not be called directly
+
+        :param self:
+        :param destName: The destination of the user
+        :param destTime: The time when the user will arrive to the airport
+        :param flightTime: The time of the flight
+        :param memberProfilePhotoUrls: An array of URLs of the other members in the orbit
+        :param pickupAddress: The pickup address of the user
+        :param pending: "True" not matched into orbit, "False" matched into orbit
+        """
+
+        self.destName = destName
+        self.destTime = destTime
+        self.flightTime = flightTime
+        self.memberProfilePhotoUrls = memberProfilePhotoUrls
+        self.pickupAddress = pickupAddress
+        self.pending = pending
+        self.rideRequestRef = rideRequestRef
+        self.orbitRef = orbitRef
+        self.locationRef = locationRef
+
+    @staticmethod
+    @abstractmethod
+    def fromDict(eventScheduleDict):
+        """ Description
+        This function creates an AirportEventSchedule
+
+        :param eventScheduleDict:
+        """
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def fromDictAndReference(eventScheduleDict, eventScheduleRef):
+        pass
+
+    @abstractmethod
+    def toDict(self):
+        pass
+
+
+class AirportEventSchedule(EventSchedule):
     """ Description    
         This class represents the schedule of events for a user.
         Note that the fields are intended to be used only in View layer.
@@ -37,31 +84,6 @@ class AirportEventSchedule(FirestoreObject):
         eventSchedule = AirportEventSchedule.fromDict(eventScheduleDict)
         eventSchedule.setFirestoreRef(eventScheduleRef)
         return eventSchedule
-
-    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
-                 pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
-        """ Description
-        This function initializes the AirportEventSchedule Object
-        Note that this function should not be called directly
-        
-        :param self:
-        :param destName: The destination of the user
-        :param destTime: The time when the user will arrive to the airport
-        :param flightTime: The time of the flight
-        :param memberProfilePhotoUrls: An array of URLs of the other members in the orbit 
-        :param pickupAddress: The pickup address of the user
-        :param pending: "True" not matched into orbit, "False" matched into orbit
-        """
-
-        self.destName = destName
-        self.destTime = destTime
-        self.flightTime = flightTime
-        self.memberProfilePhotoUrls = memberProfilePhotoUrls
-        self.pickupAddress = pickupAddress
-        self.pending = pending
-        self.rideRequestRef = rideRequestRef
-        self.orbitRef = orbitRef
-        self.locationRef = locationRef
 
     def toDict(self):
         eventScheduleDict = {
