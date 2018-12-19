@@ -60,8 +60,7 @@ def forceMatchTwoRideRequests(rideRequestIds: list):
 
     pairedTuples = [(rideRequests[0], rideRequests[1])]
 
-    groups = list()
-    constructGroups(groups, pairedTuples)
+    groups = constructGroups(pairedTuples)
 
     group = groups[0]
     notJoined = group.doWork()
@@ -88,11 +87,9 @@ def groupRideRequests(rideRequests: list):
 
     paired, unpaired = pairRideRequests(rideRequests)
 
-    pairedTuples = list()
-    convertFirestoreRefTupleListToRideRequestTupleList(paired, pairedTuples)
+    pairedTuples = convertFirestoreRefTupleListToRideRequestTupleList(paired)
 
-    groups = list()
-    constructGroups(groups, pairedTuples)
+    groups = constructGroups(pairedTuples)
 
     for group in groups:
         group.doWork()
@@ -111,7 +108,16 @@ def pairRideRequests(rideRequests: list):
     return paired, unpaired
 
 
-def constructGroups(groups: list, paired: list):
+def constructGroups(paired: list) -> list:
+    """ Description
+        This function converts a list of rideRequestId pairs to a list of groups.
+
+    :param paired: list of rideRequestId pairs
+        Example: [ (testriderequest1, testriderequest3), (testriderequest2, testriderequest4) ]
+    :return: list of groups
+    """
+    groups = list()
+
     for rideRequest1, rideRequest2 in paired:
         assert rideRequest1.eventRef.id == rideRequest2.eventRef.id
         eventRef = rideRequest1.eventRef
@@ -138,11 +144,11 @@ def constructGroups(groups: list, paired: list):
         group: Group = Group(rideRequests, intendedOrbit, event, location)
         groups.append(group)
 
-    return
+    return groups
 
 
-def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: list):
-    """
+def convertFirestoreRefTupleListToRideRequestTupleList(paired: list):
+    """ Description
     This function is an adaptor to convert tuples of rideRequestRef as returned by grouping
         algorithm to tuples of rideRequest objects that the system may do operations on.
 
@@ -150,6 +156,8 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: li
     :param results:
     :return:
     """
+    results = list()
+
     for firestoreRef1, firestoreRef2 in paired:
         # TODO change to transaction
         rideRequest1 = RideRequestGenericDao().get(firestoreRef1)
@@ -158,7 +166,7 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list, results: li
         rideRequest2.setFirestoreRef(firestoreRef2)
         results.append([rideRequest1, rideRequest2])
 
-    return
+    return results
 
 
 def constructTupleList(rideRequests: list):

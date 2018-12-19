@@ -127,8 +127,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                    RideRequestGenericDao().rideRequestCollectionRef.document('B')],
                   [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
                    RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = list()
-        grouping.constructGroups(groups, paired)
+        groups = grouping.constructGroups(paired)
 
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
