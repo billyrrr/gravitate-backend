@@ -133,7 +133,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 6. Press Enter. Your clone will be created. 
 
-###Test App Server Locally
+### Test App Server Locally
 
 Please skip this section if you do not want to work with REST API related layers. 
 
