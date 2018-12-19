@@ -102,9 +102,7 @@ def pairRideRequests(rideRequests: list):
     :return:
     """
     tupleList = constructTupleList(rideRequests)
-    paired = list()
-    unpaired = list()
-    pair(arr=tupleList, paired=paired, unpaired=unpaired)
+    paired, unpaired = pair(arr=tupleList)
     return paired, unpaired
 
 
@@ -312,7 +310,7 @@ class Group:
     @staticmethod
     def refreshEventSchedules(transaction: Transaction, joined, intendedOrbit, event, location):
         """
-        This function refresh event schedules of each rideRequests in joined
+        This function refreshes event schedules of each rideRequests in joined
 
         :param transaction:
         :param joined: the rideRequests joined by the algorithm
@@ -326,7 +324,13 @@ class Group:
             # Note that profile photos may not be populated even after the change is committed
             groupingutils.updateEventSchedule(transaction, rideRequest, intendedOrbit, event, location)
 
-    def sendNotifications(self):
+    def sendNotifications(self, userIds: list) -> bool:
+        """ Description
+        This function sends notifications to each user in userIds.
+
+        :param userIds:
+        :return:
+        """
         raise NotImplementedError
         # for userId in userIds:
         #     fcmessaging.sendMessageToUser(userId, "You are matched. ")
@@ -339,7 +343,7 @@ class Group:
 """
 
 
-def pair(arr=None, paired: list = None, unpaired: list = None):
+def pair(arr=None) -> (list, list):
     """
     Description
 
@@ -350,6 +354,10 @@ def pair(arr=None, paired: list = None, unpaired: list = None):
         :param paired:
         :param unpaired:
     """
+
+    paired = list()
+    unpaired = list()
+
     sortedArr = sorted(arr, key=lambda x: x[0])
 
     i = 0
@@ -367,3 +375,4 @@ def pair(arr=None, paired: list = None, unpaired: list = None):
 
                 unpaired.insert(len(unpaired), [sortedArr[i][2]])
             i += 1
+    return paired, unpaired
