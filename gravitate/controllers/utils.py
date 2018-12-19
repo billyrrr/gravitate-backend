@@ -32,7 +32,8 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
 @transactional
 def addRideRequest(transaction, rideRequest, location, userId):
     """ Description:
-        This method saves rideRequest and update user's eventSchedule
+        This method saves rideRequest and update user's eventSchedule.
+        The method corresponds to use case "Create Ride Request".
 
     :param transaction:
     :param rideRequest:
@@ -105,20 +106,6 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
 
     return target
 
-
-def findLocation(form: AirportRideRequestCreationForm) -> DocumentReference:
-    """ Description
-        **DEPRECATED**
-        This function finds the locationRef for "LAX" or other airportLocation(s)
-
-    :type form:AirportRideRequestCreationForm:
-    :param form:AirportRideRequestCreationForm:
-
-    :raises:
-
-    :rtype:
-    """
-    return LocationGenericDao().findByAirportCode(form.airportCode).getFirestoreRef()
 
 
 def getAirportLocation(airportCode) -> AirportLocation:
