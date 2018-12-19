@@ -1,3 +1,8 @@
+"""
+Author: Leon Wu
+Reviewer: Zixuan Rao
+"""
+
 import json
 
 from flask import request
@@ -44,6 +49,12 @@ class UserService(Resource):
         raise NotImplementedError
 
     def post(self, uid):
+        """ Description:
+            This method handles POST request to handle use case "create ride request"
+
+        :param uid:
+        :return:
+        """
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
 
