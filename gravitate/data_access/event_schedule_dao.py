@@ -1,7 +1,8 @@
 """Author: David Nong
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, transactional, Query
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
+    transactional, Query
 import google
 from typing import Type
 from . import EventDao
@@ -13,12 +14,13 @@ CTX = config.Context
 
 db = CTX.db
 
+
 class EventScheduleGenericDao:
     """ Description	
         Database access object for eventSchedules
     """
 
-    def __init__(self, userId = None, userRef = None):
+    def __init__(self, userId=None, userRef=None):
         """ Description
             Either userId or userRef must be specified
 
@@ -44,12 +46,11 @@ class EventScheduleGenericDao:
         else:
             self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
 
-    
-    
     def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[EventSchedule]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
-            "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
+            "If a transaction is used and it already has write operations added, this method cannot be used
+                (i.e. read-after-write is not allowed)."
 
         :type self:
         :param self:
@@ -82,7 +83,7 @@ class EventScheduleGenericDao:
         transaction.commit()
         return eventScheduleResult
 
-    def create(self, eventSchedule: Type[EventSchedule])->DocumentReference:
+    def create(self, eventSchedule: Type[EventSchedule]) -> DocumentReference:
         """ Description
         :type self:
         :param self:
@@ -122,7 +123,8 @@ class EventScheduleGenericDao:
         self.eventScheduleCollectionRef.document(eventId).delete()
 
     @staticmethod
-    def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule], eventScheduleRef: DocumentReference):
+    def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule],
+                           eventScheduleRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 
