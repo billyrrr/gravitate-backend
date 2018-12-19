@@ -6,7 +6,7 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from . import EventDao
-from gravitate.models import EventSchedule
+from gravitate.models import AirportEventSchedule
 import warnings
 from gravitate import config
 
@@ -46,7 +46,7 @@ class EventScheduleGenericDao:
         else:
             self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
 
-    def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[EventSchedule]:
+    def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[AirportEventSchedule]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used
@@ -70,7 +70,7 @@ class EventScheduleGenericDao:
             snapshot: DocumentSnapshot = eventScheduleRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            eventSchedule = EventSchedule.fromDict(snapshotDict)
+            eventSchedule = AirportEventSchedule.fromDict(snapshotDict)
             return eventSchedule
 
         except google.cloud.exceptions.NotFound:
@@ -83,13 +83,13 @@ class EventScheduleGenericDao:
         transaction.commit()
         return eventScheduleResult
 
-    def create(self, eventSchedule: Type[EventSchedule]) -> DocumentReference:
+    def create(self, eventSchedule: Type[AirportEventSchedule]) -> DocumentReference:
         """ Description
         :type self:
         :param self:
 
         :type eventSchedule
-        :Type[EventSchedule]:
+        :Type[AirportEventSchedule]:
 
 
         :raises:
@@ -123,7 +123,7 @@ class EventScheduleGenericDao:
         self.eventScheduleCollectionRef.document(eventId).delete()
 
     @staticmethod
-    def setWithTransaction(transaction: Transaction, newEventSchedule: Type[EventSchedule],
+    def setWithTransaction(transaction: Transaction, newEventSchedule: Type[AirportEventSchedule],
                            eventScheduleRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
@@ -134,8 +134,8 @@ class EventScheduleGenericDao:
         :type transaction:Transaction:
         :param transaction:Transaction:
 
-        :type newEventSchedule:Type[EventSchedule]:
-        :param newEventSchedule:Type[EventSchedule]:
+        :type newEventSchedule:Type[AirportEventSchedule]:
+        :param newEventSchedule:Type[AirportEventSchedule]:
 
         :type eventScheduleRef:DocumentReference:
         :param eventScheduleRef:DocumentReference:

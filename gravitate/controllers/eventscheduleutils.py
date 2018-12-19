@@ -1,13 +1,13 @@
-from gravitate.models import EventSchedule, AirportRideRequest, Orbit, AirportLocation, ToEventTarget
+from gravitate.models import AirportEventSchedule, AirportRideRequest, Orbit, AirportLocation, ToEventTarget
 from gravitate.data_access import UserDao
 import warnings
 import google.cloud.firestore
 
 class EventScheduleBuilder():
 
-    def __init__(self, eventSchedule: EventSchedule=None):
+    def __init__(self, eventSchedule: AirportEventSchedule=None):
         if not eventSchedule:
-            self.eventSchedule = EventSchedule()
+            self.eventSchedule = AirportEventSchedule()
         else:
             self.eventSchedule = eventSchedule
 
@@ -46,7 +46,7 @@ class EventScheduleBuilder():
             self.eventSchedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
             self.eventSchedule.orbitRef = orbit.getFirestoreRef()
 
-    def export(self) -> EventSchedule:
+    def export(self) -> AirportEventSchedule:
         return self.eventSchedule
 
 

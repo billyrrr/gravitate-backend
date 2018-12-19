@@ -5,9 +5,9 @@ from google.cloud.firestore import DocumentReference
 from .firestore_object import FirestoreObject
 
 
-# EventSchedule class
+# AirportEventSchedule class
 
-class EventSchedule(FirestoreObject):
+class AirportEventSchedule(FirestoreObject):
     """ Description    
         This class represents the schedule of events for a user.
         Note that the fields are intended to be used only in View layer.
@@ -16,7 +16,7 @@ class EventSchedule(FirestoreObject):
     @staticmethod
     def fromDict(eventScheduleDict):
         """ Description
-        This function creates an EventSchedule
+        This function creates an AirportEventSchedule
     
         :param eventScheduleDict:
         """
@@ -29,19 +29,19 @@ class EventSchedule(FirestoreObject):
         rideRequestRef = eventScheduleDict['rideRequestRef']
         orbitRef = eventScheduleDict['orbitRef']
         locationRef = eventScheduleDict['locationRef']
-        return EventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
-                             rideRequestRef, orbitRef, locationRef)
+        return AirportEventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
+                                    rideRequestRef, orbitRef, locationRef)
 
     @staticmethod
     def fromDictAndReference(eventScheduleDict, eventScheduleRef):
-        eventSchedule = EventSchedule.fromDict(eventScheduleDict)
+        eventSchedule = AirportEventSchedule.fromDict(eventScheduleDict)
         eventSchedule.setFirestoreRef(eventScheduleRef)
         return eventSchedule
 
     def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
                  pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
         """ Description
-        This function initializes the EventSchedule Object
+        This function initializes the AirportEventSchedule Object
         Note that this function should not be called directly
         
         :param self:

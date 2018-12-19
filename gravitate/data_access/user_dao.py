@@ -3,7 +3,7 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 
 import google
 from typing import Type
-from gravitate.models import User, EventSchedule
+from gravitate.models import User, AirportEventSchedule
 
 # from config import auth
 
@@ -138,7 +138,7 @@ class UserDao:
     @staticmethod
     # @transactional
     def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str = None,
-                                          eventRef: DocumentReference = None, eventSchedule: EventSchedule = None):
+                                          eventRef: DocumentReference = None, eventSchedule: AirportEventSchedule = None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
 				Note that the toEventRideRequestRef will be 
@@ -160,7 +160,7 @@ class UserDao:
 
         # userRef: DocumentReference = db.collection(u'users').document(userRef)
 
-        # Get the CollectionReference of the collection that contains EventSchedule's
+        # Get the CollectionReference of the collection that contains AirportEventSchedule's
         eventSchedulesRef: CollectionReference = userRef.collection(
             u'eventSchedules')
 
@@ -169,7 +169,7 @@ class UserDao:
         # eventId = 'testeventid1'
         # warnings.warn("Using mock/test event id. Must replace before release. ")
 
-        # Get the DocumentReference for the EventSchedule
+        # Get the DocumentReference for the AirportEventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
         eventScheduleDict = eventSchedule.toDict()
         transaction.set(eventScheduleRef, eventScheduleDict,
