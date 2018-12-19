@@ -10,7 +10,7 @@ from google.cloud.firestore import Transaction, transactional, DocumentReference
 db = config.Context.db
 
 
-def groupManyRideRequests(rideRequestIds: list):
+def groupMany(rideRequestIds: list):
     """
     This function tries to match rideRequests into groups with grouping algorithms.
     Note that the rideRequests may be in different orbits, and rideRequests may not
@@ -35,7 +35,7 @@ def groupManyRideRequests(rideRequestIds: list):
     groupRideRequests(rideRequests)
 
 
-def forceMatchTwoRideRequests(rideRequestIds: list):
+def forceMatchTwo(rideRequestIds: list):
     """
     This function force matches two rideRequests into an orbit.
 
@@ -213,6 +213,7 @@ def remove(rideRequestRef: DocumentReference) -> bool:
 def _remove(transaction, rideRequestRef: DocumentReference):
     """
     This method removes/unmatches rideRequest from the orbit it associates with.
+    (Transactional business logic for use case unmatch from orbit)
 
     :param transaction:
     :param rideRequestRef:

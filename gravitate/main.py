@@ -35,7 +35,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
 from gravitate.services.ride_request_service import RideRequestService, DeleteMatchService, DeleteRideRequestService
-from gravitate.services.ride_request_service import RideRequestServiceTempTesting
 from gravitate.services.user_service import UserService
 
 sched = BackgroundScheduler(daemon=True)

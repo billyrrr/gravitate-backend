@@ -8,6 +8,10 @@ from gravitate.data_access import RideRequestGenericDao
 
 
 class OrbitForceMatchService(Resource):
+    """
+    This class provides service layer functionality for force matching rideRequests.
+        This service should be used in development environment to force a match for testing purposes.
+    """
     def post(self):
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (
@@ -18,13 +22,13 @@ class OrbitForceMatchService(Resource):
         responseDict = None
 
         if operationMode == "two" and rideRequestIds != None:
-            responseDict = grouping.forceMatchTwoRideRequests(rideRequestIds)
+            responseDict = grouping.forceMatchTwo(rideRequestIds)
         elif operationMode == "many" and rideRequestIds != None:
-            grouping.groupManyRideRequests(rideRequestIds)
+            grouping.groupMany(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
             allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
-            grouping.groupManyRideRequests(allRideRequestIds)
+            grouping.groupMany(allRideRequestIds)
             responseDict = {"success": True, "operationMode": "all"}
         else:
             responseDict = {"error": "Not specified operation mode."}
@@ -35,5 +39,10 @@ class OrbitForceMatchService(Resource):
 
 
 def refreshGroupAll():
+    """ Description
+    This function corresponds to use case "group ride requests".
+
+    :return:
+    """
     allRideRequestIds = RideRequestGenericDao().getIds(incomplete=True)
-    grouping.groupManyRideRequests(allRideRequestIds)
+    grouping.groupMany(allRideRequestIds)

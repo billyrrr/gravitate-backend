@@ -41,6 +41,7 @@ class CityLocation(Location):
     """
     pass
 
+
 class UcLocation(CityLocation):
     """ Description
         This class represents a UC campus in another city.

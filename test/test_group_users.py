@@ -16,7 +16,7 @@ rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2V
 class TestTempForceGroupUsers(unittest.TestCase):
 
     def testMatchTwo(self):
-        result = grouping.forceMatchTwoRideRequests(rideRequestIds)
+        result = grouping.forceMatchTwo(rideRequestIds)
         print(result)
         self.assertIsNone(result)  # So that we see debug log
 
