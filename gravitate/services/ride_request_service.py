@@ -72,7 +72,7 @@ class RideRequestService(Resource):
             form, userId)
         if not location:
             errorResponseDict = {
-                "error": "invalid airport code or error finding airport location in backend",
+                "error": "invalid airport code and datetime combination or error finding airport location in backend",
                 "originalForm": requestForm
             }
             return errorResponseDict, 400
@@ -84,8 +84,7 @@ class RideRequestService(Resource):
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user
         #       for the flight on the same day already
-        duplicateEvent = utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef)
-        if duplicateEvent:
+        if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
                 "originalForm": requestForm
@@ -96,6 +95,7 @@ class RideRequestService(Resource):
         # Starts database operations to (save rideRequest and update user's eventSchedule)
         transaction = db.transaction()
 
+        # Transactional business logic for adding rideRequest
         utils.addRideRequest(transaction, rideRequest, location, userId)
 
         # Save write result
