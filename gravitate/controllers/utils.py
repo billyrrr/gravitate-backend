@@ -124,7 +124,6 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     return target
 
 
-
 def getAirportLocation(airportCode) -> AirportLocation:
     """ Description:
         This method returns an airportLocation with airportCode.
@@ -140,13 +139,10 @@ def findEvent(flight_local_time) -> DocumentReference:
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
 
-    :type form:AirportRideRequestCreationForm:
-    :param form:AirportRideRequestCreationForm:
-
-    :raises:
-
-    :rtype:
+    :param flight_local_time:
+    :return:
     """
+
     # Parse the flightLocalTime of the ride request form, then query database 
     eventTime = iso8601.parse_date(flight_local_time, default_timezone=None).timestamp()
     # eventReference = EventDao().locateAirportEvent(eventTime)
@@ -156,6 +152,14 @@ def findEvent(flight_local_time) -> DocumentReference:
 
 
 def setDisabilities(form: AirportRideRequestCreationForm, rideRequestDict):
+    """
+        This method sets the accommodation options in rideRequest dict.
+        Note that the method needs refactoring to pass values with parameters rather than structures.
+
+    :param form:
+    :param rideRequestDict:
+    :return:
+    """
     if ('disabilities' in form):
         # If 'disabilities' is defined in the form submitted
         rideRequestDict['disabilities'] = form['disabilities']
