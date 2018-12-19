@@ -35,15 +35,27 @@ class Location(FirestoreObject):
         }
 
 
+class CityLocation(Location):
+    """ Description:
+        This class represents a city location.
+    """
+    pass
+
+class UcLocation(CityLocation):
+    """ Description:
+        This class represents a UC campus in another city.
+    """
+    pass
+
+
 class AirportLocation(Location):
     """
     Description: 
-        This class represennts an airport location. 
+        This class represents an airport location.
         Two airport locations are considered the same if 
             their airportCode (ie. "LAX") 
             are identical. 
 
-        :param Location: 
     """
 
     def __init__(self, coordinate, address, airportCode):

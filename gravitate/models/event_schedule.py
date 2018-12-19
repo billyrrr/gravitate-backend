@@ -3,13 +3,16 @@
 
 from google.cloud.firestore import DocumentReference
 from .firestore_object import FirestoreObject
+
+
 # EventSchedule class
 
 class EventSchedule(FirestoreObject):
     """ Description    
-        This class represents the schedule of events for a user
+        This class represents the schedule of events for a user.
+        Note that the fields are intended to be used only in View layer.
     """
-    
+
     @staticmethod
     def fromDict(eventScheduleDict):
         """ Description
@@ -26,16 +29,17 @@ class EventSchedule(FirestoreObject):
         rideRequestRef = eventScheduleDict['rideRequestRef']
         orbitRef = eventScheduleDict['orbitRef']
         locationRef = eventScheduleDict['locationRef']
-        return EventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending, rideRequestRef, orbitRef, locationRef)
+        return EventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
+                             rideRequestRef, orbitRef, locationRef)
 
-        
     @staticmethod
     def fromDictAndReference(eventScheduleDict, eventScheduleRef):
         eventSchedule = EventSchedule.fromDict(eventScheduleDict)
         eventSchedule.setFirestoreRef(eventScheduleRef)
         return eventSchedule
 
-    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None, pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
+    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
+                 pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
         """ Description
         This function initializes the EventSchedule Object
         Note that this function should not be called directly
@@ -66,10 +70,9 @@ class EventSchedule(FirestoreObject):
             'flightTime': self.flightTime,
             'memberProfilePhotoUrls': self.memberProfilePhotoUrls,
             'pickupAddress': self.pickupAddress,
-            'pending': self.pending, 
-            'rideRequestRef': self.rideRequestRef, 
+            'pending': self.pending,
+            'rideRequestRef': self.rideRequestRef,
             'orbitRef': self.orbitRef,
             'locationRef': self.locationRef
         }
         return eventScheduleDict
-
