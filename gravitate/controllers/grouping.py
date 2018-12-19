@@ -208,6 +208,7 @@ def remove(rideRequestRef: DocumentReference) -> bool:
     _remove(transaction, rideRequestRef)
     return True
 
+
 @transactional
 def _remove(transaction, rideRequestRef: DocumentReference):
     """
@@ -251,7 +252,6 @@ def _remove(transaction, rideRequestRef: DocumentReference):
 
 
 class Group:
-
     """
     This class stores rideRequests that will be grouped into the same orbit, and provides operations.
 
