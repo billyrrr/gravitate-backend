@@ -35,18 +35,26 @@ class Location(FirestoreObject):
         }
 
 
+cityCode = {
+    'Los Angeles': None
+}
+
+
 class CityLocation(Location):
     """ Description
         This class represents a city location.
     """
-    pass
+    def __init__(self, coordinates, cityCode):
+        pass
 
 
 class UcLocation(CityLocation):
     """ Description
         This class represents a UC campus in another city.
     """
-    pass
+
+    def __init__(self, coordinate, campusCode):
+        pass
 
 
 class AirportLocation(Location):

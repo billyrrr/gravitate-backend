@@ -38,15 +38,18 @@ class EventScheduleGenericDao:
             :rtype:
         """
 
-        assert (userId != None) or (userRef != None)
-        assert (userId == None) or (userRef == None)
+        assert (userId != None) or (userRef != None), \
+            "Both userId and userRef are None"
+        assert (userId == None) or (userRef == None), \
+            "Receiving both userId: {} and userRef: {}".format(userId, userRef)
 
         if userId:
             self.eventScheduleCollectionRef = db.collection('users').document(userId).collection('eventSchedules')
         else:
             self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
 
-    def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) -> Type[AirportEventSchedule]:
+    def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) \
+            -> Type[AirportEventSchedule]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used
