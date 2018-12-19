@@ -7,11 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/billyrao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/billyrao.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/models/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/event.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/data_access/event_dao.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/data_access/event_dao.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/models/ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/ride_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/user_service.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -77,15 +76,15 @@
         <counts>
           <entry key="dummy" value="40" />
           <entry key="md" value="14" />
-          <entry key="py" value="13503" />
-          <entry key="txt" value="1327" />
+          <entry key="py" value="13713" />
+          <entry key="txt" value="1361" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="14" />
-          <entry key="PLAIN_TEXT" value="1367" />
-          <entry key="Python" value="13503" />
+          <entry key="PLAIN_TEXT" value="1401" />
+          <entry key="Python" value="13713" />
         </counts>
       </usages-collector>
     </session>
@@ -137,20 +136,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-66">
-              <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gravitate/models/event.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="61" column="11" lean-forward="true" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
+            <state relative-caret-position="235">
+              <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -268,11 +258,11 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/gravitate/models/location.py" />
         <option value="$PROJECT_DIR$/gravitate/models/event_schedule.py" />
-        <option value="$PROJECT_DIR$/gravitate/data_access/event_dao.py" />
         <option value="$PROJECT_DIR$/gravitate/services/ride_request_service.py" />
         <option value="$PROJECT_DIR$/gravitate/models/ride_request.py" />
         <option value="$PROJECT_DIR$/gravitate/services/user_service.py" />
         <option value="$PROJECT_DIR$/gravitate/models/event.py" />
+        <option value="$PROJECT_DIR$/gravitate/data_access/event_dao.py" />
       </list>
     </option>
   </component>
@@ -851,7 +841,14 @@
       <option name="project" value="LOCAL" />
       <updated>1545196811489</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Reformat code and docs">
+      <created>1545196953087</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1545196953087</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -902,7 +899,7 @@
     <frame x="0" y="23" width="1680" height="974" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16515973" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16515973" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -973,7 +970,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated tests" />
     <MESSAGE value="reorganized tests" />
     <MESSAGE value="extract FirestoreObject superclass" />
     <MESSAGE value="refactor test mock objects factory" />
@@ -998,7 +994,8 @@
     <MESSAGE value="Rename EventSchedule to AirportEventSchedule" />
     <MESSAGE value="Extract EventSchedule Superclass" />
     <MESSAGE value="Add docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add docs" />
+    <MESSAGE value="Reformat code and docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformat code and docs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1344,17 +1341,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-66">
-          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/models/event.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
           <caret line="61" column="11" lean-forward="true" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
         </state>
       </provider>
     </entry>
