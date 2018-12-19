@@ -16,6 +16,7 @@ from gravitate.config import Context
 
 db = Context.db
 
+
 class UserService(Resource):
 
     def get(self, uid):
@@ -34,7 +35,8 @@ class UserService(Resource):
         """ Description
             Handles client FCM Token refresh
                 https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
-            Note that FCM refresh shall not override the user's settings for enabling notification (if specified in requirement).
+            Note that FCM refresh shall not override the user's settings for enabling notification
+                (if specified in requirement).
 
         :type self:
         :param self:

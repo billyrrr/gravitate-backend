@@ -1,19 +1,17 @@
 """Author: Zixuan Rao, Andrew Kim
 """
 
-
 from google.cloud.firestore import DocumentReference, Transaction
 from gravitate.models.target import Target, ToEventTarget, FromEventTarget
 from .firestore_object import FirestoreObject
 
-class RideRequest(FirestoreObject):
 
+class RideRequest(FirestoreObject):
     """ Description
         This class represents a RideRequest object
     
     """
 
-    
     @staticmethod
     def fromDictAndReference(rideRequestDict, rideRequestRef):
         rideRequest = RideRequest.fromDict(rideRequestDict)
@@ -33,7 +31,7 @@ class RideRequest(FirestoreObject):
         driverStatus = rideRequestDict['driverStatus']
         pickupAddress = rideRequestDict['pickupAddress']
         hasCheckedIn = rideRequestDict['hasCheckedIn']
-        eventRef = rideRequestDict['eventRef'] # TODO conversion to DocumentReference
+        eventRef = rideRequestDict['eventRef']  # TODO conversion to DocumentReference
         orbitRef = rideRequestDict['orbitRef']
         userId = rideRequestDict['userId']
         target = Target.fromDict(rideRequestDict['target'])
@@ -48,11 +46,12 @@ class RideRequest(FirestoreObject):
             disabilities = rideRequestDict['disabilities']
 
             return AirportRideRequest(driverStatus, pickupAddress, hasCheckedIn,
-                                      eventRef, orbitRef, userId, target, pricing, requestCompletion, flightLocalTime, 
+                                      eventRef, orbitRef, userId, target, pricing, requestCompletion, flightLocalTime,
                                       flightNumber, airportLocation, baggages, disabilities)
         elif rideRequestType == 'eventRide':
             # TODO change function calls
-            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
+            return SocialEventRideRequest(driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target,
+                                          pricing, requestCompletion)
         else:
             raise Exception(
                 'Not supported rideRequestType: {}'.format(rideRequestType))
@@ -71,9 +70,8 @@ class RideRequest(FirestoreObject):
         }
         return rideRequestDict
 
-
-
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing,
+                 requestCompletion):
         """ Description
             This function initializes a RideRequest Object. 
             Note that this function should not be called directly. 
@@ -99,8 +97,9 @@ class RideRequest(FirestoreObject):
         self.pricing = pricing
         self.requestCompletion = requestCompletion
 
+
 # class RideRequestActiveRecord(RideRequest):
-    
+
 #     @staticmethod
 #     def fromFirestoreRef(firestoreRef, rideRequestDAO: RideRequestGenericDao, transaction: Transaction = None):
 #         if (transaction):
@@ -114,18 +113,19 @@ class RideRequest(FirestoreObject):
 #         timestamp, documentRef = rideRequestGenericDao.createRideRequest()
 #         rideRequest.setFirestoreRef(documentRef)
 #         return rideRequest
-    
+
 #     def saveWithTransaction(self, transaction: Transaction):
 #         # Save to database with ref specified instance variable
 #         if (not self.__firestoreRef):
 #             raise Exception('self.__firestoreRef not defined!')
 #         RideRequestGenericDao.setRideRequestWithTransaction(transaction, self, self.__firestoreRef)
- 
+
 
 class AirportRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing,
+                 requestCompletion, flightLocalTime, flightNumber, airportLocation, baggages, disabilities):
         """ Description
             Initializes an AirportRideRequest Object 
             Note that this class should not be initialzed directly.
@@ -182,7 +182,8 @@ class AirportRideRequest(RideRequest):
 class SocialEventRideRequest(RideRequest):
 
     # TODO more arguments
-    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion):
+    def __init__(self, driverStatus, pickupAddress, hasCheckedIn, eventRef, orbitRef, userId, target, pricing,
+                 requestCompletion):
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialzed directly.
@@ -203,7 +204,7 @@ class SocialEventRideRequest(RideRequest):
                          hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         self.rideCategory = 'eventRide'
 
-    def toDict(self): 
+    def toDict(self):
         rideRequestDict = super().toDict()
         rideRequestDict['rideCategory'] = 'eventRide'
         return rideRequestDict

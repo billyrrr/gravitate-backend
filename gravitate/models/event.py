@@ -1,4 +1,6 @@
-"""Author: Andrew Kim
+"""
+Author: Andrew Kim
+Reviewer: Zixuan Rao
 """
 
 from google.cloud.firestore import DocumentReference
@@ -52,7 +54,7 @@ class Event(FirestoreObject):
         }
         return eventDict
 
-    def setEventAsActive(self):
+    def setAsActive(self):
         """ Definition
             Sets the boolean isClosed to False
 
@@ -60,7 +62,7 @@ class Event(FirestoreObject):
         """
         self.isClosed = False
 
-    def setEventAsPassed(self):
+    def setAsPassed(self):
         """ Definition
             Sets the boolean isClosed to True
 

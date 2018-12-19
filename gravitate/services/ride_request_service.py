@@ -61,7 +61,6 @@ class RideRequestService(Resource):
         # warnings.warn("using test user ids, delete before release")
 
         if not validateForm.validate():
-
             print(validateForm.errors)
             return validateForm.errors, 400
 
@@ -81,7 +80,6 @@ class RideRequestService(Resource):
         # Create RideRequest Object
         rideRequest: AirportRideRequest = RideRequest.fromDict(
             rideRequestDict)
-
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user
@@ -221,5 +219,3 @@ class DeleteRideRequestService(Resource):
             return responseDict, 500
 
         return responseDict, 200
-
-
