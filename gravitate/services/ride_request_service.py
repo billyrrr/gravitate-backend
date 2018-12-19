@@ -98,7 +98,7 @@ class RideRequestService(Resource):
         # Starts database operations to (save rideRequest and update user's eventSchedule)
         transaction = db.transaction()
 
-        utils._addRideRequest(transaction, rideRequest, location, userId)
+        utils.addRideRequest(transaction, rideRequest, location, userId)
 
         # Save write result
         transaction.commit()
@@ -108,6 +108,54 @@ class RideRequestService(Resource):
 
         return responseDict, 200
 
+
+def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
+    """ Description:
+        This method fills a rideRequest dict that can later be used to call RideRequest().fromDict method.
+
+    :param form:
+    :param userId:
+    :return: a tuple of rideRequest dict and AirportLocation
+    """
+    rideRequestDict = dict()
+
+    rideRequestDict['rideCategory'] = 'airportRide'
+
+    # Move data from the form frontend submitted to rideRequestDict
+    rideRequestDict['pickupAddress'] = form.pickupAddress
+    rideRequestDict['driverStatus'] = form.driverStatus
+    rideRequestDict['flightLocalTime'] = form.flightLocalTime
+    rideRequestDict['flightNumber'] = form.flightNumber
+
+    # Fields to be filled "immediately"
+
+    # TODO fill unspecified options with default values
+    rideRequestDict['pricing'] = 987654321  # TODO change
+
+    # Populate rideRequestDict with default service data
+    rideRequestDict['disabilities'] = dict()
+    rideRequestDict['baggages'] = dict()
+    rideRequestDict['hasCheckedIn'] = False
+    rideRequestDict['orbitRef'] = None
+    rideRequestDict['userId'] = userId
+    rideRequestDict['requestCompletion'] = False
+
+    # Fields to be filled "after some thinking"
+
+    # Set Target
+    target = utils.createTargetWithFlightLocalTime(form.flightLocalTime, form.toEvent)
+    rideRequestDict['target'] = target.toDict()
+
+    # Set EventRef
+    eventRef = utils.findEvent(form.flightLocalTime)
+    rideRequestDict['eventRef'] = eventRef
+    location = utils.getAirportLocation(form.airportCode)
+    if not location:
+        return rideRequestDict, None
+    airportLocationRef = location.getFirestoreRef()
+    rideRequestDict['airportLocation'] = airportLocationRef
+
+    return rideRequestDict, location
 
 
 class DeleteMatchService(Resource):
@@ -169,49 +217,9 @@ class DeleteRideRequestService(Resource):
 
         except Exception as e:
             errStr = str(e)
-            responseDict = {"error": "Error occured deleting rideRequest and eventSchedule: " + errStr}
+            responseDict = {"error": "Error occurred deleting rideRequest and eventSchedule: " + errStr}
             return responseDict, 500
 
         return responseDict, 200
 
 
-def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
-    rideRequestDict = dict()
-
-    rideRequestDict['rideCategory'] = 'airportRide'
-
-    # Move data from the form frontend submitted to rideRequestDict
-    rideRequestDict['pickupAddress'] = form.pickupAddress
-    rideRequestDict['driverStatus'] = form.driverStatus
-    rideRequestDict['flightLocalTime'] = form.flightLocalTime
-    rideRequestDict['flightNumber'] = form.flightNumber
-
-    # Fields to be filled "immediately"
-
-    # TODO fill unspecified options with default values
-    rideRequestDict['pricing'] = 987654321  # TODO change
-
-    # Populate rideRequestDict with default service data
-    rideRequestDict['disabilities'] = dict()
-    rideRequestDict['baggages'] = dict()
-    rideRequestDict['hasCheckedIn'] = False
-    rideRequestDict['orbitRef'] = None
-    rideRequestDict['userId'] = userId
-    rideRequestDict['requestCompletion'] = False
-
-    # Fields to be filled "after some thinking"
-
-    # Set Target
-    target = utils.createTargetWithFlightLocalTime(form.flightLocalTime, form.toEvent)
-    rideRequestDict['target'] = target.toDict()
-
-    # Set EventRef
-    eventRef = utils.findEvent(form.flightLocalTime)
-    rideRequestDict['eventRef'] = eventRef
-    location = utils.getAirportLocation(form.airportCode)
-    if not location:
-        return rideRequestDict, None
-    airportLocationRef = location.getFirestoreRef()
-    rideRequestDict['airportLocation'] = airportLocationRef
-
-    return rideRequestDict, location

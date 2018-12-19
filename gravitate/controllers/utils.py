@@ -9,9 +9,11 @@ import datetime as dt
 import pytz
 
 def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
-    """
-        Description: Returns a boolean whether the user is trying to make a duplicate ride request        True: it is a duplicate,
-        False: it is not a duplicate
+    """ Description: Returns a boolean whether the user is trying to make a duplicate ride request
+
+    :param userId:
+    :param eventRef:
+    :return: True: it is a duplicate, False: it is not a duplicate
     """
     rideRequests = RideRequestGenericDao().getByUser(userId)
     eventDocId = eventRef.id
@@ -26,7 +28,17 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     return False
 
 @transactional
-def _addRideRequest(transaction, rideRequest, location, userId):
+def addRideRequest(transaction, rideRequest, location, userId):
+    """ Description:
+        This method saves rideRequest and update user's eventSchedule
+
+    :param transaction:
+    :param rideRequest:
+    :param location:
+    :param userId:
+    :return:
+    """
+
     # Set the firestoreRef of the rideRequest
     RideRequestGenericDao().create(rideRequest)
     # Saves RideRequest Object to Firestore
