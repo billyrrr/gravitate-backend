@@ -97,7 +97,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 ### Setup Repository
 
-####mac/Linux
+#### mac/Linux
 
 1. Accept invitation to private repository /billyrrr/gravitate-backend 
 
@@ -115,7 +115,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 6. Press Enter. Your clone will be created. 
 
-####Windows
+#### Windows
 
 1. Accept invitation to private repository /billyrrr/gravitate-backend 
 

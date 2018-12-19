@@ -34,6 +34,8 @@ def addRideRequest(transaction, rideRequest, location, userId):
     """ Description:
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
+        Note that transaction.commit() is not required after this method is called if this method is decorated
+            by @transactional.
 
     :param transaction:
     :param rideRequest:
@@ -78,6 +80,21 @@ def createTarget(form: AirportRideRequestCreationForm):
 
 def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200,
                                     offsetHighAbsSec: int = 18000):
+    """
+        This method creates a target with flightLocal Time. The offsets represents how much in advance
+            is user's preferred earliest and latest.
+
+        Limitations:
+            this method won't work if any datetime string represents a time when
+                daylight saving ends (November 4 1:00AM-2:00AM).
+                since anytime in between corresponds to more than one possible UTC time.
+
+    :param flightLocalTime:
+    :param toEvent:
+    :param offsetLowAbsSec: The offset with lower absolute value.
+    :param offsetHighAbsSec: The offset with higher absolute value.
+    :return:
+    """
     assert offsetLowAbsSec >= 0
     assert offsetHighAbsSec >= 0
     # Check that offsetLow represents a greater than or equal to interval than offsetHigh
@@ -109,11 +126,17 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
 
 
 def getAirportLocation(airportCode) -> AirportLocation:
+    """ Description:
+        This method returns an airportLocation with airportCode.
+
+    :param airportCode:
+    :return:
+    """
     return LocationGenericDao().findByAirportCode(airportCode)
 
 
 def findEvent(flight_local_time) -> DocumentReference:
-    """ Description
+    """ Description:
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
 
