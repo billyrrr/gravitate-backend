@@ -1,20 +1,12 @@
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
 from google.cloud.firestore import DocumentReference, Transaction, transactional
-from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao
+from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, UserDao
+from . import eventscheduleutils
 
 import iso8601
 import datetime as dt
 import pytz
-
-
-def saveRideRequest(transaction, rideRequest):
-        if (rideRequest.getFirestoreRef()):
-            if not transaction:
-                raise Exception('transaction is not provided. ')
-            RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
-        else:
-            RideRequestGenericDao().create(rideRequest)
 
 def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     """
@@ -24,14 +16,29 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     rideRequests = RideRequestGenericDao().getByUser(userId)
     eventDocId = eventRef.id
 
-	# Loop through each rideRequest
+    # Loop through each rideRequest
     for rideRequest in rideRequests:
         currentEventDocId = rideRequest.eventRef.id
         if currentEventDocId == eventDocId:
             return True
-    
+
     # No rideRequest has the same eventRef as the rideRequest that is about to be added
     return False
+
+@transactional
+def _addRideRequest(transaction, rideRequest, location, userId):
+    # Set the firestoreRef of the rideRequest
+    RideRequestGenericDao().create(rideRequest)
+    # Saves RideRequest Object to Firestore
+    RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
+    # [START] Update the user's eventSchedule
+    userRef = UserDao().getRef(userId)
+    # Build the eventSchedule for user
+    eventSchedule = eventscheduleutils.buildEventSchedule(
+        rideRequest, location)
+    UserDao.addToEventScheduleWithTransaction(
+        transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
+    # [END] Update the user's eventSchedule{
 
 
 def createTarget(form: AirportRideRequestCreationForm):
@@ -69,7 +76,7 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     # Get earliest and latest datetime
     earliest: dt.datetime = flightLocalTime - offsetEarlierAbs
     latest: dt.datetime = flightLocalTime - offsetLaterAbs
-    
+
     earliestTimestamp = int(earliest.timestamp())
     latestTimestamp = int(latest.timestamp())
 
@@ -102,7 +109,7 @@ def mockFindLocation(form: AirportRideRequestCreationForm) -> str:
     return '/locations/testairportlocationid1'
 
 def findEvent(flight_local_time) -> DocumentReference:
-    
+
     """ Description
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event

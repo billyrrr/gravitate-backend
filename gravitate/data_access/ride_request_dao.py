@@ -115,6 +115,9 @@ class RideRequestGenericDao:
 
     def create(self, rideRequest: Type[RideRequest]) -> Type[RideRequest]:
         """ Description
+            This method sets the firestoreRef of the rideRequest.
+            Note that rideRequest is not saved to database with this method.
+
         :type self:
         :param self:
         :type rideRequest:Type[RideRequest]:
