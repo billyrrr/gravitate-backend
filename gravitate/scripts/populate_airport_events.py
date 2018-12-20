@@ -76,7 +76,7 @@ class SampleLaxEventBuilder(LaxEventBuilder):
         self.endTimestamp = 1545119999
 
 
-class SpecifiedRangeLaxEventBuild(LaxEventBuilder):
+class SpecifiedRangeLaxEventBuilder(LaxEventBuilder):
 
     def __init__(self, startTimestamp, endTimestamp):
         self.buildBasicInfo()
@@ -144,7 +144,7 @@ def generateEvents(timestampTupleList: list):
     eventList = list()
 
     for startTimestamp, endTimestamp in timestampTupleList:
-        newEvent = SpecifiedRangeLaxEventBuild(startTimestamp, endTimestamp)
+        newEvent = SpecifiedRangeLaxEventBuilder(startTimestamp, endTimestamp)
         eventList.append(newEvent)
 
     return eventList
