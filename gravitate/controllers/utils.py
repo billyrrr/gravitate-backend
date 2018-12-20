@@ -55,7 +55,7 @@ def addRideRequest(transaction, rideRequest, location, userId):
         rideRequest, location)
     UserDao.addToEventScheduleWithTransaction(
         transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
-    # [END] Update the user's eventSchedule{
+    # [END] Update the user's eventSchedule
 
 
 def createTarget(form: AirportRideRequestCreationForm):
