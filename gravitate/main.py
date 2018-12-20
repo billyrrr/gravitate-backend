@@ -53,7 +53,6 @@ parser = reqparse.RequestParser()
 auth_verify_id_token = None
 if TESTING:
     def mock_auth_verify_id_token(*args, **kwargs):
-        print(kwargs)
         return {
             "uid": "testuid1"
         }
@@ -126,24 +125,6 @@ class EndpointTestService(Resource):
         print(uid)
 
         # Verify Firebase auth.
-
-        id_token = request.headers['Authorization'].split(' ').pop()
-
-        # Auth code provided by Google
-        try:
-            # Verify the ID token while checking if the token is revoked by
-            # passing check_revoked=True.
-
-            decoded_token = auth.verify_id_token(id_token, check_revoked=True, app=Context.firebaseApp)
-            # Token is valid and not revoked.
-            uid = decoded_token['uid']
-        except auth.AuthError as exc:
-            if exc.code == 'ID_TOKEN_REVOKED':
-                # Token revoked, inform the user to reauthenticate or signOut().
-                return 'Unauthorized. Token revoked, inform the user to reauthenticate or signOut(). ', 401
-            else:
-                # Token is invalid
-                return 'Invalid token', 402
 
         data = request.get_json()
         responseDict = {'uid': uid, 'request_data': data}
