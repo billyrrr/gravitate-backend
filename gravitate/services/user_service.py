@@ -50,6 +50,7 @@ class UserService(Resource):
         """
         raise NotImplementedError
 
+
     def post(self, uid):
         """ Description
             This method handles POST request to handle use case "create ride request"
