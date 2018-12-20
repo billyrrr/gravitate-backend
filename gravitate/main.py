@@ -108,11 +108,11 @@ def authenticate(func):
     return wrapper
 
 
-class Resource(Resource):
+class AuthenticatedResource(Resource):
     method_decorators = [authenticate]  # applies to all inherited resources
 
 
-class EndpointTestService(Resource):
+class EndpointTestService(AuthenticatedResource):
     def post(self, uid):
         """
         * This method handles a POST/PUT call to './authTest' to test that front end Auth
