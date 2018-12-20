@@ -1,3 +1,7 @@
+"""
+Reference: flask-restful docs
+"""
+
 from functools import wraps, partial
 
 from firebase_admin import auth

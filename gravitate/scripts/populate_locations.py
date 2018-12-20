@@ -45,6 +45,22 @@ class LaxBuilder(LocationBuilder):
         self.locationDict['address'] = '1 World Way, Los Angeles, CA 90045'
 
 
+class SanBuilder(LocationBuilder):
+    """ Description
+    This class builds a SAN (San Diego International Airport) location.
+    """
+    def buildAirportInfo(self):
+        self.locationDict['airportCode'] = 'SAN'
+        self.locationDict['locationCategory'] = 'airport'
+
+    def buildBasicInfo(self):
+        self.locationDict['coordinates'] = {
+            'latitude': 32.733909,
+            'longitude': -117.193304
+        }
+        self.locationDict['address'] = '3225 N Harbor Dr, San Diego, CA 92101'
+
+
 def buildLaxTerminal(terminal: str):
     otherParams = {
         'terminal': terminal
@@ -64,9 +80,19 @@ def doWorkDeprecated():
         airportLocation.setFirestoreRef(ref)
         print(vars(airportLocation))
 
-def doWork():
+def doWork(airportCode='LAX'):
 
-    airportLocation = LaxBuilder().exportToLocation()
-    ref = LocationGenericDao().create(airportLocation)
-    airportLocation.setFirestoreRef(ref)
+    airportLocation = None
+
+    if airportCode == 'LAX':
+        airportLocation = LaxBuilder().exportToLocation()
+        ref = LocationGenericDao().create(airportLocation)
+        airportLocation.setFirestoreRef(ref)
+    elif airportCode == 'SAN':
+        airportLocation = SanBuilder().exportToLocation()
+        ref = LocationGenericDao().create(airportLocation)
+        airportLocation.setFirestoreRef(ref)
+    else:
+        raise ValueError
+
     print(vars(airportLocation))
