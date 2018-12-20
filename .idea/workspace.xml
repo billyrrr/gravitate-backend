@@ -10,6 +10,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/models/ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/ride_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_main.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,15 +76,15 @@
         <counts>
           <entry key="dummy" value="40" />
           <entry key="md" value="14" />
-          <entry key="py" value="16586" />
-          <entry key="txt" value="1693" />
+          <entry key="py" value="16668" />
+          <entry key="txt" value="1725" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="14" />
-          <entry key="PLAIN_TEXT" value="1733" />
-          <entry key="Python" value="16586" />
+          <entry key="PLAIN_TEXT" value="1765" />
+          <entry key="Python" value="16668" />
         </counts>
       </usages-collector>
     </session>
@@ -132,32 +133,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="115" column="24" lean-forward="true" selection-start-line="115" selection-start-column="24" selection-end-line="115" selection-end-column="24" />
+            <state relative-caret-position="325">
+              <caret line="126" lean-forward="true" selection-start-line="126" selection-end-line="126" />
               <folding>
                 <element signature="e#723#737#0" expanded="true" />
-                <marker date="1545308612886" expanded="true" signature="2118:2698" ph="..." />
+                <marker date="1545308715385" expanded="true" signature="2115:2695" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="154" column="96" selection-start-line="154" selection-start-column="96" selection-end-line="154" selection-end-column="96" />
+            <state relative-caret-position="372">
+              <caret line="157" column="19" lean-forward="true" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1545305466946" expanded="true" signature="2884:2890" ph="..." />
-                <marker date="1545305466946" expanded="true" signature="2906:2915" ph="..." />
-                <marker date="1545305466946" expanded="true" signature="3652:3658" ph="..." />
-                <marker date="1545305466946" expanded="true" signature="4123:4126" ph="..." />
-                <marker date="1545305466946" expanded="true" signature="8887:9871" ph="..." />
-                <marker date="1545305466946" expanded="true" signature="14998:15172" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="2884:2890" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="2906:2915" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="3652:3658" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="4123:4126" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="8915:9899" ph="..." />
+                <marker date="1545308826800" expanded="true" signature="15026:15200" ph="..." />
               </folding>
             </state>
           </provider>
@@ -296,8 +297,8 @@
         <option value="$PROJECT_DIR$/gravitate/data_access/event_schedule_dao.py" />
         <option value="$PROJECT_DIR$/gravitate/models/orbit.py" />
         <option value="$PROJECT_DIR$/gravitate/models/event_schedule.py" />
-        <option value="$PROJECT_DIR$/test/test_main.py" />
         <option value="$PROJECT_DIR$/gravitate/main.py" />
+        <option value="$PROJECT_DIR$/test/test_main.py" />
       </list>
     </option>
   </component>
@@ -576,13 +577,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00006" summary="updated pycharm workspace.xml">
-      <created>1544861576545</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1544861576545</updated>
     </task>
     <task id="LOCAL-00007" summary="changed import structure">
       <created>1544867756087</created>
@@ -920,22 +914,17 @@
       <option name="project" value="LOCAL" />
       <updated>1545306103434</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Rename as AuthenticatedResource">
+      <created>1545308626583</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1545308626583</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 33m 46s.xml">
-      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 33m 56s.xml">
-      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 34m 30s.xml">
-      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 34m 50s.xml">
-      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 35m 41s.xml">
       <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
     </history-entry>
@@ -952,6 +941,18 @@
       <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
     </history-entry>
     <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 19h 41m 12s.xml">
+      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 20h 23m 56s.xml">
+      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 20h 25m 40s.xml">
+      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 20h 26m 33s.xml">
+      <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_MainAppTestCase_testEndpointTest - 2018.12.20 at 20h 26m 55s.xml">
       <configuration name="pytest for test_main.MainAppTestCase.testEndpointTest" configurationId="tests" />
     </history-entry>
   </component>
@@ -1042,7 +1043,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix typo" />
     <MESSAGE value="remove unused modules" />
     <MESSAGE value="fix transactional logic" />
     <MESSAGE value="added todo" />
@@ -1067,7 +1067,8 @@
     <MESSAGE value="Add testing authentication decorator" />
     <MESSAGE value="Fix unintended change" />
     <MESSAGE value="Switch to decorator for auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch to decorator for auth" />
+    <MESSAGE value="Rename as AuthenticatedResource" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename as AuthenticatedResource" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1420,29 +1421,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_main.py">
+    <entry file="file://$PROJECT_DIR$/gravitate/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="154" column="96" selection-start-line="154" selection-start-column="96" selection-end-line="154" selection-end-column="96" />
+        <state relative-caret-position="325">
+          <caret line="126" lean-forward="true" selection-start-line="126" selection-end-line="126" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1545305466946" expanded="true" signature="2884:2890" ph="..." />
-            <marker date="1545305466946" expanded="true" signature="2906:2915" ph="..." />
-            <marker date="1545305466946" expanded="true" signature="3652:3658" ph="..." />
-            <marker date="1545305466946" expanded="true" signature="4123:4126" ph="..." />
-            <marker date="1545305466946" expanded="true" signature="8887:9871" ph="..." />
-            <marker date="1545305466946" expanded="true" signature="14998:15172" ph="..." />
+            <element signature="e#723#737#0" expanded="true" />
+            <marker date="1545308715385" expanded="true" signature="2115:2695" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/main.py">
+    <entry file="file://$PROJECT_DIR$/test/test_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="115" column="24" lean-forward="true" selection-start-line="115" selection-start-column="24" selection-end-line="115" selection-end-column="24" />
+        <state relative-caret-position="372">
+          <caret line="157" column="19" lean-forward="true" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
           <folding>
-            <element signature="e#723#737#0" expanded="true" />
-            <marker date="1545308612886" expanded="true" signature="2118:2698" ph="..." />
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1545308826800" expanded="true" signature="2884:2890" ph="..." />
+            <marker date="1545308826800" expanded="true" signature="2906:2915" ph="..." />
+            <marker date="1545308826800" expanded="true" signature="3652:3658" ph="..." />
+            <marker date="1545308826800" expanded="true" signature="4123:4126" ph="..." />
+            <marker date="1545308826800" expanded="true" signature="8915:9899" ph="..." />
+            <marker date="1545308826800" expanded="true" signature="15026:15200" ph="..." />
           </folding>
         </state>
       </provider>

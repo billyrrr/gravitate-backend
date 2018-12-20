@@ -152,7 +152,8 @@ class MainAppTestCase(TestCase):
         self.assertEqual(r.status_code, 200)
 
     def testEndpointTest(self):
-        r = self.app.post(path='/endpointTest', json={'key1': 'val1a'}, headers=getAuthHeaders())
+        postJson = {'key1': 'val1a'}
+        r = self.app.post(path='/endpointTest', json=postJson, headers=getAuthHeaders())
         assert r.status_code == 200
         self.fail()
 

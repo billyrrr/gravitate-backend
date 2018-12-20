@@ -61,7 +61,7 @@ else:
     auth_verify_id_token = auth.verify_id_token
 
 
-def default_gravitate_authentication(id_token) -> (object, int):
+def default_gravitate_authentication(id_token) -> (str, int):
     try:
         # Verify the ID token while checking if the token is revoked by
         # passing check_revoked=True.
@@ -122,7 +122,6 @@ class EndpointTestService(AuthenticatedResource):
         Otherwise, an exception is thrown
 
         """
-        print(uid)
 
         # Verify Firebase auth.
 
