@@ -4,7 +4,7 @@ from flask import request, jsonify
 
 from gravitate.services.ride_request_service import fillRideRequestDictWithForm
 
-from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, saveRideRequest, \
+from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
     hasDuplicateEvent
 
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm, RideRequestCreationValidateForm
@@ -151,9 +151,10 @@ class MainAppTestCase(TestCase):
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
-    # def testContextTest(self):
-    #     r = self.app.post(path='/contextTest', json={'key1': 'val1a'})
-    #     assert r.status_code == 200
+    def testEndpointTest(self):
+        r = self.app.post(path='/endpointTest', json={'key1': 'val1a'}, headers=getAuthHeaders())
+        assert r.status_code == 200
+        self.fail()
 
     def testGetUser(self):
         path = '/users/' + userDict["uid"]

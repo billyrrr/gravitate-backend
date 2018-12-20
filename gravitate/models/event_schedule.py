@@ -8,7 +8,7 @@ from .firestore_object import FirestoreObject
 
 # AirportEventSchedule class
 
-class EventSchedule(FirestoreObject, metaclass=ABCMeta, metaclass=ABCMeta, metaclass=ABCMeta):
+class EventSchedule(FirestoreObject, metaclass=ABCMeta):
     def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
                  pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
         """ Description

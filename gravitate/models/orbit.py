@@ -2,7 +2,7 @@
 """
 
 # orbit class
-from models.firestore_object import FirestoreObject
+from gravitate.models.firestore_object import FirestoreObject
 
 
 class Orbit(FirestoreObject):
