@@ -6,6 +6,7 @@ Reference: https://github.com/faif/python-patterns/blob/master/creational/builde
 from gravitate.models import Location, AirportLocation
 from gravitate.data_access import LocationGenericDao
 
+
 class LocationBuilder(object):
 
     def __init__(self):
