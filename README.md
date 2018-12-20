@@ -34,6 +34,23 @@ Tyler Song - Algorithm Specialist
 Leon Wu - Lead Software Developer
 
 
+## Run the server 
+The back end should be deployed in Google App Engine Flexible Environment Python. Make sure 
+that App Engine and Firebase are in the same project before proceeding to step 1. 
+### Step 1: Firebase Service Account Json
+Retrieve Firebase Service Account JSON from Firebase, and set the JSON path and App name
+correctly in config.py 
+### Step 2: Run Main Scripts
+Run main_scripts.py in command lines to generate LAX location and events in the connected 
+Firebase Firestore. 
+### Step 3: Deploy to Google App Engine
+1. Set local project-id to the correct Firebase project with 
+```gcloud config set project gravitate-dev ``` (exchange gravitate-dev to desired project-id). 
+
+2. Navigate to directory with app.yaml, run 
+```gcloud beta app deploy``` (beta keyword is optional here, we want to add it for better 
+debug support in the google cloud console)
+
 
 ## Force Matching for Development Purposes
 

@@ -186,7 +186,7 @@ class SocialEventRideRequest(RideRequest):
                  requestCompletion):
         """ Description
             Initializes a SocialEventRideRequest Object
-            Note that this class should not be initialzed directly.
+            Note that this class should not be initialized directly.
             Use RideRequest.fromDict to create a SocialEventRideRequest.
 
         :type self:
