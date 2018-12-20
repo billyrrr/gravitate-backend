@@ -53,8 +53,19 @@ class EventBuilder(Event):
         """
         raise NotImplementedError
 
+class SpecifiedRangeEventBuilder(EventBuilder):
 
-class LaxEventBuilder(EventBuilder):
+    def __init__(self, startTimestamp, endTimestamp):
+        self.buildBasicInfo()
+        self.buildLists()
+        self.buildTimeRange(startTimestamp, endTimestamp)
+        self.buildExtraInfo()
+
+    def buildTimeRange(self, startTimestamp, endTimestamp):
+        self.startTimestamp = startTimestamp
+        self.endTimestamp = endTimestamp
+
+class LaxEventBuilder(SpecifiedRangeEventBuilder):
 
     def buildBasicInfo(self):
         self.eventCategory = "airport"
@@ -74,19 +85,6 @@ class SampleLaxEventBuilder(LaxEventBuilder):
     def buildTimeRange(self):
         self.startTimestamp = 1545033600
         self.endTimestamp = 1545119999
-
-
-class SpecifiedRangeLaxEventBuilder(LaxEventBuilder):
-
-    def __init__(self, startTimestamp, endTimestamp):
-        self.buildBasicInfo()
-        self.buildLists()
-        self.buildTimeRange(startTimestamp, endTimestamp)
-        self.buildExtraInfo()
-
-    def buildTimeRange(self, startTimestamp, endTimestamp):
-        self.startTimestamp = startTimestamp
-        self.endTimestamp = endTimestamp
 
 
 def generateStartDatetime(startDayDatetimeStr: str) -> datetime.datetime:
@@ -144,7 +142,7 @@ def generateEvents(timestampTupleList: list):
     eventList = list()
 
     for startTimestamp, endTimestamp in timestampTupleList:
-        newEvent = SpecifiedRangeLaxEventBuilder(startTimestamp, endTimestamp)
+        newEvent = LaxEventBuilder(startTimestamp, endTimestamp)
         eventList.append(newEvent)
 
     return eventList
