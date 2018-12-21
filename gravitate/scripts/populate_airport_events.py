@@ -80,6 +80,21 @@ class LaxEventBuilder(SpecifiedRangeEventBuilder):
         self.pricing = 100
 
 
+class UcsbEventBuilder(SpecifiedRangeEventBuilder):
+
+    def buildBasicInfo(self):
+        self.eventCategory = "campus"
+        self.eventLocation = "UCSB"
+        self.isClosed = False
+        self.locationRef = LocationGenericDao().findByCampusCode("UCSB").getFirestoreRef()
+
+    def buildLists(self):
+        self.participants = []
+
+    def buildExtraInfo(self):
+        self.pricing = 100
+
+
 class SampleLaxEventBuilder(LaxEventBuilder):
 
     def buildTimeRange(self):
