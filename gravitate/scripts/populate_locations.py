@@ -71,6 +71,13 @@ def buildLaxTerminal(terminal: str):
     airportLocation = terminal.exportToLocation()
     return airportLocation
 
+
+def doWorkUc(campusCode="UCSB"):
+    campusLocation = Location.fromCode("UCSB", "campus")
+    ref = LocationGenericDao().create(campusLocation)
+    campusLocation.setFirestoreRef(ref)
+
+
 def doWorkDeprecated():
 
     terminals = ['1', '2', '3', '4', '5', '6', '7', '8', 'B']

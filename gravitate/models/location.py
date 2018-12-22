@@ -27,7 +27,7 @@ class Location(FirestoreObject):
             campusName = locationDict['campusName']
             coordinates = locationDict['coordinates']
             address = locationDict['address']
-            return AirportLocation(coordinates, address, campusName, campusCode)
+            return UcLocation(coordinates, address, campusName, campusCode)
         else:
             raise NotImplementedError(
                 'Unsupported locationCategory ' + str(locationCategory) + '. ')
@@ -48,6 +48,7 @@ class Location(FirestoreObject):
 
 campusCodeTable = {
     "UCSB": {
+        "locationCategory": "campus",
         "coordinates": {
             "latitude": 34.414132,
             "longitude": -119.848868
