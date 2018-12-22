@@ -100,7 +100,7 @@ class EventDao:
         # Pre-condition: There is only one airport event, and no social events on the same day
         eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp)\
             .order_by("startTimestamp", direction=Query.DESCENDING)\
-            .limit(1).get()
+            .get()
 
         count = 0
 

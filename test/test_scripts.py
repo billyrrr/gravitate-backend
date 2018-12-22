@@ -1,7 +1,8 @@
 import unittest
 
 from gravitate.scripts.populate_locations import buildLaxTerminal
-from gravitate.scripts.populate_airport_events import SampleLaxEventBuilder, generateStartDatetime, generateTimestamps, generateAirportEvents
+from gravitate.scripts.populate_airport_events import SampleLaxEventBuilder, generateStartDatetime, generateTimestamps, \
+    generateAirportEvents
 
 
 class TestBuildLaxTerminal(unittest.TestCase):
@@ -38,7 +39,7 @@ class TestBuildLaxEvent(unittest.TestCase):
     def testGenerateTimestamps(self):
         startDatetime = generateStartDatetime("2018-12-17T08:00:00.000")
         timestampTupleList = generateTimestamps(startDatetime, 2)
-        expectedValue = [ [1545033600.0, 1545119999.0], [1545120000.0, 1545206399.0] ]
+        expectedValue = [[1545033600.0, 1545119999.0], [1545120000.0, 1545206399.0]]
         count = 0
         for startTimestamp, endTimestamp in timestampTupleList:
             self.assertEqual(startTimestamp, expectedValue[count][0])
@@ -53,5 +54,6 @@ class TestGenerateEvent(unittest.TestCase):
         timestampTupleList = generateTimestamps(startDatetime, 2)
         eventList = generateAirportEvents(timestampTupleList)
         expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
-                             'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100, 'isClosed': False}
+                                 'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100,
+                                 'isClosed': False}
         self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].toDict())
