@@ -146,7 +146,7 @@ def findEvent(flight_local_time) -> DocumentReference:
     # Parse the flightLocalTime of the ride request form, then query database 
     eventTime = _as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
-    event = EventDao().findByTimestamp(eventTime)
+    event = EventDao().findByTimestamp(eventTime, "airport")
 
     return event.getFirestoreRef()
 
