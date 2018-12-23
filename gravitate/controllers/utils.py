@@ -144,11 +144,19 @@ def findEvent(flight_local_time) -> DocumentReference:
     """
 
     # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = iso8601.parse_date(flight_local_time, default_timezone=None).timestamp()
+    eventTime = _as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
-    event = EventDao().findByTimestamp(eventTime)
+    event = EventDao().findByTimestamp(eventTime, "airport")
 
     return event.getFirestoreRef()
+
+
+def _as_timestamp(flight_local_time):
+    tz = pytz.timezone("America/Los_Angeles")
+    local_datetime = iso8601.parse_date(flight_local_time, default_timezone=None)
+    utc_datetime = tz.localize(local_datetime)  # TODO: test DST
+    # utc_datetime = iso8601.parse_date(flight_local_time, default_timezone=None).astimezone(tz)
+    return utc_datetime.timestamp()
 
 
 def setDisabilities(form: AirportRideRequestCreationForm, rideRequestDict):

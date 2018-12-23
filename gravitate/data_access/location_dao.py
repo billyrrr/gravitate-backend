@@ -5,7 +5,7 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
     transactional, Query
 import google
 from typing import Type
-from gravitate.models import Location, AirportLocation
+from gravitate.models import Location, AirportLocation, UcLocation
 import warnings
 from gravitate import config
 from functools import partial
@@ -80,6 +80,25 @@ class LocationGenericDao:
 
         result = airportLocations.pop()
         return result
+
+    def findByCampusCode(self, campusCode) -> UcLocation:
+        query: Query = self.locationCollectionRef.where(
+            'campusCode', '==', campusCode)
+        airportLocations = list()
+        docs = query.get()
+        for doc in docs:
+            airportLocationDict = doc.to_dict()
+            airportLocation = AirportLocation.fromDict(airportLocationDict)
+            airportLocation.setFirestoreRef(doc.reference)
+            airportLocations.append(airportLocation)
+        if len(airportLocations) != 1:
+            warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
+                airportLocations))
+            return None
+
+        result = airportLocations.pop()
+        return result
+
 
     def query(self, airportCode, terminal) -> Location:
         # TODO implement

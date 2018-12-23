@@ -12,11 +12,12 @@ from gravitate.models import AirportRideRequest, RideRequest, AirportLocation
 import gravitate.services.utils as service_utils
 
 import warnings
+from flask_restful import reqparse
 
 db = Context.db
 
 
-class RideRequestService(Resource):
+class AirportRideRequestService(Resource):
 
     @service_utils.authenticate
     def post(self, uid):
@@ -65,6 +66,66 @@ class RideRequestService(Resource):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
                 "originalForm": requestForm
+            }
+            return errorResponseDict, 400
+        # Ends validation tasks
+
+        # Starts database operations to (save rideRequest and update user's eventSchedule)
+        transaction = db.transaction()
+
+        # Transactional business logic for adding rideRequest
+        utils.addRideRequest(transaction, rideRequest, location, userId)
+
+        # Save write result
+        transaction.commit()
+
+        # rideRequest Response
+        responseDict = {"firestoreRef": rideRequest.getFirestoreRef().id}
+
+        return responseDict, 200
+
+class AirportRideRequestServiceReqParse(Resource):
+    """
+    This class replaces web-form with reqparse for form validation.
+    """
+
+    @service_utils.authenticate
+    def post(self, uid):
+
+        userId = uid
+
+        # Parse field values from url path
+        parser = reqparse.RequestParser()
+        parser.add_argument('flightNumber', type=str, help='Flight Number')
+        parser.add_argument('airportCode', type=str, help='Airport Code')
+        parser.add_argument('flightLocalTime', type=str, help='Flight Local Time ISO8601')
+        parser.add_argument('pickupAddress', type=str, help='Pickup Address')
+        parser.add_argument('toEvent', type=bool, help='whether the ride is heading to the event')
+        parser.add_argument('driverStatus', type=bool,
+                            help="whether the user want to be considered as a driver for the event")
+        args = parser.parse_args()
+        form = AirportRideRequestCreationForm.from_dict(args)
+
+        rideRequestDict, location = fillRideRequestDictWithForm(
+            form, userId)
+        if not location:
+            errorResponseDict = {
+                "error": "invalid airport code and datetime combination or error finding airport location in backend",
+                "originalReq": request.args.to_dict()
+            }
+            return errorResponseDict, 400
+
+        # Create RideRequest Object
+        rideRequest: AirportRideRequest = RideRequest.fromDict(
+            rideRequestDict)
+
+        # Do Validation Tasks before saving rideRequest
+        # 1. Check that rideRequest is not submitted by the same user
+        #       for the flight on the same day already
+        if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
+            errorResponseDict = {
+                "error": "Ride request on the same day (for the same event) already exists",
+                "originalForm": request.args.to_dict()
             }
             return errorResponseDict, 400
         # Ends validation tasks

@@ -19,14 +19,26 @@ class Location(FirestoreObject):
         if locationCategory == 'airport':
             airportCode = locationDict['airportCode']
             return AirportLocation(coordinates, address, airportCode)
-        elif locationCategory == 'event':
+        elif locationCategory == 'social':
             raise NotImplementedError(
-                'Event location is not yet implemented.')
+                'Social event location is not yet implemented.')
+        elif locationCategory == 'campus':
+            campusCode = locationDict['campusCode']
+            campusName = locationDict['campusName']
+            coordinates = locationDict['coordinates']
+            address = locationDict['address']
+            return UcLocation(coordinates, address, campusName, campusCode)
         else:
             raise NotImplementedError(
                 'Unsupported locationCategory ' + str(locationCategory) + '. ')
                 
         return Location(coordinates, address)
+
+    @staticmethod
+    def fromCode(code, locationCategory="campus"):
+        if locationCategory == "campus" and code in campusCodeTable.keys():
+            return Location.fromDict(campusCodeTable[code])
+        raise NotImplementedError
     
     def toDict(self) -> dict:
         return {
@@ -34,27 +46,39 @@ class Location(FirestoreObject):
             'address': self.address
         }
 
-
-cityCode = {
-    'Los Angeles': None
+campusCodeTable = {
+    "UCSB": {
+        "locationCategory": "campus",
+        "coordinates": {
+            "latitude": 34.414132,
+            "longitude": -119.848868
+        },
+        "address": "C572+HC Isla Vista, California",
+        "campusName": "University of California, Santa Barbara",
+        "campusCode": "UCSB"
+    }
 }
 
 
-class CityLocation(Location):
-    """ Description
-        This class represents a city location.
-    """
-    def __init__(self, coordinates, cityCode):
-        pass
-
-
-class UcLocation(CityLocation):
+class UcLocation(Location):
     """ Description
         This class represents a UC campus in another city.
     """
 
-    def __init__(self, coordinate, campusCode):
-        pass
+    def __init__(self, coordinates, address, campusName, campusCode):
+        super().__init__(coordinates, address)
+        self.locationCategory = 'campus'
+        self.campusName = campusName
+        self.campusCode = campusCode
+
+    def toDict(self):
+        return {
+            'locationCategory': self.locationCategory,
+            'coordinates': self.coordinates,
+            'address': self.address,
+            'campusName': self.campusName,
+            'campusCode': self.campusCode,
+        }
 
 
 class AirportLocation(Location):
@@ -67,8 +91,8 @@ class AirportLocation(Location):
 
     """
 
-    def __init__(self, coordinate, address, airportCode):
-        super().__init__(coordinate, address)
+    def __init__(self, coordinates, address, airportCode):
+        super().__init__(coordinates, address)
         self.locationCategory = 'airport'
         self.airportCode = airportCode
 

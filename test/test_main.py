@@ -25,6 +25,7 @@ from unittest import TestCase
 import json
 from test import config
 import warnings
+from urllib.parse import urlencode
 
 db = config.Context.db
 firebaseApp = config.Context.firebaseApp
@@ -74,6 +75,16 @@ class RefactorTempTest(TestCase):
         r = self.app.post(path='/devForceMatch',
                           json=json.dumps({"operationMode": "all"})
                           )
+
+    def testCreateRideRequestTemp(self):
+        form = FormDictFactory().create(returnDict=True)
+        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+        form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
+        r = self.app.post(path='/testReqParse?'+urlencode(form),
+                          headers=getAuthHeaders()
+                          )
+        self.fail()
+
 
     def testDoNothing(self):
         self.fail()

@@ -27,7 +27,7 @@ from firebase_admin import credentials, auth
 # New project-id: gravitate-dev certs
 # Note that "../gravitate/*" works by trial and error so that the path works both at "/gravitate" and "/test"
 # TODO improve import
-FIREBASE_CERTIFICATE_JSON_PATH = "../gravitate/gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
+FIREBASE_CERTIFICATE_JSON_PATH = "gravitate/gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
 APP_NAME = "gravitate-dev"
 
 class Context():

@@ -59,14 +59,14 @@ class EventDao:
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(eventRef.id))
 
-    def findByTimestamp(self, timestamp):
+    def findByTimestamp(self, timestamp, category):
         """ Description
             This method finds an airportEvent that "overlaps" with the timestamp provided.
 
         :param timestamp: the point-in-time that the eventSchedule has to include.
         :return:
         """
-        eventId = self.__locateAirportEvent(timestamp)
+        eventId = self._locateEvent(timestamp, category)
         eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
         event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
         return event
@@ -87,33 +87,30 @@ class EventDao:
         _, eventRef = self.eventCollectionRef.add(event.toDict())
         return eventRef
 
-    def __locateAirportEvent(self, timestamp):
+    def _locateEvent(self, timestamp, category="airport"):
         """ Description
             Uses the timestamp of an event to find the event reference
 
             Note that no more than event should be found with the timestamp, see preconditions.
             Please check that Firestore has only events of category airport and only one airport event per day.
-        """
 
+        :param timestamp:
+        :param category:
+        :return: the first eventId that matches the category and timestamp, or None
+        """
         # Grab all of the events in the db
         # Queries for the valid range of events
         # Pre-condition: There is only one airport event, and no social events on the same day
         eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp)\
             .order_by("startTimestamp", direction=Query.DESCENDING)\
-            .limit(1).get()
-
-        count = 0
+            .get()
 
         # Loop through each rideRequest
         for doc in eventDocs:
 
-            count += 1
-            if count == 2:
-                warnings.warn()
-
             eventDict = doc.to_dict()
-            if (eventDict["eventCategory"] == "socialEvent"):
-                warnings.warn("The algorithm does not accomodate for social events yet!")
+            if (eventDict["eventCategory"] != category):
+                continue  # Do not consider events of a different category
 
             event = Event.fromDict(eventDict)
             eventId = doc.id
@@ -122,6 +119,8 @@ class EventDao:
                 return eventId
 
         return None
+
+
 
 
     def get(self, eventRef: DocumentReference):
