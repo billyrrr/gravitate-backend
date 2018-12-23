@@ -47,7 +47,7 @@ def addRideRequest(transaction, rideRequest, location, userId):
     # Set the firestoreRef of the rideRequest
     RideRequestGenericDao().create(rideRequest)
     # Saves RideRequest Object to Firestore
-    RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
+    RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.get_firestore_ref())
     # [START] Update the user's eventSchedule
     userRef = UserDao().getRef(userId)
     # Build the eventSchedule for user
@@ -74,7 +74,7 @@ def createTarget(form: AirportRideRequestCreationForm):
     earliestTimestamp = int(earliestDatetime.timestamp())
     latestTimestamp = int(latestDatetime.timestamp())
     # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
-    target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.create_airport_event_target(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
 
 
@@ -119,7 +119,7 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     assert earliestTimestamp <= latestTimestamp  # Check that "earliest" occurs earliest than "latest"
     assert earliestTimestamp != latestTimestamp  # Check that "earliest" is not the same as latest
 
-    target = Target.createAirportEventTarget(toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.create_airport_event_target(toEvent, earliestTimestamp, latestTimestamp)
 
     return target
 
@@ -148,7 +148,7 @@ def findEvent(flight_local_time) -> DocumentReference:
     # eventReference = EventDao().locateAirportEvent(eventTime)
     event = EventDao().findByTimestamp(eventTime, "airport")
 
-    return event.getFirestoreRef()
+    return event.get_firestore_ref()
 
 
 def _as_timestamp(flight_local_time):

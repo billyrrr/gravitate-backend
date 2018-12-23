@@ -49,8 +49,8 @@ class LocationGenericDao:
             snapshot: DocumentSnapshot = locationRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            location = Location.fromDict(snapshotDict)
-            location.setFirestoreRef(locationRef)
+            location = Location.from_dict(snapshotDict)
+            location.set_firestore_ref(locationRef)
             return location
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(locationRef.id))
@@ -58,8 +58,8 @@ class LocationGenericDao:
     def get(self, locationRef: DocumentReference):
         snapshot: DocumentSnapshot = locationRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        location = Location.fromDict(snapshotDict)
-        location.setFirestoreRef(locationRef)
+        location = Location.from_dict(snapshotDict)
+        location.set_firestore_ref(locationRef)
         return location
         return locationResult
 
@@ -70,8 +70,8 @@ class LocationGenericDao:
         docs = query.get()
         for doc in docs:
             airportLocationDict = doc.to_dict()
-            airportLocation = AirportLocation.fromDict(airportLocationDict)
-            airportLocation.setFirestoreRef(doc.reference)
+            airportLocation = AirportLocation.from_dict(airportLocationDict)
+            airportLocation.set_firestore_ref(doc.reference)
             airportLocations.append(airportLocation)
         if len(airportLocations) != 1:
             warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
@@ -88,8 +88,8 @@ class LocationGenericDao:
         docs = query.get()
         for doc in docs:
             airportLocationDict = doc.to_dict()
-            airportLocation = AirportLocation.fromDict(airportLocationDict)
-            airportLocation.setFirestoreRef(doc.reference)
+            airportLocation = AirportLocation.from_dict(airportLocationDict)
+            airportLocation.set_firestore_ref(doc.reference)
             airportLocations.append(airportLocation)
         if len(airportLocations) != 1:
             warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
@@ -116,7 +116,7 @@ class LocationGenericDao:
 
         :rtype:
         """
-        _, locationRef = self.locationCollectionRef.add(location.toDict())
+        _, locationRef = self.locationCollectionRef.add(location.to_dict())
         return locationRef
 
     def delete(self, singleLocationRef: DocumentReference):
@@ -168,7 +168,7 @@ class LocationGenericDao:
 
         :rtype:
         """
-        locationDict = newLocation.toDict()
+        locationDict = newLocation.to_dict()
         return transaction.set(locationRef, locationDict)
 
     @staticmethod
@@ -192,5 +192,5 @@ class LocationGenericDao:
 
         :rtype:
         """
-        locationDict = newLocation.toDict()
+        locationDict = newLocation.to_dict()
         return transaction.set(locationRef, locationDict)

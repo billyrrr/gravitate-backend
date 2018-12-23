@@ -110,7 +110,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             transaction = db.transaction()
             RideRequestGenericDao().setWithTransaction(
                 transaction, rideRequest, firestoreRef)
-            rideRequest.setFirestoreRef(firestoreRef)
+            rideRequest.set_firestore_ref(firestoreRef)
             rideRequests.append(rideRequest)
 
         self.rideRequests = rideRequests
@@ -158,17 +158,17 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             "status": 1
         }
 
-        orbit = Orbit.fromDict(orbitDict)
+        orbit = Orbit.from_dict(orbitDict)
 
         rideRequestDict = test.factory.model.getMockRideRequest(
             useDocumentRef=True, returnDict=True, returnSubset=False)
 
-        rideRequest = RideRequest.fromDict(rideRequestDict)
-        rideRequest.setFirestoreRef(db.document(
+        rideRequest = RideRequest.from_dict(rideRequestDict)
+        rideRequest.set_firestore_ref(db.document(
             'rideRequests', 'testriderequestid1'))
 
         placeInOrbit(rideRequest, orbit)
-        userTicketPairsDict = orbit.toDict()["userTicketPairs"]
+        userTicketPairsDict = orbit.to_dict()["userTicketPairs"]
         expectedDict = {
             'SQytDq13q00e0N3H4agR': {
                 "rideRequestRef": db.document('rideRequests', 'testriderequestid1'),

@@ -14,7 +14,7 @@ class EventScheduleBuilder():
     def buildRideRequest(self, airportRideRequest: AirportRideRequest):
         self.eventSchedule.pickupAddress = airportRideRequest.pickupAddress
         self.eventSchedule.flightTime = airportRideRequest.flightLocalTime
-        self.eventSchedule.rideRequestRef = airportRideRequest.getFirestoreRef()
+        self.eventSchedule.rideRequestRef = airportRideRequest.get_firestore_ref()
 
         try:
             # Use destTime for sorting
@@ -32,7 +32,7 @@ class EventScheduleBuilder():
             self.eventSchedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
         else:
             self.eventSchedule.destName = location.airportCode
-            self.eventSchedule.locationRef = location.getFirestoreRef()
+            self.eventSchedule.locationRef = location.get_firestore_ref()
     
     def buildOrbit(self, pending = True, orbit: Orbit = None):
         if pending:
@@ -44,7 +44,7 @@ class EventScheduleBuilder():
             self.eventSchedule.memberProfilePhotoUrls = []
             # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
             self.eventSchedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
-            self.eventSchedule.orbitRef = orbit.getFirestoreRef()
+            self.eventSchedule.orbitRef = orbit.get_firestore_ref()
 
     def export(self) -> AirportEventSchedule:
         return self.eventSchedule

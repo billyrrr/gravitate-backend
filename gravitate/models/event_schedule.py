@@ -36,7 +36,7 @@ class EventSchedule(FirestoreObject, metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def fromDict(eventScheduleDict):
+    def from_dict(eventScheduleDict):
         """ Description
         This function creates an AirportEventSchedule
 
@@ -46,11 +46,11 @@ class EventSchedule(FirestoreObject, metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def fromDictAndReference(eventScheduleDict, eventScheduleRef):
+    def from_dict_and_reference(eventScheduleDict, eventScheduleRef):
         pass
 
     @abstractmethod
-    def toDict(self):
+    def to_dict(self):
         pass
 
 
@@ -61,7 +61,7 @@ class AirportEventSchedule(EventSchedule):
     """
 
     @staticmethod
-    def fromDict(eventScheduleDict):
+    def from_dict(eventScheduleDict):
         """ Description
         This function creates an AirportEventSchedule
     
@@ -80,12 +80,12 @@ class AirportEventSchedule(EventSchedule):
                                     rideRequestRef, orbitRef, locationRef)
 
     @staticmethod
-    def fromDictAndReference(eventScheduleDict, eventScheduleRef):
-        eventSchedule = AirportEventSchedule.fromDict(eventScheduleDict)
-        eventSchedule.setFirestoreRef(eventScheduleRef)
+    def from_dict_and_reference(eventScheduleDict, eventScheduleRef):
+        eventSchedule = AirportEventSchedule.from_dict(eventScheduleDict)
+        eventSchedule.set_firestore_ref(eventScheduleRef)
         return eventSchedule
 
-    def toDict(self):
+    def to_dict(self):
         eventScheduleDict = {
             'destName': self.destName,
             'destTime': self.destTime,

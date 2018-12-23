@@ -28,7 +28,7 @@ class User(FirestoreObject):
 			self.photo_url = photo_url
 			self.pickupAddress = pickupAddress
 
-	def toDict(self):
+	def to_dict(self):
 		userDict = {
 			"uid": self.uid,
 			"membership": self.membership,
@@ -39,7 +39,7 @@ class User(FirestoreObject):
 		}
 		return userDict
 
-	def toFirestoreDict(self):
+	def to_firestore_dict(self):
 		userFirestoreDict = {
 			'membership': self.membership,
 			'pickupAddress': self.pickupAddress
@@ -47,7 +47,7 @@ class User(FirestoreObject):
 		return userFirestoreDict
 
 	@staticmethod
-	def fromDict(userDict):
+	def from_dict(userDict):
 		""" Description
 			This function creates User. 
 				(User Factory)

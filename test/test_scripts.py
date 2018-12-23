@@ -28,7 +28,7 @@ class TestBuildLaxEvent(unittest.TestCase):
 
     def testBuildLaxSampleEvent(self):
         laxSampleEvent = SampleLaxEventBuilder()
-        laxSampleEventDict = laxSampleEvent.toDict()
+        laxSampleEventDict = laxSampleEvent.to_dict()
         self.assertDictContainsSubset(sampleLaxEventDict, laxSampleEventDict)
         self.assertIn('locationRef', laxSampleEventDict.keys(), "Dict contains locationRef as key")
 
@@ -57,4 +57,4 @@ class TestGenerateEvent(unittest.TestCase):
         expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
                                  'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100,
                                  'isClosed': False}
-        self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].toDict())
+        self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].to_dict())

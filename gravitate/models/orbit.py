@@ -12,9 +12,9 @@ class Orbit(FirestoreObject):
     """
 
     @staticmethod
-    def fromDictAndReference(orbitDict, orbitRef):
-        orbit = Orbit.fromDict(orbitDict)
-        orbit.setFirestoreRef(orbitRef)
+    def from_dict_and_reference(orbitDict, orbitRef):
+        orbit = Orbit.from_dict(orbitDict)
+        orbit.set_firestore_ref(orbitRef)
         return orbit
 
     def __init__(self, orbitCategory, eventRef, userTicketPairs, chatroomRef, costEstimate, status):
@@ -39,7 +39,7 @@ class Orbit(FirestoreObject):
         self.status = status
 
     @staticmethod
-    def fromDict(orbitDict):
+    def from_dict(orbitDict):
         """ Description
         This function creates an Orbit
     
@@ -53,7 +53,7 @@ class Orbit(FirestoreObject):
         status = orbitDict['status']
         return Orbit(orbitCategory, eventRef, userTicketPairs, chatroomRef, costEstimate, status)
 
-    def toDict(self):
+    def to_dict(self):
         orbitDict = {
             'orbitCategory': self.orbitCategory,
             'eventRef': self.eventRef,

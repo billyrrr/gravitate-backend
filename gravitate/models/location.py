@@ -12,7 +12,7 @@ class Location(FirestoreObject):
         self.address = address
 
     @staticmethod
-    def fromDict(locationDict):
+    def from_dict(locationDict):
         coordinates = locationDict['coordinates']
         address = locationDict['address']
         locationCategory = locationDict['locationCategory']
@@ -35,12 +35,12 @@ class Location(FirestoreObject):
         return Location(coordinates, address)
 
     @staticmethod
-    def fromCode(code, locationCategory="campus"):
+    def from_code(code, locationCategory="campus"):
         if locationCategory == "campus" and code in campusCodeTable.keys():
-            return Location.fromDict(campusCodeTable[code])
+            return Location.from_dict(campusCodeTable[code])
         raise NotImplementedError
     
-    def toDict(self) -> dict:
+    def to_dict(self) -> dict:
         return {
             'coordinates': self.coordinates,
             'address': self.address
@@ -71,7 +71,7 @@ class UcLocation(Location):
         self.campusName = campusName
         self.campusCode = campusCode
 
-    def toDict(self):
+    def to_dict(self):
         return {
             'locationCategory': self.locationCategory,
             'coordinates': self.coordinates,
@@ -96,10 +96,10 @@ class AirportLocation(Location):
         self.locationCategory = 'airport'
         self.airportCode = airportCode
 
-    def isLax(self):
+    def is_lax(self):
         return self.airportCode == 'LAX'
 
-    def toDict(self):
+    def to_dict(self):
         return {
             'locationCategory': self.locationCategory, 
             'coordinates': self.coordinates,

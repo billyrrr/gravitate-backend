@@ -7,7 +7,7 @@ class Target(FirestoreObject):
         self.eventCategory = eventCategory
 
     @staticmethod
-    def fromDict(targetDict: dict):
+    def from_dict(targetDict: dict):
         toEvent = targetDict['toEvent']
         if (toEvent):
             return ToEventTarget(targetDict['eventCategory'], targetDict['arriveAtEventTime'])
@@ -15,7 +15,7 @@ class Target(FirestoreObject):
             return FromEventTarget(targetDict['eventCategory'], targetDict['leaveEventTime'])
 
     @staticmethod
-    def createAirportEventTarget(toEvent: bool, earliest:int, latest:int):
+    def create_airport_event_target(toEvent: bool, earliest:int, latest:int):
         if (toEvent):
             return ToEventTarget('airportRide', {
                 'earliest': earliest,
@@ -28,7 +28,7 @@ class Target(FirestoreObject):
                 'latest': latest
             })
 
-    def toDict(self):
+    def to_dict(self):
         """ Description
             This function returns a dictionary of the target. 
 
@@ -51,8 +51,8 @@ class ToEventTarget(Target):
         super().__init__(eventCategory)
         self.arriveAtEventTime = arriveAtEventTime
 
-    def toDict(self):
-        targetDict = super().toDict()
+    def to_dict(self):
+        targetDict = super().to_dict()
         targetDict[u'toEvent'] = True
         targetDict[u'arriveAtEventTime'] = self.arriveAtEventTime
         return targetDict
@@ -64,8 +64,8 @@ class FromEventTarget(Target):
         super().__init__(eventCategory)
         self.leaveEventTime = leaveEventTime
 
-    def toDict(self):
-        targetDict = super().toDict()
+    def to_dict(self):
+        targetDict = super().to_dict()
         targetDict[u'toEvent'] = False
         targetDict[u'leaveEventTime'] = self.leaveEventTime
         return targetDict

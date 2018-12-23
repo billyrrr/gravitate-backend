@@ -34,7 +34,7 @@ class OrbitForceMatchService(Resource):
             responseDict = {"error": "Not specified operation mode."}
             return responseDict, 400
 
-        # return rideRequest.getFirestoreRef().id, 200
+        # return rideRequest.get_firestore_ref().id, 200
         return responseDict, 200
 
 

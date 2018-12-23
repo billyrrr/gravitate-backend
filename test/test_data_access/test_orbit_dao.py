@@ -13,12 +13,12 @@ class OrbitDaoTest(unittest.TestCase):
         self.db = config.Context.db
 
     def testCreateOrbit(self):
-        newOrbit = Orbit.fromDict(orbitDict)
+        newOrbit = Orbit.from_dict(orbitDict)
         orbitRef = data_access.OrbitDao().create(newOrbit)
         self.assertIsNotNone(orbitRef)
 
     def testMockCreateOrbit(self):
         m = Mock()
-        newOrbit = Orbit.fromDict(orbitDict)
+        newOrbit = Orbit.from_dict(orbitDict)
         orbitRef = m(newOrbit)
         print(m.call_args_list)

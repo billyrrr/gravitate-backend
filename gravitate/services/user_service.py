@@ -23,7 +23,7 @@ class UserService(Resource):
         # Check Firestore to see if UID Already Exists
         if (UserDao().userIdExists(uid)):
             user = UserDao().getUserById(uid)
-            userDict = user.toDict()
+            userDict = user.to_dict()
             return userDict, 200
         else:
             errorResponseDict = {
@@ -72,11 +72,11 @@ class UserService(Resource):
             userDict = fillUserDictWithForm(form)
 
             # Create User Object
-            newUser: User = User.fromDict(userDict)
+            newUser: User = User.from_dict(userDict)
 
             userId = newUser.uid
             userRef = UserDao().userCollectionRef.document(document_id=userId)
-            newUser.setFirestoreRef(userRef)
+            newUser.set_firestore_ref(userRef)
             transaction = db.transaction()
 
             # Saves User Object to Firestore
@@ -84,7 +84,7 @@ class UserService(Resource):
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 
-            responseDict = {"userId": newUser.getFirestoreRef().id}
+            responseDict = {"userId": newUser.get_firestore_ref().id}
 
             return responseDict, 200
         else:

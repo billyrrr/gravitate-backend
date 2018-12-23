@@ -10,16 +10,16 @@ from test.factory import eventDict
 class EventDAOTest(unittest.TestCase):
 
 	def setUp(self):
-		self.event = Event.fromDict(eventDict)
+		self.event = Event.from_dict(eventDict)
 
 	def testCreate(self):
 		eventRef: firestore.DocumentReference = EventDao().create(self.event)
-		self.event.setFirestoreRef(eventRef)
+		self.event.set_firestore_ref(eventRef)
 		print("eventRef = {}".format(eventRef))
 
 	# def testDelete(self):
 	# 	eventRef: firestore.DocumentReference = EventDao().create(self.event)
-	# 	self.event.setFirestoreRef(eventRef)
+	# 	self.event.set_firestore_ref(eventRef)
 	# 	self.delete(eventRef)
 	# 	# self.assertEquals()
 
@@ -27,4 +27,4 @@ class EventDAOTest(unittest.TestCase):
 		event: Event = EventDao().findByTimestamp(1546504400, category="airport")
 		# self.assertNotEqual(None, eventRef)
 		# self.assertEquals(event.startTimestamp, 1546502400)
-		# self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.getFirestoreRef().id)
+		# self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.get_firestore_ref().id)

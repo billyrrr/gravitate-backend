@@ -53,8 +53,8 @@ class EventDao:
             snapshot: DocumentSnapshot = eventRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            event = Event.fromDict(snapshotDict)
-            event.setFirestoreRef(eventRef)
+            event = Event.from_dict(snapshotDict)
+            event.set_firestore_ref(eventRef)
             return event
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(eventRef.id))
@@ -68,7 +68,7 @@ class EventDao:
         """
         eventId = self._locateEvent(timestamp, category)
         eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
-        event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
+        event = Event.from_dict_and_reference(eventRef.get().to_dict(), eventRef)
         return event
 
     def delete(self, eventRef: DocumentReference):
@@ -84,7 +84,7 @@ class EventDao:
         return eventRef.delete()
 
     def create(self, event: Event) -> DocumentReference:
-        _, eventRef = self.eventCollectionRef.add(event.toDict())
+        _, eventRef = self.eventCollectionRef.add(event.to_dict())
         return eventRef
 
     def _locateEvent(self, timestamp, category="airport"):
@@ -112,7 +112,7 @@ class EventDao:
             if (eventDict["eventCategory"] != category):
                 continue  # Do not consider events of a different category
 
-            event = Event.fromDict(eventDict)
+            event = Event.from_dict(eventDict)
             eventId = doc.id
             # Check if the event is in a valid time frame
             if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
@@ -126,7 +126,7 @@ class EventDao:
     def get(self, eventRef: DocumentReference):
         snapshot: DocumentSnapshot = eventRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        event = Event.fromDict(snapshotDict)
-        event.setFirestoreRef(eventRef)
+        event = Event.from_dict(snapshotDict)
+        event.set_firestore_ref(eventRef)
         return event
         return eventResult

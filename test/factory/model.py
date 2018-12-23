@@ -66,8 +66,8 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
     if returnDict:
         return rideRequestDict
     else:
-        rideRequest = models.RideRequest.fromDict(rideRequestDict)
-        rideRequest.setFirestoreRef(firestoreRef)
+        rideRequest = models.RideRequest.from_dict(rideRequestDict)
+        rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
 
 
@@ -143,6 +143,6 @@ def getLocationDict():
 
 def getLocation():
     locationDict = getLocationDict()
-    location = models.Location.fromDict(locationDict)
-    location.setFirestoreRef(mock1["locationRef"])
+    location = models.Location.from_dict(locationDict)
+    location.set_firestore_ref(mock1["locationRef"])
     return location

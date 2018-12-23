@@ -30,8 +30,8 @@ class OrbitDao:
             snapshot: DocumentSnapshot = orbitRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            orbit = Orbit.fromDict(snapshotDict)
-            orbit.setFirestoreRef(orbitRef)
+            orbit = Orbit.from_dict(snapshotDict)
+            orbit.set_firestore_ref(orbitRef)
             return orbit
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(orbitRef.id))
@@ -46,8 +46,8 @@ class OrbitDao:
     def create(self, orbit: Orbit)->DocumentReference:
         """ Description
         """
-        print(orbit.toDict())
-        _, orbitRef = self.orbitCollectionRef.add(orbit.toDict())
+        print(orbit.to_dict())
+        _, orbitRef = self.orbitCollectionRef.add(orbit.to_dict())
         return orbitRef
 
     def delete(self, singleOrbitRef: DocumentReference):
@@ -64,4 +64,4 @@ class OrbitDao:
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
         """
-        return transaction.set(orbitRef, newOrbit.toDict())
+        return transaction.set(orbitRef, newOrbit.to_dict())

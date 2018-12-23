@@ -17,13 +17,13 @@ class Event(FirestoreObject):
     """
 
     @staticmethod
-    def fromDictAndReference(eventDict, eventRef):
-        event = Event.fromDict(eventDict)
-        event.setFirestoreRef(eventRef)
+    def from_dict_and_reference(eventDict, eventRef):
+        event = Event.from_dict(eventDict)
+        event.set_firestore_ref(eventRef)
         return event
 
     @staticmethod
-    def fromDict(eventDict):
+    def from_dict(eventDict):
         """ Description
             This function creates an event
 
@@ -41,7 +41,7 @@ class Event(FirestoreObject):
         return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRef,
                      isClosed)
 
-    def toDict(self):
+    def to_dict(self):
         eventDict = {
             'eventCategory': self.eventCategory,
             'participants': self.participants,
@@ -54,7 +54,7 @@ class Event(FirestoreObject):
         }
         return eventDict
 
-    def setAsActive(self):
+    def set_as_active(self):
         """ Definition
             Sets the boolean isClosed to False
 
@@ -62,7 +62,7 @@ class Event(FirestoreObject):
         """
         self.isClosed = False
 
-    def setAsPassed(self):
+    def set_as_passed(self):
         """ Definition
             Sets the boolean isClosed to True
 

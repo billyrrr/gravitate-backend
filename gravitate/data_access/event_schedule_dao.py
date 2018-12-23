@@ -73,7 +73,7 @@ class EventScheduleGenericDao:
             snapshot: DocumentSnapshot = eventScheduleRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            eventSchedule = AirportEventSchedule.fromDict(snapshotDict)
+            eventSchedule = AirportEventSchedule.from_dict(snapshotDict)
             return eventSchedule
 
         except google.cloud.exceptions.NotFound:
@@ -101,7 +101,7 @@ class EventScheduleGenericDao:
         """
         # TODO fix
         # TODO fix by changing to .add()
-        _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.toDict())
+        _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.to_dict())
         return eventScheduleRef
 
     def delete(self, singleEventScheduleRef: DocumentReference):

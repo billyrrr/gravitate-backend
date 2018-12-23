@@ -32,7 +32,7 @@ def getAuthInfo(uid: string, userDict: dict):
 class UserDao:
     """Description
        Database access object for user
-        # TODO delete object.setFirestoreRef()
+        # TODO delete object.set_firestore_ref()
     """
 
     def __init__(self):
@@ -75,8 +75,8 @@ class UserDao:
             snapshot = userRef.get(transaction=transaction)
             userDict = snapshot.to_dict()
             getAuthInfo(userRef.id, userDict)
-            user = User.fromDict(userDict)
-            user.setFirestoreRef(userRef)
+            user = User.from_dict(userDict)
+            user.set_firestore_ref(userRef)
             return user
         else:
             return None
@@ -106,7 +106,7 @@ class UserDao:
         return user
 
     def createUser(self, user: User):
-        userRef = self.userCollectionRef.add(user.toDict())
+        userRef = self.userCollectionRef.add(user.to_dict())
         return userRef
 
     def updateFcmToken(self, userId: str, token):
@@ -127,7 +127,7 @@ class UserDao:
     @staticmethod
     @transactional
     def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
-        transaction.set(userRef, newUser.toFirestoreDict())
+        transaction.set(userRef, newUser.to_firestore_dict())
 
     @staticmethod
     def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference = None,
@@ -171,7 +171,7 @@ class UserDao:
 
         # Get the DocumentReference for the AirportEventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
-        eventScheduleDict = eventSchedule.toDict()
+        eventScheduleDict = eventSchedule.to_dict()
         transaction.set(eventScheduleRef, eventScheduleDict,
                         merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 

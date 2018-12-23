@@ -10,7 +10,7 @@ db = config.Context.db
 class LocationDAOTest(unittest.TestCase):
 
     # def setUp(self):
-    #     self.user = User.fromDict(userDict)
+    #     self.user = User.from_dict(userDict)
 
     def testFindByAirportCode(self):
         result = LocationGenericDao().findByAirportCode('LAX')

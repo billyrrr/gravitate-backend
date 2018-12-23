@@ -34,10 +34,10 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
     # rideRequestDao = RideRequestGenericDao()
     # rideRequest = rideRequestDao.getWithTransaction(
     #     transaction, rideRequestRef)
-    # rideRequest.setFirestoreRef(rideRequestRef)
+    # rideRequest.set_firestore_ref(rideRequestRef)
     # orbitDao = OrbitDao()
     # orbit = orbitDao.getWithTransaction(transaction, orbitRef)
-    # orbit.setFirestoreRef(orbitRef)
+    # orbit.set_firestore_ref(orbitRef)
 
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
@@ -51,9 +51,9 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
     # Update database copy of rideRequest and orbit
 
     RideRequestGenericDao.setWithTransaction(
-        transaction, rideRequest, rideRequest.getFirestoreRef())
+        transaction, rideRequest, rideRequest.get_firestore_ref())
     OrbitDao.setWithTransaction(
-        transaction, orbit, orbit.getFirestoreRef())
+        transaction, orbit, orbit.get_firestore_ref())
 
     return True
 
@@ -71,9 +71,9 @@ def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbi
 
     try:
         RideRequestGenericDao().setWithTransaction(
-            transaction, rideRequest, rideRequest.getFirestoreRef())
+            transaction, rideRequest, rideRequest.get_firestore_ref())
         OrbitDao.setWithTransaction(
-            transaction, orbit, orbit.getFirestoreRef())
+            transaction, orbit, orbit.get_firestore_ref())
     except Exception as e:
         print(e)
         return False
@@ -103,7 +103,7 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
     # update eventSchedule
     userId = rideRequest.userId
     userRef = UserDao().getRef(userId)
-    eventRef = event.getFirestoreRef()
+    eventRef = event.get_firestore_ref()
 
     eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
         rideRequest=rideRequest, location=location, orbit=orbit)
@@ -130,13 +130,13 @@ def placeInOrbit(r: RideRequest, o: Orbit):
     r.requestCompletion = True
 
     # RideRequest's orbitId no longer null and references Orbit's oId
-    r.orbitRef = o.getFirestoreRef()
+    r.orbitRef = o.get_firestore_ref()
 
     userId = r.userId
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
-        "rideRequestRef": r.getFirestoreRef(),
+        "rideRequestRef": r.get_firestore_ref(),
         "userWillDrive": r.driverStatus,
         "hasCheckedIn": False,
         "inChat": False,

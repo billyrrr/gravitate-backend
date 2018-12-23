@@ -68,9 +68,9 @@ class RideRequestGenericDao:
         rideRequests = list()
         for doc in docs:
             rideRequestDict = doc.to_dict()
-            rideRequest = RideRequest.fromDict(rideRequestDict)
+            rideRequest = RideRequest.from_dict(rideRequestDict)
             rideRequestRef: DocumentReference = doc.reference
-            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequest.set_firestore_ref(rideRequestRef)
             rideRequests.append(rideRequest)
         return rideRequests
 
@@ -99,8 +99,8 @@ class RideRequestGenericDao:
             snapshot: DocumentSnapshot = rideRequestRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            rideRequest = RideRequest.fromDict(snapshotDict)
-            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequest = RideRequest.from_dict(snapshotDict)
+            rideRequest.set_firestore_ref(rideRequestRef)
             return rideRequest
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
@@ -108,8 +108,8 @@ class RideRequestGenericDao:
     def get(self, rideRequestRef: DocumentReference):
         snapshot: DocumentSnapshot = rideRequestRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        rideRequest = RideRequest.fromDict(snapshotDict)
-        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequest = RideRequest.from_dict(snapshotDict)
+        rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
 
@@ -130,7 +130,7 @@ class RideRequestGenericDao:
         rideRequestId = utils.randomId()
         rideRequestRef = RideRequestGenericDao(
         ).rideRequestCollectionRef.document(document_id=rideRequestId)
-        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
     def delete(self, singleRideRequestRef: DocumentReference):
@@ -172,7 +172,7 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        return transaction.set(rideRequestRef, newRideRequest.toDict())
+        return transaction.set(rideRequestRef, newRideRequest.to_dict())
 
     # 
     # @staticmethod

@@ -24,7 +24,7 @@ class LocationBuilder(object):
         self.locationDict.update(otherDict)
 
     def exportToLocation(self):
-        return Location.fromDict(self.locationDict)
+        return Location.from_dict(self.locationDict)
 
 class LaxBuilder(LocationBuilder):
     """
@@ -73,9 +73,9 @@ def buildLaxTerminal(terminal: str):
 
 
 def doWorkUc(campusCode="UCSB"):
-    campusLocation = Location.fromCode("UCSB", "campus")
+    campusLocation = Location.from_code("UCSB", "campus")
     ref = LocationGenericDao().create(campusLocation)
-    campusLocation.setFirestoreRef(ref)
+    campusLocation.set_firestore_ref(ref)
 
 
 def doWorkDeprecated():
@@ -85,7 +85,7 @@ def doWorkDeprecated():
     for terminal in terminals:
         airportLocation = buildLaxTerminal(terminal)
         ref = LocationGenericDao().create(airportLocation)
-        airportLocation.setFirestoreRef(ref)
+        airportLocation.set_firestore_ref(ref)
         print(vars(airportLocation))
 
 def doWork(airportCode='LAX'):
@@ -95,11 +95,11 @@ def doWork(airportCode='LAX'):
     if airportCode == 'LAX':
         airportLocation = LaxBuilder().exportToLocation()
         ref = LocationGenericDao().create(airportLocation)
-        airportLocation.setFirestoreRef(ref)
+        airportLocation.set_firestore_ref(ref)
     elif airportCode == 'SAN':
         airportLocation = SanBuilder().exportToLocation()
         ref = LocationGenericDao().create(airportLocation)
-        airportLocation.setFirestoreRef(ref)
+        airportLocation.set_firestore_ref(ref)
     else:
         raise ValueError
 
