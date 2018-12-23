@@ -9,20 +9,20 @@ db = config.Context.db
 class EventModelTest(unittest.TestCase):
 
 	def testEventFactory(self):
-		event = Event.fromDict(eventDict)
+		event = Event.from_dict(eventDict)
 		# Assert that event converts to the same dict that generated the event
-		self.assertDictEqual(event.toDict(), eventDict)
+		self.assertDictEqual(event.to_dict(), eventDict)
 
 # class EventCollectionTest(unittest.TestCase):
 
 #     def setUp(self):
-#         self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
+#         self.user = UserDao().get_user_by_id('SQytDq13q00e0N3H4agR')
 
 #     def testAddToEventSchedule(self):
 #         transaction = db.transaction()
-#         UserDao().addToEventScheduleWithTransaction(
+#         UserDao().add_to_event_schedule_with_transaction(
 #             transaction,
-#             userRef=self.user.getFirestoreRef(),
+#             userRef=self.user.get_firestore_ref(),
 #             eventRef='/events/testeventid1',
 #             toEventRideRequestRef='/rideRequests/testriderequestid1')
 

@@ -24,7 +24,7 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
-    def getIds(self, incomplete=False):
+    def get_ids(self, incomplete=False):
         """ Description
             Get the ids of RideRequests
         
@@ -50,7 +50,7 @@ class RideRequestGenericDao:
             docIds.append(docId)
         return docIds
 
-    def getByUser(self, userId):
+    def get_by_user(self, userId):
         """ Description
             Returns a list of rideRequests by a user
 
@@ -68,15 +68,15 @@ class RideRequestGenericDao:
         rideRequests = list()
         for doc in docs:
             rideRequestDict = doc.to_dict()
-            rideRequest = RideRequest.fromDict(rideRequestDict)
+            rideRequest = RideRequest.from_dict(rideRequestDict)
             rideRequestRef: DocumentReference = doc.reference
-            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequest.set_firestore_ref(rideRequestRef)
             rideRequests.append(rideRequest)
         return rideRequests
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
+    def get_with_transaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -99,8 +99,8 @@ class RideRequestGenericDao:
             snapshot: DocumentSnapshot = rideRequestRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            rideRequest = RideRequest.fromDict(snapshotDict)
-            rideRequest.setFirestoreRef(rideRequestRef)
+            rideRequest = RideRequest.from_dict(snapshotDict)
+            rideRequest.set_firestore_ref(rideRequestRef)
             return rideRequest
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(rideRequestRef.id))
@@ -108,8 +108,8 @@ class RideRequestGenericDao:
     def get(self, rideRequestRef: DocumentReference):
         snapshot: DocumentSnapshot = rideRequestRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        rideRequest = RideRequest.fromDict(snapshotDict)
-        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequest = RideRequest.from_dict(snapshotDict)
+        rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
 
@@ -127,10 +127,10 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        rideRequestId = utils.randomId()
+        rideRequestId = utils.random_id()
         rideRequestRef = RideRequestGenericDao(
         ).rideRequestCollectionRef.document(document_id=rideRequestId)
-        rideRequest.setFirestoreRef(rideRequestRef)
+        rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
     def delete(self, singleRideRequestRef: DocumentReference):
@@ -151,8 +151,8 @@ class RideRequestGenericDao:
 
     @staticmethod
     # @transactional
-    def setWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest],
-                           rideRequestRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newRideRequest: Type[RideRequest],
+                             rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 
@@ -172,11 +172,11 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        return transaction.set(rideRequestRef, newRideRequest.toDict())
+        return transaction.set(rideRequestRef, newRideRequest.to_dict())
 
     # 
     # @staticmethod
-    # def setWithTransaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
+    # def set_with_transaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
     #     """ Description
     #         Note that a read action must have taken place before anything is set with that transaction. 
 

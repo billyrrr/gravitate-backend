@@ -16,7 +16,7 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
     :param eventRef:
     :return: True: it is a duplicate, False: it is not a duplicate
     """
-    rideRequests = RideRequestGenericDao().getByUser(userId)
+    rideRequests = RideRequestGenericDao().get_by_user(userId)
     eventDocId = eventRef.id
 
     # Loop through each rideRequest
@@ -47,13 +47,13 @@ def addRideRequest(transaction, rideRequest, location, userId):
     # Set the firestoreRef of the rideRequest
     RideRequestGenericDao().create(rideRequest)
     # Saves RideRequest Object to Firestore
-    RideRequestGenericDao().setWithTransaction(transaction, rideRequest, rideRequest.getFirestoreRef())
+    RideRequestGenericDao().set_with_transaction(transaction, rideRequest, rideRequest.get_firestore_ref())
     # [START] Update the user's eventSchedule
-    userRef = UserDao().getRef(userId)
+    userRef = UserDao().get_ref(userId)
     # Build the eventSchedule for user
     eventSchedule = eventscheduleutils.buildEventSchedule(
         rideRequest, location)
-    UserDao.addToEventScheduleWithTransaction(
+    UserDao.add_to_event_schedule_with_transaction(
         transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
     # [END] Update the user's eventSchedule
 
@@ -74,7 +74,7 @@ def createTarget(form: AirportRideRequestCreationForm):
     earliestTimestamp = int(earliestDatetime.timestamp())
     latestTimestamp = int(latestDatetime.timestamp())
     # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
-    target = Target.createAirportEventTarget(form.toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.create_airport_event_target(form.toEvent, earliestTimestamp, latestTimestamp)
     return target
 
 
@@ -119,7 +119,7 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     assert earliestTimestamp <= latestTimestamp  # Check that "earliest" occurs earliest than "latest"
     assert earliestTimestamp != latestTimestamp  # Check that "earliest" is not the same as latest
 
-    target = Target.createAirportEventTarget(toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.create_airport_event_target(toEvent, earliestTimestamp, latestTimestamp)
 
     return target
 
@@ -131,7 +131,7 @@ def getAirportLocation(airportCode) -> AirportLocation:
     :param airportCode:
     :return:
     """
-    return LocationGenericDao().findByAirportCode(airportCode)
+    return LocationGenericDao().find_by_airport_code(airportCode)
 
 
 def findEvent(flight_local_time) -> DocumentReference:
@@ -146,9 +146,9 @@ def findEvent(flight_local_time) -> DocumentReference:
     # Parse the flightLocalTime of the ride request form, then query database 
     eventTime = _as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
-    event = EventDao().findByTimestamp(eventTime, "airport")
+    event = EventDao().find_by_timestamp(eventTime, "airport")
 
-    return event.getFirestoreRef()
+    return event.get_firestore_ref()
 
 
 def _as_timestamp(flight_local_time):

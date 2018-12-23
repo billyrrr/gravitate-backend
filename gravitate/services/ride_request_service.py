@@ -56,7 +56,7 @@ class AirportRideRequestService(Resource):
             return errorResponseDict, 400
 
         # Create RideRequest Object
-        rideRequest: AirportRideRequest = RideRequest.fromDict(
+        rideRequest: AirportRideRequest = RideRequest.from_dict(
             rideRequestDict)
 
         # Do Validation Tasks before saving rideRequest
@@ -80,7 +80,7 @@ class AirportRideRequestService(Resource):
         transaction.commit()
 
         # rideRequest Response
-        responseDict = {"firestoreRef": rideRequest.getFirestoreRef().id}
+        responseDict = {"firestoreRef": rideRequest.get_firestore_ref().id}
 
         return responseDict, 200
 
@@ -116,7 +116,7 @@ class AirportRideRequestServiceReqParse(Resource):
             return errorResponseDict, 400
 
         # Create RideRequest Object
-        rideRequest: AirportRideRequest = RideRequest.fromDict(
+        rideRequest: AirportRideRequest = RideRequest.from_dict(
             rideRequestDict)
 
         # Do Validation Tasks before saving rideRequest
@@ -140,14 +140,14 @@ class AirportRideRequestServiceReqParse(Resource):
         transaction.commit()
 
         # rideRequest Response
-        responseDict = {"firestoreRef": rideRequest.getFirestoreRef().id}
+        responseDict = {"firestoreRef": rideRequest.get_firestore_ref().id}
 
         return responseDict, 200
 
 
 def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
     """ Description
-        This method fills a rideRequest dict that can later be used to call RideRequest().fromDict method.
+        This method fills a rideRequest dict that can later be used to call RideRequest().from_dict method.
 
     :param form:
     :param userId:
@@ -180,7 +180,7 @@ def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) ->
 
     # Set Target
     target = utils.createTargetWithFlightLocalTime(form.flightLocalTime, form.toEvent)
-    rideRequestDict['target'] = target.toDict()
+    rideRequestDict['target'] = target.to_dict()
 
     # Set EventRef
     eventRef = utils.findEvent(form.flightLocalTime)
@@ -188,7 +188,7 @@ def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) ->
     location = utils.getAirportLocation(form.airportCode)
     if not location:
         return rideRequestDict, None
-    airportLocationRef = location.getFirestoreRef()
+    airportLocationRef = location.get_firestore_ref()
     rideRequestDict['airportLocation'] = airportLocationRef
 
     return rideRequestDict, location
@@ -212,7 +212,7 @@ class DeleteMatchService(Resource):
             responseDict = {"error": str(e)}
             return responseDict, 500
 
-        # return rideRequest.getFirestoreRef().id, 200
+        # return rideRequest.get_firestore_ref().id, 200
         return responseDict, 200
 
 
@@ -228,7 +228,7 @@ class DeleteRideRequestService(Resource):
                 type(requestJson) != dict) else requestJson
 
         userId = requestForm.get("userId", None)
-        userRef = UserDao().getRef(userId)
+        userRef = UserDao().get_ref(userId)
         eventId = requestForm.get("eventId", None)
         rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
@@ -246,7 +246,7 @@ class DeleteRideRequestService(Resource):
 
         try:
             # Delete in User's Event Schedule
-            EventScheduleGenericDao(userRef=userRef).deleteEventById(eventId)
+            EventScheduleGenericDao(userRef=userRef).delete_event_by_id(eventId)
             # Delete in RideRequest Collection
             RideRequestGenericDao().delete(rideRequestRef)
             responseDict = {"success": True}

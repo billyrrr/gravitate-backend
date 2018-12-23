@@ -17,14 +17,14 @@ class RideRequestTest(unittest.TestCase):
     # def testInitWithDict(self):
     #     initialData = {"rideCategory": "", "rRef": 1, "driverStatus": False, "pickupAddress": "", "hasCheckedIn": False, "eventRef": 1, "orbitRef": 1,
     #                    "target": "", "pricing": 1, "flightTime": 1, "flightNumber": 1, "airportLocation": 1, "baggages": "", "disabilities": {}, "requestCompletion": False}
-    #     newRideRequest = RideRequest.fromDict(initialData)
+    #     newRideRequest = RideRequest.from_dict(initialData)
     #     dictNewRideRequest = vars(newRideRequest)
     #     self.assertEquals(initialData, dictNewRideRequest)
 
     def testAfterDictEqualsOriginalDict(self):
         rideRequestDict = self.rideRequestData1['rideRequest']
         rideRequestRef = self.rideRequestData1['rideRequestRef']
-        airportRideRequest: AirportRideRequest = RideRequest.fromDictAndReference(rideRequestDict, rideRequestRef)
-        afterDict = airportRideRequest.toDict()
+        airportRideRequest: AirportRideRequest = RideRequest.from_dict_and_reference(rideRequestDict, rideRequestRef)
+        afterDict = airportRideRequest.to_dict()
         self.assertDictEqual(rideRequestDict, afterDict,
                              "The dictionaries should equal if RideRequest was not modified. ")

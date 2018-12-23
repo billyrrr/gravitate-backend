@@ -17,9 +17,9 @@ class RideRequestDaoTest(unittest.TestCase):
 
     def testCreate(self):
         rideRequestDict = self.rideRequestData1['rideRequest']
-        rideRequest = RideRequest.fromDict(rideRequestDict)
+        rideRequest = RideRequest.from_dict(rideRequestDict)
         RideRequestGenericDao().create(rideRequest)
-        resultDict = rideRequest.toDict()
+        resultDict = rideRequest.to_dict()
         self.assertEqual(rideRequestDict, resultDict)
 
     # def testGet(self):

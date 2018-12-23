@@ -26,7 +26,7 @@ class LocationGenericDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
+    def get_with_transaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -49,8 +49,8 @@ class LocationGenericDao:
             snapshot: DocumentSnapshot = locationRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            location = Location.fromDict(snapshotDict)
-            location.setFirestoreRef(locationRef)
+            location = Location.from_dict(snapshotDict)
+            location.set_firestore_ref(locationRef)
             return location
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(locationRef.id))
@@ -58,20 +58,20 @@ class LocationGenericDao:
     def get(self, locationRef: DocumentReference):
         snapshot: DocumentSnapshot = locationRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        location = Location.fromDict(snapshotDict)
-        location.setFirestoreRef(locationRef)
+        location = Location.from_dict(snapshotDict)
+        location.set_firestore_ref(locationRef)
         return location
         return locationResult
 
-    def findByAirportCode(self, airportCode) -> AirportLocation:
+    def find_by_airport_code(self, airportCode) -> AirportLocation:
         query: Query = self.locationCollectionRef.where(
             'airportCode', '==', airportCode)
         airportLocations = list()
         docs = query.get()
         for doc in docs:
             airportLocationDict = doc.to_dict()
-            airportLocation = AirportLocation.fromDict(airportLocationDict)
-            airportLocation.setFirestoreRef(doc.reference)
+            airportLocation = AirportLocation.from_dict(airportLocationDict)
+            airportLocation.set_firestore_ref(doc.reference)
             airportLocations.append(airportLocation)
         if len(airportLocations) != 1:
             warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
@@ -81,15 +81,15 @@ class LocationGenericDao:
         result = airportLocations.pop()
         return result
 
-    def findByCampusCode(self, campusCode) -> UcLocation:
+    def find_by_campus_code(self, campusCode) -> UcLocation:
         query: Query = self.locationCollectionRef.where(
             'campusCode', '==', campusCode)
         airportLocations = list()
         docs = query.get()
         for doc in docs:
             airportLocationDict = doc.to_dict()
-            airportLocation = AirportLocation.fromDict(airportLocationDict)
-            airportLocation.setFirestoreRef(doc.reference)
+            airportLocation = AirportLocation.from_dict(airportLocationDict)
+            airportLocation.set_firestore_ref(doc.reference)
             airportLocations.append(airportLocation)
         if len(airportLocations) != 1:
             warnings.warn("Airport Location that has the airport code is not unique or does not exist: {}".format(
@@ -116,7 +116,7 @@ class LocationGenericDao:
 
         :rtype:
         """
-        _, locationRef = self.locationCollectionRef.add(location.toDict())
+        _, locationRef = self.locationCollectionRef.add(location.to_dict())
         return locationRef
 
     def delete(self, singleLocationRef: DocumentReference):
@@ -137,18 +137,18 @@ class LocationGenericDao:
 
 
     @staticmethod
-    def _setWithTransaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def _set_with_transaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         return transaction.set(locationRef, newLocation)
 
     @staticmethod
-    def setWithTransactionNew(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
-        step = partial(LocationGenericDao._setWithTransaction(), newLocation=newLocation, locationRef=locationRef)
+    def set_with_transaction_new(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+        step = partial(LocationGenericDao._set_with_transaction(), newLocation=newLocation, locationRef=locationRef)
         return step(transaction)
 
 
     @staticmethod
     @transactional
-    def setWithTransactionTransactional(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def set_with_transaction_transactional(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction.
 
@@ -168,11 +168,11 @@ class LocationGenericDao:
 
         :rtype:
         """
-        locationDict = newLocation.toDict()
+        locationDict = newLocation.to_dict()
         return transaction.set(locationRef, locationDict)
 
     @staticmethod
-    def setWithTransaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction.
 
@@ -192,5 +192,5 @@ class LocationGenericDao:
 
         :rtype:
         """
-        locationDict = newLocation.toDict()
+        locationDict = newLocation.to_dict()
         return transaction.set(locationRef, locationDict)

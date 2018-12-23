@@ -13,13 +13,13 @@ class RideRequest(FirestoreObject):
     """
 
     @staticmethod
-    def fromDictAndReference(rideRequestDict, rideRequestRef):
-        rideRequest = RideRequest.fromDict(rideRequestDict)
-        rideRequest.setFirestoreRef(rideRequestRef)
+    def from_dict_and_reference(rideRequestDict, rideRequestRef):
+        rideRequest = RideRequest.from_dict(rideRequestDict)
+        rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
     @staticmethod
-    def fromDict(rideRequestDict):
+    def from_dict(rideRequestDict):
         """ Description
             This function creates AirportRideRequest or SocialEventRideRequest. 
                 (RideRequest Factory)
@@ -34,7 +34,7 @@ class RideRequest(FirestoreObject):
         eventRef = rideRequestDict['eventRef']  # TODO conversion to DocumentReference
         orbitRef = rideRequestDict['orbitRef']
         userId = rideRequestDict['userId']
-        target = Target.fromDict(rideRequestDict['target'])
+        target = Target.from_dict(rideRequestDict['target'])
         pricing = rideRequestDict['pricing']
         requestCompletion = rideRequestDict['requestCompletion']
 
@@ -56,7 +56,7 @@ class RideRequest(FirestoreObject):
             raise Exception(
                 'Not supported rideRequestType: {}'.format(rideRequestType))
 
-    def toDict(self):
+    def to_dict(self):
         rideRequestDict = {
             'driverStatus': self.driverStatus,
             'pickupAddress': self.pickupAddress,
@@ -64,7 +64,7 @@ class RideRequest(FirestoreObject):
             'eventRef': self.eventRef,
             'orbitRef': self.orbitRef,
             'userId': self.userId,
-            'target': self.target.toDict(),
+            'target': self.target.to_dict(),
             'pricing': self.pricing,
             'requestCompletion': self.requestCompletion
         }
@@ -109,9 +109,9 @@ class RideRequest(FirestoreObject):
 
 #     @staticmethod
 #     def createFromDict(rideRequestDict, rideRequestGenericDao = RideRequestGenericDao()):
-#         rideRequest = RideRequest.fromDict(rideRequestDict)
+#         rideRequest = RideRequest.from_dict(rideRequestDict)
 #         timestamp, documentRef = rideRequestGenericDao.createRideRequest()
-#         rideRequest.setFirestoreRef(documentRef)
+#         rideRequest.set_firestore_ref(documentRef)
 #         return rideRequest
 
 #     def saveWithTransaction(self, transaction: Transaction):
@@ -129,7 +129,7 @@ class AirportRideRequest(RideRequest):
         """ Description
             Initializes an AirportRideRequest Object 
             Note that this class should not be initialzed directly.
-            Use RideRequest.fromDict to create an AirportRideRequest.
+            Use RideRequest.from_dict to create an AirportRideRequest.
 
             :param self: 
             :param driverStatus: 
@@ -155,7 +155,7 @@ class AirportRideRequest(RideRequest):
         self.baggages = baggages
         self.disabilities = disabilities
 
-    def toDict(self):
+    def to_dict(self):
         """ Description
             This function returns the dictionary representation of a RideRequest object 
                 so that it can be stored in the database. 
@@ -168,7 +168,7 @@ class AirportRideRequest(RideRequest):
         :rtype:
         """
 
-        rideRequestDict = super().toDict()
+        rideRequestDict = super().to_dict()
 
         rideRequestDict['rideCategory'] = 'airportRide'
         rideRequestDict['flightLocalTime'] = self.flightLocalTime
@@ -187,7 +187,7 @@ class SocialEventRideRequest(RideRequest):
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialized directly.
-            Use RideRequest.fromDict to create a SocialEventRideRequest.
+            Use RideRequest.from_dict to create a SocialEventRideRequest.
 
         :type self:
         :param self:
@@ -204,7 +204,7 @@ class SocialEventRideRequest(RideRequest):
                          hasCheckedIn, eventRef, orbitRef, userId, target, pricing, requestCompletion)
         self.rideCategory = 'eventRide'
 
-    def toDict(self):
-        rideRequestDict = super().toDict()
+    def to_dict(self):
+        rideRequestDict = super().to_dict()
         rideRequestDict['rideCategory'] = 'eventRide'
         return rideRequestDict

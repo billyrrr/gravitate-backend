@@ -22,7 +22,7 @@ class EventDao:
     def __init__(self):
         self.eventCollectionRef = db.collection('events')
 
-    def getRef(self, id) -> DocumentReference:
+    def get_ref(self, id) -> DocumentReference:
         """ Description
             This method returns EventRef with EventId provided.
             Example: converts "testeventid1" to "/events/testeventid1" of type DocumentReference
@@ -35,7 +35,7 @@ class EventDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
+    def get_with_transaction(transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
             "If a transaction is used and it already has write operations added, this method cannot be used
@@ -53,22 +53,22 @@ class EventDao:
             snapshot: DocumentSnapshot = eventRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            event = Event.fromDict(snapshotDict)
-            event.setFirestoreRef(eventRef)
+            event = Event.from_dict(snapshotDict)
+            event.set_firestore_ref(eventRef)
             return event
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(eventRef.id))
 
-    def findByTimestamp(self, timestamp, category):
+    def find_by_timestamp(self, timestamp, category):
         """ Description
             This method finds an airportEvent that "overlaps" with the timestamp provided.
 
         :param timestamp: the point-in-time that the eventSchedule has to include.
         :return:
         """
-        eventId = self._locateEvent(timestamp, category)
+        eventId = self._locate_event(timestamp, category)
         eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
-        event = Event.fromDictAndReference(eventRef.get().to_dict(), eventRef)
+        event = Event.from_dict_and_reference(eventRef.get().to_dict(), eventRef)
         return event
 
     def delete(self, eventRef: DocumentReference):
@@ -84,10 +84,10 @@ class EventDao:
         return eventRef.delete()
 
     def create(self, event: Event) -> DocumentReference:
-        _, eventRef = self.eventCollectionRef.add(event.toDict())
+        _, eventRef = self.eventCollectionRef.add(event.to_dict())
         return eventRef
 
-    def _locateEvent(self, timestamp, category="airport"):
+    def _locate_event(self, timestamp, category="airport"):
         """ Description
             Uses the timestamp of an event to find the event reference
 
@@ -112,7 +112,7 @@ class EventDao:
             if (eventDict["eventCategory"] != category):
                 continue  # Do not consider events of a different category
 
-            event = Event.fromDict(eventDict)
+            event = Event.from_dict(eventDict)
             eventId = doc.id
             # Check if the event is in a valid time frame
             if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
@@ -126,7 +126,7 @@ class EventDao:
     def get(self, eventRef: DocumentReference):
         snapshot: DocumentSnapshot = eventRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        event = Event.fromDict(snapshotDict)
-        event.setFirestoreRef(eventRef)
+        event = Event.from_dict(snapshotDict)
+        event.set_firestore_ref(eventRef)
         return event
         return eventResult

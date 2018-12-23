@@ -32,12 +32,12 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
     """
 
     # rideRequestDao = RideRequestGenericDao()
-    # rideRequest = rideRequestDao.getWithTransaction(
+    # rideRequest = rideRequestDao.get_with_transaction(
     #     transaction, rideRequestRef)
-    # rideRequest.setFirestoreRef(rideRequestRef)
+    # rideRequest.set_firestore_ref(rideRequestRef)
     # orbitDao = OrbitDao()
-    # orbit = orbitDao.getWithTransaction(transaction, orbitRef)
-    # orbit.setFirestoreRef(orbitRef)
+    # orbit = orbitDao.get_with_transaction(transaction, orbitRef)
+    # orbit.set_firestore_ref(orbitRef)
 
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
@@ -50,10 +50,10 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
 
     # Update database copy of rideRequest and orbit
 
-    RideRequestGenericDao.setWithTransaction(
-        transaction, rideRequest, rideRequest.getFirestoreRef())
-    OrbitDao.setWithTransaction(
-        transaction, orbit, orbit.getFirestoreRef())
+    RideRequestGenericDao.set_with_transaction(
+        transaction, rideRequest, rideRequest.get_firestore_ref())
+    OrbitDao.set_with_transaction(
+        transaction, orbit, orbit.get_firestore_ref())
 
     return True
 
@@ -70,10 +70,10 @@ def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbi
     removeFromOrbit(rideRequest, orbit)
 
     try:
-        RideRequestGenericDao().setWithTransaction(
-            transaction, rideRequest, rideRequest.getFirestoreRef())
-        OrbitDao.setWithTransaction(
-            transaction, orbit, orbit.getFirestoreRef())
+        RideRequestGenericDao().set_with_transaction(
+            transaction, rideRequest, rideRequest.get_firestore_ref())
+        OrbitDao.set_with_transaction(
+            transaction, orbit, orbit.get_firestore_ref())
     except Exception as e:
         print(e)
         return False
@@ -102,13 +102,13 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
     """
     # update eventSchedule
     userId = rideRequest.userId
-    userRef = UserDao().getRef(userId)
-    eventRef = event.getFirestoreRef()
+    userRef = UserDao().get_ref(userId)
+    eventRef = event.get_firestore_ref()
 
     eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
         rideRequest=rideRequest, location=location, orbit=orbit)
-    UserDao().addToEventScheduleWithTransaction(transaction,
-                                                userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+    UserDao().add_to_event_schedule_with_transaction(transaction,
+                                                     userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
 
 
 def placeInOrbit(r: RideRequest, o: Orbit):
@@ -130,13 +130,13 @@ def placeInOrbit(r: RideRequest, o: Orbit):
     r.requestCompletion = True
 
     # RideRequest's orbitId no longer null and references Orbit's oId
-    r.orbitRef = o.getFirestoreRef()
+    r.orbitRef = o.get_firestore_ref()
 
     userId = r.userId
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
-        "rideRequestRef": r.getFirestoreRef(),
+        "rideRequestRef": r.get_firestore_ref(),
         "userWillDrive": r.driverStatus,
         "hasCheckedIn": False,
         "inChat": False,

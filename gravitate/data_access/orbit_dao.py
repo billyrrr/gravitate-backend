@@ -19,7 +19,7 @@ class OrbitDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
+    def get_with_transaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -30,15 +30,15 @@ class OrbitDao:
             snapshot: DocumentSnapshot = orbitRef.get(
                 transaction=transaction)
             snapshotDict: dict = snapshot.to_dict()
-            orbit = Orbit.fromDict(snapshotDict)
-            orbit.setFirestoreRef(orbitRef)
+            orbit = Orbit.from_dict(snapshotDict)
+            orbit.set_firestore_ref(orbitRef)
             return orbit
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(orbitRef.id))
 
     def get(self, orbitRef: DocumentReference):
         transaction = db.transaction()
-        orbitResult = self.getWithTransaction(
+        orbitResult = self.get_with_transaction(
             transaction, orbitRef)
         transaction.commit()
         return orbitResult
@@ -46,8 +46,8 @@ class OrbitDao:
     def create(self, orbit: Orbit)->DocumentReference:
         """ Description
         """
-        print(orbit.toDict())
-        _, orbitRef = self.orbitCollectionRef.add(orbit.toDict())
+        print(orbit.to_dict())
+        _, orbitRef = self.orbitCollectionRef.add(orbit.to_dict())
         return orbitRef
 
     def delete(self, singleOrbitRef: DocumentReference):
@@ -60,8 +60,8 @@ class OrbitDao:
 
     @staticmethod
     # @transactional
-    def setWithTransaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
         """
-        return transaction.set(orbitRef, newOrbit.toDict())
+        return transaction.set(orbitRef, newOrbit.to_dict())

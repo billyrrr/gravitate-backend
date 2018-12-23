@@ -252,7 +252,7 @@ class TestCreationLogicsUtils(TestCase):
     def testCreateAirportTargetWithFlightLocalTime(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         targetDict = createTargetWithFlightLocalTime(
-            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).toDict()
+            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).to_dict()
         valueExpected = {'eventCategory': 'airportRide',
                          'toEvent': True,
                          'arriveAtEventTime':
@@ -264,10 +264,10 @@ class TestCreationLogicsUtils(TestCase):
             hasEarliestLatest=False, returnDict=False)
         targetDictCTWFLT = createTargetWithFlightLocalTime(
             mockFormCTWFLT.flightLocalTime, mockFormCTWFLT.toEvent, offsetLowAbsSec=7200,
-            offsetHighAbsSec=18000).toDict()
+            offsetHighAbsSec=18000).to_dict()
         mockFormCT = FormDictFactory().create(
             hasEarliestLatest=True, isE5L2=True, returnDict=False)
-        targetDictCT = createTarget(mockFormCT).toDict()
+        targetDictCT = createTarget(mockFormCT).to_dict()
         self.assertDictEqual(targetDictCTWFLT, targetDictCT)
 
 
@@ -279,7 +279,7 @@ class TestCreateRideRequestLogics(TestCase):
     def testHasDuplicateEvent(self):
         userId: str = "44lOjfDJoifnq1IMRdk4VKtPutF3"
         eventId: str = "8GKfUA2AbGCrgRo7n6Rt"
-        eventRef: firestore.DocumentReference = EventDao().getRef(eventId)
+        eventRef: firestore.DocumentReference = EventDao().get_ref(eventId)
         result = hasDuplicateEvent(userId, eventRef)
         # Assert that hasDuplicateEvent is False since we have an entry 
         #   with equal eventRef and userId field in the database 
@@ -287,7 +287,7 @@ class TestCreateRideRequestLogics(TestCase):
 
     def testCreateAirportTarget(self):
         mockForm = MockFormTargetOnly()
-        targetDict = createTarget(mockForm).toDict()
+        targetDict = createTarget(mockForm).to_dict()
         valueExpected = {'eventCategory': 'airportRide',
                          'toEvent': True,
                          'arriveAtEventTime':
@@ -297,13 +297,13 @@ class TestCreateRideRequestLogics(TestCase):
     # def testSaveRideRequestToDb(self):
     #     mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
     #     rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
-    #     result = RideRequest.fromDict(rideRequestDict)
+    #     result = RideRequest.from_dict(rideRequestDict)
     #     saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         result, _ = fillRideRequestDictWithForm(mockForm, userId)
-        valueExpected = RideRequest.fromDict({
+        valueExpected = RideRequest.from_dict({
 
             'rideCategory': 'airportRide',
             'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
@@ -324,7 +324,7 @@ class TestCreateRideRequestLogics(TestCase):
             "airportLocation": db.document("locations", "testairportlocationid1"),
             "requestCompletion": False
 
-        }).toDict()
+        }).to_dict()
         self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])
@@ -353,13 +353,13 @@ class UserEndPointTest(TestCase):
 class UserCollectionTest(TestCase):
 
     def setUp(self):
-        self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
+        self.user = UserDao().get_user_by_id('SQytDq13q00e0N3H4agR')
 
     # def testAddToEventSchedule(self):
     #     transaction = db.transaction()
-    #     UserDao().addToEventScheduleWithTransaction(
+    #     UserDao().add_to_event_schedule_with_transaction(
     #         transaction, 
-    #         userRef=self.user.getFirestoreRef(), 
+    #         userRef=self.user.get_firestore_ref(),
     #         eventRef=db.document('events', 'testeventid1'), 
     #         toEventRideRequestRef=db.document('rideRequests', 'testriderequestid1'))
 
@@ -367,25 +367,25 @@ class UserCollectionTest(TestCase):
 class UserDAOTest(TestCase):
 
     def setUp(self):
-        self.user = User.fromDict(userDict)
+        self.user = User.from_dict(userDict)
 
     def testCreate(self):
-        userRef: firestore.DocumentReference = UserDao().createUser(self.user)
-        self.user.setFirestoreRef(userRef)
+        userRef: firestore.DocumentReference = UserDao().create_user(self.user)
+        self.user.set_firestore_ref(userRef)
         print("userRef = {}".format(userRef))
 
     def testCreateTempTesting(self):
-        userRef: firestore.DocumentReference = UserDao().createUser(self.user)
-        self.user.setFirestoreRef(userRef)
+        userRef: firestore.DocumentReference = UserDao().create_user(self.user)
+        self.user.set_firestore_ref(userRef)
         print("userRef = {}".format(userRef))
 
     def testGetUser(self):
         uid = "bUAHG6TxmENRrftWVJeGNK6qOFq2"
-        user = UserDao().getUserById(uid)
-        print(user.toDict())
+        user = UserDao().get_user_by_id(uid)
+        print(user.to_dict())
 
     def testGetUserId(self):
-        user = UserDao().getUserById(userDict["uid"])
+        user = UserDao().get_user_by_id(userDict["uid"])
         self.assertEquals(userDict['display_name'], user.display_name)
         self.assertEquals(userDict['phone_number'], user.phone_number)
         self.assertEquals(userDict['uid'], user.uid)
@@ -416,7 +416,7 @@ class FirestoreUserTest(TestCase):
 
     def testUserCollectionExists(self):
         uid = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
-        user = UserDao().getUserById(uid)
+        user = UserDao().get_user_by_id(uid)
         self.assertEqual(user.uid, userDict["uid"])
         self.assertEqual(user.membership, userDict["membership"])
         self.assertEqual(user.phone_number, userDict["phone_number"])
@@ -424,7 +424,7 @@ class FirestoreUserTest(TestCase):
         self.assertEqual(user.display_name, userDict["display_name"])
         self.assertEqual(user.pickupAddress, userDict["pickupAddress"])
 
-        print(json.dumps(user.toDict()))
+        print(json.dumps(user.to_dict()))
 
 
 class DeleteRideRequestServiceTest(TestCase):

@@ -19,7 +19,7 @@ db = CTX.db
 
 # TODO remove transactional and add test
 
-def getAuthInfo(uid: string, userDict: dict):
+def _get_auth_info(uid: string, userDict: dict):
     userRecord = auth.get_user(uid, app=CTX.firebaseApp)
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
@@ -32,31 +32,31 @@ def getAuthInfo(uid: string, userDict: dict):
 class UserDao:
     """Description
        Database access object for user
-        # TODO delete object.setFirestoreRef()
+        # TODO delete object.set_firestore_ref()
     """
 
     def __init__(self):
         self.userCollectionRef = db.collection(u'users')
 
     @staticmethod
-    def userExists(userRef: DocumentReference):
+    def user_exists(userRef: DocumentReference):
         snapshot: DocumentSnapshot = userRef.get()
         if snapshot.exists:
             return True
         else:
             return False
 
-    def userIdExists(self, userId: str):
+    def user_id_exists(self, userId: str):
         userRef = self.userCollectionRef.document(userId)
-        return self.userExists(userRef)
+        return self.user_exists(userRef)
 
-    def getRef(self, userId: str) -> DocumentReference:
+    def get_ref(self, userId: str) -> DocumentReference:
         ref: DocumentReference = self.userCollectionRef.document(userId)
         return ref
 
     @staticmethod
     @transactional
-    def getUserWithTransaction(transaction, userRef: DocumentReference):
+    def get_user_with_transaction(transaction, userRef: DocumentReference):
         """ Description
             Note that this cannot take place if transaction already received write operation
         :type self:
@@ -69,14 +69,14 @@ class UserDao:
         :rtype:
         """
 
-        userExists = UserDao.userExists(userRef)
+        userExists = UserDao.user_exists(userRef)
 
         if userExists:
             snapshot = userRef.get(transaction=transaction)
             userDict = snapshot.to_dict()
-            getAuthInfo(userRef.id, userDict)
-            user = User.fromDict(userDict)
-            user.setFirestoreRef(userRef)
+            _get_auth_info(userRef.id, userDict)
+            user = User.from_dict(userDict)
+            user.set_firestore_ref(userRef)
             return user
         else:
             return None
@@ -85,9 +85,9 @@ class UserDao:
         # except:
         # return None
 
-    def getUser(self, userRef: DocumentReference):
+    def get_user(self, userRef: DocumentReference):
         transaction = db.transaction()
-        userResult = self.getUserWithTransaction(transaction, userRef)
+        userResult = self.get_user_with_transaction(transaction, userRef)
         if (userResult != None):
             userResult.setFirestoreRef(userRef)
             transaction.commit()
@@ -95,21 +95,21 @@ class UserDao:
         else:
             return None
 
-    def getUserById(self, userId: str):
+    def get_user_by_id(self, userId: str):
         userRef = self.userCollectionRef.document(userId)
-        user = self.getUser(userRef)
+        user = self.get_user(userRef)
         return user
 
-    def getByIdWithTransaction(self, transaction: Transaction, userId: str) -> User:
+    def get_by_id_with_transaction(self, transaction: Transaction, userId: str) -> User:
         userRef = self.userCollectionRef.document(userId)
-        user = self.getUserWithTransaction(transaction, userRef)
+        user = self.get_user_with_transaction(transaction, userRef)
         return user
 
-    def createUser(self, user: User):
-        userRef = self.userCollectionRef.add(user.toDict())
+    def create_user(self, user: User):
+        userRef = self.userCollectionRef.add(user.to_dict())
         return userRef
 
-    def updateFcmToken(self, userId: str, token):
+    def update_fcm_token(self, userId: str, token):
         userRef: DocumentReference = self.userCollectionRef.document(userId)
         deltaDict = {
             "fcmToken": token
@@ -117,7 +117,7 @@ class UserDao:
         userRef.update(deltaDict)
         return
 
-    def getFcmToken(self, userId: str):
+    def get_fcm_token(self, userId: str):
         userRef: DocumentReference = self.userCollectionRef.document(userId)
         userSnapshot: DocumentSnapshot = userRef.get()
         userData = userSnapshot.to_dict()
@@ -126,19 +126,19 @@ class UserDao:
 
     @staticmethod
     @transactional
-    def setUserWithTransaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
-        transaction.set(userRef, newUser.toFirestoreDict())
+    def set_user_with_transaction(transaction: Transaction, newUser: Type[User], userRef: DocumentReference):
+        transaction.set(userRef, newUser.to_firestore_dict())
 
     @staticmethod
-    def removeEventScheduleWithTransaction(transaction: Transaction, userRef: DocumentReference = None,
-                                           orbitId: str = None):
+    def remove_event_schedule_with_transaction(transaction: Transaction, userRef: DocumentReference = None,
+                                               orbitId: str = None):
         eventScheduleRef: DocumentReference = userRef.collection("eventSchedules").document(orbitId)
         transaction.delete(eventScheduleRef)
 
     @staticmethod
     # @transactional
-    def addToEventScheduleWithTransaction(transaction: Transaction, userRef: str = None,
-                                          eventRef: DocumentReference = None, eventSchedule: AirportEventSchedule = None):
+    def add_to_event_schedule_with_transaction(transaction: Transaction, userRef: str = None,
+                                               eventRef: DocumentReference = None, eventSchedule: AirportEventSchedule = None):
         """ Description
                 Add a event schedule to users/<userId>/eventSchedule
 				Note that the toEventRideRequestRef will be 
@@ -171,9 +171,9 @@ class UserDao:
 
         # Get the DocumentReference for the AirportEventSchedule
         eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
-        eventScheduleDict = eventSchedule.toDict()
+        eventScheduleDict = eventSchedule.to_dict()
         transaction.set(eventScheduleRef, eventScheduleDict,
                         merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
-    def setWithTransaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
+    def set_with_transaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
         transaction.set(userRef, newUser)

@@ -16,7 +16,7 @@ class EventScheduleUtilsTest(unittest.TestCase):
         orbitRef: DocumentReference = db.collection(u'orbits').document("WQiIEsGlVbU8a8F1la45")
         snapshot: DocumentSnapshot = orbitRef.get()
         if snapshot.exists:
-            orbit: Orbit = Orbit.fromDict(snapshot.to_dict())
+            orbit: Orbit = Orbit.from_dict(snapshot.to_dict())
             print(getMemberProfilePhotoUrls(orbit))
         else:
             print("Not Found")
