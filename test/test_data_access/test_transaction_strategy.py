@@ -12,7 +12,7 @@ class TestTransactionStrategy(TestCase):
 
     def testAddStep(self):
         step = partial(exampleExecutable, "operations")
-        self.ts.addStep(step)
+        self.ts.add_step(step)
         self.assertEqual(self.ts.strategies, [step])
 
 class TestTransactionStrategyExecuteAll(TestCase):
@@ -20,8 +20,8 @@ class TestTransactionStrategyExecuteAll(TestCase):
     def setUp(self):
         self.ts = TransactionStrategy()
         step = partial(exampleExecutable, "operations")
-        self.ts.addStep(step)
+        self.ts.add_step(step)
 
     def testExecuteAll(self):
-        self.ts.executeAll("provided_transaction")
+        self.ts.execute_all("provided_transaction")
         self.fail()

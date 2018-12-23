@@ -19,7 +19,7 @@ class OrbitDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
+    def get_with_transaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -38,7 +38,7 @@ class OrbitDao:
 
     def get(self, orbitRef: DocumentReference):
         transaction = db.transaction()
-        orbitResult = self.getWithTransaction(
+        orbitResult = self.get_with_transaction(
             transaction, orbitRef)
         transaction.commit()
         return orbitResult
@@ -60,7 +60,7 @@ class OrbitDao:
 
     @staticmethod
     # @transactional
-    def setWithTransaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newOrbit: Orbit, orbitRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
         """

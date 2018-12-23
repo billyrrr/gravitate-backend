@@ -48,7 +48,7 @@ class EventScheduleGenericDao:
         else:
             self.eventScheduleCollectionRef = userRef.collection('eventSchedules')
 
-    def getWithTransaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) \
+    def get_with_transaction(self, transaction: Transaction, eventScheduleRef: DocumentReference) \
             -> Type[AirportEventSchedule]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
@@ -81,7 +81,7 @@ class EventScheduleGenericDao:
 
     def get(self, eventScheduleRef: DocumentReference):
         transaction = db.transaction()
-        eventScheduleResult = self.getWithTransaction(
+        eventScheduleResult = self.get_with_transaction(
             transaction, eventScheduleRef)
         transaction.commit()
         return eventScheduleResult
@@ -120,15 +120,15 @@ class EventScheduleGenericDao:
         """
         return singleEventScheduleRef.delete()
 
-    def deleteEventById(self, eventId: str):
+    def delete_event_by_id(self, eventId: str):
         """ Description
             This function deletes an event from EventSchedules
         """
         self.eventScheduleCollectionRef.document(eventId).delete()
 
     @staticmethod
-    def setWithTransaction(transaction: Transaction, newEventSchedule: Type[AirportEventSchedule],
-                           eventScheduleRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newEventSchedule: Type[AirportEventSchedule],
+                             eventScheduleRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 

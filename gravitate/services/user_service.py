@@ -21,8 +21,8 @@ class UserService(Resource):
 
     def get(self, uid):
         # Check Firestore to see if UID Already Exists
-        if (UserDao().userIdExists(uid)):
-            user = UserDao().getUserById(uid)
+        if (UserDao().user_id_exists(uid)):
+            user = UserDao().get_user_by_id(uid)
             userDict = user.to_dict()
             return userDict, 200
         else:

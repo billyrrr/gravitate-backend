@@ -26,7 +26,7 @@ class LocationGenericDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
+    def get_with_transaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -63,7 +63,7 @@ class LocationGenericDao:
         return location
         return locationResult
 
-    def findByAirportCode(self, airportCode) -> AirportLocation:
+    def find_by_airport_code(self, airportCode) -> AirportLocation:
         query: Query = self.locationCollectionRef.where(
             'airportCode', '==', airportCode)
         airportLocations = list()
@@ -81,7 +81,7 @@ class LocationGenericDao:
         result = airportLocations.pop()
         return result
 
-    def findByCampusCode(self, campusCode) -> UcLocation:
+    def find_by_campus_code(self, campusCode) -> UcLocation:
         query: Query = self.locationCollectionRef.where(
             'campusCode', '==', campusCode)
         airportLocations = list()
@@ -137,18 +137,18 @@ class LocationGenericDao:
 
 
     @staticmethod
-    def _setWithTransaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def _set_with_transaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         return transaction.set(locationRef, newLocation)
 
     @staticmethod
-    def setWithTransactionNew(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
-        step = partial(LocationGenericDao._setWithTransaction(), newLocation=newLocation, locationRef=locationRef)
+    def set_with_transaction_new(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+        step = partial(LocationGenericDao._set_with_transaction(), newLocation=newLocation, locationRef=locationRef)
         return step(transaction)
 
 
     @staticmethod
     @transactional
-    def setWithTransactionTransactional(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def set_with_transaction_transactional(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction.
 
@@ -172,7 +172,7 @@ class LocationGenericDao:
         return transaction.set(locationRef, locationDict)
 
     @staticmethod
-    def setWithTransaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction.
 

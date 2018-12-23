@@ -108,7 +108,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef,
                 userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
             transaction = db.transaction()
-            RideRequestGenericDao().setWithTransaction(
+            RideRequestGenericDao().set_with_transaction(
                 transaction, rideRequest, firestoreRef)
             rideRequest.set_firestore_ref(firestoreRef)
             rideRequests.append(rideRequest)

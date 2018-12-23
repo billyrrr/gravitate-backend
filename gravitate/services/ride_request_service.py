@@ -228,7 +228,7 @@ class DeleteRideRequestService(Resource):
                 type(requestJson) != dict) else requestJson
 
         userId = requestForm.get("userId", None)
-        userRef = UserDao().getRef(userId)
+        userRef = UserDao().get_ref(userId)
         eventId = requestForm.get("eventId", None)
         rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
@@ -246,7 +246,7 @@ class DeleteRideRequestService(Resource):
 
         try:
             # Delete in User's Event Schedule
-            EventScheduleGenericDao(userRef=userRef).deleteEventById(eventId)
+            EventScheduleGenericDao(userRef=userRef).delete_event_by_id(eventId)
             # Delete in RideRequest Collection
             RideRequestGenericDao().delete(rideRequestRef)
             responseDict = {"success": True}

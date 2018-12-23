@@ -79,7 +79,7 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     # Must go through each userTicketPair (key = userIDs)
     photo_urls = []
     for uid in orbit.userTicketPairs:
-        user = UserDao().getUserById(uid)
+        user = UserDao().get_user_by_id(uid)
         photo_url = user.photo_url
         photo_urls.append(photo_url)
 
@@ -102,7 +102,7 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
 #     """
 #     photo_urls = [];
 #     for uid in ticketPairs:
-#         user = UserDao().getUserById(uid)
+#         user = UserDao().get_user_by_id(uid)
 #         photo_url = user.photo_url
 #         photo_urls.append(photo_url)
 

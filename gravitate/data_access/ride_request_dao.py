@@ -24,7 +24,7 @@ class RideRequestGenericDao:
     def __init__(self):
         self.rideRequestCollectionRef = db.collection('rideRequests')
 
-    def getIds(self, incomplete=False):
+    def get_ids(self, incomplete=False):
         """ Description
             Get the ids of RideRequests
         
@@ -50,7 +50,7 @@ class RideRequestGenericDao:
             docIds.append(docId)
         return docIds
 
-    def getByUser(self, userId):
+    def get_by_user(self, userId):
         """ Description
             Returns a list of rideRequests by a user
 
@@ -76,7 +76,7 @@ class RideRequestGenericDao:
 
     @staticmethod
     # @transactional
-    def getWithTransaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
+    def get_with_transaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description
             Note that this cannot take place if transaction already received write operations. 
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
@@ -127,7 +127,7 @@ class RideRequestGenericDao:
 
         :rtype:
         """
-        rideRequestId = utils.randomId()
+        rideRequestId = utils.random_id()
         rideRequestRef = RideRequestGenericDao(
         ).rideRequestCollectionRef.document(document_id=rideRequestId)
         rideRequest.set_firestore_ref(rideRequestRef)
@@ -151,8 +151,8 @@ class RideRequestGenericDao:
 
     @staticmethod
     # @transactional
-    def setWithTransaction(transaction: Transaction, newRideRequest: Type[RideRequest],
-                           rideRequestRef: DocumentReference):
+    def set_with_transaction(transaction: Transaction, newRideRequest: Type[RideRequest],
+                             rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
 
@@ -176,7 +176,7 @@ class RideRequestGenericDao:
 
     # 
     # @staticmethod
-    # def setWithTransaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
+    # def set_with_transaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
     #     """ Description
     #         Note that a read action must have taken place before anything is set with that transaction. 
 

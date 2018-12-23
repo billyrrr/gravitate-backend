@@ -70,7 +70,7 @@ class LaxEventBuilder(SpecifiedRangeEventBuilder):
         self.eventCategory = "airport"
         self.eventLocation = "LAX"
         self.isClosed = False
-        self.locationRef = LocationGenericDao().findByAirportCode('LAX').get_firestore_ref()
+        self.locationRef = LocationGenericDao().find_by_airport_code('LAX').get_firestore_ref()
 
     def buildLists(self):
         self.participants = []
@@ -85,7 +85,7 @@ class UcsbEventBuilder(SpecifiedRangeEventBuilder):
         self.eventCategory = "campus"
         self.eventLocation = "UCSB"
         self.isClosed = False
-        self.locationRef = LocationGenericDao().findByCampusCode("UCSB").get_firestore_ref()
+        self.locationRef = LocationGenericDao().find_by_campus_code("UCSB").get_firestore_ref()
 
     def buildLists(self):
         self.participants = []

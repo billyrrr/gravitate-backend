@@ -4,7 +4,7 @@ import gravitate.data_access as data_access
 
 
 def sendMessageToUser(userId, data):
-    fcmToken = data_access.UserDao().getFcmToken(userId)
+    fcmToken = data_access.UserDao().get_fcm_token(userId)
     sendMessage(fcmToken, data)
 
 def sendMessage(registration_token, data, dry_run=False):

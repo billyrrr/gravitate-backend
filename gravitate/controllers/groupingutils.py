@@ -32,11 +32,11 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
     """
 
     # rideRequestDao = RideRequestGenericDao()
-    # rideRequest = rideRequestDao.getWithTransaction(
+    # rideRequest = rideRequestDao.get_with_transaction(
     #     transaction, rideRequestRef)
     # rideRequest.set_firestore_ref(rideRequestRef)
     # orbitDao = OrbitDao()
-    # orbit = orbitDao.getWithTransaction(transaction, orbitRef)
+    # orbit = orbitDao.get_with_transaction(transaction, orbitRef)
     # orbit.set_firestore_ref(orbitRef)
 
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
@@ -50,9 +50,9 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
 
     # Update database copy of rideRequest and orbit
 
-    RideRequestGenericDao.setWithTransaction(
+    RideRequestGenericDao.set_with_transaction(
         transaction, rideRequest, rideRequest.get_firestore_ref())
-    OrbitDao.setWithTransaction(
+    OrbitDao.set_with_transaction(
         transaction, orbit, orbit.get_firestore_ref())
 
     return True
@@ -70,9 +70,9 @@ def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbi
     removeFromOrbit(rideRequest, orbit)
 
     try:
-        RideRequestGenericDao().setWithTransaction(
+        RideRequestGenericDao().set_with_transaction(
             transaction, rideRequest, rideRequest.get_firestore_ref())
-        OrbitDao.setWithTransaction(
+        OrbitDao.set_with_transaction(
             transaction, orbit, orbit.get_firestore_ref())
     except Exception as e:
         print(e)
@@ -102,13 +102,13 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
     """
     # update eventSchedule
     userId = rideRequest.userId
-    userRef = UserDao().getRef(userId)
+    userRef = UserDao().get_ref(userId)
     eventRef = event.get_firestore_ref()
 
     eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
         rideRequest=rideRequest, location=location, orbit=orbit)
-    UserDao().addToEventScheduleWithTransaction(transaction,
-                                                userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+    UserDao().add_to_event_schedule_with_transaction(transaction,
+                                                     userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
 
 
 def placeInOrbit(r: RideRequest, o: Orbit):

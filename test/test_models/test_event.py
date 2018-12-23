@@ -16,11 +16,11 @@ class EventModelTest(unittest.TestCase):
 # class EventCollectionTest(unittest.TestCase):
 
 #     def setUp(self):
-#         self.user = UserDao().getUserById('SQytDq13q00e0N3H4agR')
+#         self.user = UserDao().get_user_by_id('SQytDq13q00e0N3H4agR')
 
 #     def testAddToEventSchedule(self):
 #         transaction = db.transaction()
-#         UserDao().addToEventScheduleWithTransaction(
+#         UserDao().add_to_event_schedule_with_transaction(
 #             transaction,
 #             userRef=self.user.get_firestore_ref(),
 #             eventRef='/events/testeventid1',
