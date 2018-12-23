@@ -4,31 +4,49 @@ from wtforms import Form, StringField, PasswordField, DateTimeField, BooleanFiel
 #### DateTimeField does not have Timezone #### 
 
 
-from wtforms.validators import DataRequired,length
+from wtforms.validators import DataRequired, length
 
 
 class RideRequestBaseCreationForm(object):
-
-    eventCategory = None # "airport", "social", "city"
+    eventCategory = None  # "airport", "social", "city"
 
     pickupAddress = None
     toEvent = None
 
 
 class CityRideRequestCreationForm(RideRequestBaseCreationForm):
-
     eventCategory = "city"
 
     pickupAddress = None
 
     toEvent = None
 
-    eventId = None # Event identifies both the day and the location
+    eventId = None  # Event identifies both the day and the location
 
-    dropoffAddress = None # Specific dropoff address (optional)m
+    dropoffAddress = None  # Specific dropoff address (optional)m
 
 
 class AirportRideRequestCreationForm():
+
+    @staticmethod
+    def from_dict(d: dict):
+        flightNumber = d["flightNumber"]
+        airportCode = d["airportCode"]
+        flightLocalTime = d["flightLocalTime"]
+        pickupAddress = d["pickupAddress"]
+        toEvent = d["toEvent"]
+        driverStatus = d["driverStatus"]
+        return AirportRideRequestCreationForm(flightNumber, airportCode, flightLocalTime, pickupAddress, toEvent,
+                                              driverStatus)
+
+    def __init__(self, flightNumber, airportCode, flightLocalTime, pickupAddress, toEvent, driverStatus):
+        self.flightNumber = flightNumber
+        self.airportCode = airportCode
+        self.flightLocalTime = flightLocalTime
+        self.pickupAddress = pickupAddress
+        self.toEvent = toEvent
+        self.driverStatus = driverStatus
+
     flightNumber = None
 
     airportCode = None
@@ -47,39 +65,37 @@ class AirportRideRequestCreationForm():
 
 
 class RideRequestCreationValidateForm(Form):
-
     # Can be filled with Flightstats API
     flightNumber = StringField(u'Flight Number', validators=[
         DataRequired('Flight Number needs to be specified.'),
-        
-        ])
+
+    ])
 
     airportCode = StringField(u'Airport Code', validators=[
         DataRequired('Airport Code needs to be specified.'),
-        
-        ])
+
+    ])
     flightLocalTime = DateTimeField(u'Flight Local Time', validators=[
         DataRequired('Flight Local Time needs to be specified. '),
-        
-        ])
+
+    ])
 
     # Cannot be autofilled
     pickupAddress = StringField(u'Pickup Address', validators=[
         DataRequired('Pickup address needs to be specified.'),
-        
-        
-        ])
+
+    ])
 
     # Halted
     # # Used to create Target Object
     # earliest = DateTimeField(u'Earliest Arrival Time', validators=[
     #     DataRequired('Earliest Arrival needs to be specified.'),
-        
+
     #     ])
 
     # latest = DateTimeField(u'Latest Arrival Time', validators=[
     #     DataRequired('Latest Arrival needs to be specified. '),
-        
+
     #     ])
 
     toEvent = BooleanField(u'wether the ride is heading to the event')
@@ -98,5 +114,3 @@ class RideRequestCreationValidateForm(Form):
     #     # Find Airport Code Library
     #     if airportLocation not in PACKAGE_NAME:
     #         raise ValidationError("Not a valid Airport Code")
-
-    

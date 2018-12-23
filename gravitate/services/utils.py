@@ -9,9 +9,12 @@ from flask import request
 from flask_restful import abort
 
 from gravitate.config import Context
+import warnings
 
 # Flag for whether main app is in TESTING mode
 TESTING_MODE = True
+if TESTING_MODE is True:
+    warnings.warn("Testing mode is True. Set to False before release. ")
 
 
 # For Testing Purposes. If not in TESTING mode, the function verfifies the token with FirebaseApp.
