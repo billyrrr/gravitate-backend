@@ -45,7 +45,7 @@ def set_prefs(prefs):
     # The depth of calls to follow in static object analysis
     prefs['soa_followed_calls'] = 0
 
-    # If `False` when running modules or unit tests "dynamic object
+    # If `False` when running modules or unit test "dynamic object
     # analysis" is turned off.  This makes them much faster.
     prefs['perform_doa'] = True
 
@@ -61,7 +61,7 @@ def set_prefs(prefs):
 
     # Set the number spaces used for indenting.  According to
     # :PEP:`8`, it is best to use 4 spaces.  Since most of rope's
-    # unit-tests use 4 spaces it is more reliable, too.
+    # unit-test use 4 spaces it is more reliable, too.
     prefs['indent_size'] = 4
 
     # Builtin and c-extension modules that are allowed to be imported

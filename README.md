@@ -10,6 +10,47 @@ While grouping users together is a main feature of Gravitate, it also provides m
 
 Ultimately, Gravitate is an app that aims to streamline the process of transportation for students. With the help of our app, students will no longer have to spend countless hours browsing through bulletin posts for rideshares or have to pay unreasonable amounts of money for an unshared Uber trip to LAX. Gravitate will help students not only save time by connecting them with others who have similar flight times but also save money by splitting the cost of transportation to LAX. With plans of extending from just airports to sporting events, concerts, etc., Gravitate will make every student’s journey more affordable, regardless of where they’re going. 
 
+## Gravitate By Team VIBE
+
+
+David Alexander - Project Manager
+
+Lauren Chang - Business Analyst
+
+Jason Chau - Senior System Analyst
+
+Kenneth Hua - User Experience and Interface Specialist
+
+Sam Huang - Quality Assurance Lead
+
+Andrew Kim - Database Specialist
+
+David Nong - Algorithm Specialist
+
+Billy Rao - Lead Software Architect
+
+Tyler Song - Algorithm Specialist
+
+Leon Wu - Lead Software Developer
+
+
+## Run the server 
+The back end should be deployed in Google App Engine Flexible Environment Python. Make sure 
+that App Engine and Firebase are in the same project before proceeding to step 1. 
+### Step 1: Firebase Service Account Json
+Retrieve Firebase Service Account JSON from Firebase, and set the JSON path and App name
+correctly in config.py 
+### Step 2: Run Main Scripts
+Run main_scripts.py in command lines to generate LAX location and events in the connected 
+Firebase Firestore. 
+### Step 3: Deploy to Google App Engine
+1. Set local project-id to the correct Firebase project with 
+```gcloud config set project gravitate-dev ``` (exchange gravitate-dev to desired project-id). 
+
+2. Navigate to directory with app.yaml, run 
+```gcloud beta app deploy``` (beta keyword is optional here, we want to add it for better 
+debug support in the google cloud console)
+
 
 ## Force Matching for Development Purposes
 
@@ -73,7 +114,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 ### Setup Repository
 
-####mac/Linux
+#### mac/Linux
 
 1. Accept invitation to private repository /billyrrr/gravitate-backend 
 
@@ -91,7 +132,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 6. Press Enter. Your clone will be created. 
 
-####Windows
+#### Windows
 
 1. Accept invitation to private repository /billyrrr/gravitate-backend 
 
@@ -109,7 +150,7 @@ Make sure that you have deployed and run Hello World on your local machine befor
 
 6. Press Enter. Your clone will be created. 
 
-###Test App Server Locally
+### Test App Server Locally
 
 Please skip this section if you do not want to work with REST API related layers. 
 
