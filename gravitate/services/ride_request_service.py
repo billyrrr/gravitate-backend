@@ -24,6 +24,7 @@ class AirportRideRequestCreationService(Resource):
 
     @service_utils.authenticate
     def post(self, uid):
+        warnings.warn("POST /rideRequests/ is deprecated. Use GET /rideRequests?+params instead. ")
 
         # Verify Firebase auth.
         userId = uid
@@ -49,7 +50,7 @@ class AirportRideRequestCreationService(Resource):
         form = AirportRideRequestCreationForm()
         validateForm.populate_obj(form)
 
-        rideRequestDict, location = fillRideRequestDictWithForm(
+        rideRequestDict, location = fill_ride_request_dict_with_form(
             form, userId)
         if not location:
             errorResponseDict = {
@@ -90,6 +91,12 @@ class AirportRideRequestCreationService(Resource):
 
     @service_utils.authenticate
     def get(self, uid):
+        """
+        This method reads arguments from url string and creates an airportRideRequest.
+
+        :param uid:
+        :return:
+        """
 
         userId = uid
 
@@ -105,7 +112,7 @@ class AirportRideRequestCreationService(Resource):
         args = parser.parse_args()
         form = AirportRideRequestCreationForm.from_dict(args)
 
-        rideRequestDict, location = fillRideRequestDictWithForm(
+        rideRequestDict, location = fill_ride_request_dict_with_form(
             form, userId)
         if not location:
             errorResponseDict = {
@@ -143,8 +150,48 @@ class AirportRideRequestCreationService(Resource):
 
         return responseDict, 200
 
+    @service_utils.authenticate
+    def patch(self, uid):
+        """
+        TODO implement
 
-def fillRideRequestDictWithForm(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
+        This method modifies fields in an airportRideRequest.
+            Allow user to patch these fields at any time:
+                * disabilities
+                * pickupAddress
+                * "baggages"
+            If the rideRequest is not matched into an orbit, allow user to patch these fields:
+                * driverStatus
+                furthermore, if flightLocalTime still in the same event and eventLocation is "LAX",
+                    * flightLocalTime
+                    * earliest
+                    * latest
+                    * flightNumber
+
+
+        Note that this operation should be done in a transaction to ensure atomicity of the operation.
+
+        :param uid:
+        :return:
+        """
+        raise NotImplementedError
+
+
+class CityRideRequestService(Resource):
+
+    def get(self):
+        """
+        This method reads arguments from url string and creates a cityRideRequest.
+            For reference, see GET in airportRideRequest.
+
+        TODO implement
+        :return:
+        """
+
+        raise NotImplementedError
+
+
+def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
     """ Description
         This method fills a rideRequest dict that can later be used to call RideRequest().from_dict method.
 

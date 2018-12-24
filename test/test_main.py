@@ -2,7 +2,7 @@ import gravitate.main as main
 from flask.testing import FlaskClient
 from flask import request, jsonify
 
-from gravitate.services.ride_request_service import fillRideRequestDictWithForm
+from gravitate.services.ride_request_service import fill_ride_request_dict_with_form
 
 from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
     hasDuplicateEvent
@@ -310,13 +310,13 @@ class TestCreateRideRequestLogics(TestCase):
 
     # def testSaveRideRequestToDb(self):
     #     mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-    #     rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
+    #     rideRequestDict, _ = fill_ride_request_dict_with_form(mockForm, userId)
     #     result = RideRequest.from_dict(rideRequestDict)
     #     saveRideRequest(result)
 
     def testCreateRideRequest(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        result, _ = fillRideRequestDictWithForm(mockForm, userId)
+        result, _ = fill_ride_request_dict_with_form(mockForm, userId)
         valueExpected = RideRequest.from_dict({
 
             'rideCategory': 'airportRide',
