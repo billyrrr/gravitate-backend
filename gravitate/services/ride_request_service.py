@@ -17,7 +17,10 @@ from flask_restful import reqparse
 db = Context.db
 
 
-class AirportRideRequestService(Resource):
+class AirportRideRequestCreationService(Resource):
+    """
+    This class replaces web-form with reqparse for form validation.
+    """
 
     @service_utils.authenticate
     def post(self, uid):
@@ -85,13 +88,8 @@ class AirportRideRequestService(Resource):
         return responseDict, 200
 
 
-class AirportRideRequestCreationServiceReqParse(Resource):
-    """
-    This class replaces web-form with reqparse for form validation.
-    """
-
     @service_utils.authenticate
-    def post(self, uid):
+    def get(self, uid):
 
         userId = uid
 
@@ -244,6 +242,49 @@ class AirportRideRequestService(Resource):
         eventId = rideRequest.eventRef.id
 
         print("userId: {}, rideRequestId: {}, eventId: {}".format(userId, rideRequestId, eventId))
+
+        # Validate that the ride request is not matched to an orbit
+        requestCompletion = rideRequest.requestCompletion
+        if requestCompletion:
+            responseDict = {
+                "error": "Ride request has requestCompletion as True. Unmatch from an orbit first. "
+            }
+            return responseDict, 500
+
+        try:
+            # Delete in User's Event Schedule
+            EventScheduleGenericDao(userRef=userRef).delete_event_by_id(eventId)
+            # Delete in RideRequest Collection
+            RideRequestGenericDao().delete(rideRequestRef)
+            responseDict = {"success": True}
+
+        except Exception as e:
+            errStr = str(e)
+            responseDict = {"error": "Error occurred deleting rideRequest and eventSchedule: " + errStr}
+            return responseDict, 500
+
+        return responseDict, 200
+
+
+class DeleteRideRequestService(Resource):
+    """ Description
+        DEPRECATED: moved to DELETE '/rideRequests/$rideRequestId'
+        Deletes a ride request.
+    """
+
+    def post(self):
+        requestJson = request.get_json()
+        requestForm = json.loads(requestJson) if (
+                type(requestJson) != dict) else requestJson
+
+        userId = requestForm.get("userId", None)
+        userRef = UserDao().get_ref(userId)
+        eventId = requestForm.get("eventId", None)
+        rideRequestId = requestForm.get("rideRequestId", None)
+        rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+
+        responseDict = {}
+        rideRequest = RideRequestGenericDao().get(rideRequestRef)
 
         # Validate that the ride request is not matched to an orbit
         requestCompletion = rideRequest.requestCompletion

@@ -79,7 +79,7 @@ class RefactorTempTest(TestCase):
     def testCreateRideRequestTemp(self):
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
+        # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
         r = self.app.post(path='/testReqParse?'+urlencode(form),
                           headers=getAuthHeaders()
                           )
@@ -87,14 +87,13 @@ class RefactorTempTest(TestCase):
 
 
     def testNewRideRequestServiceTemp(self):
-        # form = FormDictFactory().create(returnDict=True)
-        # form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+        form = FormDictFactory().create(returnDict=True)
+        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        # r = self.app.post(path='/rideRequests?' + urlencode(form),
-        #                   headers=getAuthHeaders()
-        #                   )
-        # print(r.data)
-        rideRequestId = "3m6ViVtIWKfTDb6e6pBkLu1rGJrpgLEB"
+        r = self.app.post(path='/rideRequests?' + urlencode(form),
+                          headers=getAuthHeaders()
+                          )
+        rideRequestId = r.json["firestoreRef"]
         r = self.app.delete(path='/rideRequests'+ '/' + rideRequestId,
                           headers=getAuthHeaders()
                           )

@@ -32,7 +32,7 @@ from gravitate.config import Context
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.services.ride_request_service import AirportRideRequestCreationServiceReqParse, DeleteMatchService, AirportRideRequestService
+from gravitate.services.ride_request_service import AirportRideRequestCreationService, DeleteMatchService, AirportRideRequestService
 from gravitate.services.user_service import UserService
 from gravitate.services.utils import authenticate
 
@@ -72,7 +72,7 @@ class EndpointTestService(Resource):
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
 # api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
-api.add_resource(AirportRideRequestCreationServiceReqParse, '/rideRequests')
+api.add_resource(AirportRideRequestCreationService, '/rideRequests')
 api.add_resource(AirportRideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
