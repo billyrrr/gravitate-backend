@@ -86,6 +86,21 @@ class RefactorTempTest(TestCase):
         self.fail()
 
 
+    def testNewRideRequestServiceTemp(self):
+        # form = FormDictFactory().create(returnDict=True)
+        # form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+        # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
+        # r = self.app.post(path='/rideRequests?' + urlencode(form),
+        #                   headers=getAuthHeaders()
+        #                   )
+        # print(r.data)
+        rideRequestId = "3m6ViVtIWKfTDb6e6pBkLu1rGJrpgLEB"
+        r = self.app.delete(path='/rideRequests'+ '/' + rideRequestId,
+                          headers=getAuthHeaders()
+                          )
+        self.assertEqual(r.status_code, 200)
+
+
     def testDoNothing(self):
         self.fail()
 

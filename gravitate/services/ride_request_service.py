@@ -84,7 +84,8 @@ class AirportRideRequestService(Resource):
 
         return responseDict, 200
 
-class AirportRideRequestServiceReqParse(Resource):
+
+class AirportRideRequestCreationServiceReqParse(Resource):
     """
     This class replaces web-form with reqparse for form validation.
     """
@@ -216,25 +217,33 @@ class DeleteMatchService(Resource):
         return responseDict, 200
 
 
-class DeleteRideRequestService(Resource):
+class AirportRideRequestService(Resource):
     """ Description
         Deletes a ride request.
 
     """
 
-    def post(self):
-        requestJson = request.get_json()
-        requestForm = json.loads(requestJson) if (
-                type(requestJson) != dict) else requestJson
+    @service_utils.authenticate
+    def delete(self, rideRequestId, uid):
+        """
+        Replaces POST "/deleteRideRequest"
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        # requestJson = request.get_json()
+        # requestForm = json.loads(requestJson) if (
+        #         type(requestJson) != dict) else requestJson
 
-        userId = requestForm.get("userId", None)
+        userId = uid
         userRef = UserDao().get_ref(userId)
-        eventId = requestForm.get("eventId", None)
-        rideRequestId = requestForm.get("rideRequestId", None)
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
 
         responseDict = {}
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
+        eventId = rideRequest.eventRef.id
+
+        print("userId: {}, rideRequestId: {}, eventId: {}".format(userId, rideRequestId, eventId))
 
         # Validate that the ride request is not matched to an orbit
         requestCompletion = rideRequest.requestCompletion

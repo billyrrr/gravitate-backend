@@ -12,7 +12,7 @@ from gravitate.config import Context
 import warnings
 
 # Flag for whether main app is in TESTING mode
-TESTING_MODE = False
+TESTING_MODE = True
 if TESTING_MODE is True:
     warnings.warn("Testing mode is True. Set to False before release. ")
 
