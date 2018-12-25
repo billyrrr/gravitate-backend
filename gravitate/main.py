@@ -24,7 +24,6 @@ from google.auth.transport import requests
 
 # Firebase Admin SDK
 
-from firebase_admin import auth
 from gravitate.config import Context
 
 # APScheduler for automatic grouping per interval
@@ -32,7 +31,7 @@ from gravitate.config import Context
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.services.ride_request_service import AirportRideRequestCreationService, DeleteMatchService, \
+from gravitate.services.ride_request.ride_request_service import AirportRideRequestCreationService, DeleteMatchService, \
     AirportRideRequestService
 from gravitate.services.user_service import UserService
 from gravitate.services.utils import authenticate

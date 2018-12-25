@@ -1,30 +1,25 @@
 import gravitate.main as main
 from flask.testing import FlaskClient
-from flask import request, jsonify
 
-from gravitate.services.ride_request_service import fill_ride_request_dict_with_form
+from gravitate.services.ride_request.ride_request_service import fill_ride_request_dict_with_form
 
 from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
     hasDuplicateEvent
 
-from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm, RideRequestCreationValidateForm
-from gravitate.forms.user_creation_form import UserCreationForm, UserCreationValidateForm
+from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm
 
-from gravitate.models import RideRequest, AirportRideRequest, User
-from requests import request
+from gravitate.models import RideRequest, User
 
 from gravitate.data_access import UserDao, EventDao
 
 from google.cloud import firestore
 from firebase_admin import auth
-import firebase_admin
 
 from test.factory.form import FormDictFactory
 import test.factory as factory
 from unittest import TestCase
 import json
 from test import config
-import warnings
 from urllib.parse import urlencode
 
 db = config.Context.db
