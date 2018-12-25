@@ -24,6 +24,14 @@ class LocationGenericDao:
     def __init__(self):
         self.locationCollectionRef = db.collection('locations')
 
+    def get_ref_by_id(self, location_id):
+        """
+        This method returns location_ref by location_id.
+        :param location_id:
+        :return:
+        """
+        return self.locationCollectionRef.document(location_id)
+
     @staticmethod
     # @transactional
     def get_with_transaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:

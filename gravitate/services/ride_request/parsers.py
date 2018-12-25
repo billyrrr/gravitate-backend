@@ -14,3 +14,11 @@ airport_parser.add_argument('pickupAddress', type=str, help='Pickup Address', lo
 airport_parser.add_argument('toEvent', type=bool, help='whether the ride is heading to the event', location="json")
 airport_parser.add_argument('driverStatus', type=bool,
                             help="whether the user want to be considered as a driver for the event", location="json")
+
+
+"""
+RideRequest creation useCase: FL-3: Connecting Flight Using Flight Number
+"""
+mockJson = {
+    ""
+}

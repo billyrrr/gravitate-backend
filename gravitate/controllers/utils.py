@@ -1,5 +1,5 @@
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
-from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
+from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target, User
 from google.cloud.firestore import DocumentReference, Transaction, transactional
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, UserDao
 from . import eventscheduleutils
@@ -122,6 +122,40 @@ def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: i
     target = Target.create_airport_event_target(toEvent, earliestTimestamp, latestTimestamp)
 
     return target
+
+
+def get_pickup_address(userId) -> str:
+    """
+    This method returns the default pickup address of a user.
+    :param userId:
+    :return:
+    """
+    user: User = UserDao().get_user_by_id(userId)
+    pickup_address = user.pickupAddress
+    return pickup_address
+
+
+def get_event_ref_by_id(event_id: str) -> DocumentReference:
+    """
+    This method returns the event_ref by event_id.
+    :param eventId:
+    :return: DocumentReference of the event.
+    """
+    return EventDao().get_ref(event_id)
+
+
+def get_location_ref_by_id(location_id: str) -> DocumentReference:
+    """
+    This method return the location_ref by location_id.
+    :param location_id:
+    :return:
+    """
+    return LocationGenericDao().get_ref_by_id(location_id)
+
+
+def get_ride_request(d: dict) -> type[RideRequest]:
+    ride_request = RideRequest.from_dict(d)
+    return ride_request
 
 
 def getAirportLocation(airportCode) -> AirportLocation:

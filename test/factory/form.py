@@ -1,4 +1,4 @@
-class MockForm(object):
+class MockFl3Form(object):
 
     def __init__(self):
         self.earliest = None
@@ -16,7 +16,7 @@ class MockForm(object):
         return vars(self)
 
 
-class MockFormBuilder(MockForm):
+class MockFl3FormBuilder(MockFl3Form):
 
     def __init__(self):
         self.buildAirportInfo()
@@ -33,7 +33,7 @@ class MockFormBuilder(MockForm):
         raise NotImplementedError()
 
 
-class AMockFormBuilder(MockFormBuilder):
+class AMockFormBuilder(MockFl3FormBuilder):
 
     def buildAirportInfo(self):
         self.airportCode = "LAX"
@@ -78,7 +78,7 @@ class FormDictFactory:
         return BMockFormBuilder()
 
     def createFormNoEarliestLatest(self):
-        mockForm = MockFormBuilder()
+        mockForm = MockFl3FormBuilder()
         return mockForm
 
     def create(self, hasEarliestLatest=False, isE5L2=True, returnDict=True):
