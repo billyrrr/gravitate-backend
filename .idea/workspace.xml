@@ -7,6 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/gravitate/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/context.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/context.py" afterDir="false" />
     </list>
@@ -58,7 +59,7 @@
         <counts>
           <entry key="json" value="10" />
           <entry key="md" value="9" />
-          <entry key="py" value="468" />
+          <entry key="py" value="469" />
           <entry key="pyi" value="4" />
           <entry key="services" value="1" />
           <entry key="sh" value="5" />
@@ -71,7 +72,7 @@
           <entry key="JSON" value="10" />
           <entry key="Markdown" value="9" />
           <entry key="PLAIN_TEXT" value="7" />
-          <entry key="Python" value="468" />
+          <entry key="Python" value="469" />
           <entry key="PythonStub" value="4" />
           <entry key="YAML" value="1" />
         </counts>
@@ -80,16 +81,16 @@
         <counts>
           <entry key="dummy" value="112" />
           <entry key="md" value="1049" />
-          <entry key="py" value="26700" />
-          <entry key="txt" value="2824" />
+          <entry key="py" value="26785" />
+          <entry key="txt" value="2843" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1049" />
-          <entry key="PLAIN_TEXT" value="2936" />
-          <entry key="Python" value="26700" />
+          <entry key="PLAIN_TEXT" value="2955" />
+          <entry key="Python" value="26785" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -176,12 +177,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/context.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            <state relative-caret-position="168">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
               <folding>
-                <element signature="e#426#460#0" expanded="true" />
-                <marker date="1545736392341" expanded="true" signature="871:1250" ph="..." />
-                <marker date="1545736392341" expanded="true" signature="1209:1212" ph="..." />
+                <marker date="1545736608632" expanded="true" signature="660:714" ph="..." />
               </folding>
             </state>
           </provider>
@@ -592,13 +591,6 @@
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
     </task>
-    <task id="LOCAL-00030" summary="Reformat code">
-      <created>1545193890951</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1545193890951</updated>
-    </task>
     <task id="LOCAL-00031" summary="Add docs">
       <created>1545194254529</created>
       <option name="number" value="00031" />
@@ -935,19 +927,17 @@
       <option name="project" value="LOCAL" />
       <updated>1545736012454</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Add config classes">
+      <created>1545736399421</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1545736399421</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_main_RefactorTempTest_testCreateRideRequestsTemp - 2018.12.25 at 18h 32m 20s.xml">
-      <configuration name="pytest for test_main.RefactorTempTest.testCreateRideRequestsTemp" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_main_RefactorTempTest_testCreateRideRequestsTemp - 2018.12.25 at 18h 34m 40s.xml">
-      <configuration name="pytest for test_main.RefactorTempTest.testCreateRideRequestsTemp" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_main_RefactorTempTest_testCreateRideRequestsTemp - 2018.12.25 at 18h 37m 04s.xml">
-      <configuration name="pytest for test_main.RefactorTempTest.testCreateRideRequestsTemp" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_for_test_main_RefactorTempTest_testCreateRideRequestsTemp - 2018.12.25 at 18h 51m 22s.xml">
       <configuration name="pytest for test_main.RefactorTempTest.testCreateRideRequestsTemp" configurationId="tests" />
     </history-entry>
@@ -969,6 +959,15 @@
     <history-entry file="pytest_for_test_main_RefactorTempTest_testNewRideRequestServiceTemp - 2018.12.25 at 19h 06m 09s.xml">
       <configuration name="pytest for test_main.RefactorTempTest.testNewRideRequestServiceTemp" configurationId="tests" />
     </history-entry>
+    <history-entry file="pytest_for_test_main_RefactorTempTest_testNewRideRequestServiceTemp - 2018.12.25 at 19h 14m 07s.xml">
+      <configuration name="pytest for test_main.RefactorTempTest.testNewRideRequestServiceTemp" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_RefactorTempTest_testNewRideRequestServiceTemp - 2018.12.25 at 19h 15m 08s.xml">
+      <configuration name="pytest for test_main.RefactorTempTest.testNewRideRequestServiceTemp" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_main_RefactorTempTest_testNewRideRequestServiceTemp - 2018.12.25 at 19h 16m 44s.xml">
+      <configuration name="pytest for test_main.RefactorTempTest.testNewRideRequestServiceTemp" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="3569000" />
@@ -986,7 +985,7 @@
     <frame x="692" y="0" width="988" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3040331" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3040331" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -995,7 +994,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49777997" weight="0.327551" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.26836735" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.26836735" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49975333" weight="0.3989796" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1025,7 +1024,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Switch to decorator for auth" />
     <MESSAGE value="Rename as AuthenticatedResource" />
     <MESSAGE value="Fix test" />
     <MESSAGE value="Relocate authenticate decorator" />
@@ -1050,7 +1048,8 @@
     <MESSAGE value="Move reqparse into separate submodule" />
     <MESSAGE value="Add docs" />
     <MESSAGE value="Rename config to context" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename config to context" />
+    <MESSAGE value="Add config classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add config classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1067,9 +1066,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app.yaml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/scripts/populate_locations.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="604">
@@ -1416,14 +1412,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/context.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="168">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
           <folding>
-            <element signature="e#426#460#0" expanded="true" />
-            <marker date="1545736392341" expanded="true" signature="871:1250" ph="..." />
-            <marker date="1545736392341" expanded="true" signature="1209:1212" ph="..." />
+            <marker date="1545736608632" expanded="true" signature="660:714" ph="..." />
           </folding>
         </state>
       </provider>

@@ -10,8 +10,6 @@ Usage:
 """
 
 from google.cloud import firestore
-from google.auth.transport import requests
-from google.oauth2.id_token import verify_firebase_token
 import logging
 
 # [START] Firebase Admin SDK
@@ -19,30 +17,12 @@ import logging
 import firebase_admin
 from firebase_admin import credentials, auth
 
-
 #
 # # Original Firebase set-up certs
 #
+import gravitate.config as gravitate_config
 
-class GravitateConfig:
-    DEBUG = None
-    FIREBASE_CERTIFICATE_JSON_PATH = None
-    APP_NAME = None
-
-
-class DevelopmentGravitateConfig(GravitateConfig):
-    DEBUG = True
-    FIREBASE_CERTIFICATE_JSON_PATH = "gravitate/gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json"
-    APP_NAME = "gravitate-dev"
-
-
-class StagingGravitateConfig(GravitateConfig):
-    FIREBASE_CERTIFICATE_JSON_PATH = "gravitate/gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json"
-    APP_NAME = "gravitate-e5d01"
-
-
-config = DevelopmentGravitateConfig
-
+config = gravitate_config.DevelopmentGravitateConfig
 
 # New project-id: gravitate-dev certs
 # Note that "../gravitate/*" works by trial and error so that the path works both at "/gravitate" and "/test"
