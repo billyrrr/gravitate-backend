@@ -20,7 +20,6 @@ import test.factory as factory
 from unittest import TestCase
 import json
 from test import context
-from urllib.parse import urlencode
 
 db = context.Context.db
 firebaseApp = context.Context.firebaseApp
@@ -39,82 +38,15 @@ userDict: dict = {
 }
 
 
-def getAuthHeaders():
+def getMockAuthHeaders(uid="testuid1"):
     # user = auth.get_user(uid)
     # userIdToken = user.tokens_valid_after_timestamp
     # # userIdToken = auth.create_custom_token(uid=uid, app=firebaseApp)
     # userIdTokenMock = userIdToken
     # warnings.warn("Note that userIdTokenMock is temporary and the test may fail when the token is no longer valid.")
-    userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6Ikxlb24gV3UiLCJwaWN0dXJlIjoiaHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vd2VicC9nYWxsZXJ5LzEuanBnIiwiYXVkIjoiZ3Jhdml0YXRlLWU1ZDAxIiwiYXV0aF90aW1lIjoxNTQ0MDUxMzkyLCJ1c2VyX2lkIjoiRXA3V0NqWmF0YWdkMU5yNTBUb05rSXA0V1d0MiIsInN1YiI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJpYXQiOjE1NDQwNTQ2OTMsImV4cCI6MTU0NDA1ODI5MywiZW1haWwiOiJhbHcwNjlAdWNzZC5lZHUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfbnVtYmVyIjoiKzE3Nzc3Nzc3Nzc3IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjk5NDY0Mzg1Nzk5Nzc5NDAxMyJdLCJwaG9uZSI6WyIrMTc3Nzc3Nzc3NzciXSwiZW1haWwiOlsiYWx3MDY5QHVjc2QuZWR1Il19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.UOJMNnsj2waK1BXqHksPeZJnu1RyEdVSMPWKpu0ZzOYy5HJCeHByJUeF_y-bnKWAiPx5EwcT4AbrDDmDCYz1Y4U2w91xtSnfdmlDkXk1jrtt39VWVkTeNpBEKF0GQGGoPO8xHuWVO8kOmUpmUW9ScC9SwyklfNwx_hOPHwjWFkZNoGWtYPS-oRS7w65t5-ccDAml0cqCwvoLoYBSGmHyQ9pN3CFzYAkGbkHNltV_y9ayyNq6TN-ubJ4mVeI5aePip0jklGs4oiSuyr4UJpYTrSWpPySMk9Yh9GVQQev1h4bXzHw5eovfnkJCrek9aanMaxXQnyouBico3dUVsnn9mQ"
+    userIdTokenMock = uid  # For mocking decoding token as uid
     headers = {'Authorization': userIdTokenMock}
     return headers
-
-
-class RefactorTempTest(TestCase):
-
-    def setUp(self):
-        main.app.testing = True
-        self.app = main.app.test_client()
-        self.userIds = ["KlRLbJCAORfbZxCm8ou1SEBJLt62", "MlmgazO6xhO7c2PoTFsLy5K8v5k2"]
-
-    def testCreateRideRequestsTemp(self):
-        # Create new rideRequests
-        for userId in self.userIds:
-            form = FormDictFactory().create(returnDict=True)
-            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-            form["testUserId"] = userId
-            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/rideRequests', json=form, headers=getAuthHeaders())
-            print(r.json)
-            self.fail()
-
-    def testDeleteRideRequestsTemp(self):
-        rideRequestId = 'tNwyw9rYdoAacTsKwGK8mZDPrb2D39tV'
-        r = self.app.delete(path='/rideRequests' + '/' + rideRequestId,
-                            headers=getAuthHeaders())
-        self.assertEqual(r.status_code, 200)
-
-    def testGroupRideRequestsTemp(self):
-        r = self.app.post(path='/devForceMatch',
-                          json=json.dumps({"operationMode": "all"})
-                          )
-
-    def testCreateRideRequestTemp(self):
-        form = FormDictFactory().create(returnDict=True)
-        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/testReqParse?' + urlencode(form),
-                          headers=getAuthHeaders()
-                          )
-        self.fail()
-
-    def testNewRideRequestServiceTemp(self):
-        form = FormDictFactory().create(returnDict=True)
-        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/rideRequests',
-                          json=form,
-                          headers=getAuthHeaders()
-                          )
-        rideRequestId = r.json["firestoreRef"]
-        r = self.app.delete(path='/rideRequests' + '/' + rideRequestId,
-                            headers=getAuthHeaders()
-                            )
-        self.assertEqual(r.status_code, 200)
-
-    def testDoNothing(self):
-        self.fail()
-
-    def testCreateRideRequest(self):
-        form = FormDictFactory().create(returnDict=True)
-        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(
-            path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
-        print(r.data)
-        self.fail()
-        assert r.status_code == 200
-        # assert 'Hello World' in r.data.decode('utf-8')
 
 
 class MainAppTestCase(TestCase):
@@ -132,7 +64,7 @@ class MainAppTestCase(TestCase):
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
         r = self.app.post(
-            path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
+            path='/rideRequests', json=json.dumps(form), headers=getMockAuthHeaders())
         print(r.data)
         self.fail()
         assert r.status_code == 200
@@ -144,18 +76,18 @@ class MainAppTestCase(TestCase):
 
     def testAuth(self):
         userIdMock = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
-        mockHeaders = getAuthHeaders()
+        mockHeaders = getMockAuthHeaders()
         r = self.app.post(path='/endpointTest', json=json.dumps({'testAuth': True}), headers=mockHeaders)
         responseDict: dict = json.loads(r.data)
         uid = responseDict['uid']
         self.assertEqual(uid, userIdMock)
 
     def testCreateRideRequestFrontend(self):
-        r = self.app.post(path='/rideRequests', json=self.newJson, headers=getAuthHeaders())
+        r = self.app.post(path='/rideRequests', json=self.newJson, headers=getMockAuthHeaders())
         self.assertEqual(r.status_code, 400)
 
     def testCreateRideRequestFailedFrontend(self):
-        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson, headers=getAuthHeaders())
+        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson, headers=getMockAuthHeaders())
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
@@ -179,7 +111,7 @@ class MainAppTestCase(TestCase):
 
     def testEndpointTest(self):
         postJson = {'key1': 'val1a'}
-        r = self.app.post(path='/endpointTest', json=postJson, headers=getAuthHeaders())
+        r = self.app.post(path='/endpointTest', json=postJson, headers=getMockAuthHeaders())
         assert r.status_code == 200
         self.fail()
 
@@ -249,7 +181,7 @@ class TestEndpoints(TestCase):
             "eventId": "CslkxeIBABOx39PXiwpT",
             "rideRequestId": "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
         }
-        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
+        r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
         self.assertEqual(r.status_code, 200, "rideRequest should be safely deleted")
 
     def testUnmatchRideRequest(self):
@@ -259,7 +191,7 @@ class TestEndpoints(TestCase):
         """
         requestDict = {}
         path = "/rideRequests/{}/unmatch".format(factory.mock1["rideRequestId"])
-        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
+        r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
 
 
 class TestCreationLogicsUtils(TestCase):
@@ -452,6 +384,6 @@ class DeleteRideRequestServiceTest(TestCase):
 
     def testDeleteRideRequest(self):
         r = self.app.post(
-            path='/deleteRideRequest', json=self.newJson, headers=getAuthHeaders())
+            path='/deleteRideRequest', json=self.newJson, headers=getMockAuthHeaders())
         print(r.response)
         self.assertEqual(r.status_code, 200)

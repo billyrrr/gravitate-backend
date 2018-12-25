@@ -58,7 +58,7 @@ class AirportRideRequestCreationService(Resource):
         if not location:
             errorResponseDict = {
                 "error": "invalid airport code and datetime combination or error finding airport location in backend",
-                "originalForm": form
+                "originalArgs": args
             }
             return errorResponseDict, 400
 
@@ -72,7 +72,7 @@ class AirportRideRequestCreationService(Resource):
         if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
-                "originalForm": form
+                "originalArgs": args
             }
             return errorResponseDict, 400
         # Ends validation tasks

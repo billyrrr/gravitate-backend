@@ -22,8 +22,10 @@ if testing is True:
 auth_verify_id_token = None
 if testing:
     def mock_auth_verify_id_token(*args, **kwargs):
+        mockUid = args[0]
+        warnings.warn("@authenticate (decorator for service methods) is returning uid as {}. ".format(mockUid))
         return {
-            "uid": "testuid1"
+            "uid": mockUid
         }
     auth_verify_id_token = mock_auth_verify_id_token
 else:
