@@ -22,7 +22,7 @@ from firebase_admin import credentials, auth
 #
 import gravitate.config as gravitate_config
 
-config = gravitate_config.DevelopmentGravitateConfig
+config = gravitate_config.TestingGravitateConfig
 
 # New project-id: gravitate-dev certs
 # Note that "../gravitate/*" works by trial and error so that the path works both at "/gravitate" and "/test"
@@ -32,6 +32,7 @@ config = gravitate_config.DevelopmentGravitateConfig
 class Context():
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
+    debug = None
     _cred = None
     __instance = None
 
@@ -58,9 +59,24 @@ class Context():
 
         :rtype:
         """
+        cls._reloadDebugFlag(config.DEBUG)
+        cls._reloadTestingFlag(config.TESTING)
         cls._reloadFirebaseApp(config.FIREBASE_CERTIFICATE_JSON_PATH)
         cls._reloadFirestoreClient(config.FIREBASE_CERTIFICATE_JSON_PATH)
         return cls
+
+    @classmethod
+    def _reloadDebugFlag(cls, debug):
+        cls.debug = debug
+
+    @classmethod
+    def _reloadTestingFlag(cls, testing):
+        """
+        When testing is set to True, all authenticate decorators in services returns uid as "testuid1"
+        :param testing:
+        :return:
+        """
+        cls.testing = testing
 
     @classmethod
     def _reloadFirebaseApp(cls, certificatePath):

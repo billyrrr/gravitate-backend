@@ -1,7 +1,7 @@
 import gravitate.main as main
 from flask.testing import FlaskClient
 
-from gravitate.services.ride_request.ride_request_service import fill_ride_request_dict_with_form
+from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form
 
 from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
     hasDuplicateEvent
