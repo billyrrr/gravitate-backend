@@ -32,10 +32,10 @@ from gravitate.config import Context
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.services.ride_request_service import AirportRideRequestCreationService, DeleteMatchService, AirportRideRequestService
+from gravitate.services.ride_request_service import AirportRideRequestCreationService, DeleteMatchService, \
+    AirportRideRequestService
 from gravitate.services.user_service import UserService
 from gravitate.services.utils import authenticate
-
 
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(refreshGroupAll, 'interval', minutes=1)
@@ -48,9 +48,7 @@ db = Context.db
 parser = reqparse.RequestParser()
 
 
-
 class EndpointTestService(Resource):
-
     method_decorators = [authenticate]
 
     def post(self, uid):
@@ -77,7 +75,6 @@ api.add_resource(AirportRideRequestService, '/rideRequests/<string:rideRequestId
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
-
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])

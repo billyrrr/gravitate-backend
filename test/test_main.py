@@ -68,8 +68,10 @@ class RefactorTempTest(TestCase):
             form = FormDictFactory().create(returnDict=True)
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
-            r = self.app.post(
-                path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
+            r = self.app.post( # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+                path='/rideRequests', json=form, headers=getAuthHeaders())
+            print(r.json)
+            self.fail()
 
     def testGroupRideRequestsTemp(self):
         r = self.app.post(path='/devForceMatch',

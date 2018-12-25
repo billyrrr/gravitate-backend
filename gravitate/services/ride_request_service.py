@@ -16,7 +16,6 @@ from flask_restful import reqparse
 
 db = Context.db
 
-
 class AirportRideRequestCreationService(Resource):
     """
     This class replaces web-form with reqparse for form validation.
@@ -24,38 +23,46 @@ class AirportRideRequestCreationService(Resource):
 
     @service_utils.authenticate
     def post(self, uid):
-        warnings.warn("POST /rideRequests/ is deprecated. Use GET /rideRequests?+params instead. ")
 
         # Verify Firebase auth.
         userId = uid
 
-        # Retrieve JSON
-        requestJson = request.get_json()
-        requestForm = json.loads(requestJson) if (
-                type(requestJson) != dict) else requestJson
+        # Parse field values from url path
+        parser = reqparse.RequestParser()
+        parser.add_argument('flightNumber', type=str, help='Flight Number', location="json")
+        parser.add_argument('airportCode', type=str, help='Airport Code', location="json")
+        parser.add_argument('flightLocalTime', type=str, help='Flight Local Time ISO8601', location="json")
+        parser.add_argument('pickupAddress', type=str, help='Pickup Address', location="json")
+        parser.add_argument('toEvent', type=bool, help='whether the ride is heading to the event', location="json")
+        parser.add_argument('driverStatus', type=bool,
+                            help="whether the user want to be considered as a driver for the event", location="json")
+        args = parser.parse_args()
 
-        # Create WTForm for validating the fields
-        validateForm = RideRequestCreationValidateForm(
-            data=requestForm)
+        # Retrieve JSON
+        form = AirportRideRequestCreationForm.from_dict(args)
+
+        # # Create WTForm for validating the fields
+        # validateForm = RideRequestCreationValidateForm(
+        #     data=requestForm)
 
         # # Mock userId and eventId. Delete before release
         # userId = 'SQytDq13q00e0N3H4agR'
         # warnings.warn("using test user ids, delete before release")
 
-        if not validateForm.validate():
-            print(validateForm.errors)
-            return validateForm.errors, 400
-
-        # Transfer data from validateForm to an internal representation of the form
-        form = AirportRideRequestCreationForm()
-        validateForm.populate_obj(form)
+        # if not validateForm.validate():
+        #     print(validateForm.errors)
+        #     return validateForm.errors, 400
+        #
+        # # Transfer data from validateForm to an internal representation of the form
+        # form = AirportRideRequestCreationForm()
+        # validateForm.populate_obj(form)
 
         rideRequestDict, location = fill_ride_request_dict_with_form(
             form, userId)
         if not location:
             errorResponseDict = {
                 "error": "invalid airport code and datetime combination or error finding airport location in backend",
-                "originalForm": requestForm
+                "originalForm": form
             }
             return errorResponseDict, 400
 
@@ -69,7 +76,7 @@ class AirportRideRequestCreationService(Resource):
         if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
-                "originalForm": requestForm
+                "originalForm": form
             }
             return errorResponseDict, 400
         # Ends validation tasks
@@ -88,67 +95,6 @@ class AirportRideRequestCreationService(Resource):
 
         return responseDict, 200
 
-
-    @service_utils.authenticate
-    def get(self, uid):
-        """
-        This method reads arguments from url string and creates an airportRideRequest.
-
-        :param uid:
-        :return:
-        """
-
-        userId = uid
-
-        # Parse field values from url path
-        parser = reqparse.RequestParser()
-        parser.add_argument('flightNumber', type=str, help='Flight Number')
-        parser.add_argument('airportCode', type=str, help='Airport Code')
-        parser.add_argument('flightLocalTime', type=str, help='Flight Local Time ISO8601')
-        parser.add_argument('pickupAddress', type=str, help='Pickup Address')
-        parser.add_argument('toEvent', type=bool, help='whether the ride is heading to the event')
-        parser.add_argument('driverStatus', type=bool,
-                            help="whether the user want to be considered as a driver for the event")
-        args = parser.parse_args()
-        form = AirportRideRequestCreationForm.from_dict(args)
-
-        rideRequestDict, location = fill_ride_request_dict_with_form(
-            form, userId)
-        if not location:
-            errorResponseDict = {
-                "error": "invalid airport code and datetime combination or error finding airport location in backend",
-                "originalReq": request.args.to_dict()
-            }
-            return errorResponseDict, 400
-
-        # Create RideRequest Object
-        rideRequest: AirportRideRequest = RideRequest.from_dict(
-            rideRequestDict)
-
-        # Do Validation Tasks before saving rideRequest
-        # 1. Check that rideRequest is not submitted by the same user
-        #       for the flight on the same day already
-        if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
-            errorResponseDict = {
-                "error": "Ride request on the same day (for the same event) already exists",
-                "originalForm": request.args.to_dict()
-            }
-            return errorResponseDict, 400
-        # Ends validation tasks
-
-        # Starts database operations to (save rideRequest and update user's eventSchedule)
-        transaction = db.transaction()
-
-        # Transactional business logic for adding rideRequest
-        utils.addRideRequest(transaction, rideRequest, location, userId)
-
-        # Save write result
-        transaction.commit()
-
-        # rideRequest Response
-        responseDict = {"firestoreRef": rideRequest.get_firestore_ref().id}
-
-        return responseDict, 200
 
     @service_utils.authenticate
     def patch(self, uid):
