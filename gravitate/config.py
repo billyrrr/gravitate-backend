@@ -8,7 +8,7 @@ Reference:
 
 class GravitateConfig:
     """
-    TESTING: (authenticate decorator will return uid as "testuid1")
+    TESTING: (authenticate decorator will return uid as the value of header["Authentication"])
         Enable testing mode. Exceptions are propagated rather than handled by the the app’s error handlers.
         Extensions may also change their behavior to facilitate easier testing.
         You should enable this in your own tests.
