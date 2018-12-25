@@ -49,6 +49,7 @@ def getAuthHeaders():
     headers = {'Authorization': userIdTokenMock}
     return headers
 
+
 class RefactorTempTest(TestCase):
 
     def setUp(self):
@@ -56,17 +57,22 @@ class RefactorTempTest(TestCase):
         self.app = main.app.test_client()
         self.userIds = ["KlRLbJCAORfbZxCm8ou1SEBJLt62", "MlmgazO6xhO7c2PoTFsLy5K8v5k2"]
 
-
     def testCreateRideRequestsTemp(self):
         # Create new rideRequests
         for userId in self.userIds:
             form = FormDictFactory().create(returnDict=True)
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
-            r = self.app.post( # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
                 path='/rideRequests', json=form, headers=getAuthHeaders())
             print(r.json)
             self.fail()
+
+    def testDeleteRideRequestsTemp(self):
+        rideRequestId = 'tNwyw9rYdoAacTsKwGK8mZDPrb2D39tV'
+        r = self.app.delete(path='/rideRequests' + '/' + rideRequestId,
+                            headers=getAuthHeaders())
+        self.assertEqual(r.status_code, 200)
 
     def testGroupRideRequestsTemp(self):
         r = self.app.post(path='/devForceMatch',
@@ -77,11 +83,10 @@ class RefactorTempTest(TestCase):
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/testReqParse?'+urlencode(form),
+        r = self.app.post(path='/testReqParse?' + urlencode(form),
                           headers=getAuthHeaders()
                           )
         self.fail()
-
 
     def testNewRideRequestServiceTemp(self):
         form = FormDictFactory().create(returnDict=True)
@@ -91,15 +96,13 @@ class RefactorTempTest(TestCase):
                           headers=getAuthHeaders()
                           )
         rideRequestId = r.json["firestoreRef"]
-        r = self.app.delete(path='/rideRequests'+ '/' + rideRequestId,
-                          headers=getAuthHeaders()
-                          )
+        r = self.app.delete(path='/rideRequests' + '/' + rideRequestId,
+                            headers=getAuthHeaders()
+                            )
         self.assertEqual(r.status_code, 200)
-
 
     def testDoNothing(self):
         self.fail()
-
 
     def testCreateRideRequest(self):
         form = FormDictFactory().create(returnDict=True)

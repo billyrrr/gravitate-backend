@@ -1,3 +1,10 @@
+"""
+Author: Leon Wu, Zixuan Rao
+
+This module implements the service for creating and managing rideRequests.
+
+"""
+
 import json
 
 from firebase_admin import auth
@@ -10,7 +17,7 @@ from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleG
 from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm, AirportRideRequestCreationForm
 from gravitate.models import AirportRideRequest, RideRequest, AirportLocation
 import gravitate.services.utils as service_utils
-from . import parser as ride_request_parser
+from . import parsers as ride_request_parsers
 
 import warnings
 
@@ -18,17 +25,17 @@ import warnings
 db = Context.db
 
 class AirportRideRequestCreationService(Resource):
+
     """
     This class replaces web-form with reqparse for form validation.
     """
-
     @service_utils.authenticate
     def post(self, uid):
 
         # Verify Firebase auth.
         userId = uid
 
-        args = ride_request_parser.airport_parser.parse_args()
+        args = ride_request_parsers.airport_parser.parse_args()
 
         # Retrieve JSON
         form = AirportRideRequestCreationForm.from_dict(args)
