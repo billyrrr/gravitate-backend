@@ -1,3 +1,5 @@
+from typing import Type
+
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target, User
 from google.cloud.firestore import DocumentReference, Transaction, transactional
@@ -153,7 +155,7 @@ def get_location_ref_by_id(location_id: str) -> DocumentReference:
     return LocationGenericDao().get_ref_by_id(location_id)
 
 
-def get_ride_request(d: dict) -> type[RideRequest]:
+def get_ride_request(d: dict) -> Type[RideRequest]:
     ride_request = RideRequest.from_dict(d)
     return ride_request
 
@@ -178,14 +180,14 @@ def findEvent(flight_local_time) -> DocumentReference:
     """
 
     # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = _as_timestamp(flight_local_time)
+    eventTime = local_time_as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
     event = EventDao().find_by_timestamp(eventTime, "airport")
 
     return event.get_firestore_ref()
 
 
-def _as_timestamp(flight_local_time):
+def local_time_as_timestamp(flight_local_time):
     tz = pytz.timezone("America/Los_Angeles")
     local_datetime = iso8601.parse_date(flight_local_time, default_timezone=None)
     utc_datetime = tz.localize(local_datetime)  # TODO: test DST

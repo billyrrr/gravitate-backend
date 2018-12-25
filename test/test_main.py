@@ -1,7 +1,7 @@
 import gravitate.main as main
 from flask.testing import FlaskClient
 
-from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form
+from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form, fill_ride_request_dict_builder_regression
 
 from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
     hasDuplicateEvent
@@ -247,9 +247,38 @@ class TestCreateRideRequestLogics(TestCase):
     #     result = RideRequest.from_dict(rideRequestDict)
     #     saveRideRequest(result)
 
-    def testCreateRideRequest(self):
+    def testFillRideRequestDict(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         result, _ = fill_ride_request_dict_with_form(mockForm, userId)
+        valueExpected = RideRequest.from_dict({
+
+            'rideCategory': 'airportRide',
+            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            'driverStatus': False,
+            'orbitRef': None,
+            'target': {'eventCategory': 'airportRide',
+                       'toEvent': True,
+                       'arriveAtEventTime':
+                           {'earliest': 1545058800, 'latest': 1545069600}},
+            'eventRef': db.document('events', 'testeventid1'),
+            'userId': 'SQytDq13q00e0N3H4agR',
+            'hasCheckedIn': False,
+            'pricing': 987654321,
+            "baggages": dict(),
+            "disabilities": dict(),
+            'flightLocalTime': "2018-12-17T12:00:00.000",
+            'flightNumber': "DL89",
+            "airportLocation": db.document("locations", "testairportlocationid1"),
+            "requestCompletion": False
+
+        }).to_dict()
+        self.assertDictEqual(valueExpected, result)
+        self.assertIsNotNone(result["eventRef"])
+        self.assertIsNotNone(result["airportLocation"])
+
+    def testFillRideRequestDictNew(self):
+        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
+        result, _ = fill_ride_request_dict_builder_regression(mockForm, userId)
         valueExpected = RideRequest.from_dict({
 
             'rideCategory': 'airportRide',
