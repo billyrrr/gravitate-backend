@@ -8,9 +8,9 @@ from typing import Type
 from . import EventDao
 from gravitate.models import AirportEventSchedule
 import warnings
-from gravitate import config
+from gravitate import context
 
-CTX = config.Context
+CTX = context.Context
 
 db = CTX.db
 

@@ -2,12 +2,12 @@ from gravitate.controllers import groupingutils
 from gravitate.models import Orbit, Event, Location, RideRequest, Target, ToEventTarget
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao, UserDao
 from gravitate.controllers import utils
-from gravitate import config
+from gravitate import context
 from gravitate.controllers import fcmessaging, eventscheduleutils
 import warnings
 from google.cloud.firestore import Transaction, transactional, DocumentReference
 
-db = config.Context.db
+db = context.Context.db
 
 
 def groupMany(rideRequestIds: list):

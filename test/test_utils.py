@@ -1,7 +1,7 @@
 import unittest
 import gravitate.controllers.utils as controller_utils
 import json
-from test import config
+from test import context
 import datetime
 import iso8601
 

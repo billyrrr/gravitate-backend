@@ -11,7 +11,7 @@ from firebase_admin import auth
 from flask import request
 from flask_restful import Resource
 
-from gravitate.config import Context
+from gravitate.context import Context
 from gravitate.controllers import utils, eventscheduleutils, grouping
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
 from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm, AirportRideRequestCreationForm

@@ -24,7 +24,7 @@ from google.auth.transport import requests
 
 # Firebase Admin SDK
 
-from gravitate.config import Context
+from gravitate.context import Context
 
 # APScheduler for automatic grouping per interval
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429

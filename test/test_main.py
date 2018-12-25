@@ -19,15 +19,15 @@ from test.factory.form import FormDictFactory
 import test.factory as factory
 from unittest import TestCase
 import json
-from test import config
+from test import context
 from urllib.parse import urlencode
 
-db = config.Context.db
-firebaseApp = config.Context.firebaseApp
+db = context.Context.db
+firebaseApp = context.Context.firebaseApp
 
 userId = 'SQytDq13q00e0N3H4agR'
 
-cred = config.Context._cred
+cred = context.Context._cred
 
 userDict: dict = {
     'uid': 'KlRLbJCAORfbZxCm8ou1SEBJLt62',
@@ -92,7 +92,8 @@ class RefactorTempTest(TestCase):
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/rideRequests?' + urlencode(form),
+        r = self.app.post(path='/rideRequests',
+                          json=form,
                           headers=getAuthHeaders()
                           )
         rideRequestId = r.json["firestoreRef"]
@@ -410,7 +411,7 @@ class UserDAOTest(TestCase):
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("1GFLeGxBaaUvudqh3XYbFv2sRHx2", app=config.Context.firebaseApp)
+        user = auth.get_user("1GFLeGxBaaUvudqh3XYbFv2sRHx2", app=context.Context.firebaseApp)
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -422,7 +423,7 @@ class FirebaseUserTest(TestCase):
                          phone_number="+17777777779",
                          display_name="Zixuan Rao",
                          disabled=False,
-                         app=config.Context.firebaseApp
+                         app=context.Context.firebaseApp
                          )
 
 

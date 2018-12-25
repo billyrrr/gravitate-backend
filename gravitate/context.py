@@ -1,6 +1,6 @@
 """
 Author: Zixuan Rao
-Reference: https://github.com/Amsterdam/subsidieservice/blob/master/subsidy_service/subsidy_service/config.py
+Reference: https://github.com/Amsterdam/subsidieservice/blob/master/subsidy_service/subsidy_service/context.py
 
 Usage:
 1. In testing or production, initialize Context singleton first by calling config.Context.read() in __init__.py of caller package

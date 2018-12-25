@@ -1,7 +1,7 @@
-from gravitate import config
+from gravitate import context
 import gravitate.models as models
 
-db = config.Context.db
+db = context.Context.db
 
 
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",

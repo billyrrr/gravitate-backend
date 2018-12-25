@@ -2,10 +2,10 @@ import unittest
 from gravitate.controllers.eventscheduleutils import getMemberProfilePhotoUrls
 from google.cloud.firestore import DocumentReference, DocumentSnapshot
 from gravitate.models.orbit import Orbit
-from test import config
+from test import context
 
-CTX = config.Context
-auth = config.auth
+CTX = context.Context
+auth = context.auth
 
 db = CTX.db
 

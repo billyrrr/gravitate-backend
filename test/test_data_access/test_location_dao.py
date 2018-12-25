@@ -1,10 +1,10 @@
 import unittest
 from gravitate.data_access import LocationGenericDao
 from google.cloud.firestore import Transaction, transactional
-from gravitate import config
+from gravitate import context
 import test.factory.model as model
 
-db = config.Context.db
+db = context.Context.db
 
 
 class LocationDAOTest(unittest.TestCase):

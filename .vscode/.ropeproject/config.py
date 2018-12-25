@@ -1,4 +1,4 @@
-# The default ``config.py``
+# The default ``context.py``
 # flake8: noqa
 
 

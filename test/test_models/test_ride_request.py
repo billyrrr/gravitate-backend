@@ -1,14 +1,14 @@
 import unittest
 from gravitate.models import AirportRideRequest, RideRequest
 import json
-from test import config
+from test import context
 
-db = config.Context.db
+db = context.Context.db
 
 
 class RideRequestTest(unittest.TestCase):
     def setUp(self):
-        self.db = config.Context.db
+        self.db = context.Context.db
 
         JSON_FILENAME = 'rideRequest_1.json'
         with open('jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:

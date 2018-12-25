@@ -7,10 +7,10 @@ import google
 from typing import Type
 from gravitate.models import Location, AirportLocation, UcLocation
 import warnings
-from gravitate import config
+from gravitate import context
 from functools import partial
 
-CTX = config.Context
+CTX = context.Context
 
 db = CTX.db
 

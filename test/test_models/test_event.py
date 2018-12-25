@@ -1,9 +1,9 @@
 import unittest
 from gravitate.models import Event
-from test import config
+from test import context
 from test.factory import eventDict
 
-db = config.Context.db
+db = context.Context.db
 
 
 class EventModelTest(unittest.TestCase):
