@@ -12,7 +12,7 @@ from flask_restful import Resource
 
 from gravitate.context import Context
 from gravitate.controllers import utils, grouping
-from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
+from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportRideRequest, RideRequest
 import gravitate.services.utils as service_utils
@@ -64,15 +64,17 @@ class AirportRideRequestCreationService(Resource):
         #     return errorResponseDict, 400
 
         # Create RideRequest Object
-        rideRequest: AirportRideRequest = creation_utils.AirportRideRequestBuilder()\
+        builder = creation_utils.AirportRideRequestBuilder()
+        rideRequest: AirportRideRequest = builder\
             .set_with_form_and_user_id(args, userId)\
             .build_airport_ride_request()\
             .export_as_class(AirportRideRequest)
-
+        location = LocationGenericDao.get(rideRequest.airportLocation)
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user
         #       for the flight on the same day already
+        # TODO: move to transactional logic for better atomicity
         if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
