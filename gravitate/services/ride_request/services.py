@@ -74,7 +74,7 @@ class AirportRideRequestCreationService(Resource):
         # 1. Check that rideRequest is not submitted by the same user
         #       for the flight on the same day already
         # TODO: move to transactional logic for better atomicity
-        if utils.hasDuplicateEvent(rideRequest.userId, rideRequest.eventRef):
+        if utils.hasDuplicateEvent(rideRequest.user_id, rideRequest.event_ref):
             errorResponseDict = {
                 "error": "Ride request on the same day (for the same event) already exists",
                 "originalArgs": args

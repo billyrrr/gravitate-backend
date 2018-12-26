@@ -12,30 +12,30 @@ class Orbit(FirestoreObject):
     """
 
     @staticmethod
-    def from_dict_and_reference(orbitDict, orbitRef):
-        orbit = Orbit.from_dict(orbitDict)
-        orbit.set_firestore_ref(orbitRef)
+    def from_dict_and_reference(orbit_dict, orbit_ref):
+        orbit = Orbit.from_dict(orbit_dict)
+        orbit.set_firestore_ref(orbit_ref)
         return orbit
 
-    def __init__(self, orbitCategory, eventRef, userTicketPairs, chatroomRef, costEstimate, status):
+    def __init__(self, orbit_category, event_ref, user_ticket_pairs, chatroom_ref, cost_estimate, status):
         """ Description
         This function initializes the Orbit Object
         Note that this function should not be called directly
         
         :param self:
-        :param orbitCategory:
-        :param eventRef:
-        :param userTicketPairs:
-        :param chatroomRef:
-        :param costEstimate:
+        :param orbit_category:
+        :param event_ref:
+        :param user_ticket_pairs:
+        :param chatroom_ref:
+        :param cost_estimate:
         :param status: "1" indicates not ready, "2" indicates ready
         """
 
-        self.orbitCategory = orbitCategory
-        self.eventRef = eventRef
-        self.userTicketPairs = userTicketPairs
-        self.chatroomRef = chatroomRef
-        self.costEstimate = costEstimate
+        self.orbit_category = orbit_category
+        self.event_ref = event_ref
+        self.user_ticket_pairs = user_ticket_pairs
+        self.chatroom_ref = chatroom_ref
+        self.cost_estimate = cost_estimate
         self.status = status
 
     @staticmethod
@@ -45,23 +45,23 @@ class Orbit(FirestoreObject):
     
         :param orbitDict:
         """
-        orbitCategory = orbitDict['orbitCategory']
-        eventRef = orbitDict['eventRef']
-        userTicketPairs = orbitDict['userTicketPairs']
-        chatroomRef = orbitDict['chatroomRef']
-        costEstimate = orbitDict['costEstimate']
+        orbit_category = orbitDict['orbitCategory']
+        event_ref = orbitDict['eventRef']
+        user_ticket_pairs = orbitDict['userTicketPairs']
+        chatroom_ref = orbitDict['chatroomRef']
+        cost_estimate = orbitDict['costEstimate']
         status = orbitDict['status']
-        return Orbit(orbitCategory, eventRef, userTicketPairs, chatroomRef, costEstimate, status)
+        return Orbit(orbit_category, event_ref, user_ticket_pairs, chatroom_ref, cost_estimate, status)
 
     def to_dict(self):
-        orbitDict = {
-            'orbitCategory': self.orbitCategory,
-            'eventRef': self.eventRef,
-            'userTicketPairs': self.userTicketPairs,
-            'chatroomRef': self.chatroomRef,
-            'costEstimate': self.costEstimate,
+        orbit_dict = {
+            'orbitCategory': self.orbit_category,
+            'eventRef': self.event_ref,
+            'userTicketPairs': self.user_ticket_pairs,
+            'chatroomRef': self.chatroom_ref,
+            'costEstimate': self.cost_estimate,
             'status': self.status
         }
-        return orbitDict
+        return orbit_dict
 
 

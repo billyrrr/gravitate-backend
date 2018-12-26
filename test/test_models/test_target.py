@@ -9,7 +9,7 @@ class TestTarget(TestCase):
     def testCreateAirportTarget(self):
         mock_form = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         target_dict = Target.create_with_flight_local_time(
-            mock_form.flightLocalTime, mock_form.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).to_dict()
+            mock_form.flightLocalTime, mock_form.toEvent, offset_low_abs_sec=3600, offset_high_abs_sec=10800).to_dict()
         value_expected = {'eventCategory': 'airportRide',
                           'toEvent': True,
                           'arriveAtEventTime':
@@ -24,8 +24,8 @@ class TestTarget(TestCase):
         o_lo = 7200
         o_hi = 18000
         target_dict = Target.create_with_flight_local_time(
-            "2018-12-17T08:26:40.000", True, offsetLowAbsSec=o_lo,
-            offsetHighAbsSec=o_hi).to_dict()
+            "2018-12-17T08:26:40.000", True, offset_low_abs_sec=o_lo,
+            offset_high_abs_sec=o_hi).to_dict()
         expected_target_dict = {'eventCategory': 'airportRide',
                                 'toEvent': True,
                                 'arriveAtEventTime':
@@ -42,8 +42,8 @@ class TestTarget(TestCase):
         o_hi = 18000
         target_dict = Target.create_with_flight_local_time(
             "2018-12-17T08:26:40.000", True,
-            offsetLowAbsSec=o_lo,
-            offsetHighAbsSec=o_hi).to_dict()
+            offset_low_abs_sec=o_lo,
+            offset_high_abs_sec=o_hi).to_dict()
         expected_target_dict = Target.create_with_flight_local_time(
             "2018-12-17T08:26:40.000", True).to_dict()
         self.assertDictEqual(expected_target_dict, target_dict)

@@ -1,5 +1,6 @@
 from .firestore_object import FirestoreObject
 
+
 class Location(FirestoreObject):
 
     coordinates = {
@@ -12,32 +13,32 @@ class Location(FirestoreObject):
         self.address = address
 
     @staticmethod
-    def from_dict(locationDict):
-        coordinates = locationDict['coordinates']
-        address = locationDict['address']
-        locationCategory = locationDict['locationCategory']
-        if locationCategory == 'airport':
-            airportCode = locationDict['airportCode']
-            return AirportLocation(coordinates, address, airportCode)
-        elif locationCategory == 'social':
+    def from_dict(location_dict):
+        coordinates = location_dict['coordinates']
+        address = location_dict['address']
+        location_category = location_dict['locationCategory']
+        if location_category == 'airport':
+            airport_code = location_dict['airportCode']
+            return AirportLocation(coordinates, address, airport_code)
+        elif location_category == 'social':
             raise NotImplementedError(
                 'Social event location is not yet implemented.')
-        elif locationCategory == 'campus':
-            campusCode = locationDict['campusCode']
-            campusName = locationDict['campusName']
-            coordinates = locationDict['coordinates']
-            address = locationDict['address']
-            return UcLocation(coordinates, address, campusName, campusCode)
+        elif location_category == 'campus':
+            campus_code = location_dict['campusCode']
+            campus_name = location_dict['campusName']
+            coordinates = location_dict['coordinates']
+            address = location_dict['address']
+            return UcLocation(coordinates, address, campus_name, campus_code)
         else:
             raise NotImplementedError(
-                'Unsupported locationCategory ' + str(locationCategory) + '. ')
+                'Unsupported locationCategory ' + str(location_category) + '. ')
                 
         return Location(coordinates, address)
 
     @staticmethod
-    def from_code(code, locationCategory="campus"):
-        if locationCategory == "campus" and code in campusCodeTable.keys():
-            return Location.from_dict(campusCodeTable[code])
+    def from_code(code, location_category="campus"):
+        if location_category == "campus" and code in campus_code_table.keys():
+            return Location.from_dict(campus_code_table[code])
         raise NotImplementedError
     
     def to_dict(self) -> dict:
@@ -46,7 +47,8 @@ class Location(FirestoreObject):
             'address': self.address
         }
 
-campusCodeTable = {
+
+campus_code_table = {
     "UCSB": {
         "locationCategory": "campus",
         "coordinates": {
@@ -65,19 +67,19 @@ class UcLocation(Location):
         This class represents a UC campus in another city.
     """
 
-    def __init__(self, coordinates, address, campusName, campusCode):
+    def __init__(self, coordinates, address, campus_name, campus_code):
         super().__init__(coordinates, address)
-        self.locationCategory = 'campus'
-        self.campusName = campusName
-        self.campusCode = campusCode
+        self.location_category = 'campus'
+        self.campus_name = campus_name
+        self.campus_code = campus_code
 
     def to_dict(self):
         return {
-            'locationCategory': self.locationCategory,
+            'locationCategory': self.location_category,
             'coordinates': self.coordinates,
             'address': self.address,
-            'campusName': self.campusName,
-            'campusCode': self.campusCode,
+            'campusName': self.campus_name,
+            'campusCode': self.campus_code,
         }
 
 
@@ -91,20 +93,20 @@ class AirportLocation(Location):
 
     """
 
-    def __init__(self, coordinates, address, airportCode):
+    def __init__(self, coordinates, address, airport_code):
         super().__init__(coordinates, address)
-        self.locationCategory = 'airport'
-        self.airportCode = airportCode
+        self.location_category = 'airport'
+        self.airport_code = airport_code
 
     def is_lax(self):
-        return self.airportCode == 'LAX'
+        return self.airport_code == 'LAX'
 
     def to_dict(self):
         return {
-            'locationCategory': self.locationCategory, 
+            'locationCategory': self.location_category,
             'coordinates': self.coordinates,
             'address': self.address,
-            'airportCode': self.airportCode,
+            'airportCode': self.airport_code,
         }
 
     def __eq__(self, other):
@@ -118,4 +120,5 @@ class AirportLocation(Location):
             :param other: 
         """
         if isinstance(other, AirportLocation):
-            return (self.airportCode == other.airportCode) 
+            return (self.airport_code == other.airport_code)
+    

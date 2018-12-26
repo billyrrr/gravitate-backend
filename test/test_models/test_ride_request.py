@@ -11,7 +11,7 @@ class RideRequestTest(unittest.TestCase):
         self.db = context.Context.db
 
         JSON_FILENAME = 'rideRequest_1.json'
-        with open('jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:
+        with open('test/jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:
             self.rideRequestData1 = json.load(json_file)
 
     # def testInitWithDict(self):

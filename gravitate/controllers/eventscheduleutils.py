@@ -12,14 +12,14 @@ class EventScheduleBuilder():
             self.eventSchedule = eventSchedule
 
     def buildRideRequest(self, airportRideRequest: AirportRideRequest):
-        self.eventSchedule.pickupAddress = airportRideRequest.pickupAddress
+        self.eventSchedule.pickupAddress = airportRideRequest.pickup_address
         self.eventSchedule.flightTime = airportRideRequest.flightLocalTime
         self.eventSchedule.rideRequestRef = airportRideRequest.get_firestore_ref()
 
         try:
             # Use destTime for sorting
             target: ToEventTarget = airportRideRequest.target
-            destTime = target.arriveAtEventTime["latest"]
+            destTime = target.arrive_at_event_time["latest"]
             self.eventSchedule.destTime = destTime
         except Exception as e:
             print(e)
@@ -31,7 +31,7 @@ class EventScheduleBuilder():
             warnings.warn("locationRef is hardcoded. Adapt to read from location object before release. ")
             self.eventSchedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
         else:
-            self.eventSchedule.destName = location.airportCode
+            self.eventSchedule.destName = location.airport_code
             self.eventSchedule.locationRef = location.get_firestore_ref()
     
     def buildOrbit(self, pending = True, orbit: Orbit = None):
@@ -78,7 +78,7 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     """
     # Must go through each userTicketPair (key = userIDs)
     photo_urls = []
-    for uid in orbit.userTicketPairs:
+    for uid in orbit.user_ticket_pairs:
         user = UserDao().get_user_by_id(uid)
         photo_url = user.photo_url
         photo_urls.append(photo_url)

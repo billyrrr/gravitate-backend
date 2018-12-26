@@ -185,8 +185,8 @@ def constructTupleList(rideRequests: list):
     for rideRequest in rideRequests:
         try:
             toEventTarget: ToEventTarget = rideRequest.target
-            earliest = toEventTarget.arriveAtEventTime['earliest']
-            latest = toEventTarget.arriveAtEventTime['latest']
+            earliest = toEventTarget.arrive_at_event_time['earliest']
+            latest = toEventTarget.arrive_at_event_time['latest']
             ref = rideRequest.get_firestore_ref()
             tupleToAppend = [earliest, latest, ref]
             arr.append(tupleToAppend)
@@ -234,7 +234,7 @@ def _remove(transaction, rideRequestRef: DocumentReference):
     orbit = OrbitDao().get_with_transaction(transaction, orbitRef)
     orbit.set_firestore_ref(orbitRef)
 
-    eventRef = orbit.eventRef
+    eventRef = orbit.event_ref
 
     locationRef: DocumentReference = rideRequest.airportLocation
     location = LocationGenericDao().get_with_transaction(transaction, locationRef)
