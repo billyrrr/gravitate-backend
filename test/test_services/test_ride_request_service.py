@@ -1,11 +1,9 @@
 import json
 from unittest import TestCase
-from urllib.parse import urlencode
 
 import gravitate.services.ride_request.deprecated_utils
 from gravitate import main as main
 
-from gravitate.models import RideRequest, Target
 import gravitate.services.ride_request.utils as service_utils
 
 from test.factory import FormDictFactory
@@ -88,61 +86,6 @@ class AirportRideRequestDictBuilderTest(TestCase):
         self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
 
 
-class TestTarget(TestCase):
-
-    def testCreateAirportTarget(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        targetDict = Target.create_with_flight_local_time(
-            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).to_dict()
-        valueExpected = {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                             {'earliest': 1545066000, 'latest': 1545073200}}
-        self.assertDictEqual(targetDict, valueExpected)
-
-    def testCreateWithFlightLocalTime(self):
-        """
-        local time: "2018-12-17T08:26:40.000", timestamp: 1545064000
-        :return:
-        """
-        oLo = 7200
-        oHi = 18000
-        target_dict = Target.create_with_flight_local_time(
-            "2018-12-17T08:26:40.000", True, offsetLowAbsSec=oLo,
-            offsetHighAbsSec=oHi).to_dict()
-        expected_target_dict = {'eventCategory': 'airportRide',
-                          'toEvent': True,
-                          'arriveAtEventTime':
-                              {'earliest': 1545064000-oHi, 'latest': 1545064000-oLo}}
-        self.assertDictEqual(expected_target_dict, target_dict)
-
-    def testDefaultParams(self):
-        """
-        Test that if offsets not specified, 2-hour-before and 5-hour-before are inferred.
-        local time: "2018-12-17T08:26:40.000", timestamp: 1545064000
-        :return:
-        """
-        oLo = 7200
-        oHi = 18000
-        target_dict = Target.create_with_flight_local_time(
-            "2018-12-17T08:26:40.000", True,
-            offsetLowAbsSec=oLo,
-            offsetHighAbsSec=oHi).to_dict()
-        expected_target_dict = Target.create_with_flight_local_time(
-            "2018-12-17T08:26:40.000", True).to_dict()
-        self.assertDictEqual(expected_target_dict, target_dict)
-    #
-    # def testCreateAirportTarget(self):
-    #     mockForm = FormDictFactory.create(
-    #         hasEarliestLatest=False, returnDict=False)
-    #     targetDict = Target.create_with_form(mockForm).to_dict()
-    #     valueExpected = {'eventCategory': 'airportRide',
-    #                      'toEvent': True,
-    #                      'arriveAtEventTime':
-    #                          {'earliest': 1545066000, 'latest': 1545073200}}
-    #     self.assertDictEqual(targetDict, valueExpected)
-
-
 # def testSetWithForm(self):
 
 class CreateRideRequestServiceUtilsTest(TestCase):
@@ -187,21 +130,6 @@ class RefactorTempTest(TestCase):
         r = self.app.post(path='/devForceMatch',
                           json=json.dumps({"operationMode": "all"})
                           )
-
-    #
-    # def testCreateRideRequestQueryString(self):
-    #     """
-    #     This method tests creating rideRequest with POST url querystring 
-    #     Deprecated
-    #     :return:
-    #     """
-    #     form = FormDictFactory().create(returnDict=True)
-    #     form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-    #     # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-    #     r = self.app.post(path='/testReqParse?' + urlencode(form),
-    #                       headers=getMockAuthHeaders()
-    #                       )
-    #     self.fail()
 
     def _tear_down(self):
         """
