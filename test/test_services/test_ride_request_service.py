@@ -2,6 +2,7 @@ import json
 from unittest import TestCase
 from urllib.parse import urlencode
 
+import gravitate.services.ride_request.deprecated_utils
 from gravitate import main as main
 
 from gravitate.models import RideRequest, Target
@@ -150,8 +151,8 @@ class CreateRideRequestServiceUtilsTest(TestCase):
     def testRideRequestDictBuilder(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         userId = 'testuserid1'
-        result, _ = service_utils.fill_ride_request_dict_builder_regression(mockForm, userId)
-        valueExpected, _ = service_utils.fill_ride_request_dict_with_form(mockForm, userId)
+        result, _ = gravitate.services.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression(mockForm, userId)
+        valueExpected, _ = gravitate.services.ride_request.deprecated_utils.fill_ride_request_dict_with_form(mockForm, userId)
         self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])

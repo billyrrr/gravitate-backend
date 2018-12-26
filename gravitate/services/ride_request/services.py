@@ -17,7 +17,6 @@ from gravitate.forms.ride_request_creation_form import AirportRideRequestCreatio
 from gravitate.models import AirportRideRequest, RideRequest
 import gravitate.services.utils as service_utils
 import gravitate.services.ride_request.utils as creation_utils
-from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form
 from . import parsers as ride_request_parsers
 
 db = Context.db
