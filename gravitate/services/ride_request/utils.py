@@ -1,5 +1,7 @@
+import warnings
 from typing import Type
 
+import gravitate.models.target
 from gravitate.controllers import utils
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, RideRequest, Target
@@ -38,7 +40,7 @@ def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userI
     # Fields to be filled "after some thinking"
 
     # Set Target
-    target = utils.createTargetWithFlightLocalTime(form.flightLocalTime, form.toEvent)
+    target = Target.create_with_flight_local_time(form.flightLocalTime, form.toEvent)
     rideRequestDict['target'] = target.to_dict()
 
     # Set EventRef
@@ -54,27 +56,36 @@ def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userI
 
 
 def fill_ride_request_dict_builder_regression(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):
-    b: AirportRideRequestBuilder = AirportRideRequestBuilder().set_user(userId).set_flight(flight_local_time=form.flightLocalTime, flight_number=form.flightNumber).set_location(airport_code=form.airportCode).set_time(flight_local_time=form.flightLocalTime, to_event=form.toEvent).build_airport_ride_request()
-    return b.ride_request_dict, utils.getAirportLocation(form.airportCode)
+    """
+    Adaptor pattern for testing purposes only
+    :param form:
+    :param userId:
+    :return:
+    """
+    warnings.warn("This method is for testing purposes only. Do not use in production. ")
+    f: dict = vars(form)
+    b: AirportRideRequestBuilder = AirportRideRequestBuilder().set_with_form_and_user_id(f, userId)\
+        .build_airport_ride_request()
+    return b._ride_request_dict, utils.getAirportLocation(form.airportCode)
 
 
 class RideRequestBaseBuilder:
 
     def __init__(self):
-        self.ride_request_dict = dict()
+        self._ride_request_dict = dict()
 
     def export_as_class(self, export_class) -> Type[RideRequest]:
-        return export_class.from_dict(self.ride_request_dict)
+        return export_class.from_dict(self._ride_request_dict)
 
-
-class AirportRideRequestBuilder(RideRequestBaseBuilder):
     """
-    Note that this class is not following any design pattern at all. It should be thoroughly tested before use.
-        "var if var is not None else self.var"
-            prevents a variable already set from being overridden by None.
+        Note that this class is not following any design pattern at all. It should be thoroughly tested before use.
+            "var if var is not None else self.var"
+                prevents a variable already set from being overridden by None.
 
-        TODO: test and finish implementing
-    """
+            TODO: test and finish implementing
+        """
+
+    _ride_request_dict = None
 
     user_id = None
     location_id = None
@@ -85,8 +96,98 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
     flight_local_time = None
     flight_number = None
     eventRef = None
+    pickup_address = None
+    pricing = None
+    driver_status = None
 
-    def from_dict_and_user_id(self, d, user_id):
+    def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None,
+                 to_event: bool = None, location_id=None, airport_code=None, pickup_address=None, pricing=None,
+                 driver_status: bool = None):
+        self.user_id = user_id
+        self.flight_local_time = flight_local_time
+        self.flight_number = flight_number
+
+        self.earliest = earliest
+        self.latest = latest
+        self.to_event = to_event
+        self.location_id = location_id
+        self.airport_code = airport_code
+
+        self.pickup_address = pickup_address
+        self.pricing = pricing
+
+        self.to_event = to_event
+        self.driver_status = driver_status
+
+        return self
+
+    def _build_user(self):
+        if self.user_id is not None:
+            self._ride_request_dict["userId"] = self.user_id
+        else:
+            raise ValueError("user_id is not set ")
+
+    def _build_flight(self):
+        self._ride_request_dict["flightLocalTime"] = self.flight_local_time
+        self._ride_request_dict["flightNumber"] = self.flight_number
+
+    def _build_location_by_airport_code(self):
+        # Note that the key is airportLocation rather than locationRef TODO: change model
+        self._ride_request_dict["airportLocation"] = self._get_location_ref(self.airport_code)
+
+    def _build_location_by_id(self):
+        self._ride_request_dict["airportLocation"] = utils.get_location_ref_by_id(self.location_id)
+
+    @staticmethod
+    def _get_location_ref(airport_code):
+        location = utils.getAirportLocation(airport_code)
+        return location.get_firestore_ref()
+
+    def _build_target_earliest_latest(self):
+        target = Target.create_airport_event_target(self.to_event, self.earliest, self.latest)
+        self._ride_request_dict["target"] = target.to_dict()
+
+    def _build_target_with_flight_local_time(self):
+        target = Target.create_with_flight_local_time(self.flight_local_time, self.to_event)
+        self._ride_request_dict["target"] = target.to_dict()
+
+    def _build_event_with_flight_local_time(self):
+        self._ride_request_dict["eventRef"] = utils.findEvent(self.flight_local_time)
+
+    def _build_event_with_id(self):
+        """
+        TODO: change to event id
+        :return:
+        """
+        self._ride_request_dict["eventRef"] = self.eventRef
+
+    def _build_disabilities(self):
+        self._ride_request_dict["disabilities"] = dict()
+
+    def _build_baggages(self):
+        self._ride_request_dict["baggages"] = dict()
+
+    def _build_ride_request_default_values(self):
+        self._ride_request_dict["requestCompletion"] = False
+        self._ride_request_dict["orbitRef"] = None
+        self._ride_request_dict["driverStatus"] = False
+        self._ride_request_dict['hasCheckedIn'] = False
+        self._ride_request_dict['pricing'] = 987654321
+
+    def _build_ride_category(self):
+        """
+        To be overridden by subclass
+        :return:
+        """
+        raise NotImplementedError("This is an abstract method. Override it in subclass. ")
+
+    def _build_pickup(self):
+        self._ride_request_dict["pickupAddress"] = self.pickup_address
+
+
+class AirportRideRequestBuilder(RideRequestBaseBuilder):
+
+    def set_with_form_and_user_id(self, d, user_id):
         """
         TODO: parse all fields from form. None if does not exist
         :param d:
@@ -94,88 +195,31 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
         :return:
         """
         self.user_id = user_id
-        raise NotImplementedError
-
-    def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None, to_event: bool=None, location_id=None, airport_code=None):
-        self.user_id = user_id
-        self.flight_local_time = flight_local_time if flight_local_time is not None else self.flight_local_time
-        self.flight_number = flight_number if flight_number is not None else self.flight_number
-
-        self.earliest = earliest if earliest is not None else self.earliest
-        self.latest = latest if latest is not None else self.latest
-        self.to_event = to_event if to_event is not None else self.to_event
-
-        self.location_id = location_id
-        self.airport_code = airport_code
-
+        self.set_data(
+            user_id=user_id, flight_local_time=d["flightLocalTime"], flight_number=d["flightNumber"],
+            airport_code=d["airportCode"], to_event=d["toEvent"], pickup_address=d["pickupAddress"],
+            driver_status=d["driverStatus"]
+        )
         return self
 
-    def _build_user(self):
-        if self.user_id is not None:
-            self.ride_request_dict["userId"] = self.user_id
-        else:
-            raise ValueError("user_id is not set ")
-
-
-    def _build_flight(self):
-        self.ride_request_dict["flightLocalTime"] = self.flight_local_time
-        self.ride_request_dict["flightNumber"] = self.flight_number
-
+    def _build_ride_category(self):
+        self._ride_request_dict["rideCategory"] = "airportRide"
 
     def build_airport_ride_request(self):
+        assert self.flight_local_time is not None
+        assert self.earliest is None and self.latest is None  # They will be overridden by those of flightLocalTime
+
         self._build_flight()
         self._build_user()
-        self._build_location()
-        self._build_target_and_time()
-        self._build_event()
+        self._build_location_by_airport_code()  # Use airportCode to infer location
+        self._build_target_with_flight_local_time()  # Use flightLocalTime to build target
+        self._build_event_with_flight_local_time()
         self._build_disabilities()
         self._build_baggages()
         self._build_ride_request_default_values()
+        self._build_ride_category()
+        self._build_pickup()
         return self
-
-    def _build_location(self):
-        # Note that the key is airportLocation rather than locationRef TODO: change model
-        if self.airport_code is not None:
-            self.ride_request_dict["airportLocation"] = self._get_location_ref(self.airport_code)
-        elif self.location_id is not None:
-            self.ride_request_dict["airportLocation"] = utils.get_location_ref_by_id(self.location_id)
-        else:
-            raise ValueError
-
-    @staticmethod
-    def _get_location_ref(airport_code):
-        location = utils.getAirportLocation(airport_code)
-        return location.get_firestore_ref()
-
-    def _build_target_and_time(self):
-        assert self.to_event is not None
-        if self.earliest is not None and self.latest is not None:
-            target = Target.create_airport_event_target(self.to_event, self.earliest, self.latest)
-            self.ride_request_dict["target"] = target.to_dict()
-        elif self.flight_local_time is not None:
-            target = utils.createTargetWithFlightLocalTime(self.flight_local_time, self.to_event)
-            self.ride_request_dict["target"] = target.to_dict()
-        else:
-            raise TypeError
-
-    def _build_event(self):
-        if self.eventRef is None:
-            self.ride_request_dict["eventRef"] = utils.findEvent(self.flight_local_time)
-        else:
-            self.ride_request_dict["eventRef"] = self.eventRef
-
-    def _build_disabilities(self):
-        self.ride_request_dict["disabilities"] = dict()
-
-    def _build_baggages(self):
-        self.ride_request_dict["baggages"] = dict()
-
-    def _build_ride_request_default_values(self):
-        self.ride_request_dict["requestCompletion"] = False
-        self.ride_request_dict["orbitRef"] = None
-        self.ride_request_dict["driverStatus"] = False
-        self.ride_request_dict['hasCheckedIn'] = False
-
 
 
 class CampusEventRideRequestBuilder(RideRequestBaseBuilder):
@@ -228,7 +272,7 @@ def create_ride_request(form: dict, user_id: str) -> Type[RideRequest]:
     # Fields to be filled "after some thinking"
 
     # Set Target
-    target = utils.createTargetWithFlightLocalTime(d["flightLocalTime"], toEvent)
+    target = Target.create_with_flight_local_time(d["flightLocalTime"], toEvent)
     d['target'] = target.to_dict()
 
     if "eventId" in form.keys() and "locationId" in form.keys():
@@ -237,7 +281,8 @@ def create_ride_request(form: dict, user_id: str) -> Type[RideRequest]:
     else:
         location = utils.getAirportLocation(form["airportCode"])
         if not location:
-            raise ValueError("AirportLocation cannot be found with airportCode provided. ")  # TODO: error handling: https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha/21297608
+            raise ValueError(
+                "AirportLocation cannot be found with airportCode provided. ")  # TODO: error handling: https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha/21297608
 
     # Set EventRef
     event_ref = utils.findEvent(d["flightLocalTime"])

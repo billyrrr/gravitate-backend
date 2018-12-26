@@ -26,7 +26,7 @@ class CityRideRequestCreationForm(RideRequestBaseCreationForm):
     dropoffAddress = None  # Specific dropoff address (optional)m
 
 
-class AirportRideRequestCreationForm():
+class AirportRideRequestCreationForm(object):
 
     @staticmethod
     def from_dict(d: dict):
