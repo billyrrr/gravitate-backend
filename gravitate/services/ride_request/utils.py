@@ -86,8 +86,28 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
     flight_number = None
     eventRef = None
 
-    def set_user(self, user_id):
+    def from_dict_and_user_id(self, d, user_id):
+        """
+        TODO: parse all fields from form. None if does not exist
+        :param d:
+        :param user_id:
+        :return:
+        """
         self.user_id = user_id
+        raise NotImplementedError
+
+    def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None, to_event: bool=None, location_id=None, airport_code=None):
+        self.user_id = user_id
+        self.flight_local_time = flight_local_time if flight_local_time is not None else self.flight_local_time
+        self.flight_number = flight_number if flight_number is not None else self.flight_number
+
+        self.earliest = earliest if earliest is not None else self.earliest
+        self.latest = latest if latest is not None else self.latest
+        self.to_event = to_event if to_event is not None else self.to_event
+
+        self.location_id = location_id
+        self.airport_code = airport_code
+
         return self
 
     def _build_user(self):
@@ -96,30 +116,11 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
         else:
             raise ValueError("user_id is not set ")
 
-    def set_flight(self, flight_local_time=None, flight_number=None):
-        self.flight_local_time = flight_local_time if flight_local_time is not None else self.flight_local_time
-        self.flight_number = flight_number if flight_number is not None else self.flight_number
-        return self
 
     def _build_flight(self):
         self.ride_request_dict["flightLocalTime"] = self.flight_local_time
         self.ride_request_dict["flightNumber"] = self.flight_number
 
-    def set_location(self, location_id=None, airport_code=None):
-        if location_id is not None:
-            self.location_id = location_id
-        elif airport_code is not None:
-            self.airport_code = airport_code
-        else:
-            raise ValueError
-        return self
-
-    def set_time(self, earliest=None, latest=None, to_event: bool=None, flight_local_time=None):
-        self.earliest = earliest if earliest is not None else self.earliest
-        self.latest = latest if latest is not None else self.latest
-        self.to_event = to_event if to_event is not None else self.to_event
-        self.flight_local_time = flight_local_time if flight_local_time else self.flight_local_time
-        return self
 
     def build_airport_ride_request(self):
         self._build_flight()
