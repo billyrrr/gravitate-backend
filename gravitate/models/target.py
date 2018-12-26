@@ -20,18 +20,18 @@ def create_target_with_form(form: AirportRideRequestCreationForm):
     """
     tz = pytz.timezone('America/Los_Angeles')
 
-    earliestDatetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
-    latestDatetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
+    earliest_datetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
+    latest_datetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
 
-    earliestTimestamp = int(earliestDatetime.timestamp())
-    latestTimestamp = int(latestDatetime.timestamp())
-    # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
-    target = Target.create_airport_event_target(form.toEvent, earliestTimestamp, latestTimestamp)
+    earliest_timestamp = int(earliest_datetime.timestamp())
+    latest_timestamp = int(latest_datetime.timestamp())
+    # TODO: retrieve tzinfo from event rather than hard-coding 'America/Los_Angeles'
+    target = Target.create_airport_event_target(form.toEvent, earliest_timestamp, latest_timestamp)
     return target
 
 
-def create_target_with_flight_local_time(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200,
-                                  offsetHighAbsSec: int = 18000):
+def create_target_with_flight_local_time(flight_local_time, to_event, offset_low_abs_sec: int = 7200,
+                                         offset_high_abs_sec: int = 18000):
     """
         This method creates a target with flightLocal Time. The offsets represents how much in advance
             is user's preferred earliest and latest.
@@ -41,60 +41,60 @@ def create_target_with_flight_local_time(flightLocalTime, toEvent, offsetLowAbsS
                 daylight saving ends (November 4 1:00AM-2:00AM).
                 since anytime in between corresponds to more than one possible UTC time.
 
-    :param flightLocalTime:
-    :param toEvent:
-    :param offsetLowAbsSec: The offset with lower absolute value.
-    :param offsetHighAbsSec: The offset with higher absolute value.
+    :param flight_local_time:
+    :param to_event:
+    :param offset_low_abs_sec: The offset with lower absolute value.
+    :param offset_high_abs_sec: The offset with higher absolute value.
     :return:
     """
-    assert offsetLowAbsSec >= 0
-    assert offsetHighAbsSec >= 0
+    assert offset_low_abs_sec >= 0
+    assert offset_high_abs_sec >= 0
     # Check that offsetLow represents a greater than or equal to interval than offsetHigh
-    assert offsetLowAbsSec <= offsetHighAbsSec
+    assert offset_low_abs_sec <= offset_high_abs_sec
     # Check that there earliest and latest represents a range of time
-    assert offsetLowAbsSec != offsetHighAbsSec
+    assert offset_low_abs_sec != offset_high_abs_sec
 
     tz = pytz.timezone('America/Los_Angeles')
-    flightLocalTime = tz.localize(iso8601.parse_date(flightLocalTime, default_timezone=None))
+    flight_local_time = tz.localize(iso8601.parse_date(flight_local_time, default_timezone=None))
 
     # Get timedelta object with seconds
-    offsetEarlierAbs = dt.timedelta(seconds=offsetHighAbsSec)
-    offsetLaterAbs = dt.timedelta(seconds=offsetLowAbsSec)
+    offset_earlier_abs = dt.timedelta(seconds=offset_high_abs_sec)
+    offset_later_abs = dt.timedelta(seconds=offset_low_abs_sec)
 
     # Get earliest and latest datetime
-    earliest: dt.datetime = flightLocalTime - offsetEarlierAbs
-    latest: dt.datetime = flightLocalTime - offsetLaterAbs
+    earliest: dt.datetime = flight_local_time - offset_earlier_abs
+    latest: dt.datetime = flight_local_time - offset_later_abs
 
-    earliestTimestamp = int(earliest.timestamp())
-    latestTimestamp = int(latest.timestamp())
+    earliest_timestamp = int(earliest.timestamp())
+    latest_timestamp = int(latest.timestamp())
 
-    assert earliestTimestamp <= latestTimestamp  # Check that "earliest" occurs earliest than "latest"
-    assert earliestTimestamp != latestTimestamp  # Check that "earliest" is not the same as latest
+    assert earliest_timestamp <= latest_timestamp  # Check that "earliest" occurs earliest than "latest"
+    assert earliest_timestamp != latest_timestamp  # Check that "earliest" is not the same as latest
 
-    target = Target.create_airport_event_target(toEvent, earliestTimestamp, latestTimestamp)
+    target = Target.create_airport_event_target(to_event, earliest_timestamp, latest_timestamp)
 
     return target
 
 
 class Target(FirestoreObject):
 
-    def __init__(self, eventCategory):
-        self.eventCategory = eventCategory
+    def __init__(self, event_category):
+        self.event_category = event_category
 
     create_with_flight_local_time = create_target_with_flight_local_time
     create_with_form = create_target_with_form
 
     @staticmethod
-    def from_dict(targetDict: dict):
-        toEvent = targetDict['toEvent']
-        if (toEvent):
-            return ToEventTarget(targetDict['eventCategory'], targetDict['arriveAtEventTime'])
+    def from_dict(target_dict: dict):
+        to_event = target_dict['toEvent']
+        if (to_event):
+            return ToEventTarget(target_dict['eventCategory'], target_dict['arriveAtEventTime'])
         else:
-            return FromEventTarget(targetDict['eventCategory'], targetDict['leaveEventTime'])
+            return FromEventTarget(target_dict['eventCategory'], target_dict['leaveEventTime'])
 
     @staticmethod
-    def create_airport_event_target(toEvent: bool, earliest:int, latest:int):
-        if (toEvent):
+    def create_airport_event_target(to_event: bool, earliest: int, latest: int):
+        if (to_event):
             return ToEventTarget('airportRide', {
                 'earliest': earliest,
                 'latest': latest,
@@ -117,34 +117,34 @@ class Target(FirestoreObject):
     
         :rtype:
         """ 
-        targetDict = {
-            u'eventCategory': self.eventCategory
+        target_dict = {
+            u'eventCategory': self.event_category
         }
-        return targetDict
+        return target_dict
 
 
 class ToEventTarget(Target):
 
-    def __init__(self, eventCategory, arriveAtEventTime):
-        super().__init__(eventCategory)
-        self.arriveAtEventTime = arriveAtEventTime
+    def __init__(self, event_category, arrive_at_event_time):
+        super().__init__(event_category)
+        self.arrive_at_event_time = arrive_at_event_time
 
     def to_dict(self):
-        targetDict = super().to_dict()
-        targetDict[u'toEvent'] = True
-        targetDict[u'arriveAtEventTime'] = self.arriveAtEventTime
-        return targetDict
+        target_dict = super().to_dict()
+        target_dict[u'toEvent'] = True
+        target_dict[u'arriveAtEventTime'] = self.arrive_at_event_time
+        return target_dict
 
 
 class FromEventTarget(Target):
 
-    def __init__(self, eventCategory, leaveEventTime):
-        super().__init__(eventCategory)
-        self.leaveEventTime = leaveEventTime
+    def __init__(self, event_category, leave_event_time):
+        super().__init__(event_category)
+        self.leave_event_time = leave_event_time
 
     def to_dict(self):
-        targetDict = super().to_dict()
-        targetDict[u'toEvent'] = False
-        targetDict[u'leaveEventTime'] = self.leaveEventTime
-        return targetDict
+        target_dict = super().to_dict()
+        target_dict[u'toEvent'] = False
+        target_dict[u'leaveEventTime'] = self.leave_event_time
+        return target_dict
 

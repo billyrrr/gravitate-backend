@@ -19,7 +19,7 @@ class EventScheduleBuilder():
         try:
             # Use destTime for sorting
             target: ToEventTarget = airportRideRequest.target
-            destTime = target.arriveAtEventTime["latest"]
+            destTime = target.arrive_at_event_time["latest"]
             self.eventSchedule.destTime = destTime
         except Exception as e:
             print(e)
