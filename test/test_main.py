@@ -3,8 +3,7 @@ from flask.testing import FlaskClient
 
 from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form, fill_ride_request_dict_builder_regression
 
-from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
-    hasDuplicateEvent
+from gravitate.controllers.utils import hasDuplicateEvent
 
 from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm
 
@@ -194,30 +193,6 @@ class TestEndpoints(TestCase):
         r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
 
 
-class TestCreationLogicsUtils(TestCase):
-
-    def testCreateAirportTargetWithFlightLocalTime(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        targetDict = createTargetWithFlightLocalTime(
-            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).to_dict()
-        valueExpected = {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                             {'earliest': 1545066000, 'latest': 1545073200}}
-        self.assertDictEqual(targetDict, valueExpected)
-
-    def testSameResultDifferentCreateTargetFunc(self):
-        mockFormCTWFLT = FormDictFactory().create(
-            hasEarliestLatest=False, returnDict=False)
-        targetDictCTWFLT = createTargetWithFlightLocalTime(
-            mockFormCTWFLT.flightLocalTime, mockFormCTWFLT.toEvent, offsetLowAbsSec=7200,
-            offsetHighAbsSec=18000).to_dict()
-        mockFormCT = FormDictFactory().create(
-            hasEarliestLatest=True, isE5L2=True, returnDict=False)
-        targetDictCT = createTarget(mockFormCT).to_dict()
-        self.assertDictEqual(targetDictCTWFLT, targetDictCT)
-
-
 class TestCreateRideRequestLogics(TestCase):
 
     def setUp(self):
@@ -232,14 +207,6 @@ class TestCreateRideRequestLogics(TestCase):
         #   with equal eventRef and userId field in the database 
         self.assertNotEqual(result, False)
 
-    def testCreateAirportTarget(self):
-        mockForm = MockFormTargetOnly()
-        targetDict = createTarget(mockForm).to_dict()
-        valueExpected = {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                             {'earliest': 1545066000, 'latest': 1545073200}}
-        self.assertDictEqual(targetDict, valueExpected)
 
     # def testSaveRideRequestToDb(self):
     #     mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
