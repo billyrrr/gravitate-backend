@@ -101,7 +101,7 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
     :rtype:
     """
     # update eventSchedule
-    userId = rideRequest.userId
+    userId = rideRequest.user_id
     userRef = UserDao().get_ref(userId)
     eventRef = event.get_firestore_ref()
 
@@ -127,23 +127,23 @@ def placeInOrbit(r: RideRequest, o: Orbit):
             :rtype:
     """
     # set RideRequest's requestCompletion to true
-    r.requestCompletion = True
+    r.request_completion = True
 
     # RideRequest's orbitId no longer null and references Orbit's oId
-    r.orbitRef = o.get_firestore_ref()
+    r.orbit_ref = o.get_firestore_ref()
 
-    userId = r.userId
+    userId = r.user_id
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
         "rideRequestRef": r.get_firestore_ref(),
-        "userWillDrive": r.driverStatus,
+        "userWillDrive": r.driver_status,
         "hasCheckedIn": False,
         "inChat": False,
-        "pickupAddress": r.pickupAddress
+        "pickupAddress": r.pickup_address
     }
     o.user_ticket_pairs[userId] = ticket
-    r.requestCompletion = True
+    r.request_completion = True
 
     return
 
@@ -153,7 +153,7 @@ def removeFromOrbit(r: RideRequest, o: Orbit):
     # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
     userIds = list(o.user_ticket_pairs.keys())
     for userId in userIds:
-        if userId == r.userId:
+        if userId == r.user_id:
             o.user_ticket_pairs.pop(userId)
-    r.orbitRef = None
-    r.requestCompletion = False
+    r.orbit_ref = None
+    r.request_completion = False
