@@ -31,7 +31,7 @@ class EventScheduleBuilder():
             warnings.warn("locationRef is hardcoded. Adapt to read from location object before release. ")
             self.eventSchedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
         else:
-            self.eventSchedule.destName = location.airportCode
+            self.eventSchedule.destName = location.airport_code
             self.eventSchedule.locationRef = location.get_firestore_ref()
     
     def buildOrbit(self, pending = True, orbit: Orbit = None):
