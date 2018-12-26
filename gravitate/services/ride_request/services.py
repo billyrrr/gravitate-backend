@@ -16,6 +16,7 @@ from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleG
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportRideRequest, RideRequest
 import gravitate.services.utils as service_utils
+import gravitate.services.ride_request.utils as creation_utils
 from gravitate.services.ride_request.utils import fill_ride_request_dict_with_form
 from . import parsers as ride_request_parsers
 
@@ -52,19 +53,22 @@ class AirportRideRequestCreationService(Resource):
         # # Transfer data from validateForm to an internal representation of the form
         # form = AirportRideRequestCreationForm()
         # validateForm.populate_obj(form)
-
-        rideRequestDict, location = fill_ride_request_dict_with_form(
-            form, userId)
-        if not location:
-            errorResponseDict = {
-                "error": "invalid airport code and datetime combination or error finding airport location in backend",
-                "originalArgs": args
-            }
-            return errorResponseDict, 400
+        #
+        # rideRequestDict, location = fill_ride_request_dict_with_form(
+        #     form, userId)
+        # if not location:
+        #     errorResponseDict = {
+        #         "error": "invalid airport code and datetime combination or error finding airport location in backend",
+        #         "originalArgs": args
+        #     }
+        #     return errorResponseDict, 400
 
         # Create RideRequest Object
-        rideRequest: AirportRideRequest = RideRequest.from_dict(
-            rideRequestDict)
+        rideRequest: AirportRideRequest = creation_utils.AirportRideRequestBuilder()\
+            .set_with_form_and_user_id(args, userId)\
+            .build_airport_ride_request()\
+            .export_as_class(AirportRideRequest)
+
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user

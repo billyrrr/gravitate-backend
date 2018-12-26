@@ -75,6 +75,11 @@ class RideRequestBaseBuilder:
         self._ride_request_dict = dict()
 
     def export_as_class(self, export_class) -> Type[RideRequest]:
+        """
+        :param: export_class: the class to call .from_dict with
+        Note that export_class=AirportRideRequest and export_class=RideRequest yield the same result,
+            since AirportRideRequest.from_dict is the same as RideRequest.from_dict.
+        """
         return export_class.from_dict(self._ride_request_dict)
 
     """
