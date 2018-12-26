@@ -29,28 +29,28 @@ class Event(FirestoreObject):
 
             :param eventDict:
         """
-        eventCategory = eventDict['eventCategory']
+        event_category = eventDict['eventCategory']
         participants = eventDict['participants']
-        eventLocation = eventDict['eventLocation']
-        startTimestamp = eventDict['startTimestamp']
-        endTimestamp = eventDict['endTimestamp']
+        event_location = eventDict['eventLocation']
+        start_timestamp = eventDict['startTimestamp']
+        end_timestamp = eventDict['endTimestamp']
         pricing = eventDict['pricing']
-        locationRef = eventDict['locationRef']
-        isClosed = eventDict['isClosed']
+        location_ref = eventDict['locationRef']
+        is_closed = eventDict['isClosed']
 
-        return Event(eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRef,
-                     isClosed)
+        return Event(event_category, participants, event_location, start_timestamp, end_timestamp, pricing, location_ref,
+                     is_closed)
 
     def to_dict(self):
         eventDict = {
-            'eventCategory': self.eventCategory,
+            'eventCategory': self.event_category,
             'participants': self.participants,
-            'eventLocation': self.eventLocation,
-            'startTimestamp': self.startTimestamp,
-            'endTimestamp': self.endTimestamp,
+            'eventLocation': self.event_location,
+            'startTimestamp': self.start_timestamp,
+            'endTimestamp': self.end_timestamp,
             'pricing': self.pricing,
-            'locationRef': self.locationRef,
-            'isClosed': self.isClosed
+            'locationRef': self.location_ref,
+            'isClosed': self.is_closed
         }
         return eventDict
 
@@ -60,7 +60,7 @@ class Event(FirestoreObject):
 
             :param self:
         """
-        self.isClosed = False
+        self.is_closed = False
 
     def set_as_passed(self):
         """ Definition
@@ -68,28 +68,28 @@ class Event(FirestoreObject):
 
             :param self:
         """
-        self.isClosed = True
+        self.is_closed = True
 
-    def __init__(self, eventCategory, participants, eventLocation, startTimestamp, endTimestamp, pricing, locationRef,
-                 isClosed):
+    def __init__(self, event_category, participants, event_location, start_timestamp, end_timestamp, pricing, location_ref,
+                 is_closed):
         """Description
            This function initializes an Event object
 
            :param self:
-           :param eventCategory:
+           :param event_category:
            :param participants:
-           :param eventLocation:
-           :param startTimestamp:
-           :param endTimestamp:
+           :param event_location:
+           :param start_timestamp:
+           :param end_timestamp:
            :param pricing:
-           :param locationRef: a list of locationRef that corresponds to this event
-           :param isClosed:
+           :param location_ref: a list of locationRef that corresponds to this event
+           :param is_closed:
         """
-        self.eventCategory = eventCategory
+        self.event_category = event_category
         self.participants = participants
-        self.eventLocation = eventLocation
-        self.startTimestamp = startTimestamp
-        self.endTimestamp = endTimestamp
+        self.event_location = event_location
+        self.start_timestamp = start_timestamp
+        self.end_timestamp = end_timestamp
         self.pricing = pricing
-        self.locationRef = locationRef
-        self.isClosed = isClosed
+        self.location_ref = location_ref
+        self.is_closed = is_closed

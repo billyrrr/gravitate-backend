@@ -8,8 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_models/test_event_schedule.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_models/test_event_schedule.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_models/test_ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_models/test_ride_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/models/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/models/event.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/scripts/event_builders.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/scripts/event_builders.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -82,14 +82,14 @@
           <entry key="dummy" value="150" />
           <entry key="md" value="1049" />
           <entry key="py" value="37668" />
-          <entry key="txt" value="3356" />
+          <entry key="txt" value="3383" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1049" />
-          <entry key="PLAIN_TEXT" value="3506" />
+          <entry key="PLAIN_TEXT" value="3533" />
           <entry key="Python" value="37668" />
           <entry key="YAML" value="18" />
         </counts>
@@ -104,7 +104,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_models/test_target.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="555">
@@ -128,9 +128,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/models/event.py">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="537">
+              <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -284,7 +288,6 @@
         <option value="$PROJECT_DIR$/gravitate/__init__.py" />
         <option value="$PROJECT_DIR$/gravitate/__main__.py" />
         <option value="$PROJECT_DIR$/gravitate/app.yaml" />
-        <option value="$PROJECT_DIR$/gravitate/models/event.py" />
         <option value="$PROJECT_DIR$/gravitate/models/event_schedule.py" />
         <option value="$PROJECT_DIR$/gravitate/models/firestore_object.py" />
         <option value="$PROJECT_DIR$/gravitate/models/location.py" />
@@ -322,6 +325,7 @@
         <option value="$PROJECT_DIR$/test/test_models/test_target.py" />
         <option value="$PROJECT_DIR$/test/test_models/test_ride_request.py" />
         <option value="$PROJECT_DIR$/test/test_models/test_event_schedule.py" />
+        <option value="$PROJECT_DIR$/gravitate/models/event.py" />
       </list>
     </option>
   </component>
@@ -489,7 +493,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_target.TestTarget">
+  <component name="RunManager" selected="Python tests.pytest for test_event.EventModelTest">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -540,7 +544,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -555,7 +559,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -570,7 +574,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -585,7 +589,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -600,7 +604,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -619,11 +623,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_event.EventModelTest" />
         <item itemvalue="Python tests.pytest for test_target.TestTarget" />
         <item itemvalue="Python tests.pytest for test_event_schedule.EventScheduleDaoTest" />
         <item itemvalue="Python tests.pytest for test_ride_request.RideRequestTest" />
         <item itemvalue="Python tests.pytest for test_orbit.OrbitTest" />
-        <item itemvalue="Python tests.pytest for test_event.EventModelTest" />
       </list>
     </recent_temporary>
   </component>
@@ -639,13 +643,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00045" summary="Add TODO">
-      <created>1545205221939</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1545205221939</updated>
     </task>
     <task id="LOCAL-00046" summary="Refactor create ride request">
       <created>1545205536616</created>
@@ -983,7 +980,14 @@
       <option name="project" value="LOCAL" />
       <updated>1545840521945</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Fix tests for models">
+      <created>1545841058280</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1545841058280</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1034,7 +1038,7 @@
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17721519" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17721519" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -1043,7 +1047,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49777997" weight="0.327551" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.26836735" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4967933" visible="true" weight="0.26836735" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49975333" weight="0.3989796" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1105,7 +1109,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add main_script for generating campus events" />
     <MESSAGE value="Switch to Reqparse for parsing REST API arguments" />
     <MESSAGE value="Rename models code to snake_case" />
     <MESSAGE value="Move to DELETE '/rideRequests/$rideRequestId' for deleting rideRequest" />
@@ -1130,7 +1133,8 @@
     <MESSAGE value="Fix ride request creation service" />
     <MESSAGE value="Move deprecated methods" />
     <MESSAGE value="Move tests for Target" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move tests for Target" />
+    <MESSAGE value="Fix tests for models" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix tests for models" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gravitate/data_access/event_dao.py">
@@ -1171,6 +1175,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2445">
           <caret line="163" column="41" lean-forward="true" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#133#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1496,9 +1503,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/models/event.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/factory/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="311">
@@ -1523,6 +1527,13 @@
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/models/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="537">
+          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
         </state>
       </provider>
     </entry>

@@ -53,10 +53,10 @@ class EventBuilder(Event):
 
 class SpecifiedRangeEventBuilder(EventBuilder):
 
-    def __init__(self, startTimestamp, endTimestamp):
+    def __init__(self, start_timestamp, end_timestamp):
         self.buildBasicInfo()
         self.buildLists()
-        self.buildTimeRange(startTimestamp, endTimestamp)
+        self.buildTimeRange(start_timestamp, end_timestamp)
         self.buildExtraInfo()
 
     def buildTimeRange(self, startTimestamp, endTimestamp):
