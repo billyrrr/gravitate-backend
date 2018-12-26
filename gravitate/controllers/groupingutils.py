@@ -9,7 +9,7 @@ db = context.Context.db
 
 
 # @transactional
-def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideRequest],  orbit: Orbit) -> bool:
+def joinOrbitToRideRequest(rideRequest: Type[RideRequest],  orbit: Orbit) -> bool:
     """ Description
     This function joins a rideRequest to an orbit in the database. 
             Firstly, the function accesses database copy of the objects and download them as local copies
@@ -44,16 +44,14 @@ def joinOrbitToRideRequest(transaction: Transaction, rideRequest: Type[RideReque
 
     if rideRequest.requestCompletion:
         return False
+    pairs: dict = orbit.user_ticket_pairs
+    for user_id, ticket in pairs.items():
+        if ticket["userWillDriver"] and rideRequest.driver_status:
+            # There is already an I-4 driver. Do not join another driver to the orbit
+            return False
 
     # Modify local copies of rideRequest and orbit
     placeInOrbit(rideRequest, orbit)
-
-    # Update database copy of rideRequest and orbit
-
-    RideRequestGenericDao.set_with_transaction(
-        transaction, rideRequest, rideRequest.get_firestore_ref())
-    OrbitDao.set_with_transaction(
-        transaction, orbit, orbit.get_firestore_ref())
 
     return True
 

@@ -296,7 +296,7 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
+            isJoined = groupingutils.joinOrbitToRideRequest(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -304,6 +304,13 @@ class Group:
                 self.joined.append(rideRequest)
             else:
                 self.notJoined.append(rideRequest)
+
+        for rideRequest in self.joined:
+            # Update database copy of rideRequest and orbit
+            RideRequestGenericDao.set_with_transaction(
+                transaction, rideRequest, rideRequest.get_firestore_ref())
+            OrbitDao.set_with_transaction(
+                transaction, orbit, orbit.get_firestore_ref())
 
         # refresh event schedule for each user
         self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
