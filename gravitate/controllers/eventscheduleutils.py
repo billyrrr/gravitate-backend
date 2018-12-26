@@ -78,7 +78,7 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     """
     # Must go through each userTicketPair (key = userIDs)
     photo_urls = []
-    for uid in orbit.userTicketPairs:
+    for uid in orbit.user_ticket_pairs:
         user = UserDao().get_user_by_id(uid)
         photo_url = user.photo_url
         photo_urls.append(photo_url)

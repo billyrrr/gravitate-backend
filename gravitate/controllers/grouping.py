@@ -234,7 +234,7 @@ def _remove(transaction, rideRequestRef: DocumentReference):
     orbit = OrbitDao().get_with_transaction(transaction, orbitRef)
     orbit.set_firestore_ref(orbitRef)
 
-    eventRef = orbit.eventRef
+    eventRef = orbit.event_ref
 
     locationRef: DocumentReference = rideRequest.airportLocation
     location = LocationGenericDao().get_with_transaction(transaction, locationRef)

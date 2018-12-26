@@ -142,7 +142,7 @@ def placeInOrbit(r: RideRequest, o: Orbit):
         "inChat": False,
         "pickupAddress": r.pickupAddress
     }
-    o.userTicketPairs[userId] = ticket
+    o.user_ticket_pairs[userId] = ticket
     r.requestCompletion = True
 
     return
@@ -151,9 +151,9 @@ def placeInOrbit(r: RideRequest, o: Orbit):
 def removeFromOrbit(r: RideRequest, o: Orbit):
     # remove userRef from orbitRef's userTicketPairs
     # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
-    userIds = list(o.userTicketPairs.keys())
+    userIds = list(o.user_ticket_pairs.keys())
     for userId in userIds:
         if userId == r.userId:
-            o.userTicketPairs.pop(userId)
+            o.user_ticket_pairs.pop(userId)
     r.orbitRef = None
     r.requestCompletion = False
