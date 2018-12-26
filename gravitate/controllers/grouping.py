@@ -19,20 +19,24 @@ def groupMany(rideRequestIds: list):
     :param rideRequestIds:
     :return:
     """
-    rideRequests = list()
+    d = dict()
     for rideRequestId in rideRequestIds:
 
-        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().get(rideRequestRef)
-        rideRequest.set_firestore_ref(rideRequestRef)
+        ride_request_ref = db.collection("rideRequests").document(rideRequestId)
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
 
         # Do not add to rideRequests queue if the request is complete
-        if rideRequest.requestCompletion:
+        if ride_request.requestCompletion:
             continue
 
-        rideRequests.append(rideRequest)
+        event_id = ride_request.event_ref.id
+        if event_id not in d.keys():
+            d[event_id] = list()
+        d[event_id].append(ride_request)
 
-    groupRideRequests(rideRequests)
+    for event_id in d.keys():
+        ride_requests = d[event_id]
+        groupRideRequests(ride_requests)
 
 
 def forceMatchTwo(rideRequestIds: list):
