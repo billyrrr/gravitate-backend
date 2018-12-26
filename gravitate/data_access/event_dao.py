@@ -7,9 +7,9 @@ from gravitate.models import RideRequest, AirportRideRequest, Event
 import google
 from typing import Type
 import warnings
-from gravitate import config
+from gravitate import context
 
-CTX = config.Context
+CTX = context.Context
 
 db = CTX.db
 

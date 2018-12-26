@@ -1,7 +1,7 @@
 from gravitate.models import User
 
 import string
-import gravitate.config as config
+import gravitate.context as config
 
 auth = config.auth
 

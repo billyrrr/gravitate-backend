@@ -12,7 +12,7 @@ from gravitate.controllers import userutils
 from gravitate.data_access import UserDao
 from gravitate.forms.user_creation_form import UserCreationValidateForm, UserCreationForm
 from gravitate.models import User
-from gravitate.config import Context
+from gravitate.context import Context
 
 db = Context.db
 

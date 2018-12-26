@@ -24,18 +24,17 @@ from google.auth.transport import requests
 
 # Firebase Admin SDK
 
-from firebase_admin import auth
-from gravitate.config import Context
+from gravitate.context import Context
 
 # APScheduler for automatic grouping per interval
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.services.ride_request_service import AirportRideRequestService, DeleteMatchService, DeleteRideRequestService, AirportRideRequestServiceReqParse
+from gravitate.services.ride_request.services import AirportRideRequestCreationService, DeleteMatchService, \
+    AirportRideRequestService
 from gravitate.services.user_service import UserService
 from gravitate.services.utils import authenticate
-
 
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(refreshGroupAll, 'interval', minutes=1)
@@ -48,9 +47,7 @@ db = Context.db
 parser = reqparse.RequestParser()
 
 
-
 class EndpointTestService(Resource):
-
     method_decorators = [authenticate]
 
     def post(self, uid):
@@ -72,12 +69,11 @@ class EndpointTestService(Resource):
 api = Api(app)
 api.add_resource(UserService, '/users/<string:uid>')
 # api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
-api.add_resource(AirportRideRequestService, '/rideRequests')
+api.add_resource(AirportRideRequestCreationService, '/rideRequests')
+api.add_resource(AirportRideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
-api.add_resource(DeleteRideRequestService, '/deleteRideRequest')
-api.add_resource(AirportRideRequestServiceReqParse, '/testReqParse')
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])

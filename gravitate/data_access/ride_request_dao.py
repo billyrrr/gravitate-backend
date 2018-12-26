@@ -6,11 +6,11 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
 import google
 from typing import Type
 from gravitate.models import RideRequest, AirportRideRequest
-from gravitate import config
+from gravitate import context
 
 from . import utils
 
-CTX = config.Context
+CTX = context.Context
 
 db = CTX.db
 

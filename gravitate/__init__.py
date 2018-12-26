@@ -1,6 +1,6 @@
 # import sys
 # sys.path.append('../gravitate')
 
-import gravitate.config as config
+import gravitate.context as config
 
 config.Context.read()

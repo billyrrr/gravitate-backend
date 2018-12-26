@@ -9,10 +9,10 @@ from gravitate.models import User, AirportEventSchedule
 
 import string
 import warnings
-from gravitate import config
+from gravitate import context
 
-CTX = config.Context
-auth = config.auth
+CTX = context.Context
+auth = context.auth
 
 db = CTX.db
 

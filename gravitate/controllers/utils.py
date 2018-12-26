@@ -1,11 +1,12 @@
+from typing import Type
+
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
-from gravitate.models import AirportLocation, Event, RideRequest, AirportRideRequest, Target
-from google.cloud.firestore import DocumentReference, Transaction, transactional
+from gravitate.models import AirportLocation, RideRequest, User
+from google.cloud.firestore import DocumentReference, transactional
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, UserDao
 from . import eventscheduleutils
 
 import iso8601
-import datetime as dt
 import pytz
 
 
@@ -58,70 +59,38 @@ def addRideRequest(transaction, rideRequest, location, userId):
     # [END] Update the user's eventSchedule
 
 
-def createTarget(form: AirportRideRequestCreationForm):
+def get_pickup_address(userId) -> str:
     """
-    Note that this method won't work if any datetime string represents a time when
-        daylight saving ends (November 4 1:00AM-2:00AM). 
-        since anytime in between corresponds to more than one possible UTC time. 
-
-        :param form:AirportRideRequestCreationForm:
-    """
-    tz = pytz.timezone('America/Los_Angeles')
-
-    earliestDatetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
-    latestDatetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
-
-    earliestTimestamp = int(earliestDatetime.timestamp())
-    latestTimestamp = int(latestDatetime.timestamp())
-    # TODO: retrieve tzinfo from event rather than hardcoding 'America/Los_Angeles'
-    target = Target.create_airport_event_target(form.toEvent, earliestTimestamp, latestTimestamp)
-    return target
-
-
-def createTargetWithFlightLocalTime(flightLocalTime, toEvent, offsetLowAbsSec: int = 7200,
-                                    offsetHighAbsSec: int = 18000):
-    """
-        This method creates a target with flightLocal Time. The offsets represents how much in advance
-            is user's preferred earliest and latest.
-
-        Limitations:
-            this method won't work if any datetime string represents a time when
-                daylight saving ends (November 4 1:00AM-2:00AM).
-                since anytime in between corresponds to more than one possible UTC time.
-
-    :param flightLocalTime:
-    :param toEvent:
-    :param offsetLowAbsSec: The offset with lower absolute value.
-    :param offsetHighAbsSec: The offset with higher absolute value.
+    This method returns the default pickup address of a user.
+    :param userId:
     :return:
     """
-    assert offsetLowAbsSec >= 0
-    assert offsetHighAbsSec >= 0
-    # Check that offsetLow represents a greater than or equal to interval than offsetHigh
-    assert offsetLowAbsSec <= offsetHighAbsSec
-    # Check that there earliest and latest represents a range of time
-    assert offsetLowAbsSec != offsetHighAbsSec
+    user: User = UserDao().get_user_by_id(userId)
+    pickup_address = user.pickupAddress
+    return pickup_address
 
-    tz = pytz.timezone('America/Los_Angeles')
-    flightLocalTime = iso8601.parse_date(flightLocalTime, default_timezone=None).astimezone(tz)
 
-    # Get timedelta object with seconds
-    offsetEarlierAbs = dt.timedelta(seconds=offsetHighAbsSec)
-    offsetLaterAbs = dt.timedelta(seconds=offsetLowAbsSec)
+def get_event_ref_by_id(event_id: str) -> DocumentReference:
+    """
+    This method returns the event_ref by event_id.
+    :param eventId:
+    :return: DocumentReference of the event.
+    """
+    return EventDao().get_ref(event_id)
 
-    # Get earliest and latest datetime
-    earliest: dt.datetime = flightLocalTime - offsetEarlierAbs
-    latest: dt.datetime = flightLocalTime - offsetLaterAbs
 
-    earliestTimestamp = int(earliest.timestamp())
-    latestTimestamp = int(latest.timestamp())
+def get_location_ref_by_id(location_id: str) -> DocumentReference:
+    """
+    This method return the location_ref by location_id.
+    :param location_id:
+    :return:
+    """
+    return LocationGenericDao().get_ref_by_id(location_id)
 
-    assert earliestTimestamp <= latestTimestamp  # Check that "earliest" occurs earliest than "latest"
-    assert earliestTimestamp != latestTimestamp  # Check that "earliest" is not the same as latest
 
-    target = Target.create_airport_event_target(toEvent, earliestTimestamp, latestTimestamp)
-
-    return target
+def get_ride_request(d: dict) -> Type[RideRequest]:
+    ride_request = RideRequest.from_dict(d)
+    return ride_request
 
 
 def getAirportLocation(airportCode) -> AirportLocation:
@@ -144,14 +113,14 @@ def findEvent(flight_local_time) -> DocumentReference:
     """
 
     # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = _as_timestamp(flight_local_time)
+    eventTime = local_time_as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
     event = EventDao().find_by_timestamp(eventTime, "airport")
 
     return event.get_firestore_ref()
 
 
-def _as_timestamp(flight_local_time):
+def local_time_as_timestamp(flight_local_time):
     tz = pytz.timezone("America/Los_Angeles")
     local_datetime = iso8601.parse_date(flight_local_time, default_timezone=None)
     utc_datetime = tz.localize(local_datetime)  # TODO: test DST

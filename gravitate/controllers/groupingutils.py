@@ -3,9 +3,9 @@ from gravitate.data_access import RideRequestGenericDao, OrbitDao, UserDao, Loca
 from google.cloud.firestore import DocumentReference, Client, transactional, Transaction
 from gravitate.controllers import eventscheduleutils
 from typing import Type
-from gravitate import config
+from gravitate import context
 
-db = config.Context.db
+db = context.Context.db
 
 
 # @transactional

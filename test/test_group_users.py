@@ -6,9 +6,9 @@ from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
 from test import factory
 import unittest
-from test import config
+from test import context
 
-db = config.Context.db
+db = context.Context.db
 
 rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k"]
 

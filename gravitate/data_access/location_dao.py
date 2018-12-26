@@ -7,10 +7,10 @@ import google
 from typing import Type
 from gravitate.models import Location, AirportLocation, UcLocation
 import warnings
-from gravitate import config
+from gravitate import context
 from functools import partial
 
-CTX = config.Context
+CTX = context.Context
 
 db = CTX.db
 
@@ -23,6 +23,14 @@ class LocationGenericDao:
 
     def __init__(self):
         self.locationCollectionRef = db.collection('locations')
+
+    def get_ref_by_id(self, location_id):
+        """
+        This method returns location_ref by location_id.
+        :param location_id:
+        :return:
+        """
+        return self.locationCollectionRef.document(location_id)
 
     @staticmethod
     # @transactional

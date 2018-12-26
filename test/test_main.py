@@ -1,38 +1,32 @@
 import gravitate.main as main
 from flask.testing import FlaskClient
-from flask import request, jsonify
 
-from gravitate.services.ride_request_service import fillRideRequestDictWithForm
+from gravitate.services.ride_request.deprecated_utils import fill_ride_request_dict_with_form, \
+    fill_ride_request_dict_builder_regression
 
-from gravitate.controllers.utils import createTarget, createTargetWithFlightLocalTime, \
-    hasDuplicateEvent
+from gravitate.controllers.utils import hasDuplicateEvent
 
-from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm, RideRequestCreationValidateForm
-from gravitate.forms.user_creation_form import UserCreationForm, UserCreationValidateForm
+from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm
 
-from gravitate.models import RideRequest, AirportRideRequest, User
-from requests import request
+from gravitate.models import RideRequest, User
 
 from gravitate.data_access import UserDao, EventDao
 
 from google.cloud import firestore
 from firebase_admin import auth
-import firebase_admin
 
 from test.factory.form import FormDictFactory
 import test.factory as factory
 from unittest import TestCase
 import json
-from test import config
-import warnings
-from urllib.parse import urlencode
+from test import context
 
-db = config.Context.db
-firebaseApp = config.Context.firebaseApp
+db = context.Context.db
+firebaseApp = context.Context.firebaseApp
 
 userId = 'SQytDq13q00e0N3H4agR'
 
-cred = config.Context._cred
+cred = context.Context._cred
 
 userDict: dict = {
     'uid': 'KlRLbJCAORfbZxCm8ou1SEBJLt62',
@@ -44,62 +38,15 @@ userDict: dict = {
 }
 
 
-def getAuthHeaders():
+def getMockAuthHeaders(uid="testuid1"):
     # user = auth.get_user(uid)
     # userIdToken = user.tokens_valid_after_timestamp
     # # userIdToken = auth.create_custom_token(uid=uid, app=firebaseApp)
     # userIdTokenMock = userIdToken
     # warnings.warn("Note that userIdTokenMock is temporary and the test may fail when the token is no longer valid.")
-    userIdTokenMock = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIzNTBiNWY2NDM0Zjc2Y2NiM2IxMTlmZGQ4OGQxMzhjOWFjNTVmY2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZ3Jhdml0YXRlLWU1ZDAxIiwibmFtZSI6Ikxlb24gV3UiLCJwaWN0dXJlIjoiaHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vd2VicC9nYWxsZXJ5LzEuanBnIiwiYXVkIjoiZ3Jhdml0YXRlLWU1ZDAxIiwiYXV0aF90aW1lIjoxNTQ0MDUxMzkyLCJ1c2VyX2lkIjoiRXA3V0NqWmF0YWdkMU5yNTBUb05rSXA0V1d0MiIsInN1YiI6IkVwN1dDalphdGFnZDFOcjUwVG9Oa0lwNFdXdDIiLCJpYXQiOjE1NDQwNTQ2OTMsImV4cCI6MTU0NDA1ODI5MywiZW1haWwiOiJhbHcwNjlAdWNzZC5lZHUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfbnVtYmVyIjoiKzE3Nzc3Nzc3Nzc3IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNjk5NDY0Mzg1Nzk5Nzc5NDAxMyJdLCJwaG9uZSI6WyIrMTc3Nzc3Nzc3NzciXSwiZW1haWwiOlsiYWx3MDY5QHVjc2QuZWR1Il19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.UOJMNnsj2waK1BXqHksPeZJnu1RyEdVSMPWKpu0ZzOYy5HJCeHByJUeF_y-bnKWAiPx5EwcT4AbrDDmDCYz1Y4U2w91xtSnfdmlDkXk1jrtt39VWVkTeNpBEKF0GQGGoPO8xHuWVO8kOmUpmUW9ScC9SwyklfNwx_hOPHwjWFkZNoGWtYPS-oRS7w65t5-ccDAml0cqCwvoLoYBSGmHyQ9pN3CFzYAkGbkHNltV_y9ayyNq6TN-ubJ4mVeI5aePip0jklGs4oiSuyr4UJpYTrSWpPySMk9Yh9GVQQev1h4bXzHw5eovfnkJCrek9aanMaxXQnyouBico3dUVsnn9mQ"
+    userIdTokenMock = uid  # For mocking decoding token as uid
     headers = {'Authorization': userIdTokenMock}
     return headers
-
-class RefactorTempTest(TestCase):
-
-    def setUp(self):
-        main.app.testing = True
-        self.app = main.app.test_client()
-        self.userIds = ["KlRLbJCAORfbZxCm8ou1SEBJLt62", "MlmgazO6xhO7c2PoTFsLy5K8v5k2"]
-
-
-    def testCreateRideRequestsTemp(self):
-        # Create new rideRequests
-        for userId in self.userIds:
-            form = FormDictFactory().create(returnDict=True)
-            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-            form["testUserId"] = userId
-            r = self.app.post(
-                path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
-
-    def testGroupRideRequestsTemp(self):
-        r = self.app.post(path='/devForceMatch',
-                          json=json.dumps({"operationMode": "all"})
-                          )
-
-    def testCreateRideRequestTemp(self):
-        form = FormDictFactory().create(returnDict=True)
-        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/testReqParse?'+urlencode(form),
-                          headers=getAuthHeaders()
-                          )
-        self.fail()
-
-
-    def testDoNothing(self):
-        self.fail()
-
-
-    def testCreateRideRequest(self):
-        form = FormDictFactory().create(returnDict=True)
-        form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(
-            path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
-        print(r.data)
-        self.fail()
-        assert r.status_code == 200
-        # assert 'Hello World' in r.data.decode('utf-8')
 
 
 class MainAppTestCase(TestCase):
@@ -117,7 +64,7 @@ class MainAppTestCase(TestCase):
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
         r = self.app.post(
-            path='/rideRequests', json=json.dumps(form), headers=getAuthHeaders())
+            path='/rideRequests', json=json.dumps(form), headers=getMockAuthHeaders())
         print(r.data)
         self.fail()
         assert r.status_code == 200
@@ -129,18 +76,18 @@ class MainAppTestCase(TestCase):
 
     def testAuth(self):
         userIdMock = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
-        mockHeaders = getAuthHeaders()
+        mockHeaders = getMockAuthHeaders()
         r = self.app.post(path='/endpointTest', json=json.dumps({'testAuth': True}), headers=mockHeaders)
         responseDict: dict = json.loads(r.data)
         uid = responseDict['uid']
         self.assertEqual(uid, userIdMock)
 
     def testCreateRideRequestFrontend(self):
-        r = self.app.post(path='/rideRequests', json=self.newJson, headers=getAuthHeaders())
+        r = self.app.post(path='/rideRequests', json=self.newJson, headers=getMockAuthHeaders())
         self.assertEqual(r.status_code, 400)
 
     def testCreateRideRequestFailedFrontend(self):
-        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson, headers=getAuthHeaders())
+        r = self.app.post(path='/rideRequests', json=self.frontendFailedJson, headers=getMockAuthHeaders())
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
@@ -164,7 +111,7 @@ class MainAppTestCase(TestCase):
 
     def testEndpointTest(self):
         postJson = {'key1': 'val1a'}
-        r = self.app.post(path='/endpointTest', json=postJson, headers=getAuthHeaders())
+        r = self.app.post(path='/endpointTest', json=postJson, headers=getMockAuthHeaders())
         assert r.status_code == 200
         self.fail()
 
@@ -234,7 +181,7 @@ class TestEndpoints(TestCase):
             "eventId": "CslkxeIBABOx39PXiwpT",
             "rideRequestId": "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
         }
-        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
+        r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
         self.assertEqual(r.status_code, 200, "rideRequest should be safely deleted")
 
     def testUnmatchRideRequest(self):
@@ -244,31 +191,7 @@ class TestEndpoints(TestCase):
         """
         requestDict = {}
         path = "/rideRequests/{}/unmatch".format(factory.mock1["rideRequestId"])
-        r = self.app.post(path=path, json=requestDict, headers=getAuthHeaders())
-
-
-class TestCreationLogicsUtils(TestCase):
-
-    def testCreateAirportTargetWithFlightLocalTime(self):
-        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        targetDict = createTargetWithFlightLocalTime(
-            mockForm.flightLocalTime, mockForm.toEvent, offsetLowAbsSec=3600, offsetHighAbsSec=10800).to_dict()
-        valueExpected = {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                             {'earliest': 1545066000, 'latest': 1545073200}}
-        self.assertDictEqual(targetDict, valueExpected)
-
-    def testSameResultDifferentCreateTargetFunc(self):
-        mockFormCTWFLT = FormDictFactory().create(
-            hasEarliestLatest=False, returnDict=False)
-        targetDictCTWFLT = createTargetWithFlightLocalTime(
-            mockFormCTWFLT.flightLocalTime, mockFormCTWFLT.toEvent, offsetLowAbsSec=7200,
-            offsetHighAbsSec=18000).to_dict()
-        mockFormCT = FormDictFactory().create(
-            hasEarliestLatest=True, isE5L2=True, returnDict=False)
-        targetDictCT = createTarget(mockFormCT).to_dict()
-        self.assertDictEqual(targetDictCTWFLT, targetDictCT)
+        r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
 
 
 class TestCreateRideRequestLogics(TestCase):
@@ -285,24 +208,45 @@ class TestCreateRideRequestLogics(TestCase):
         #   with equal eventRef and userId field in the database 
         self.assertNotEqual(result, False)
 
-    def testCreateAirportTarget(self):
-        mockForm = MockFormTargetOnly()
-        targetDict = createTarget(mockForm).to_dict()
-        valueExpected = {'eventCategory': 'airportRide',
-                         'toEvent': True,
-                         'arriveAtEventTime':
-                             {'earliest': 1545066000, 'latest': 1545073200}}
-        self.assertDictEqual(targetDict, valueExpected)
 
     # def testSaveRideRequestToDb(self):
     #     mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-    #     rideRequestDict, _ = fillRideRequestDictWithForm(mockForm, userId)
+    #     rideRequestDict, _ = fill_ride_request_dict_with_form(mockForm, userId)
     #     result = RideRequest.from_dict(rideRequestDict)
     #     saveRideRequest(result)
 
-    def testCreateRideRequest(self):
+    def testFillRideRequestDict(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
-        result, _ = fillRideRequestDictWithForm(mockForm, userId)
+        result, _ = fill_ride_request_dict_with_form(mockForm, userId)
+        valueExpected = RideRequest.from_dict({
+
+            'rideCategory': 'airportRide',
+            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            'driverStatus': False,
+            'orbitRef': None,
+            'target': {'eventCategory': 'airportRide',
+                       'toEvent': True,
+                       'arriveAtEventTime':
+                           {'earliest': 1545058800, 'latest': 1545069600}},
+            'eventRef': db.document('events', 'testeventid1'),
+            'userId': 'SQytDq13q00e0N3H4agR',
+            'hasCheckedIn': False,
+            'pricing': 987654321,
+            "baggages": dict(),
+            "disabilities": dict(),
+            'flightLocalTime': "2018-12-17T12:00:00.000",
+            'flightNumber': "DL89",
+            "airportLocation": db.document("locations", "testairportlocationid1"),
+            "requestCompletion": False
+
+        }).to_dict()
+        self.assertDictEqual(valueExpected, result)
+        self.assertIsNotNone(result["eventRef"])
+        self.assertIsNotNone(result["airportLocation"])
+
+    def testFillRideRequestDictNew(self):
+        mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
+        result, _ = fill_ride_request_dict_builder_regression(mockForm, userId)
         valueExpected = RideRequest.from_dict({
 
             'rideCategory': 'airportRide',
@@ -396,7 +340,7 @@ class UserDAOTest(TestCase):
 
 class FirebaseUserTest(TestCase):
     def testGetFirebaseInfo(self):
-        user = auth.get_user("1GFLeGxBaaUvudqh3XYbFv2sRHx2", app=config.Context.firebaseApp)
+        user = auth.get_user("1GFLeGxBaaUvudqh3XYbFv2sRHx2", app=context.Context.firebaseApp)
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -408,7 +352,7 @@ class FirebaseUserTest(TestCase):
                          phone_number="+17777777779",
                          display_name="Zixuan Rao",
                          disabled=False,
-                         app=config.Context.firebaseApp
+                         app=context.Context.firebaseApp
                          )
 
 
@@ -437,6 +381,6 @@ class DeleteRideRequestServiceTest(TestCase):
 
     def testDeleteRideRequest(self):
         r = self.app.post(
-            path='/deleteRideRequest', json=self.newJson, headers=getAuthHeaders())
+            path='/deleteRideRequest', json=self.newJson, headers=getMockAuthHeaders())
         print(r.response)
         self.assertEqual(r.status_code, 200)

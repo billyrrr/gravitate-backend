@@ -8,22 +8,24 @@ from firebase_admin import auth
 from flask import request
 from flask_restful import abort
 
-from gravitate.config import Context
+from gravitate.context import Context
 import warnings
 
 # Flag for whether main app is in TESTING mode
-TESTING_MODE = False
-if TESTING_MODE is True:
+testing = Context.testing
+if testing is True:
     warnings.warn("Testing mode is True. Set to False before release. ")
 
 
 # For Testing Purposes. If not in TESTING mode, the function verfifies the token with FirebaseApp.
 # Otherwise, a fixed uid will be returned in the format {"uid":"testuid1"}
 auth_verify_id_token = None
-if TESTING_MODE:
+if testing:
     def mock_auth_verify_id_token(*args, **kwargs):
+        mockUid = args[0]
+        warnings.warn("@authenticate (decorator for service methods) is returning uid as {}. ".format(mockUid))
         return {
-            "uid": "testuid1"
+            "uid": mockUid
         }
     auth_verify_id_token = mock_auth_verify_id_token
 else:

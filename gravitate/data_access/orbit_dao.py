@@ -4,9 +4,9 @@
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, transactional
 from gravitate.models.orbit import Orbit
 import google
-from gravitate import config
+from gravitate import context
 
-db = config.Context.db
+db = context.Context.db
 
 class OrbitDao:
     """ Description	

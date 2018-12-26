@@ -26,7 +26,7 @@ class CityRideRequestCreationForm(RideRequestBaseCreationForm):
     dropoffAddress = None  # Specific dropoff address (optional)m
 
 
-class AirportRideRequestCreationForm():
+class AirportRideRequestCreationForm(object):
 
     @staticmethod
     def from_dict(d: dict):
@@ -98,7 +98,7 @@ class RideRequestCreationValidateForm(Form):
 
     #     ])
 
-    toEvent = BooleanField(u'wether the ride is heading to the event')
+    toEvent = BooleanField(u'whether the ride is heading to the event')
 
     # TODO update design use case to be more specific about what driverStatus means
     # Since DataRequired is not compatible with value 'False', we won't have any validator for boolean
@@ -106,7 +106,7 @@ class RideRequestCreationValidateForm(Form):
     # validators=[
     #       DataRequired('driverStatus (wether the user want to be considered as a driver for the event) needs to be specified. ')
     #       ]
-    driverStatus = BooleanField(u'wether the user want to be considered as a driver for the event')
+    driverStatus = BooleanField(u'whether the user want to be considered as a driver for the event')
 
     # # TODO: Validate Airport
     # @staticmethod
