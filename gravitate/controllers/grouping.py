@@ -309,8 +309,9 @@ class Group:
             # Update database copy of rideRequest and orbit
             RideRequestGenericDao.set_with_transaction(
                 transaction, rideRequest, rideRequest.get_firestore_ref())
-            OrbitDao.set_with_transaction(
-                transaction, orbit, orbit.get_firestore_ref())
+
+        OrbitDao.set_with_transaction(
+            transaction, orbit, orbit.get_firestore_ref())
 
         # refresh event schedule for each user
         self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
