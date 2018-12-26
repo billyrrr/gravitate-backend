@@ -314,9 +314,28 @@ class Group:
             transaction, orbit, orbit.get_firestore_ref())
 
         # refresh event schedule for each user
+        # TODO: refresh eventSchedules on all rideRequests in an orbit rather than those just joined
         self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
 
         transaction.commit()
+
+        ids_in_orbit = list()
+        def ids_from_pairs():
+            for user_id, ticket in orbit.user_ticket_pairs.items():
+                ids_in_orbit.append(ticket["rideRequestRef"].id)
+        ids_from_pairs()
+
+        ids_just_joined = list()
+        def ids_from_joined():
+            for rideRequest in self.joined:
+                ids_just_joined.append(rideRequest.get_firestore_ref().id)
+        ids_just_joined()
+
+        ids_to_refresh = list(set(ids_in_orbit) - set(ids_just_joined))
+        for id in ids_to_refresh:
+            # TODO: add code for refreshing ride_requests
+            raise NotImplementedError
+
 
         return self.notJoined
 

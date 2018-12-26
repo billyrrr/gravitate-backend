@@ -6,7 +6,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
+    <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="Improve code in joining rideRequests to an orbit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/controllers/grouping.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/grouping.py" afterDir="false" />
     </list>
@@ -49,16 +49,16 @@
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.6" value="3" />
+          <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.7" value="4" />
-          <entry key="project.opened" value="14" />
+          <entry key="project.opened" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="json" value="10" />
           <entry key="md" value="9" />
-          <entry key="py" value="535" />
+          <entry key="py" value="539" />
           <entry key="pyi" value="4" />
           <entry key="services" value="1" />
           <entry key="sh" value="5" />
@@ -71,7 +71,7 @@
           <entry key="JSON" value="10" />
           <entry key="Markdown" value="9" />
           <entry key="PLAIN_TEXT" value="7" />
-          <entry key="Python" value="535" />
+          <entry key="Python" value="539" />
           <entry key="PythonStub" value="4" />
           <entry key="YAML" value="1" />
         </counts>
@@ -80,16 +80,16 @@
         <counts>
           <entry key="dummy" value="151" />
           <entry key="md" value="1049" />
-          <entry key="py" value="37893" />
-          <entry key="txt" value="3487" />
+          <entry key="py" value="38628" />
+          <entry key="txt" value="3611" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1049" />
-          <entry key="PLAIN_TEXT" value="3638" />
-          <entry key="Python" value="37893" />
+          <entry key="PLAIN_TEXT" value="3762" />
+          <entry key="Python" value="38628" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -104,22 +104,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gravitate/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-              <folding>
-                <element signature="e#723#737#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/services/grouping_service.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="565">
-              <caret line="47" column="15" lean-forward="true" selection-start-line="47" selection-start-column="15" selection-end-line="47" selection-end-column="15" />
+            <state relative-caret-position="615">
+              <caret line="47" column="15" selection-start-line="47" selection-start-column="15" selection-end-line="47" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -127,17 +115,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/controllers/grouping.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+            <state relative-caret-position="249">
+              <caret line="335" column="57" selection-start-line="335" selection-start-column="57" selection-end-line="335" selection-end-column="57" />
+              <folding>
+                <marker date="1545858820654" expanded="true" signature="11279:11288" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gravitate/data_access/ride_request_dao.py">
+        <entry file="file://$PROJECT_DIR$/gravitate/controllers/groupingutils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="107" column="8" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
+            <state relative-caret-position="293">
+              <caret line="81" column="4" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gravitate/models/orbit.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -145,8 +145,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/factory/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
+            <state relative-caret-position="297">
               <caret line="90" selection-start-line="90" selection-end-line="90" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="89" column="33" selection-start-line="89" selection-start-column="33" selection-end-line="89" selection-end-column="33" />
+              <folding>
+                <element signature="e#39#104#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -158,15 +170,6 @@
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gravitate/services/event_service.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
             </state>
           </provider>
         </entry>
@@ -184,7 +187,7 @@
         <entry file="file://$PROJECT_DIR$/test/test_main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="5220">
-              <caret line="369" lean-forward="true" selection-start-line="369" selection-end-line="369" />
+              <caret line="369" selection-start-line="369" selection-end-line="369" />
             </state>
           </provider>
         </entry>
@@ -192,7 +195,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_group_users.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1919">
+            <state>
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -264,7 +267,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/gravitate/services/user_service.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/gravitate/models/__init__.py" />
         <option value="$PROJECT_DIR$/gravitate/scripts/populate_locations.py" />
@@ -314,6 +316,7 @@
         <option value="$PROJECT_DIR$/test/test_models/test_target.py" />
         <option value="$PROJECT_DIR$/gravitate/models/user.py" />
         <option value="$PROJECT_DIR$/gravitate/models/location.py" />
+        <option value="$PROJECT_DIR$/gravitate/controllers/groupingutils.py" />
         <option value="$PROJECT_DIR$/gravitate/controllers/grouping.py" />
       </list>
     </option>
@@ -325,8 +328,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="716" />
-    <option name="width" value="964" />
+    <option name="width" value="1680" />
     <option name="height" value="1050" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -351,7 +353,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -368,12 +369,36 @@
               <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
               <item name="gravitate" type="462c0819:PsiDirectoryNode" />
+              <item name="controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
+              <item name="gravitate" type="462c0819:PsiDirectoryNode" />
               <item name="data_access" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
+              <item name="gravitate" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
+              <item name="gravitate" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gravitate-backend" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="factory" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="gravitate-backend" type="b2602c69:ProjectViewProjectNode" />
@@ -385,6 +410,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
@@ -420,168 +446,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/gravitate/services" />
     </key>
-  </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/dictionaries/billyrao.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.vscode/.ropeproject/config.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/__init__.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/config.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/eventscheduleutils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/fcmessaging.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/fireauthutils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/grouping.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/groupingutils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/controllers/utils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/event_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/event_schedule_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/location_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/orbit_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/ride_request_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/data_access/user_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/main.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/event.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/firestore_object.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/location.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/orbit.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/ride_request.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/models/target.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/scripts/event_builders.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/user_service.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/utils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/__init__.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/factory/form.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/factory/model.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_data_access/test_location_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_data_access/test_orbit_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_data_access/test_ride_request_dao.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_event_schedule_utils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_group_users.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_main.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_models/test_event.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_models/test_event_schedule.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_models/test_ride_request.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_utils.py</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/context.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/event_service.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/location_service.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request/__init__.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request/deprecated_utils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request/parsers.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request/services.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request/utils.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_models/test_target.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_services/__init__.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/test_services/test_ride_request_service.py</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/gravitate/services/ride_request_service.py</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -745,20 +609,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00050" summary="Add docs">
-      <created>1545207343839</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1545207343839</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Refactor code">
-      <created>1545207909536</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1545207909536</updated>
     </task>
     <task id="LOCAL-00052" summary="Add testing authentication decorator">
       <created>1545305974574</created>
@@ -1089,7 +939,21 @@
       <option name="project" value="LOCAL" />
       <updated>1545842255410</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="Add support for grouping 2+ people to an orbit">
+      <created>1545857872023</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1545857872024</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Improve code in joining rideRequests to an orbit">
+      <created>1545857997064</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1545857997064</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1211,8 +1075,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add skeleton code for location and event services" />
-    <MESSAGE value="Switch back to POST (json) /rideRequests for rideRequestCreation" />
     <MESSAGE value="Move reqparse into separate submodule" />
     <MESSAGE value="Rename config to context" />
     <MESSAGE value="Add config classes" />
@@ -1236,16 +1098,11 @@
     <MESSAGE value="Rename orbit model" />
     <MESSAGE value="Rename rideRequest model" />
     <MESSAGE value="Rename target model" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename target model" />
+    <MESSAGE value="Add support for grouping 2+ people to an orbit" />
+    <MESSAGE value="Improve code in joining rideRequests to an orbit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve code in joining rideRequests to an orbit" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/Cellar/python/3.7.1/Frameworks/Python.framework/Versions/3.7/lib/python3.7/pydoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="374" column="8" selection-start-line="374" selection-start-column="8" selection-end-line="374" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python3.7/site-packages/google/cloud/firestore_v1beta1/document.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -1326,9 +1183,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
           <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
-          <folding>
-            <element signature="e#427#461#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1343,9 +1197,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-402">
           <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-          <folding>
-            <element signature="e#39#179#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1367,9 +1218,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1389,21 +1237,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_models/test_orbit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_models/test_ride_request.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1418,9 +1257,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1435,9 +1271,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1459,9 +1292,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-260">
           <caret line="83" column="21" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1469,9 +1299,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="421">
           <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1486,23 +1313,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="60" lean-forward="true" selection-start-column="60" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/models/orbit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2595">
-          <caret line="173" column="25" selection-start-line="173" selection-start-column="25" selection-end-line="173" selection-end-column="25" />
-          <folding>
-            <element signature="e#39#104#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1531,41 +1341,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_utils.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="300">
+          <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#723#737#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_main.py">
+    <entry file="file://$PROJECT_DIR$/gravitate/data_access/ride_request_dao.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5220">
-          <caret line="369" lean-forward="true" selection-start-line="369" selection-end-line="369" />
+        <state relative-caret-position="1500">
+          <caret line="107" column="8" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_group_users.py">
+    <entry file="file://$PROJECT_DIR$/gravitate/services/event_service.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1919">
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/factory/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="90" selection-start-line="90" selection-end-line="90" />
+        <state relative-caret-position="600">
+          <caret line="54" selection-start-line="54" selection-end-line="54" />
         </state>
       </provider>
     </entry>
@@ -1573,6 +1375,46 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5220">
+          <caret line="369" selection-start-line="369" selection-end-line="369" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_group_users.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/services/grouping_service.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="47" column="15" selection-start-line="47" selection-start-column="15" selection-end-line="47" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/models/orbit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="89" column="33" selection-start-line="89" selection-start-column="33" selection-end-line="89" selection-end-column="33" />
+          <folding>
+            <element signature="e#39#104#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1585,41 +1427,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/services/event_service.py">
+    <entry file="file://$PROJECT_DIR$/test/factory/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+        <state relative-caret-position="297">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/main.py">
+    <entry file="file://$PROJECT_DIR$/gravitate/controllers/groupingutils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-          <folding>
-            <element signature="e#723#737#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/services/grouping_service.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="565">
-          <caret line="47" column="15" lean-forward="true" selection-start-line="47" selection-start-column="15" selection-end-line="47" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/data_access/ride_request_dao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="107" column="8" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
+        <state relative-caret-position="293">
+          <caret line="81" column="4" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/controllers/grouping.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="249">
+          <caret line="335" column="57" selection-start-line="335" selection-start-column="57" selection-end-line="335" selection-end-column="57" />
+          <folding>
+            <marker date="1545858820654" expanded="true" signature="11279:11288" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
