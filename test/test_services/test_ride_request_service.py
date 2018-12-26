@@ -212,6 +212,7 @@ class RefactorTempTest(TestCase):
                                 headers=getMockAuthHeaders(uid=uid)
                                 )
             assert r.status_code == 200
+        self.ride_request_ids_to_delete.clear()
 
     def tearDown(self):
         self._tear_down()

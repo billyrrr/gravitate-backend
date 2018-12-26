@@ -69,7 +69,7 @@ class AirportRideRequestCreationService(Resource):
             .set_with_form_and_user_id(args, userId)\
             .build_airport_ride_request()\
             .export_as_class(AirportRideRequest)
-        location = LocationGenericDao.get(rideRequest.airportLocation)
+        location = LocationGenericDao().get(rideRequest.airportLocation)
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user

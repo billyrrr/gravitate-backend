@@ -8,7 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/context.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/context.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_services/test_ride_request_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_services/test_ride_request_service.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -58,7 +60,7 @@
         <counts>
           <entry key="json" value="10" />
           <entry key="md" value="9" />
-          <entry key="py" value="501" />
+          <entry key="py" value="503" />
           <entry key="pyi" value="4" />
           <entry key="services" value="1" />
           <entry key="sh" value="5" />
@@ -71,7 +73,7 @@
           <entry key="JSON" value="10" />
           <entry key="Markdown" value="9" />
           <entry key="PLAIN_TEXT" value="7" />
-          <entry key="Python" value="501" />
+          <entry key="Python" value="503" />
           <entry key="PythonStub" value="4" />
           <entry key="YAML" value="1" />
         </counts>
@@ -80,16 +82,16 @@
         <counts>
           <entry key="dummy" value="150" />
           <entry key="md" value="1049" />
-          <entry key="py" value="37454" />
-          <entry key="txt" value="3177" />
+          <entry key="py" value="37476" />
+          <entry key="txt" value="3243" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1049" />
-          <entry key="PLAIN_TEXT" value="3327" />
-          <entry key="Python" value="37454" />
+          <entry key="PLAIN_TEXT" value="3393" />
+          <entry key="Python" value="37476" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -104,42 +106,29 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="76" column="65" selection-start-line="76" selection-start-column="65" selection-end-line="76" selection-end-column="65" />
-              <folding>
-                <element signature="e#114#125#0" expanded="true" />
-                <marker date="1545839300666" expanded="true" signature="791:792" ph="..." />
-                <marker date="1545839300666" expanded="true" signature="4526:4790" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-              <folding>
-                <element signature="e#39#104#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_services/test_ride_request_service.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1785">
-              <caret line="119" column="89" selection-start-line="119" selection-start-column="89" selection-end-line="119" selection-end-column="89" />
+            <state relative-caret-position="310">
+              <caret line="214" column="47" selection-start-line="214" selection-start-column="47" selection-end-line="214" selection-end-column="47" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <marker date="1545838678634" expanded="true" signature="6216:6218" ph="..." />
-                <marker date="1545838678634" expanded="true" signature="6287:6794" ph="..." />
-                <marker date="1545838678634" expanded="true" signature="8928:8933" ph="..." />
-                <marker date="1545838678634" expanded="true" signature="8952:9011" ph="..." />
+                <marker date="1545839761770" expanded="true" signature="6216:6218" ph="..." />
+                <marker date="1545839761770" expanded="true" signature="6287:6794" ph="..." />
+                <marker date="1545839761770" expanded="true" signature="8976:8981" ph="..." />
+                <marker date="1545839761770" expanded="true" signature="9000:9059" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gravitate/context.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+              <folding>
+                <element signature="e#427#461#0" expanded="true" />
+                <marker date="1545839533809" expanded="true" signature="660:710" ph="..." />
               </folding>
             </state>
           </provider>
@@ -148,10 +137,24 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/controllers/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="102" column="43" lean-forward="true" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
+            <state relative-caret-position="175">
+              <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1160">
+              <caret line="71" column="39" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
+              <folding>
+                <element signature="e#114#125#0" expanded="true" />
+                <marker date="1545839613133" expanded="true" signature="791:792" ph="..." />
+                <marker date="1545839613133" expanded="true" signature="4527:4791" ph="..." />
               </folding>
             </state>
           </provider>
@@ -169,7 +172,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/data_access/location_dao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
+            <state relative-caret-position="-402">
               <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
               <folding>
                 <element signature="e#39#179#0" expanded="true" />
@@ -193,7 +196,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/services/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="-230">
               <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#39#75#0" expanded="true" />
@@ -205,7 +208,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-100">
+            <state relative-caret-position="-400">
               <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
               <folding>
                 <marker date="1545837501998" expanded="true" signature="1238:1244" ph="..." />
@@ -217,8 +220,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
-              <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
+            <state relative-caret-position="532">
+              <caret line="254" column="67" lean-forward="true" selection-start-line="254" selection-start-column="67" selection-end-line="254" selection-end-column="67" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -330,7 +333,6 @@
         <option value="$PROJECT_DIR$/test/__init__.py" />
         <option value="$PROJECT_DIR$/gravitate/services/utils.py" />
         <option value="$PROJECT_DIR$/gravitate/config.py" />
-        <option value="$PROJECT_DIR$/gravitate/context.py" />
         <option value="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" />
         <option value="$PROJECT_DIR$/test/factory/form.py" />
         <option value="$PROJECT_DIR$/gravitate/data_access/location_dao.py" />
@@ -338,9 +340,10 @@
         <option value="$PROJECT_DIR$/test/test_main.py" />
         <option value="$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py" />
         <option value="$PROJECT_DIR$/gravitate/models/target.py" />
-        <option value="$PROJECT_DIR$/test/test_services/test_ride_request_service.py" />
         <option value="$PROJECT_DIR$/gravitate/services/ride_request/utils.py" />
+        <option value="$PROJECT_DIR$/gravitate/context.py" />
         <option value="$PROJECT_DIR$/gravitate/services/ride_request/services.py" />
+        <option value="$PROJECT_DIR$/test/test_services/test_ride_request_service.py" />
       </list>
     </option>
   </component>
@@ -508,7 +511,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_ride_request_service.TestTarget">
+  <component name="RunManager" selected="Python tests.pytest for test_ride_request_service.RefactorTempTest">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -599,6 +602,21 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest for test_ride_request_service.RefactorTempTest" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="gravitate-backend" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_ride_request_service.RefactorTempTest&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="pytest for test_ride_request_service.TestTarget" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="gravitate-backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -614,35 +632,20 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_ride_request_service.TestTarget.testSameResultDifferentCreateTargetFunc" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="gravitate-backend" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/test_services" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_ride_request_service.TestTarget.testSameResultDifferentCreateTargetFunc&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python tests.pytest for test_ride_request_service.AirportRideRequestDictBuilderTest.testBuild" />
       <item itemvalue="Python tests.pytest for test_ride_request_service.TestTarget" />
-      <item itemvalue="Python tests.pytest for test_ride_request_service.TestTarget.testSameResultDifferentCreateTargetFunc" />
       <item itemvalue="Python tests.pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest.testRideRequestDictBuilder" />
       <item itemvalue="Python tests.pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" />
+      <item itemvalue="Python tests.pytest for test_ride_request_service.RefactorTempTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_ride_request_service.RefactorTempTest" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.TestTarget" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest.testRideRequestDictBuilder" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.AirportRideRequestDictBuilderTest.testBuild" />
-        <item itemvalue="Python tests.pytest for test_ride_request_service.TestTarget.testSameResultDifferentCreateTargetFunc" />
       </list>
     </recent_temporary>
   </component>
@@ -658,13 +661,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00041" summary="Reformat code and docs">
-      <created>1545196953087</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1545196953087</updated>
     </task>
     <task id="LOCAL-00042" summary="Add docs">
       <created>1545197118172</created>
@@ -1002,22 +998,17 @@
       <option name="project" value="LOCAL" />
       <updated>1545838908793</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Switch to airport ride request builder in service">
+      <created>1545839459251</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1545839459252</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_ride_request_service_CreateRideRequestServiceUtilsTest - 2018.12.26 at 23h 20m 23s.xml">
-      <configuration name="pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_ride_request_service_CreateRideRequestServiceUtilsTest - 2018.12.26 at 23h 20m 37s.xml">
-      <configuration name="pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_ride_request_service_CreateRideRequestServiceUtilsTest - 2018.12.26 at 23h 21m 35s.xml">
-      <configuration name="pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_ride_request_service_CreateRideRequestServiceUtilsTest - 2018.12.26 at 23h 21m 59s.xml">
-      <configuration name="pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_for_test_ride_request_service_CreateRideRequestServiceUtilsTest - 2018.12.26 at 23h 22m 52s.xml">
       <configuration name="pytest for test_ride_request_service.CreateRideRequestServiceUtilsTest" configurationId="tests" />
     </history-entry>
@@ -1035,6 +1026,18 @@
     </history-entry>
     <history-entry file="pytest_for_test_ride_request_service_TestTarget - 2018.12.26 at 23h 36m 28s.xml">
       <configuration name="pytest for test_ride_request_service.TestTarget" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.26 at 23h 51m 22s.xml">
+      <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.26 at 23h 51m 38s.xml">
+      <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.26 at 23h 52m 22s.xml">
+      <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.26 at 23h 53m 53s.xml">
+      <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
@@ -1124,7 +1127,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add UcLocation and CampusEvent" />
     <MESSAGE value="Fix timezone offset #39" />
     <MESSAGE value="Fix timestamp conversion of flightLocalTime" />
     <MESSAGE value="Change EventDao for locating events of other categories" />
@@ -1149,7 +1151,8 @@
     <MESSAGE value="Add tests for builder" />
     <MESSAGE value="Fix builder for ride request creation" />
     <MESSAGE value="Add docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add docs" />
+    <MESSAGE value="Switch to airport ride request builder in service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switch to airport ride request builder in service" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/local/lib/python3.7/site-packages/flask/globals.py">
@@ -1374,17 +1377,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/context.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="64" column="49" selection-start-line="64" selection-start-column="49" selection-end-line="64" selection-end-column="49" />
-          <folding>
-            <element signature="e#427#461#0" expanded="true" />
-            <marker date="1545743343084" expanded="true" signature="660:710" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -1429,9 +1421,60 @@
     <entry file="file://$PROJECT_DIR$/gravitate/services/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          <folding>
+            <element signature="e#39#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/data_access/location_dao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-402">
+          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
+          <folding>
+            <element signature="e#39#179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-400">
+          <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
+          <folding>
+            <marker date="1545837501998" expanded="true" signature="1238:1244" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="254" column="67" lean-forward="true" selection-start-line="254" selection-start-column="67" selection-end-line="254" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/context.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+          <folding>
+            <element signature="e#427#461#0" expanded="true" />
+            <marker date="1545839533809" expanded="true" signature="660:710" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/services/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="-230">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#39#75#0" expanded="true" />
@@ -1439,39 +1482,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/forms/user_creation_form.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="68" selection-start-column="68" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/controllers/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="102" column="43" lean-forward="true" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
+        <state relative-caret-position="175">
+          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/utils.py">
+    <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
+        <state relative-caret-position="-1160">
+          <caret line="71" column="39" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-100">
-          <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
-          <folding>
-            <marker date="1545837501998" expanded="true" signature="1238:1244" ph="..." />
+            <element signature="e#114#125#0" expanded="true" />
+            <marker date="1545839613133" expanded="true" signature="791:792" ph="..." />
+            <marker date="1545839613133" expanded="true" signature="4527:4791" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1486,48 +1514,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/forms/user_creation_form.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="68" selection-start-column="68" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_services/test_ride_request_service.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="119" column="89" selection-start-line="119" selection-start-column="89" selection-end-line="119" selection-end-column="89" />
+        <state relative-caret-position="310">
+          <caret line="214" column="47" selection-start-line="214" selection-start-column="47" selection-end-line="214" selection-end-column="47" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1545838678634" expanded="true" signature="6216:6218" ph="..." />
-            <marker date="1545838678634" expanded="true" signature="6287:6794" ph="..." />
-            <marker date="1545838678634" expanded="true" signature="8928:8933" ph="..." />
-            <marker date="1545838678634" expanded="true" signature="8952:9011" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/data_access/location_dao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-          <folding>
-            <element signature="e#39#179#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/models/ride_request.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-          <folding>
-            <element signature="e#39#104#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="76" column="65" selection-start-line="76" selection-start-column="65" selection-end-line="76" selection-end-column="65" />
-          <folding>
-            <element signature="e#114#125#0" expanded="true" />
-            <marker date="1545839300666" expanded="true" signature="791:792" ph="..." />
-            <marker date="1545839300666" expanded="true" signature="4526:4790" ph="..." />
+            <marker date="1545839761770" expanded="true" signature="6216:6218" ph="..." />
+            <marker date="1545839761770" expanded="true" signature="6287:6794" ph="..." />
+            <marker date="1545839761770" expanded="true" signature="8976:8981" ph="..." />
+            <marker date="1545839761770" expanded="true" signature="9000:9059" ph="..." />
           </folding>
         </state>
       </provider>
