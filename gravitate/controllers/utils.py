@@ -22,7 +22,7 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
 
     # Loop through each rideRequest
     for rideRequest in rideRequests:
-        currentEventDocId = rideRequest.eventRef.id
+        currentEventDocId = rideRequest.event_ref.id
         if currentEventDocId == eventDocId:
             return True
 
@@ -55,7 +55,7 @@ def addRideRequest(transaction, rideRequest, location, userId):
     eventSchedule = eventscheduleutils.buildEventSchedule(
         rideRequest, location)
     UserDao.add_to_event_schedule_with_transaction(
-        transaction, userRef=userRef, eventRef=rideRequest.eventRef, eventSchedule=eventSchedule)
+        transaction, userRef=userRef, eventRef=rideRequest.event_ref, eventSchedule=eventSchedule)
     # [END] Update the user's eventSchedule
 
 

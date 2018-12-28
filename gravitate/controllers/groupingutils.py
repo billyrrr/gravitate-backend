@@ -42,11 +42,11 @@ def joinOrbitToRideRequest(rideRequest: Type[RideRequest],  orbit: Orbit) -> boo
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
 
-    if rideRequest.requestCompletion:
+    if rideRequest.request_completion:
         return False
     pairs: dict = orbit.user_ticket_pairs
     for user_id, ticket in pairs.items():
-        if ticket["userWillDriver"] and rideRequest.driver_status:
+        if ticket["userWillDrive"] and rideRequest.driver_status:
             # There is already an I-4 driver. Do not join another driver to the orbit
             return False
 

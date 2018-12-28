@@ -26,7 +26,7 @@ def groupMany(rideRequestIds: list):
         ride_request = RideRequestGenericDao().get(ride_request_ref)
 
         # Do not add to rideRequests queue if the request is complete
-        if ride_request.requestCompletion:
+        if ride_request.request_completion:
             continue
 
         event_id = ride_request.event_ref.id
@@ -121,8 +121,8 @@ def constructGroups(paired: list) -> list:
     groups = list()
 
     for rideRequest1, rideRequest2 in paired:
-        assert rideRequest1.eventRef.id == rideRequest2.eventRef.id
-        eventRef = rideRequest1.eventRef
+        assert rideRequest1.event_ref.id == rideRequest2.event_ref.id
+        eventRef = rideRequest1.event_ref
 
         intendedOrbit = Orbit.from_dict({
             "orbitCategory": "airportRide",
@@ -136,7 +136,7 @@ def constructGroups(paired: list) -> list:
         orbitRef = OrbitDao().create(intendedOrbit)
         intendedOrbit.set_firestore_ref(orbitRef)
         event = EventDao().get(eventRef)
-        locationRef: DocumentReference = event.locationRef
+        locationRef: DocumentReference = event.location_ref
         location = LocationGenericDao().get(locationRef)
 
         rideRequests = list()
@@ -226,11 +226,11 @@ def _remove(transaction, rideRequestRef: DocumentReference):
     rideRequest = RideRequestGenericDao().get_with_transaction(transaction, rideRequestRef)
     rideRequest.set_firestore_ref(rideRequestRef)
 
-    userId = rideRequest.userId
+    userId = rideRequest.user_id
     userRef = UserDao().get_ref(userId)
     # user = UserDao().get_user_with_transaction(transaction, userRef)
 
-    orbitRef = rideRequest.orbitRef
+    orbitRef = rideRequest.orbit_ref
 
     assert orbitRef != None
 
@@ -240,7 +240,7 @@ def _remove(transaction, rideRequestRef: DocumentReference):
 
     eventRef = orbit.event_ref
 
-    locationRef: DocumentReference = rideRequest.airportLocation
+    locationRef: DocumentReference = rideRequest.airport_location
     location = LocationGenericDao().get_with_transaction(transaction, locationRef)
 
     groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
@@ -296,7 +296,7 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
+            isJoined = groupingutils.joinOrbitToRideRequest(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -304,6 +304,14 @@ class Group:
                 self.joined.append(rideRequest)
             else:
                 self.notJoined.append(rideRequest)
+
+        for rideRequest in self.joined:
+            # Update database copy of rideRequest and orbit
+            RideRequestGenericDao.set_with_transaction(
+                transaction, rideRequest, rideRequest.get_firestore_ref())
+
+        OrbitDao.set_with_transaction(
+            transaction, orbit, orbit.get_firestore_ref())
 
         # refresh event schedule for each user
         self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)

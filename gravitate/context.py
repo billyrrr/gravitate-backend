@@ -33,6 +33,7 @@ class Context():
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
     debug = None
+    testing = None
     _cred = None
     __instance = None
 
