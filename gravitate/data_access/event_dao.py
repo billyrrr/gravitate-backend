@@ -115,7 +115,7 @@ class EventDao:
             event = Event.from_dict(eventDict)
             eventId = doc.id
             # Check if the event is in a valid time frame
-            if event.startTimestamp < timestamp and event.endTimestamp > timestamp:
+            if event.start_timestamp < timestamp < event.end_timestamp:
                 return eventId
 
         return None

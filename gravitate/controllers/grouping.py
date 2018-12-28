@@ -296,6 +296,39 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
+            isJoined = groupingutils.joinOrbitToRideRequest(transaction, rideRequest, orbit)
+
+            # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
+            # when failing to join, record and move on to the next
+            if isJoined:
+                self.joined.append(rideRequest)
+            else:
+                self.notJoined.append(rideRequest)
+
+        # refresh event schedule for each user
+        self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
+
+        transaction.commit()
+
+        return self.notJoined
+
+    def doWorkExperimental(self):
+        """
+        Experimental feature for N+1 joining
+        This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
+        :return: a list of rideRequests that are not joined
+        """
+        orbit = self.intendedOrbit
+
+        # Create a transaction so that an exception is thrown when updating an object that is
+        #   changed since last read from database
+        transaction: Transaction = db.transaction()
+
+        for rideRequest in self.rideRequestArray:
+
+            print(rideRequest.to_dict())
+
+            # Trying to join one rideRequest to the orbit
             isJoined = groupingutils.joinOrbitToRideRequest(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
