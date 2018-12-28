@@ -31,7 +31,7 @@ class RideRequest(FirestoreObject):
         driver_status = d['driverStatus']
         pickup_address = d['pickupAddress']
         has_checked_in = d['hasCheckedIn']
-        event_ref = d['eventRef']  # TODO conversion to DocumentReference
+        event_ref = d['eventRef']
         orbit_ref = d['orbitRef']
         user_id = d['userId']
         target = Target.from_dict(d['target'])

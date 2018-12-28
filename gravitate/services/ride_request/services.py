@@ -36,7 +36,7 @@ class AirportRideRequestCreationService(Resource):
         args = ride_request_parsers.airport_parser.parse_args()
 
         # Retrieve JSON
-        form = AirportRideRequestCreationForm.from_dict(args)
+        # form = AirportRideRequestCreationForm.from_dict(args)
 
         # # Create WTForm for validating the fields
         # validateForm = RideRequestCreationValidateForm(
@@ -93,7 +93,9 @@ class AirportRideRequestCreationService(Resource):
         transaction.commit()
 
         # rideRequest Response
-        responseDict = {"firestoreRef": rideRequest.get_firestore_ref().id}
+        responseDict = {
+        "id": rideRequest.get_firestore_ref().id
+        ,"firestoreRef": rideRequest.get_firestore_ref().id}
 
         return responseDict, 200
 
