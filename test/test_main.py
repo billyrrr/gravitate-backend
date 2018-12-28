@@ -116,7 +116,8 @@ class MainAppTestCase(TestCase):
         self.fail()
 
     def testGetUser(self):
-        path = '/users/' + userDict["uid"]
+        # path = '/users/' + userDict["uid"]
+        path = '/users/Wb7tAadeIHgyVckAywkRhkPZz6L2'
         r = self.app.get(path=path)
         # assert r.status_code == 200
         print(r.status_code)

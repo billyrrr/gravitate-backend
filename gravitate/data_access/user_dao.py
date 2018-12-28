@@ -89,7 +89,7 @@ class UserDao:
         transaction = db.transaction()
         userResult = self.get_user_with_transaction(transaction, userRef)
         if (userResult != None):
-            userResult.setFirestoreRef(userRef)
+            userResult.set_firestore_ref(userRef)
             transaction.commit()
             return userResult
         else:

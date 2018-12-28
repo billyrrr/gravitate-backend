@@ -21,6 +21,7 @@ from . import parsers as ride_request_parsers
 
 db = Context.db
 
+
 class AirportRideRequestCreationService(Resource):
 
     """
