@@ -184,12 +184,12 @@ class AirportRideRequestService(Resource):
 
         responseDict = {}
         rideRequest = RideRequestGenericDao().get(rideRequestRef)
-        eventId = rideRequest.eventRef.id
+        eventId = rideRequest.event_ref.id
 
         print("userId: {}, rideRequestId: {}, eventId: {}".format(userId, rideRequestId, eventId))
 
         # Validate that the ride request is not matched to an orbit
-        requestCompletion = rideRequest.requestCompletion
+        requestCompletion = rideRequest.request_completion
         if requestCompletion:
             responseDict = {
                 "error": "Ride request has requestCompletion as True. Unmatch from an orbit first. "

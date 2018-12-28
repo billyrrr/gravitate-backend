@@ -1,7 +1,9 @@
 from gravitate.models import AirportEventSchedule, AirportRideRequest, Orbit, AirportLocation, ToEventTarget
 from gravitate.data_access import UserDao
 import warnings
-import google.cloud.firestore
+from gravitate import context
+
+CTX = context.Context
 
 class EventScheduleBuilder():
 
@@ -78,6 +80,10 @@ def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:
     """
     # Must go through each userTicketPair (key = userIDs)
     photo_urls = []
+    if CTX.testing:
+        warnings.warn("Using testing mode, skipping member profile photo urls evaluation. ")
+        return photo_urls
+
     for uid in orbit.user_ticket_pairs:
         user = UserDao().get_user_by_id(uid)
         photo_url = user.photo_url

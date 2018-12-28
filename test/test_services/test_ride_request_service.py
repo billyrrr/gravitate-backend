@@ -159,4 +159,5 @@ class RefactorTempTest(TestCase):
         r = self.app.delete(path='/rideRequests' + '/' + rideRequestId,
                             headers=getMockAuthHeaders()
                             )
+        print(r.data)
         self.assertEqual(r.status_code, 200)
