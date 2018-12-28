@@ -19,6 +19,9 @@ class GravitateConfig:
         This is enabled when ENV is 'development' and is overridden by the FLASK_DEBUG environment variable.
         It may not behave as expected if set in code.
 
+    Note that this Config currently does not affect (Flask) main.app CONFIG.
+    TODO: extend from Flask Config and apply to main.app
+
     """
     DEBUG = None
     TESTING = None
