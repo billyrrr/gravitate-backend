@@ -13,7 +13,7 @@ from flask_restful import Resource
 from gravitate.context import Context
 from gravitate.controllers import utils, grouping
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
-from gravitate.models import AirportRideRequest, RideRequest
+from gravitate.models import AirportRideRequest
 import gravitate.services.utils as service_utils
 import gravitate.services.ride_request.utils as creation_utils
 from . import parsers as ride_request_parsers

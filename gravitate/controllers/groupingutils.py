@@ -1,6 +1,6 @@
-from gravitate.models import RideRequest, AirportRideRequest, SocialEventRideRequest, Location, Orbit, Event
-from gravitate.data_access import RideRequestGenericDao, OrbitDao, UserDao, LocationGenericDao
-from google.cloud.firestore import DocumentReference, Client, transactional, Transaction
+from gravitate.models import RideRequest, Location, Orbit, Event
+from gravitate.data_access import RideRequestGenericDao, OrbitDao, UserDao
+from google.cloud.firestore import Transaction
 from gravitate.controllers import eventscheduleutils
 from typing import Type
 from gravitate import context
@@ -97,8 +97,6 @@ def update_event_schedule(transaction: Transaction, ride_request: RideRequest, o
 
 def place_in_orbit(r: RideRequest, o: Orbit):
     """ Description
-            :type uid:str:
-            :param uid:str:
 
             :type r:RideRequest:
             :param r:RideRequest:
@@ -116,7 +114,7 @@ def place_in_orbit(r: RideRequest, o: Orbit):
     # RideRequest's orbitId no longer null and references Orbit's oId
     r.orbit_ref = o.get_firestore_ref()
 
-    userId = r.user_id
+    user_id = r.user_id
 
     # fill in ticket and insert in to orbit's userTicketPairs
     ticket = {
@@ -126,7 +124,7 @@ def place_in_orbit(r: RideRequest, o: Orbit):
         "inChat": False,
         "pickupAddress": r.pickup_address
     }
-    o.user_ticket_pairs[userId] = ticket
+    o.user_ticket_pairs[user_id] = ticket
     r.request_completion = True
 
     return
