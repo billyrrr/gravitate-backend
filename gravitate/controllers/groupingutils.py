@@ -8,37 +8,21 @@ from gravitate import context
 db = context.Context.db
 
 
-# @transactional
 def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) -> bool:
     """ Description
-    This function joins a rideRequest to an orbit in the database. 
+    This function joins a rideRequest to an orbit in the database.
             Firstly, the function accesses database copy of the objects and download them as local copies
             Secondly, the function validates that the database copy of the object matches those passed along by the decision maker[1]
             Thirdly, the function modifies local copies so that a rideRequest is joined to an orbit
             Fourthly, the function updates database copy of the objects, and throw an error if they changed since last read
 
-    [1] Note that decision maker should refresh local copies of the objects after each join, 
-            since this function will raise an exception if they don't match. 
+    [1] Note that decision maker should refresh local copies of the objects after each join,
+            since this function will raise an exception if they don't match.
 
-    :type rideRequestRef:DocumentReference:
-    :param rideRequestRef:DocumentReference:
-
-    :type orbitRef:DocumentReference:
-    :param orbitRef:DocumentReference:
-
-    :raises:
-
-    :rtype:
+    :param ride_request:
+    :param orbit:
+    :return:
     """
-
-    # rideRequestDao = RideRequestGenericDao()
-    # rideRequest = rideRequestDao.get_with_transaction(
-    #     transaction, rideRequestRef)
-    # rideRequest.set_firestore_ref(rideRequestRef)
-    # orbitDao = OrbitDao()
-    # orbit = orbitDao.get_with_transaction(transaction, orbitRef)
-    # orbit.set_firestore_ref(orbitRef)
-
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
 
