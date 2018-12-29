@@ -7,8 +7,8 @@ class FirestoreObject(object):
     def __init__(self):
         pass
 
-    def set_firestore_ref(self, firestoreRef: str):
-        self.__firestoreRef = firestoreRef
+    def set_firestore_ref(self, firestore_ref: DocumentReference):
+        self.__firestoreRef = firestore_ref
 
     def get_firestore_ref(self):
         return self.__firestoreRef
