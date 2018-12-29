@@ -20,5 +20,5 @@ airport_parser.add_argument('driverStatus', type=bool,
 RideRequest creation useCase: FL-3: Connecting Flight Using Flight Number
 """
 mockJson = {
-    ""
+    "Nothing": True  # TODO: move mock JSON to test/factory
 }

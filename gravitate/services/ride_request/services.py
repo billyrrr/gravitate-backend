@@ -13,7 +13,6 @@ from flask_restful import Resource
 from gravitate.context import Context
 from gravitate.controllers import utils, grouping
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
-from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportRideRequest, RideRequest
 import gravitate.services.utils as service_utils
 import gravitate.services.ride_request.utils as creation_utils
@@ -23,39 +22,17 @@ db = Context.db
 
 
 class AirportRideRequestCreationService(Resource):
-
     """
     This class replaces web-form with reqparse for form validation.
     """
+
     @service_utils.authenticate
     def post(self, uid):
-
         # Verify Firebase auth.
         user_id = uid
 
         args = ride_request_parsers.airport_parser.parse_args()
 
-        # Retrieve JSON
-        # form = AirportRideRequestCreationForm.from_dict(args)
-
-        # # Create WTForm for validating the fields
-        # validateForm = RideRequestCreationValidateForm(
-        #     data=requestForm)
-
-        # # Mock userId and eventId. Delete before release
-        # userId = 'SQytDq13q00e0N3H4agR'
-        # warnings.warn("using test user ids, delete before release")
-
-        # if not validateForm.validate():
-        #     print(validateForm.errors)
-        #     return validateForm.errors, 400
-        #
-        # # Transfer data from validateForm to an internal representation of the form
-        # form = AirportRideRequestCreationForm()
-        # validateForm.populate_obj(form)
-        #
-        # rideRequestDict, location = fill_ride_request_dict_with_form(
-        #     form, userId)
         # if not location:
         #     errorResponseDict = {
         #         "error": "invalid airport code and datetime combination or error finding airport location in backend",
@@ -65,9 +42,9 @@ class AirportRideRequestCreationService(Resource):
 
         # Create RideRequest Object
         builder = creation_utils.AirportRideRequestBuilder()
-        ride_request: AirportRideRequest = builder\
-            .set_with_form_and_user_id(args, user_id)\
-            .build_airport_ride_request()\
+        ride_request: AirportRideRequest = builder \
+            .set_with_form_and_user_id(args, user_id) \
+            .build_airport_ride_request() \
             .export_as_class(AirportRideRequest)
         location = LocationGenericDao().get(ride_request.airportLocation)
 
@@ -81,7 +58,6 @@ class AirportRideRequestCreationService(Resource):
                 "originalArgs": args
             }
             return error_response_dict, 400
-        # Ends validation tasks
 
         # Starts database operations to (save rideRequest and update user's eventSchedule)
         transaction = db.transaction()
@@ -94,11 +70,10 @@ class AirportRideRequestCreationService(Resource):
 
         # rideRequest Response
         response_dict = {
-        "id": ride_request.get_firestore_ref().id
-        ,"firestoreRef": ride_request.get_firestore_ref().id}
+            "id": ride_request.get_firestore_ref().id,
+            "firestoreRef": ride_request.get_firestore_ref().id}
 
         return response_dict, 200
-
 
     @service_utils.authenticate
     def patch(self, uid):
@@ -195,50 +170,7 @@ class AirportRideRequestService(Resource):
         request_completion = ride_request.request_completion
         if request_completion:
             response_dict = {
-                "error": "Ride request has requestCompletion as True. Unmatch from an orbit first. "
-            }
-            return response_dict, 500
-
-        try:
-            # Delete in User's Event Schedule
-            EventScheduleGenericDao(userRef=user_ref).delete_event_by_id(event_id)
-            # Delete in RideRequest Collection
-            RideRequestGenericDao().delete(ride_request_ref)
-            response_dict = {"success": True}
-
-        except Exception as e:
-            err_str = str(e)
-            response_dict = {"error": "Error occurred deleting rideRequest and eventSchedule: " + err_str}
-            return response_dict, 500
-
-        return response_dict, 200
-
-
-class DeleteRideRequestService(Resource):
-    """ Description
-        DEPRECATED: moved to DELETE '/rideRequests/$rideRequestId'
-        Deletes a ride request.
-    """
-
-    def post(self):
-        request_json = request.get_json()
-        request_form = json.loads(request_json) if (
-                type(request_json) != dict) else request_json
-
-        user_id = request_form.get("userId", None)
-        user_ref = UserDao().get_ref(user_id)
-        event_id = request_form.get("eventId", None)
-        ride_request_id = request_form.get("rideRequestId", None)
-        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
-
-        response_dict = {}
-        ride_request = RideRequestGenericDao().get(ride_request_ref)
-
-        # Validate that the ride request is not matched to an orbit
-        request_completion = ride_request.requestCompletion
-        if request_completion:
-            response_dict = {
-                "error": "Ride request has requestCompletion as True. Unmatch from an orbit first. "
+                "error": "Ride request has requestCompletion as True. Un-match from an orbit first. "
             }
             return response_dict, 500
 
