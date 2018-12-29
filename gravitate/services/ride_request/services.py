@@ -33,7 +33,7 @@ class AirportRideRequestCreationService(Resource):
         # Verify Firebase auth.
         userId = uid
 
-        args = ride_request_parsers.airport_parser.parse_args()
+        args = ride_request_parsers.airport_parser.parse_args(bundle_errors=True)
 
         # Retrieve JSON
         # form = AirportRideRequestCreationForm.from_dict(args)
