@@ -252,8 +252,8 @@ def _remove(transaction, rideRequestRef: DocumentReference):
 
     # Build new eventSchedule that is not associated with any orbit and marked as pending
     eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
-    UserDao().add_to_event_schedule_with_transaction(transaction, userRef=userRef, eventRef=eventRef,
-                                                     eventSchedule=eventSchedule)
+    UserDao().add_to_event_schedule_with_transaction(transaction, user_ref=userRef, event_ref=eventRef,
+                                                     event_schedule=eventSchedule)
 
 
 class Group:

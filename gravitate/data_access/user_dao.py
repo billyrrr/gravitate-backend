@@ -110,11 +110,11 @@ class UserDao:
         return userRef
 
     def update_fcm_token(self, userId: str, token):
-        userRef: DocumentReference = self.userCollectionRef.document(userId)
+        user_ref: DocumentReference = self.userCollectionRef.document(userId)
         deltaDict = {
             "fcmToken": token
         }
-        userRef.update(deltaDict)
+        user_ref.update(deltaDict)
         return
 
     def get_fcm_token(self, userId: str):
@@ -137,23 +137,21 @@ class UserDao:
 
     @staticmethod
     # @transactional
-    def add_to_event_schedule_with_transaction(transaction: Transaction, userRef: str = None,
-                                               eventRef: DocumentReference = None, eventSchedule: AirportEventSchedule = None):
+    def add_to_event_schedule_with_transaction(transaction: Transaction, user_ref: str = None,
+                                               event_ref: DocumentReference = None,
+                                               event_schedule: AirportEventSchedule = None):
         """ Description
-                Add a event schedule to users/<userId>/eventSchedule
-				Note that the toEventRideRequestRef will be 
-					overwritten without warning if already set. 
-					(Same for fromEventRideRequestRef.) 
-        :type self:
-        :param self:
+            Add a event schedule to users/<userId>/eventSchedule
+                Note that the toEventRideRequestRef will be overwritten without warning if already set.
+                (Same for fromEventRideRequestRef.)
         :type transaction:Transaction:
         :param transaction:Transaction:
-        :type userRef:str:
-        :param userRef:str:
-        :type eventRef:str:
-        :param eventRef:str:
-        :type eventSchedule:dict:
-        :param eventSchedule:dict:
+        :type user_ref:str:
+        :param user_ref:str:
+        :type event_ref:str:
+        :param event_ref:str:
+        :type event_schedule:dict:
+        :param event_schedule:dict:
         :raises:
         :rtype:
         """
@@ -161,19 +159,19 @@ class UserDao:
         # userRef: DocumentReference = db.collection(u'users').document(userRef)
 
         # Get the CollectionReference of the collection that contains AirportEventSchedule's
-        eventSchedulesRef: CollectionReference = userRef.collection(
+        event_schedules_ref: CollectionReference = user_ref.collection(
             u'eventSchedules')
 
         # Retrieve document id to be used as the key
-        eventId = eventRef.id
+        event_id = event_ref.id
         # eventId = 'testeventid1'
         # warnings.warn("Using mock/test event id. Must replace before release. ")
 
         # Get the DocumentReference for the AirportEventSchedule
-        eventScheduleRef: DocumentReference = eventSchedulesRef.document(eventId)
-        eventScheduleDict = eventSchedule.to_dict()
-        transaction.set(eventScheduleRef, eventScheduleDict,
+        event_schedule_ref: DocumentReference = event_schedules_ref.document(event_id)
+        event_schedule_dict = event_schedule.to_dict()
+        transaction.set(event_schedule_ref, event_schedule_dict,
                         merge=True)  # So that 'fromEventRideRequestRef' is not overwritten
 
-    def set_with_transaction(self, transaction: Transaction, newUser: User, userRef: DocumentReference):
-        transaction.set(userRef, newUser)
+    def set_with_transaction(self, transaction: Transaction, new_user: User, user_ref: DocumentReference):
+        transaction.set(user_ref, new_user)

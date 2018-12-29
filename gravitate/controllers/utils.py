@@ -55,17 +55,17 @@ def add_ride_request(transaction, ride_request, location, user_id):
     event_schedule = eventscheduleutils.buildEventSchedule(
         ride_request, location)
     UserDao.add_to_event_schedule_with_transaction(
-        transaction, userRef=user_ref, eventRef=ride_request.event_ref, eventSchedule=event_schedule)
+        transaction, user_ref=user_ref, event_ref=ride_request.event_ref, event_schedule=event_schedule)
     # [END] Update the user's eventSchedule
 
 
-def get_pickup_address(userId) -> str:
+def get_pickup_address(user_id) -> str:
     """
     This method returns the default pickup address of a user.
-    :param userId:
+    :param user_id:
     :return:
     """
-    user: User = UserDao().get_user_by_id(userId)
+    user: User = UserDao().get_user_by_id(user_id)
     pickup_address = user.pickupAddress
     return pickup_address
 

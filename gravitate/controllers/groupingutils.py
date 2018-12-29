@@ -39,6 +39,7 @@ def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) ->
 
     return True
 
+
 class GroupOrbitInteractor(object):
     """
         TODO: replace functions with Command Pattern operations
@@ -47,13 +48,14 @@ class GroupOrbitInteractor(object):
     def __init__(self):
         pass
 
-def remove_ride_request_from_orbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
 
-    remove_from_orbit(rideRequest, orbit)
+def remove_ride_request_from_orbit(transaction, ride_request: Type[RideRequest], orbit: Orbit) -> bool:
+
+    remove_from_orbit(ride_request, orbit)
 
     try:
         RideRequestGenericDao().set_with_transaction(
-            transaction, rideRequest, rideRequest.get_firestore_ref())
+            transaction, ride_request, ride_request.get_firestore_ref())
         OrbitDao.set_with_transaction(
             transaction, orbit, orbit.get_firestore_ref())
     except Exception as e:
@@ -63,7 +65,7 @@ def remove_ride_request_from_orbit(transaction, rideRequest: Type[RideRequest], 
     return True
 
 
-def update_event_schedule(transaction: Transaction, rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
+def update_event_schedule(transaction: Transaction, ride_request: RideRequest, orbit: Orbit, event: Event, location: Location):
     """ Description
 
             Populate eventSchedule (client view model)
@@ -72,8 +74,8 @@ def update_event_schedule(transaction: Transaction, rideRequest: RideRequest, or
     :type transaction:Transaction:
     :param transaction:Transaction:
 
-    :type rideRequest:RideRequest:
-    :param rideRequest:RideRequest:
+    :type ride_request:RideRequest:
+    :param ride_request:RideRequest:
 
     :type orbit:Orbit:
     :param orbit:Orbit:
@@ -83,14 +85,14 @@ def update_event_schedule(transaction: Transaction, rideRequest: RideRequest, or
     :rtype:
     """
     # update eventSchedule
-    userId = rideRequest.user_id
-    userRef = UserDao().get_ref(userId)
-    eventRef = event.get_firestore_ref()
+    user_id = ride_request.user_id
+    user_ref = UserDao().get_ref(user_id)
+    event_ref = event.get_firestore_ref()
 
-    eventSchedule = eventscheduleutils.buildEventScheduleOrbit(
-        rideRequest=rideRequest, location=location, orbit=orbit)
+    event_schedule = eventscheduleutils.buildEventScheduleOrbit(
+        rideRequest=ride_request, location=location, orbit=orbit)
     UserDao().add_to_event_schedule_with_transaction(transaction,
-                                                     userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
+                                                     user_ref=user_ref, event_ref=event_ref, event_schedule=event_schedule)
 
 
 def place_in_orbit(r: RideRequest, o: Orbit):

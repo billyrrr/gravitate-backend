@@ -42,7 +42,7 @@ def default_gravitate_authentication(id_token) -> (str, int):
         return uid, 200
     except auth.AuthError as exc:
         if exc.code == 'ID_TOKEN_REVOKED':
-            # Token revoked, inform the user to reauthenticate or signOut().
+            # Token revoked, inform the user to re-authenticate or signOut().
             return None, 401
         else:
             # Token is invalid
