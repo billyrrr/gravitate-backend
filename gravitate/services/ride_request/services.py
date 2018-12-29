@@ -17,6 +17,7 @@ from gravitate.models import AirportRideRequest
 import gravitate.services.utils as service_utils
 import gravitate.services.ride_request.utils as creation_utils
 from . import parsers as ride_request_parsers
+from gravitate.services import errors as service_errors
 
 db = Context.db
 
@@ -46,18 +47,14 @@ class AirportRideRequestCreationService(Resource):
             .set_with_form_and_user_id(args, user_id) \
             .build_airport_ride_request() \
             .export_as_class(AirportRideRequest)
-        location = LocationGenericDao().get(ride_request.airportLocation)
+        location = LocationGenericDao().get(ride_request.airport_location)
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user
         #       for the flight on the same day already
         # TODO: move to transactional logic for better atomicity
         if utils.check_duplicate(ride_request.user_id, ride_request.event_ref):
-            error_response_dict = {
-                "error": "Ride request on the same day (for the same event) already exists",
-                "originalArgs": args
-            }
-            return error_response_dict, 400
+            raise service_errors.RequestAlreadyExistsError
 
         # Starts database operations to (save rideRequest and update user's eventSchedule)
         transaction = db.transaction()
@@ -169,10 +166,11 @@ class AirportRideRequestService(Resource):
         # Validate that the ride request is not matched to an orbit
         request_completion = ride_request.request_completion
         if request_completion:
-            response_dict = {
-                "error": "Ride request has requestCompletion as True. Un-match from an orbit first. "
-            }
-            return response_dict, 500
+            raise service_errors.RequestAlreadyMatchedError
+            # response_dict = {
+            #     "error": "Ride request has requestCompletion as True. Un-match from an orbit first. "
+            # }
+            # return response_dict, 500
 
         try:
             # Delete in User's Event Schedule

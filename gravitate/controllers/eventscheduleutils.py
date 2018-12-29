@@ -15,7 +15,7 @@ class EventScheduleBuilder():
 
     def buildRideRequest(self, airportRideRequest: AirportRideRequest):
         self.eventSchedule.pickupAddress = airportRideRequest.pickup_address
-        self.eventSchedule.flightTime = airportRideRequest.flightLocalTime
+        self.eventSchedule.flightTime = airportRideRequest.flight_local_time
         self.eventSchedule.rideRequestRef = airportRideRequest.get_firestore_ref()
 
         try:

@@ -5,6 +5,7 @@ import gravitate.services.ride_request.deprecated_utils
 from gravitate import main as main
 
 import gravitate.services.ride_request.utils as service_utils
+import gravitate.services.errors as service_errors
 
 from test.factory import FormDictFactory
 from test.test_main import getMockAuthHeaders
@@ -99,6 +100,108 @@ class CreateRideRequestServiceUtilsTest(TestCase):
         self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])
+
+
+class RaiseErrorsTest(TestCase):
+    ride_request_ids_to_delete = list()
+
+    def setUp(self):
+        main.app.testing = True
+        self.app = main.app.test_client()
+        self.userIds = ["testuid1", "testuid2"]
+
+    def testRaiseRequestAlreadyExistsError(self):
+        # Create new rideRequests
+        for userId in self.userIds:
+            form = FormDictFactory().create(returnDict=True)
+            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+            form["testUserId"] = userId
+            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+            print(r.json)
+            # self.assertRaises(service_errors.RequestAlreadyExistsError)
+            # self.assertIn("firestoreRef", r.json.keys())
+            firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
+            self.ride_request_ids_to_delete.append((userId, firestore_ref))
+
+        userId = self.userIds[0]
+        r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+            path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+        print(r.json)
+        error_return_expected = {
+                "message": "Ride request on the same day (or for the same event) already exists",
+                "status": 400
+            }
+        error_message_expected = error_return_expected["message"]
+        error_status_code_expected = error_return_expected["status"]
+        self.assertEqual(r.json["message"], error_message_expected)
+        self.assertEqual(r.status_code, error_status_code_expected)
+
+    def testDeleteReturnsRequestAlreadyMatchedError(self):
+        """
+        Test that trying to delete ride request that is already matched would return an error
+        :return:
+        """
+        for userId in self.userIds:
+            form = FormDictFactory().create(returnDict=True)
+            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+            form["testUserId"] = userId
+            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+            print(r.json)
+            # self.assertRaises(service_errors.RequestAlreadyExistsError)
+            firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
+            self.ride_request_ids_to_delete.append((userId, firestore_ref))
+
+        uid, rid = self.ride_request_ids_to_delete[0]
+
+        r = self.app.post(path='/devForceMatch',
+                          json=json.dumps({"operationMode": "two",
+                                           "rideRequestIds": [i[1] for i in self.ride_request_ids_to_delete]
+                                           })
+                          )
+        r = self.app.delete(path='/rideRequests' + '/' + rid,
+                            headers=getMockAuthHeaders(uid=uid)
+                            )
+        error_return_expected = {
+            "message": "Ride request has requestCompletion as True. Un-match from an orbit first. ",
+            "status": 500
+        }
+        error_message_expected = error_return_expected["message"]
+        error_status_code_expected = error_return_expected["status"]
+        self.assertEqual(r.json["message"], error_message_expected)
+        self.assertEqual(r.status_code, error_status_code_expected)
+    #
+    # def testNothing(self):
+    #     """
+    #     Remedy for malfunctioning _tear_down. Running this test would trigger _tear_down again
+    #         if you replace values in ride_request_ids_to_delete.
+    #     :return:
+    #     """
+    #     self.ride_request_ids_to_delete = [("testuid1", "wwu5nLXqm6kZywcbpEeu3egoAuOKOUBu"),
+    #                                        ("testuid2", "cA6iSNpLvPaGlebkdRBgmmf1BITKOwHK")]
+
+    def _tear_down(self):
+        """
+        Deletes all rideRequests created by the test
+        :return:
+        """
+        for uid, rid in self.ride_request_ids_to_delete:
+            r = self.app.post(path='/deleteMatch',
+                              json={"rideRequestId": rid},
+                              headers=getMockAuthHeaders(uid=uid))
+            assert r.status_code == 200
+
+        for uid, rid in self.ride_request_ids_to_delete:
+            r = self.app.delete(path='/rideRequests' + '/' + rid,
+                                headers=getMockAuthHeaders(uid=uid)
+                                )
+            assert r.status_code == 200
+        self.ride_request_ids_to_delete.clear()
+
+    def tearDown(self):
+        self._tear_down()
+        super().tearDown()
 
 
 class RefactorTempTest(TestCase):

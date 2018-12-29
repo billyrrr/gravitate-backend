@@ -214,45 +214,45 @@ def remove(rideRequestRef: DocumentReference) -> bool:
 
 
 @transactional
-def _remove(transaction, rideRequestRef: DocumentReference):
+def _remove(transaction, ride_request_ref: DocumentReference):
     """
     This method removes/unmatches rideRequest from the orbit it associates with.
     (Transactional business logic for use case unmatch from orbit)
 
     :param transaction:
-    :param rideRequestRef:
+    :param ride_request_ref:
     :return:
     """
-    rideRequest = RideRequestGenericDao().get_with_transaction(transaction, rideRequestRef)
-    rideRequest.set_firestore_ref(rideRequestRef)
+    ride_request = RideRequestGenericDao().get_with_transaction(transaction, ride_request_ref)
+    ride_request.set_firestore_ref(ride_request_ref)
 
-    userId = rideRequest.user_id
-    userRef = UserDao().get_ref(userId)
+    user_id = ride_request.user_id
+    user_ref = UserDao().get_ref(user_id)
     # user = UserDao().get_user_with_transaction(transaction, userRef)
 
-    orbitRef = rideRequest.orbit_ref
+    orbit_ref = ride_request.orbit_ref
 
-    assert orbitRef != None
+    assert orbit_ref != None
 
-    orbitId = orbitRef.id
-    orbit = OrbitDao().get_with_transaction(transaction, orbitRef)
-    orbit.set_firestore_ref(orbitRef)
+    orbit_id = orbit_ref.id
+    orbit = OrbitDao().get_with_transaction(transaction, orbit_ref)
+    orbit.set_firestore_ref(orbit_ref)
 
     eventRef = orbit.event_ref
 
-    locationRef: DocumentReference = rideRequest.airport_location
+    locationRef: DocumentReference = ride_request.airport_location
     location = LocationGenericDao().get_with_transaction(transaction, locationRef)
 
-    groupingutils.remove_ride_request_from_orbit(transaction, rideRequest, orbit)
+    groupingutils.remove_ride_request_from_orbit(transaction, ride_request, orbit)
 
     # Delete current user eventSchedule that is associated with an orbit
-    UserDao().remove_event_schedule_with_transaction(transaction, userRef=userRef, orbitId=orbitId)
+    UserDao().remove_event_schedule_with_transaction(transaction, userRef=user_ref, orbitId=orbit_id)
 
     # TODO update eventSchedule of all participants
 
     # Build new eventSchedule that is not associated with any orbit and marked as pending
-    eventSchedule = eventscheduleutils.buildEventSchedule(rideRequest, location=location)
-    UserDao().add_to_event_schedule_with_transaction(transaction, user_ref=userRef, event_ref=eventRef,
+    eventSchedule = eventscheduleutils.buildEventSchedule(ride_request, location=location)
+    UserDao().add_to_event_schedule_with_transaction(transaction, user_ref=user_ref, event_ref=eventRef,
                                                      event_schedule=eventSchedule)
 
 

@@ -35,6 +35,7 @@ from gravitate.services.ride_request.services import AirportRideRequestCreationS
     AirportRideRequestService
 from gravitate.services.user_service import UserService
 from gravitate.services.utils import authenticate
+from gravitate.services import errors as service_errors
 
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(refreshGroupAll, 'interval', minutes=1)
@@ -66,7 +67,7 @@ class EndpointTestService(Resource):
         return responseDict, 200
 
 
-api = Api(app)
+api = Api(app, errors=service_errors.errors)
 api.add_resource(UserService, '/users/<string:uid>')
 # api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
 api.add_resource(AirportRideRequestCreationService, '/rideRequests')

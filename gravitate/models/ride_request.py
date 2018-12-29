@@ -124,10 +124,10 @@ class AirportRideRequest(RideRequest):
 
         super().__init__(driver_status, pickup_address,
                          has_checked_in, event_ref, orbit_ref, user_id, target, pricing, request_completion)
-        self.rideCategory = 'airportRide'
-        self.flightLocalTime = flight_local_time
-        self.flightNumber = flight_number
-        self.airportLocation = airport_location
+        self.ride_category = 'airportRide'
+        self.flight_local_time = flight_local_time
+        self.flight_number = flight_number
+        self.airport_location = airport_location
         self.baggages = baggages
         self.disabilities = disabilities
 
@@ -147,9 +147,9 @@ class AirportRideRequest(RideRequest):
         ride_request_dict = super().to_dict()
 
         ride_request_dict['rideCategory'] = 'airportRide'
-        ride_request_dict['flightLocalTime'] = self.flightLocalTime
-        ride_request_dict['flightNumber'] = self.flightNumber
-        ride_request_dict['airportLocation'] = self.airportLocation
+        ride_request_dict['flightLocalTime'] = self.flight_local_time
+        ride_request_dict['flightNumber'] = self.flight_number
+        ride_request_dict['airportLocation'] = self.airport_location
         ride_request_dict['baggages'] = self.baggages
         ride_request_dict['disabilities'] = self.disabilities
         return ride_request_dict
@@ -178,7 +178,7 @@ class SocialEventRideRequest(RideRequest):
 
         super().__init__(driver_status, pickup_address,
                          has_checked_in, event_ref, orbit_ref, user_id, target, pricing, request_completion)
-        self.rideCategory = 'eventRide'
+        self.ride_category = 'eventRide'
 
     def to_dict(self):
         ride_request_dict = super().to_dict()
