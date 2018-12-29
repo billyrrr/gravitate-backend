@@ -1,6 +1,6 @@
 import test.factory.model
 from gravitate.controllers import grouping
-from gravitate.controllers.groupingutils import placeInOrbit
+from gravitate.controllers.groupingutils import place_in_orbit
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
 from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
@@ -167,7 +167,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         rideRequest.set_firestore_ref(db.document(
             'rideRequests', 'testriderequestid1'))
 
-        placeInOrbit(rideRequest, orbit)
+        place_in_orbit(rideRequest, orbit)
         userTicketPairsDict = orbit.to_dict()["userTicketPairs"]
         expectedDict = {
             'SQytDq13q00e0N3H4agR': {

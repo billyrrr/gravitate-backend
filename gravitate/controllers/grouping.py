@@ -243,7 +243,7 @@ def _remove(transaction, rideRequestRef: DocumentReference):
     locationRef: DocumentReference = rideRequest.airport_location
     location = LocationGenericDao().get_with_transaction(transaction, locationRef)
 
-    groupingutils.removeRideRequestFromOrbit(transaction, rideRequest, orbit)
+    groupingutils.remove_ride_request_from_orbit(transaction, rideRequest, orbit)
 
     # Delete current user eventSchedule that is associated with an orbit
     UserDao().remove_event_schedule_with_transaction(transaction, userRef=userRef, orbitId=orbitId)
@@ -296,7 +296,7 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.joinOrbitToRideRequest(rideRequest, orbit)
+            isJoined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -337,7 +337,7 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.joinOrbitToRideRequest(rideRequest, orbit)
+            isJoined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -395,7 +395,7 @@ class Group:
         rideRequests = joined
         for rideRequest in rideRequests:
             # Note that profile photos may not be populated even after the change is committed
-            groupingutils.updateEventSchedule(transaction, rideRequest, intendedOrbit, event, location)
+            groupingutils.update_event_schedule(transaction, rideRequest, intendedOrbit, event, location)
 
     def sendNotifications(self, userIds: list) -> bool:
         """ Description

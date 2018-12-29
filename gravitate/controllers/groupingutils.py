@@ -9,7 +9,7 @@ db = context.Context.db
 
 
 # @transactional
-def joinOrbitToRideRequest(rideRequest: Type[RideRequest],  orbit: Orbit) -> bool:
+def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) -> bool:
     """ Description
     This function joins a rideRequest to an orbit in the database. 
             Firstly, the function accesses database copy of the objects and download them as local copies
@@ -42,16 +42,16 @@ def joinOrbitToRideRequest(rideRequest: Type[RideRequest],  orbit: Orbit) -> boo
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
 
-    if rideRequest.request_completion:
+    if ride_request.request_completion:
         return False
     pairs: dict = orbit.user_ticket_pairs
     for user_id, ticket in pairs.items():
-        if ticket["userWillDrive"] and rideRequest.driver_status:
+        if ticket["userWillDrive"] and ride_request.driver_status:
             # There is already an I-4 driver. Do not join another driver to the orbit
             return False
 
     # Modify local copies of rideRequest and orbit
-    placeInOrbit(rideRequest, orbit)
+    place_in_orbit(ride_request, orbit)
 
     return True
 
@@ -63,9 +63,9 @@ class GroupOrbitInteractor(object):
     def __init__(self):
         pass
 
-def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
+def remove_ride_request_from_orbit(transaction, rideRequest: Type[RideRequest], orbit: Orbit) -> bool:
 
-    removeFromOrbit(rideRequest, orbit)
+    remove_from_orbit(rideRequest, orbit)
 
     try:
         RideRequestGenericDao().set_with_transaction(
@@ -79,7 +79,7 @@ def removeRideRequestFromOrbit(transaction, rideRequest: Type[RideRequest], orbi
     return True
 
 
-def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
+def update_event_schedule(transaction: Transaction, rideRequest: RideRequest, orbit: Orbit, event: Event, location: Location):
     """ Description
 
             Populate eventSchedule (client view model)
@@ -109,7 +109,7 @@ def updateEventSchedule(transaction: Transaction, rideRequest: RideRequest, orbi
                                                      userRef=userRef, eventRef=eventRef, eventSchedule=eventSchedule)
 
 
-def placeInOrbit(r: RideRequest, o: Orbit):
+def place_in_orbit(r: RideRequest, o: Orbit):
     """ Description
             :type uid:str:
             :param uid:str:
@@ -146,7 +146,7 @@ def placeInOrbit(r: RideRequest, o: Orbit):
     return
 
 
-def removeFromOrbit(r: RideRequest, o: Orbit):
+def remove_from_orbit(r: RideRequest, o: Orbit):
     # remove userRef from orbitRef's userTicketPairs
     # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
     userIds = list(o.user_ticket_pairs.keys())

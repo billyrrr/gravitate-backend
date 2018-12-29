@@ -1,7 +1,6 @@
 """Author: Zixuan Rao, Andrew Kim
 """
 
-from google.cloud.firestore import DocumentReference, Transaction
 from gravitate.models.target import Target, ToEventTarget, FromEventTarget
 from .firestore_object import FirestoreObject
 
@@ -96,29 +95,6 @@ class RideRequest(FirestoreObject):
         self.target = target
         self.pricing = pricing
         self.request_completion = request_completion
-
-
-# class RideRequestActiveRecord(RideRequest):
-
-#     @staticmethod
-#     def fromFirestoreRef(firestoreRef, rideRequestDAO: RideRequestGenericDao, transaction: Transaction = None):
-#         if (transaction):
-#             return rideRequestDAO.getRideRequestWithTransaction(transaction, firestoreRef)
-#         else:
-#             return rideRequestDAO.getRideRequest(firestoreRef)
-
-#     @staticmethod
-#     def createFromDict(rideRequestDict, rideRequestGenericDao = RideRequestGenericDao()):
-#         rideRequest = RideRequest.from_dict(rideRequestDict)
-#         timestamp, documentRef = rideRequestGenericDao.createRideRequest()
-#         rideRequest.set_firestore_ref(documentRef)
-#         return rideRequest
-
-#     def saveWithTransaction(self, transaction: Transaction):
-#         # Save to database with ref specified instance variable
-#         if (not self.__firestoreRef):
-#             raise Exception('self.__firestoreRef not defined!')
-#         RideRequestGenericDao.setRideRequestWithTransaction(transaction, self, self.__firestoreRef)
 
 
 class AirportRideRequest(RideRequest):
