@@ -65,7 +65,7 @@ class TestGroupUsers(unittest.TestCase):
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
-        tupleList = grouping.constructTupleList(rideRequests)
+        tupleList = grouping.construct_tuple_list(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
@@ -75,7 +75,7 @@ class TestGroupUsers(unittest.TestCase):
         expectedUnpaired = [['G'], ['E'], ['F']]
 
         rideRequests: list = self.rideRequests
-        paired, unpaired = grouping.pairRideRequests(rideRequests)
+        paired, unpaired = grouping.pair_ride_requests(rideRequests)
 
         self.assertListEqual(expectedPaired, paired, 'paired does not match')
         self.assertListEqual(expectedUnpaired, unpaired,
@@ -117,7 +117,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
-        tupleList = grouping.constructTupleList(rideRequests)
+        tupleList = grouping.construct_tuple_list(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
@@ -127,7 +127,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                    RideRequestGenericDao().rideRequestCollectionRef.document('B')],
                   [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
                    RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = grouping.constructGroups(paired)
+        groups = grouping.construct_groups(paired)
 
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
@@ -138,14 +138,14 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         ).rideRequestCollectionRef.document('E')], [RideRequestGenericDao().rideRequestCollectionRef.document('F')]]
 
         rideRequests: list = self.rideRequests
-        paired, unpaired = grouping.pairRideRequests(rideRequests)
+        paired, unpaired = grouping.pair_ride_requests(rideRequests)
 
         self.assertListEqual(expectedPaired, paired, 'paired does not match')
         self.assertListEqual(expectedUnpaired, unpaired,
                              'unpaired does not match')
 
     def testPrimaryGroupingFunc(self):
-        grouping.groupRideRequests(self.rideRequests)
+        grouping.group_ride_requests(self.rideRequests)
 
     def testPlaceInOrbit(self):
         orbitDict = {

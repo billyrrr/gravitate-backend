@@ -50,7 +50,6 @@ class GroupOrbitInteractor(object):
 
 
 def remove_ride_request_from_orbit(transaction, ride_request: Type[RideRequest], orbit: Orbit) -> bool:
-
     remove_from_orbit(ride_request, orbit)
 
     try:
@@ -65,7 +64,8 @@ def remove_ride_request_from_orbit(transaction, ride_request: Type[RideRequest],
     return True
 
 
-def update_event_schedule(transaction: Transaction, ride_request: RideRequest, orbit: Orbit, event: Event, location: Location):
+def update_event_schedule(transaction: Transaction, ride_request: RideRequest, orbit: Orbit, event: Event,
+                          location: Location):
     """ Description
 
             Populate eventSchedule (client view model)
@@ -92,7 +92,9 @@ def update_event_schedule(transaction: Transaction, ride_request: RideRequest, o
     event_schedule = eventscheduleutils.buildEventScheduleOrbit(
         rideRequest=ride_request, location=location, orbit=orbit)
     UserDao().add_to_event_schedule_with_transaction(transaction,
-                                                     user_ref=user_ref, event_ref=event_ref, event_schedule=event_schedule)
+                                                     user_ref=user_ref,
+                                                     event_ref=event_ref,
+                                                     event_schedule=event_schedule)
 
 
 def place_in_orbit(r: RideRequest, o: Orbit):

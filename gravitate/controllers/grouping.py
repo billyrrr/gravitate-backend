@@ -10,17 +10,17 @@ from google.cloud.firestore import Transaction, transactional, DocumentReference
 db = context.Context.db
 
 
-def groupMany(rideRequestIds: list):
+def groupMany(ride_request_ids: list):
     """
     This function tries to match rideRequests into groups with grouping algorithms.
     Note that the rideRequests may be in different orbits, and rideRequests may not
         be grouped into any orbit.
 
-    :param rideRequestIds:
+    :param ride_request_ids:
     :return:
     """
     d = dict()
-    for rideRequestId in rideRequestIds:
+    for rideRequestId in ride_request_ids:
 
         ride_request_ref = db.collection("rideRequests").document(rideRequestId)
         ride_request = RideRequestGenericDao().get(ride_request_ref)
@@ -36,49 +36,49 @@ def groupMany(rideRequestIds: list):
 
     for event_id in d.keys():
         ride_requests = d[event_id]
-        groupRideRequests(ride_requests)
+        group_ride_requests(ride_requests)
 
 
-def forceMatchTwo(rideRequestIds: list):
+def forceMatchTwo(ride_request_ids: list):
     """
     This function force matches two rideRequests into an orbit.
 
-    :param rideRequestIds: Two rideRequest Ids
+    :param ride_request_ids: Two rideRequest Ids
     :return:
     """
-    rideRequests = list()
-    for rideRequestId in rideRequestIds:
-        rideRequestRef = db.collection("rideRequests").document(rideRequestId)
-        rideRequest = RideRequestGenericDao().get(rideRequestRef)
-        rideRequest.set_firestore_ref(rideRequestRef)
-        rideRequests.append(rideRequest)
+    ride_requests = list()
+    for ride_request_id in ride_request_ids:
+        ride_request_ref = db.collection("rideRequests").document(ride_request_id)
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
+        ride_request.set_firestore_ref(ride_request_ref)
+        ride_requests.append(ride_request)
 
-    numRideRequests = len(rideRequests)
-    assert numRideRequests >= 2
-    if numRideRequests >= 3:
+    num_ride_requests = len(ride_requests)
+    assert num_ride_requests >= 2
+    if num_ride_requests >= 3:
         warnings.warn(
             "Orbit is only tested for matching 2 rideRequests. " +
-            "You are forcing to match {} users in one orbit. ".format(numRideRequests) +
+            "You are forcing to match {} users in one orbit. ".format(num_ride_requests) +
             "Only rideRequests {} and {} are expected be matched. "
-            .format(rideRequests[0].to_dict(), rideRequests[1].to_dict()))
+            .format(ride_requests[0].to_dict(), ride_requests[1].to_dict()))
 
-    pairedTuples = [(rideRequests[0], rideRequests[1])]
+    paired_tuples = [(ride_requests[0], ride_requests[1])]
 
-    groups = constructGroups(pairedTuples)
+    groups = construct_groups(paired_tuples)
 
     group = groups[0]
-    notJoined = group.doWork()
-    notJoinedIds = list()
+    not_joined = group.do_work()
+    not_joined_ids = list()
 
-    for rideRequestNotJoined in notJoined:
-        notJoinedIds.append(rideRequestNotJoined.get_firestore_ref())
+    for rideRequestNotJoined in not_joined:
+        not_joined_ids.append(rideRequestNotJoined.get_firestore_ref())
 
     # rideRequest Response
-    responseDict = {"notJoined": notJoinedIds}
-    return responseDict
+    response_dict = {"notJoined": not_joined_ids}
+    return response_dict
 
 
-def groupRideRequests(rideRequests: list):
+def group_ride_requests(ride_requests: list):
     """ Description
         This function
         1. reads all ride requests associated with an event
@@ -89,28 +89,28 @@ def groupRideRequests(rideRequests: list):
     :rtype:
     """
 
-    paired, unpaired = pairRideRequests(rideRequests)
+    paired, unpaired = pair_ride_requests(ride_requests)
 
-    pairedTuples = convertFirestoreRefTupleListToRideRequestTupleList(paired)
+    paired_tuples = convert_firestore_ref_tuple_list_to_ride_request_tuple_list(paired)
 
-    groups = constructGroups(pairedTuples)
+    groups = construct_groups(paired_tuples)
 
     for group in groups:
-        group.doWork()
+        group.do_work()
 
 
-def pairRideRequests(rideRequests: list):
+def pair_ride_requests(ride_requests: list):
     """
     This function serves as an adaptor for grouping algorithms.
-    :param rideRequests:
+    :param ride_requests:
     :return:
     """
-    tupleList = constructTupleList(rideRequests)
-    paired, unpaired = pair(arr=tupleList)
+    tuple_list = construct_tuple_list(ride_requests)
+    paired, unpaired = pair(arr=tuple_list)
     return paired, unpaired
 
 
-def constructGroups(paired: list) -> list:
+def construct_groups(paired: list) -> list:
     """ Description
         This function converts a list of rideRequestId pairs to a list of groups.
 
@@ -122,37 +122,38 @@ def constructGroups(paired: list) -> list:
 
     for rideRequest1, rideRequest2 in paired:
         assert rideRequest1.event_ref.id == rideRequest2.event_ref.id
-        eventRef = rideRequest1.event_ref
+        event_ref = rideRequest1.event_ref
 
-        intendedOrbit = Orbit.from_dict({
+        intended_orbit = Orbit.from_dict({
             "orbitCategory": "airportRide",
-            "eventRef": eventRef,
+            "eventRef": event_ref,
             "userTicketPairs": {
             },
             "chatroomRef": None,
             "costEstimate": 987654321,
             "status": 1
         })
-        orbitRef = OrbitDao().create(intendedOrbit)
-        intendedOrbit.set_firestore_ref(orbitRef)
-        event = EventDao().get(eventRef)
-        locationRef: DocumentReference = event.location_ref
-        location = LocationGenericDao().get(locationRef)
+        orbit_ref = OrbitDao().create(intended_orbit)
+        intended_orbit.set_firestore_ref(orbit_ref)
+        event = EventDao().get(event_ref)
+        location_ref: DocumentReference = event.location_ref
+        location = LocationGenericDao().get(location_ref)
 
-        rideRequests = list()
-        rideRequests.append(rideRequest1)
-        rideRequests.append(rideRequest2)
+        ride_requests = list()
+        ride_requests.append(rideRequest1)
+        ride_requests.append(rideRequest2)
 
-        group: Group = Group(rideRequests, intendedOrbit, event, location)
+        group: Group = Group(ride_requests, intended_orbit, event, location)
         groups.append(group)
 
     return groups
 
 
-def convertFirestoreRefTupleListToRideRequestTupleList(paired: list):
+def convert_firestore_ref_tuple_list_to_ride_request_tuple_list(paired: list):
     """ Description
     This function is an adaptor to convert tuples of rideRequestRef as returned by grouping
         algorithm to tuples of rideRequest objects that the system may do operations on.
+    TODO: place in package and rename
 
     :param paired:
     :param results:
@@ -162,23 +163,23 @@ def convertFirestoreRefTupleListToRideRequestTupleList(paired: list):
 
     for firestoreRef1, firestoreRef2 in paired:
         # TODO change to transaction
-        rideRequest1 = RideRequestGenericDao().get(firestoreRef1)
-        rideRequest1.set_firestore_ref(firestoreRef1)
-        rideRequest2 = RideRequestGenericDao().get(firestoreRef2)
-        rideRequest2.set_firestore_ref(firestoreRef2)
-        results.append([rideRequest1, rideRequest2])
+        ride_request1 = RideRequestGenericDao().get(firestoreRef1)
+        ride_request1.set_firestore_ref(firestoreRef1)
+        ride_request2 = RideRequestGenericDao().get(firestoreRef2)
+        ride_request2.set_firestore_ref(firestoreRef2)
+        results.append([ride_request1, ride_request2])
 
     return results
 
 
-def constructTupleList(rideRequests: list):
+def construct_tuple_list(ride_requests: list):
     """ Description
         This function constructs tuple list consisting only variables relevant to the
             grouping algorithm.
         Note that this function only supports rideRequests with ToEventTarget as Target.
 
-        :type rideRequests:list:
-        :param rideRequests:list:
+        :type ride_requests:list:
+        :param ride_requests:list:
     
         :raises:
     
@@ -186,30 +187,30 @@ def constructTupleList(rideRequests: list):
     """
     arr = list()
 
-    for rideRequest in rideRequests:
+    for ride_request in ride_requests:
         try:
-            toEventTarget: ToEventTarget = rideRequest.target
-            earliest = toEventTarget.arrive_at_event_time['earliest']
-            latest = toEventTarget.arrive_at_event_time['latest']
-            ref = rideRequest.get_firestore_ref()
-            tupleToAppend = [earliest, latest, ref]
-            arr.append(tupleToAppend)
+            to_event_target: ToEventTarget = ride_request.target
+            earliest = to_event_target.arrive_at_event_time['earliest']
+            latest = to_event_target.arrive_at_event_time['latest']
+            ref = ride_request.get_firestore_ref()
+            tuple_to_append = [earliest, latest, ref]
+            arr.append(tuple_to_append)
         except Exception as e:
-            warnings.warn("failed to parse rideRequest: {}".format(rideRequest.to_dict()))
+            warnings.warn("failed to parse rideRequest: {}".format(ride_request.to_dict()))
             print("error: {}".format(e))
 
     return arr
 
 
-def remove(rideRequestRef: DocumentReference) -> bool:
+def remove(ride_request_ref: DocumentReference) -> bool:
     """
     This method removes/unmatches rideRequest from the orbit it associates with.
 
-    :param rideRequestRef:
+    :param ride_request_ref:
     :return: True if successful
     """
     transaction = db.transaction()
-    _remove(transaction, rideRequestRef)
+    _remove(transaction, ride_request_ref)
     return True
 
 
@@ -232,16 +233,16 @@ def _remove(transaction, ride_request_ref: DocumentReference):
 
     orbit_ref = ride_request.orbit_ref
 
-    assert orbit_ref != None
+    assert orbit_ref is not None
 
     orbit_id = orbit_ref.id
     orbit = OrbitDao().get_with_transaction(transaction, orbit_ref)
     orbit.set_firestore_ref(orbit_ref)
 
-    eventRef = orbit.event_ref
+    event_ref = orbit.event_ref
 
-    locationRef: DocumentReference = ride_request.airport_location
-    location = LocationGenericDao().get_with_transaction(transaction, locationRef)
+    location_ref: DocumentReference = ride_request.airport_location
+    location = LocationGenericDao().get_with_transaction(transaction, location_ref)
 
     groupingutils.remove_ride_request_from_orbit(transaction, ride_request, orbit)
 
@@ -251,9 +252,9 @@ def _remove(transaction, ride_request_ref: DocumentReference):
     # TODO update eventSchedule of all participants
 
     # Build new eventSchedule that is not associated with any orbit and marked as pending
-    eventSchedule = eventscheduleutils.buildEventSchedule(ride_request, location=location)
-    UserDao().add_to_event_schedule_with_transaction(transaction, user_ref=user_ref, event_ref=eventRef,
-                                                     event_schedule=eventSchedule)
+    event_schedule = eventscheduleutils.buildEventSchedule(ride_request, location=location)
+    UserDao().add_to_event_schedule_with_transaction(transaction, user_ref=user_ref, event_ref=event_ref,
+                                                     event_schedule=event_schedule)
 
 
 class Group:
@@ -262,89 +263,89 @@ class Group:
 
     """
 
-    def __init__(self, rideRequestArray: [], intendedOrbit: Orbit, event: Event, location: Location):
+    def __init__(self, ride_request_array: [], intended_orbit: Orbit, event: Event, location: Location):
         """
 
-        :param rideRequestArray: a list of rideRequests to be grouped into the orbit
-        :param intendedOrbit: the orbit object to group rideRequests into
+        :param ride_request_array: a list of rideRequests to be grouped into the orbit
+        :param intended_orbit: the orbit object to group rideRequests into
         :param event: the event object since we are matching "rideRequests that go to the same event"
         :param location: the location object for the event (example: location representing LAX)
         """
-        self.rideRequestArray = rideRequestArray
+        self.ride_request_array = ride_request_array
 
         # Note that the intended orbit will be in database, and hence possible to be modified by another thread
-        self.intendedOrbit = intendedOrbit
+        self.intended_orbit = intended_orbit
         self.event = event
         self.location = location
 
         self.joined = list()
-        self.notJoined = list()
+        self.not_joined = list()
 
-    def doWork(self):
+    def do_work(self):
         """
         This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
         :return: a list of rideRequests that are not joined
         """
-        orbit = self.intendedOrbit
+        orbit = self.intended_orbit
 
         # Create a transaction so that an exception is thrown when updating an object that is
         #   changed since last read from database
         transaction: Transaction = db.transaction()
 
-        for rideRequest in self.rideRequestArray:
+        for ride_request in self.ride_request_array:
 
-            print(rideRequest.to_dict())
+            print(ride_request.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
+            is_joined = groupingutils.join_orbit_to_ride_request(ride_request, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
-            if isJoined:
-                self.joined.append(rideRequest)
+            if is_joined:
+                self.joined.append(ride_request)
             else:
-                self.notJoined.append(rideRequest)
+                self.not_joined.append(ride_request)
 
-        for rideRequest in self.joined:
+        for ride_request in self.joined:
             # Update database copy of rideRequest and orbit
             RideRequestGenericDao.set_with_transaction(
-                transaction, rideRequest, rideRequest.get_firestore_ref())
+                transaction, ride_request, ride_request.get_firestore_ref())
 
         OrbitDao.set_with_transaction(
             transaction, orbit, orbit.get_firestore_ref())
 
         # refresh event schedule for each user
-        self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
+        self.refresh_event_schedules(transaction, self.joined, self.intended_orbit, self.event, self.location)
 
         transaction.commit()
 
-        return self.notJoined
+        return self.not_joined
 
-    def doWorkExperimental(self):
+    def do_work_experimental(self):
         """
         Experimental feature for N+1 joining
         This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
         :return: a list of rideRequests that are not joined
         """
-        orbit = self.intendedOrbit
+        orbit = self.intended_orbit
 
         # Create a transaction so that an exception is thrown when updating an object that is
         #   changed since last read from database
         transaction: Transaction = db.transaction()
 
-        for rideRequest in self.rideRequestArray:
+        for rideRequest in self.ride_request_array:
 
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            isJoined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
+            is_joined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
-            if isJoined:
+            if is_joined:
                 self.joined.append(rideRequest)
             else:
-                self.notJoined.append(rideRequest)
+                self.not_joined.append(rideRequest)
 
         for rideRequest in self.joined:
             # Update database copy of rideRequest and orbit
@@ -356,20 +357,24 @@ class Group:
 
         # refresh event schedule for each user
         # TODO: refresh eventSchedules on all rideRequests in an orbit rather than those just joined
-        self.refreshEventSchedules(transaction, self.joined, self.intendedOrbit, self.event, self.location)
+        self.refresh_event_schedules(transaction, self.joined, self.intended_orbit, self.event, self.location)
 
         transaction.commit()
 
         ids_in_orbit = list()
+
         def ids_from_pairs():
             for user_id, ticket in orbit.user_ticket_pairs.items():
                 ids_in_orbit.append(ticket["rideRequestRef"].id)
+
         ids_from_pairs()
 
         ids_just_joined = list()
+
         def ids_from_joined():
-            for rideRequest in self.joined:
-                ids_just_joined.append(rideRequest.get_firestore_ref().id)
+            for ride_request in self.joined:
+                ids_just_joined.append(ride_request.get_firestore_ref().id)
+
         ids_just_joined()
 
         ids_to_refresh = list(set(ids_in_orbit) - set(ids_just_joined))
@@ -377,27 +382,26 @@ class Group:
             # TODO: add code for refreshing ride_requests
             raise NotImplementedError
 
-
-        return self.notJoined
+        return self.not_joined
 
     @staticmethod
-    def refreshEventSchedules(transaction: Transaction, joined, intendedOrbit, event, location):
+    def refresh_event_schedules(transaction: Transaction, joined, intended_orbit, event, location):
         """
         This function refreshes event schedules of each rideRequests in joined
 
         :param transaction:
         :param joined: the rideRequests joined by the algorithm
-        :param intendedOrbit:
+        :param intended_orbit:
         :param event:
         :param location:
         :return:
         """
-        rideRequests = joined
-        for rideRequest in rideRequests:
+        ride_requests = joined
+        for ride_request in ride_requests:
             # Note that profile photos may not be populated even after the change is committed
-            groupingutils.update_event_schedule(transaction, rideRequest, intendedOrbit, event, location)
+            groupingutils.update_event_schedule(transaction, ride_request, intended_orbit, event, location)
 
-    def sendNotifications(self, userIds: list) -> bool:
+    def send_notifications(self, userIds: list) -> bool:
         """ Description
         This function sends notifications to each user in userIds.
 

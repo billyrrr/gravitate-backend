@@ -3,7 +3,8 @@ Author: Zixuan Rao
 Reference: https://github.com/Amsterdam/subsidieservice/blob/master/subsidy_service/subsidy_service/context.py
 
 Usage:
-1. In testing or production, initialize Context singleton first by calling config.Context.read() in __init__.py of caller package
+1. In testing or production, initialize Context singleton first by calling config.Context.read() in __init__.py of
+    caller package
 2. In package (test_data_access as an example) __init__.py, add "import config"
 3. In files under the package: CTX = test_data_access.config.Context
 
@@ -23,6 +24,7 @@ from firebase_admin import credentials, auth
 import gravitate.config as gravitate_config
 
 config = gravitate_config.TestingGravitateConfig
+
 
 # New project-id: gravitate-dev certs
 # Note that "../gravitate/*" works by trial and error so that the path works both at "/gravitate" and "/test"
