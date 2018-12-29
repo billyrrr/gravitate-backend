@@ -4,7 +4,7 @@ from flask.testing import FlaskClient
 from gravitate.services.ride_request.deprecated_utils import fill_ride_request_dict_with_form, \
     fill_ride_request_dict_builder_regression
 
-from gravitate.controllers.utils import hasDuplicateEvent
+from gravitate.controllers.utils import check_duplicate
 
 from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm
 
@@ -204,8 +204,8 @@ class TestCreateRideRequestLogics(TestCase):
         userId: str = "44lOjfDJoifnq1IMRdk4VKtPutF3"
         eventId: str = "8GKfUA2AbGCrgRo7n6Rt"
         eventRef: firestore.DocumentReference = EventDao().get_ref(eventId)
-        result = hasDuplicateEvent(userId, eventRef)
-        # Assert that hasDuplicateEvent is False since we have an entry 
+        result = check_duplicate(userId, eventRef)
+        # Assert that check_duplicate is False since we have an entry
         #   with equal eventRef and userId field in the database 
         self.assertNotEqual(result, False)
 

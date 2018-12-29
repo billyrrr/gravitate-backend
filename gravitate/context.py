@@ -22,7 +22,7 @@ from firebase_admin import credentials, auth
 #
 import gravitate.config as gravitate_config
 
-config = gravitate_config.DevelopmentGravitateConfig
+config = gravitate_config.TestingGravitateConfig
 
 # New project-id: gravitate-dev certs
 # Note that "../gravitate/*" works by trial and error so that the path works both at "/gravitate" and "/test"

@@ -10,7 +10,7 @@ import iso8601
 import pytz
 
 
-def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
+def check_duplicate(userId: str, eventRef: DocumentReference):
     """ Description Returns a boolean whether the user is trying to make a duplicate ride request
 
     :param userId:
@@ -31,7 +31,7 @@ def hasDuplicateEvent(userId: str, eventRef: DocumentReference):
 
 
 @transactional
-def addRideRequest(transaction, rideRequest, location, userId):
+def add_ride_request(transaction, rideRequest, location, userId):
     """ Description
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
