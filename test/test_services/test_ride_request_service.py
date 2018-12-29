@@ -102,7 +102,8 @@ class CreateRideRequestServiceUtilsTest(TestCase):
         self.assertIsNotNone(result["airportLocation"])
 
 
-class RaiseErrorsTest(TestCase):
+class ReturnErrorsTest(TestCase):
+    ride_request_ids_to_unmatch = list()
     ride_request_ids_to_delete = list()
 
     def setUp(self):
@@ -151,6 +152,7 @@ class RaiseErrorsTest(TestCase):
             print(r.json)
             # self.assertRaises(service_errors.RequestAlreadyExistsError)
             firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
+            self.ride_request_ids_to_unmatch.append((userId, firestore_ref))
             self.ride_request_ids_to_delete.append((userId, firestore_ref))
 
         uid, rid = self.ride_request_ids_to_delete[0]
@@ -171,22 +173,22 @@ class RaiseErrorsTest(TestCase):
         error_status_code_expected = error_return_expected["status"]
         self.assertEqual(r.json["message"], error_message_expected)
         self.assertEqual(r.status_code, error_status_code_expected)
-    #
+
     # def testNothing(self):
     #     """
     #     Remedy for malfunctioning _tear_down. Running this test would trigger _tear_down again
-    #         if you replace values in ride_request_ids_to_delete.
+    #         if you replace values in ride_request_ids_to_unmatch and ride_request_ids_to_delete.
     #     :return:
     #     """
-    #     self.ride_request_ids_to_delete = [("testuid1", "wwu5nLXqm6kZywcbpEeu3egoAuOKOUBu"),
-    #                                        ("testuid2", "cA6iSNpLvPaGlebkdRBgmmf1BITKOwHK")]
+    #     self.ride_request_ids_to_delete = [("testuid1", "behhdb2qL13hBddqFrO5dBsRbmw67vKe"),
+    #                                        ("testuid2", "UL7R89Tc5EZqB0DVYdrO03D0UmNhZIv0")]
 
     def _tear_down(self):
         """
         Deletes all rideRequests created by the test
         :return:
         """
-        for uid, rid in self.ride_request_ids_to_delete:
+        for uid, rid in self.ride_request_ids_to_unmatch:
             r = self.app.post(path='/deleteMatch',
                               json={"rideRequestId": rid},
                               headers=getMockAuthHeaders(uid=uid))
@@ -197,6 +199,7 @@ class RaiseErrorsTest(TestCase):
                                 headers=getMockAuthHeaders(uid=uid)
                                 )
             assert r.status_code == 200
+        self.ride_request_ids_to_unmatch.clear()
         self.ride_request_ids_to_delete.clear()
 
     def tearDown(self):
