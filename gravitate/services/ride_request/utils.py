@@ -80,7 +80,7 @@ class RideRequestBaseBuilder:
 
     @staticmethod
     def _get_location_ref(airport_code):
-        location = utils.getAirportLocation(airport_code)
+        location = utils.get_airport_location(airport_code)
         return location.get_firestore_ref()
 
     def _build_target_earliest_latest(self):
@@ -92,7 +92,7 @@ class RideRequestBaseBuilder:
         self._ride_request_dict["target"] = target.to_dict()
 
     def _build_event_with_flight_local_time(self):
-        self._ride_request_dict["eventRef"] = utils.findEvent(self.flight_local_time)
+        self._ride_request_dict["eventRef"] = utils.find_event(self.flight_local_time)
 
     def _build_event_with_id(self):
         """

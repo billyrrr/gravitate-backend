@@ -47,9 +47,9 @@ def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userI
     rideRequestDict['target'] = target.to_dict()
 
     # Set EventRef
-    eventRef = utils.findEvent(form.flightLocalTime)
+    eventRef = utils.find_event(form.flightLocalTime)
     rideRequestDict['eventRef'] = eventRef
-    location = utils.getAirportLocation(form.airportCode)
+    location = utils.get_airport_location(form.airportCode)
     if not location:
         return rideRequestDict, None
     airportLocationRef = location.get_firestore_ref()
@@ -69,7 +69,7 @@ def fill_ride_request_dict_builder_regression(form: AirportRideRequestCreationFo
     f: dict = vars(form)
     b: AirportRideRequestBuilder = AirportRideRequestBuilder().set_with_form_and_user_id(f, userId)\
         .build_airport_ride_request()
-    return b._ride_request_dict, utils.getAirportLocation(form.airportCode)
+    return b._ride_request_dict, utils.get_airport_location(form.airportCode)
 
 #
 # def create_ride_request(form: dict, user_id: str) -> Type[RideRequest]:
@@ -123,13 +123,13 @@ def fill_ride_request_dict_builder_regression(form: AirportRideRequestCreationFo
 #         d['eventRef'] = utils.get_event_ref_by_id(form["eventId"])
 #         d['airportLocation'] = utils.get_location_ref_by_id(form["locationId"])
 #     else:
-#         location = utils.getAirportLocation(form["airportCode"])
+#         location = utils.get_airport_location(form["airportCode"])
 #         if not location:
 #             raise ValueError(
 #                 "AirportLocation cannot be found with airportCode provided. ")  # TODO: error handling: https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha/21297608
 #
 #     # Set EventRef
-#     event_ref = utils.findEvent(d["flightLocalTime"])
+#     event_ref = utils.find_event(d["flightLocalTime"])
 #     d['eventRef'] = event_ref
 #
 #     airport_location_ref = location.get_firestore_ref()

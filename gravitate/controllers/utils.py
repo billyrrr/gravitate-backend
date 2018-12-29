@@ -10,20 +10,20 @@ import iso8601
 import pytz
 
 
-def check_duplicate(userId: str, eventRef: DocumentReference):
+def check_duplicate(user_id: str, event_ref: DocumentReference):
     """ Description Returns a boolean whether the user is trying to make a duplicate ride request
 
-    :param userId:
-    :param eventRef:
+    :param user_id:
+    :param event_ref:
     :return: True: it is a duplicate, False: it is not a duplicate
     """
-    rideRequests = RideRequestGenericDao().get_by_user(userId)
-    eventDocId = eventRef.id
+    ride_requests = RideRequestGenericDao().get_by_user(user_id)
+    event_doc_id = event_ref.id
 
     # Loop through each rideRequest
-    for rideRequest in rideRequests:
-        currentEventDocId = rideRequest.event_ref.id
-        if currentEventDocId == eventDocId:
+    for rideRequest in ride_requests:
+        current_event_doc_id = rideRequest.event_ref.id
+        if current_event_doc_id == event_doc_id:
             return True
 
     # No rideRequest has the same eventRef as the rideRequest that is about to be added
@@ -31,7 +31,7 @@ def check_duplicate(userId: str, eventRef: DocumentReference):
 
 
 @transactional
-def add_ride_request(transaction, rideRequest, location, userId):
+def add_ride_request(transaction, ride_request, location, user_id):
     """ Description
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
@@ -39,23 +39,23 @@ def add_ride_request(transaction, rideRequest, location, userId):
             by @transactional.
 
     :param transaction:
-    :param rideRequest:
+    :param ride_request:
     :param location:
-    :param userId:
+    :param user_id:
     :return:
     """
 
     # Set the firestoreRef of the rideRequest
-    RideRequestGenericDao().create(rideRequest)
+    RideRequestGenericDao().create(ride_request)
     # Saves RideRequest Object to Firestore
-    RideRequestGenericDao().set_with_transaction(transaction, rideRequest, rideRequest.get_firestore_ref())
+    RideRequestGenericDao().set_with_transaction(transaction, ride_request, ride_request.get_firestore_ref())
     # [START] Update the user's eventSchedule
-    userRef = UserDao().get_ref(userId)
+    user_ref = UserDao().get_ref(user_id)
     # Build the eventSchedule for user
-    eventSchedule = eventscheduleutils.buildEventSchedule(
-        rideRequest, location)
+    event_schedule = eventscheduleutils.buildEventSchedule(
+        ride_request, location)
     UserDao.add_to_event_schedule_with_transaction(
-        transaction, userRef=userRef, eventRef=rideRequest.event_ref, eventSchedule=eventSchedule)
+        transaction, userRef=user_ref, eventRef=ride_request.event_ref, eventSchedule=event_schedule)
     # [END] Update the user's eventSchedule
 
 
@@ -73,7 +73,7 @@ def get_pickup_address(userId) -> str:
 def get_event_ref_by_id(event_id: str) -> DocumentReference:
     """
     This method returns the event_ref by event_id.
-    :param eventId:
+    :param event_id:
     :return: DocumentReference of the event.
     """
     return EventDao().get_ref(event_id)
@@ -93,17 +93,17 @@ def get_ride_request(d: dict) -> Type[RideRequest]:
     return ride_request
 
 
-def getAirportLocation(airportCode) -> AirportLocation:
+def get_airport_location(airport_code) -> AirportLocation:
     """ Description
         This method returns an airportLocation with airportCode.
 
-    :param airportCode:
+    :param airport_code:
     :return:
     """
-    return LocationGenericDao().find_by_airport_code(airportCode)
+    return LocationGenericDao().find_by_airport_code(airport_code)
 
 
-def findEvent(flight_local_time) -> DocumentReference:
+def find_event(flight_local_time) -> DocumentReference:
     """ Description
     1. Find event reference by querying events with flightLocalTime
     2. Return the reference of such event
@@ -113,9 +113,9 @@ def findEvent(flight_local_time) -> DocumentReference:
     """
 
     # Parse the flightLocalTime of the ride request form, then query database 
-    eventTime = local_time_as_timestamp(flight_local_time)
+    event_time = local_time_as_timestamp(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
-    event = EventDao().find_by_timestamp(eventTime, "airport")
+    event = EventDao().find_by_timestamp(event_time, "airport")
 
     return event.get_firestore_ref()
 
@@ -128,7 +128,7 @@ def local_time_as_timestamp(flight_local_time):
     return utc_datetime.timestamp()
 
 
-def setDisabilities(form: AirportRideRequestCreationForm, rideRequestDict):
+def set_disabilities(form: AirportRideRequestCreationForm, rideRequestDict):
     """
         This method sets the accommodation options in rideRequest dict.
         Note that the method needs refactoring to pass values with parameters rather than structures.

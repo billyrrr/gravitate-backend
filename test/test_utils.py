@@ -15,8 +15,8 @@ class UtilsTest(unittest.TestCase):
     def testFindEvent(self):
         pass
 
-    # TODO write test for findEvent
-    # self.assertEqual(not None, findEvent())
+    # TODO write test for find_event
+    # self.assertEqual(not None, find_event())
 
     def testAsTimestamp(self):
         flightLocalTimeStr = "2018-12-20T12:00:00.000"
