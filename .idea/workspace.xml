@@ -8,10 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/context.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/context.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/controllers/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -61,7 +58,7 @@
         <counts>
           <entry key="json" value="10" />
           <entry key="md" value="9" />
-          <entry key="py" value="583" />
+          <entry key="py" value="584" />
           <entry key="pyi" value="4" />
           <entry key="services" value="1" />
           <entry key="sh" value="5" />
@@ -74,7 +71,7 @@
           <entry key="JSON" value="10" />
           <entry key="Markdown" value="9" />
           <entry key="PLAIN_TEXT" value="7" />
-          <entry key="Python" value="583" />
+          <entry key="Python" value="584" />
           <entry key="PythonStub" value="4" />
           <entry key="YAML" value="1" />
         </counts>
@@ -83,16 +80,16 @@
         <counts>
           <entry key="dummy" value="185" />
           <entry key="md" value="1049" />
-          <entry key="py" value="39252" />
-          <entry key="txt" value="3995" />
+          <entry key="py" value="39253" />
+          <entry key="txt" value="4085" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1049" />
-          <entry key="PLAIN_TEXT" value="4180" />
-          <entry key="Python" value="39252" />
+          <entry key="PLAIN_TEXT" value="4270" />
+          <entry key="Python" value="39253" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -133,14 +130,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="33" column="15" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+            <state relative-caret-position="525">
+              <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
               <folding>
                 <element signature="e#114#125#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/parsers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -257,7 +263,6 @@
         <option value="$PROJECT_DIR$/gravitate/services/ride_request/ride_request_service.py" />
         <option value="$PROJECT_DIR$/test/__init__.py" />
         <option value="$PROJECT_DIR$/gravitate/services/utils.py" />
-        <option value="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" />
         <option value="$PROJECT_DIR$/test/factory/form.py" />
         <option value="$PROJECT_DIR$/gravitate/data_access/location_dao.py" />
         <option value="$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py" />
@@ -284,6 +289,7 @@
         <option value="$PROJECT_DIR$/gravitate/models/ride_request.py" />
         <option value="$PROJECT_DIR$/gravitate/context.py" />
         <option value="$PROJECT_DIR$/gravitate/services/ride_request/services.py" />
+        <option value="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" />
       </list>
     </option>
   </component>
@@ -582,13 +588,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00060" summary="Update README">
-      <created>1545311897001</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1545311897001</updated>
     </task>
     <task id="LOCAL-00061" summary="Add builder for San Diego Intl Airport">
       <created>1545313359924</created>
@@ -926,13 +925,17 @@
       <option name="project" value="LOCAL" />
       <updated>1546070608373</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="Rename variable to snake_case in ride request services">
+      <created>1546072076728</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1546072076728</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest_testNewRideRequestServiceTemp - 2018.12.28 at 22h 28m 53s.xml">
-      <configuration name="pytest for test_ride_request_service.RefactorTempTest.testNewRideRequestServiceTemp" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.28 at 22h 30m 26s.xml">
       <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
     </history-entry>
@@ -958,6 +961,9 @@
       <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
     </history-entry>
     <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.29 at 16h 25m 13s.xml">
+      <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_ride_request_service_RefactorTempTest - 2018.12.29 at 16h 27m 24s.xml">
       <configuration name="pytest for test_ride_request_service.RefactorTempTest" configurationId="tests" />
     </history-entry>
   </component>
@@ -1048,7 +1054,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add helper for creating rideRequest of other types" />
     <MESSAGE value="Add builder for rideRequest" />
     <MESSAGE value="Add builder (verbose) for rideRequest" />
     <MESSAGE value="Refactor builder" />
@@ -1073,16 +1078,10 @@
     <MESSAGE value="Add docs" />
     <MESSAGE value="Include Id in POST &quot;/rideRequests&quot; response" />
     <MESSAGE value="Add bundle_errors=True in parsers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add bundle_errors=True in parsers" />
+    <MESSAGE value="Rename variable to snake_case in ride request services" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename variable to snake_case in ride request services" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gravitate/forms/ride_request_creation_form.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-400">
-          <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/forms/user_creation_form.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1441,11 +1440,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/services.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="33" column="15" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+        <state relative-caret-position="525">
+          <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
           <folding>
             <element signature="e#114#125#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/parsers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
         </state>
       </provider>
     </entry>
