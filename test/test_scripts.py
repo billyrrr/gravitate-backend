@@ -1,7 +1,7 @@
 import unittest
 
 from gravitate.scripts.location.populate_locations import buildLaxTerminal
-from gravitate.scripts.event.populate_airport_events import generateAirportEvents
+from gravitate.scripts.event.populate_airport_events import generate_airport_events
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
 from gravitate.scripts.event.event_builders import SampleLaxEventBuilder
 
@@ -53,7 +53,7 @@ class TestGenerateEvent(unittest.TestCase):
     def testGenerateEvent(self):
         startDatetime = generateStartDatetime("2018-12-01T08:00:00.000")
         timestampTupleList = generateTimestamps(startDatetime, 2)
-        eventList = generateAirportEvents(timestampTupleList)
+        eventList = generate_airport_events(timestampTupleList)
         expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
                                  'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100,
                                  'isClosed': False}
