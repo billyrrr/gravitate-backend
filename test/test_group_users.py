@@ -1,10 +1,9 @@
 import test.factory.model
-from gravitate.controllers import grouping
-from gravitate.controllers.groupingutils import place_in_orbit
+from gravitate.controllers.grouping import grouping
+from gravitate.controllers.grouping.utils import place_in_orbit
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
 from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
-from test import factory
 import unittest
 from test import context
 

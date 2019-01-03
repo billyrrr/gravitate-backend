@@ -1,18 +1,7 @@
-import json
-
-from firebase_admin import auth
-from flask import request
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.controllers import utils, eventscheduleutils, grouping
-from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
-from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm, AirportRideRequestCreationForm
-from gravitate.models import AirportRideRequest, RideRequest, AirportLocation
 import gravitate.services.utils as service_utils
-
-import warnings
-from flask_restful import reqparse
 
 db = Context.db
 

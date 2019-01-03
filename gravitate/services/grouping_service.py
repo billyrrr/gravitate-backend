@@ -3,7 +3,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from gravitate.controllers import grouping
+from gravitate.controllers.grouping import grouping
 from gravitate.data_access import RideRequestGenericDao
 
 
@@ -40,7 +40,7 @@ class OrbitForceMatchService(Resource):
 
 def refreshGroupAll():
     """ Description
-    This function corresponds to use case "group ride requests".
+    This function corresponds to use case "grouping ride requests".
 
     :return:
     """

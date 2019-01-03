@@ -1,9 +1,8 @@
-from gravitate.controllers import groupingutils
-from gravitate.models import Orbit, Event, Location, RideRequest, Target, ToEventTarget
+from gravitate.controllers.grouping import utils
+from gravitate.models import Orbit, Event, Location, ToEventTarget
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao, UserDao
-from gravitate.controllers import utils
 from gravitate import context
-from gravitate.controllers import fcmessaging, eventscheduleutils
+from gravitate.controllers import eventscheduleutils
 import warnings
 from google.cloud.firestore import Transaction, transactional, DocumentReference
 
@@ -77,7 +76,7 @@ def group_ride_requests(ride_requests: list):
         This function
         1. reads all ride requests associated with an event
         2. puts ride requests into groups
-        3. call join method on each group
+        3. call join method on each grouping
     :raises:
 
     :rtype:
@@ -238,7 +237,7 @@ def _remove(transaction, ride_request_ref: DocumentReference):
     location_ref: DocumentReference = ride_request.airport_location
     location = LocationGenericDao().get_with_transaction(transaction, location_ref)
 
-    groupingutils.remove_ride_request_from_orbit(transaction, ride_request, orbit)
+    utils.remove_ride_request_from_orbit(transaction, ride_request, orbit)
 
     # Delete current user eventSchedule that is associated with an orbit
     UserDao().remove_event_schedule_with_transaction(transaction, userRef=user_ref, orbitId=orbit_id)
@@ -261,7 +260,7 @@ class Group:
         """
 
         :param ride_request_array: a list of rideRequests to be grouped into the orbit
-        :param intended_orbit: the orbit object to group rideRequests into
+        :param intended_orbit: the orbit object to grouping rideRequests into
         :param event: the event object since we are matching "rideRequests that go to the same event"
         :param location: the location object for the event (example: location representing LAX)
         """
@@ -291,7 +290,7 @@ class Group:
             print(ride_request.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            is_joined = groupingutils.join_orbit_to_ride_request(ride_request, orbit)
+            is_joined = utils.join_orbit_to_ride_request(ride_request, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -332,7 +331,7 @@ class Group:
             print(rideRequest.to_dict())
 
             # Trying to join one rideRequest to the orbit
-            is_joined = groupingutils.join_orbit_to_ride_request(rideRequest, orbit)
+            is_joined = utils.join_orbit_to_ride_request(rideRequest, orbit)
 
             # TODO: modify logics to make sure that rideRequests in "joined" are actually joined
             # when failing to join, record and move on to the next
@@ -393,7 +392,7 @@ class Group:
         ride_requests = joined
         for ride_request in ride_requests:
             # Note that profile photos may not be populated even after the change is committed
-            groupingutils.update_event_schedule(transaction, ride_request, intended_orbit, event, location)
+            utils.update_event_schedule(transaction, ride_request, intended_orbit, event, location)
 
     def send_notifications(self, userIds: list) -> bool:
         """ Description
