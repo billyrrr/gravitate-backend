@@ -1,9 +1,9 @@
 import unittest
 
-from gravitate.scripts.populate_locations import buildLaxTerminal
-from gravitate.scripts.populate_airport_events import generateAirportEvents
+from gravitate.scripts.location.populate_locations import buildLaxTerminal
+from gravitate.scripts.event.populate_airport_events import generateAirportEvents
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
-from gravitate.scripts.event_builders import SampleLaxEventBuilder
+from gravitate.scripts.event.event_builders import SampleLaxEventBuilder
 
 
 class TestBuildLaxTerminal(unittest.TestCase):
@@ -27,7 +27,7 @@ sampleLaxEventDict = {
 class TestBuildLaxEvent(unittest.TestCase):
 
     def testBuildLaxSampleEvent(self):
-        laxSampleEvent = SampleLaxEventBuilder()
+        laxSampleEvent = SampleLaxEventBuilder(1545033600, 1545119999)
         laxSampleEventDict = laxSampleEvent.to_dict()
         self.assertDictContainsSubset(sampleLaxEventDict, laxSampleEventDict)
         self.assertIn('locationRef', laxSampleEventDict.keys(), "Dict contains locationRef as key")

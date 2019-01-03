@@ -36,7 +36,7 @@ class EventBuilder(Event):
         # Since we are unsure of how participants and locationRefs will be represented
         raise NotImplementedError
 
-    def buildTimeRange(self):
+    def buildTimeRange(self, start_timestamp, end_timestamp):
         """
         This method builds the time range of the event
         :return:
@@ -59,18 +59,18 @@ class SpecifiedRangeEventBuilder(EventBuilder):
         self.buildTimeRange(start_timestamp, end_timestamp)
         self.buildExtraInfo()
 
-    def buildTimeRange(self, startTimestamp, endTimestamp):
-        self.startTimestamp = startTimestamp
-        self.endTimestamp = endTimestamp
+    def buildTimeRange(self, start_timestamp, end_timestamp):
+        self.start_timestamp = start_timestamp
+        self.end_timestamp = end_timestamp
 
 
 class LaxEventBuilder(SpecifiedRangeEventBuilder):
 
     def buildBasicInfo(self):
-        self.eventCategory = "airport"
-        self.eventLocation = "LAX"
-        self.isClosed = False
-        self.locationRef = LocationGenericDao().find_by_airport_code('LAX').get_firestore_ref()
+        self.event_category = "airport"
+        self.event_location = "LAX"
+        self.is_closed = False
+        self.location_ref = LocationGenericDao().find_by_airport_code('LAX').get_firestore_ref()
 
     def buildLists(self):
         self.participants = []
@@ -82,10 +82,10 @@ class LaxEventBuilder(SpecifiedRangeEventBuilder):
 class UcsbEventBuilder(SpecifiedRangeEventBuilder):
 
     def buildBasicInfo(self):
-        self.eventCategory = "campus"
-        self.eventLocation = "UCSB"
-        self.isClosed = False
-        self.locationRef = LocationGenericDao().find_by_campus_code("UCSB").get_firestore_ref()
+        self.event_category = "campus"
+        self.event_location = "UCSB"
+        self.is_closed = False
+        self.location_ref = LocationGenericDao().find_by_campus_code("UCSB").get_firestore_ref()
 
     def buildLists(self):
         self.participants = []
@@ -96,6 +96,6 @@ class UcsbEventBuilder(SpecifiedRangeEventBuilder):
 
 class SampleLaxEventBuilder(LaxEventBuilder):
 
-    def buildTimeRange(self):
-        self.startTimestamp = 1545033600
-        self.endTimestamp = 1545119999
+    def buildTimeRange(self, start_timestamp=1545033600, end_timestamp=1545119999):
+        self.start_timestamp = start_timestamp
+        self.end_timestamp = end_timestamp
