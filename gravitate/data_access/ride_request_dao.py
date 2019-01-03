@@ -112,6 +112,14 @@ class RideRequestGenericDao:
         rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
+    def ref_from_id(self, rid: str):
+        return self.rideRequestCollectionRef.document(rid)
+
+    def get_by_id(self, rid: str):
+        ref = self.ref_from_id(rid)
+        ride_request = self.get(ref)
+        return ride_request
+
 
     def create(self, rideRequest: Type[RideRequest]) -> Type[RideRequest]:
         """ Description

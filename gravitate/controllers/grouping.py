@@ -20,10 +20,9 @@ def groupMany(ride_request_ids: list):
     :return:
     """
     d = dict()
-    for rideRequestId in ride_request_ids:
+    for ride_request_id in ride_request_ids:
 
-        ride_request_ref = db.collection("rideRequests").document(rideRequestId)
-        ride_request = RideRequestGenericDao().get(ride_request_ref)
+        ride_request = RideRequestGenericDao().get_by_id(ride_request_id)
 
         # Do not add to rideRequests queue if the request is complete
         if ride_request.request_completion:
@@ -46,12 +45,7 @@ def forceMatchTwo(ride_request_ids: list):
     :param ride_request_ids: Two rideRequest Ids
     :return:
     """
-    ride_requests = list()
-    for ride_request_id in ride_request_ids:
-        ride_request_ref = db.collection("rideRequests").document(ride_request_id)
-        ride_request = RideRequestGenericDao().get(ride_request_ref)
-        ride_request.set_firestore_ref(ride_request_ref)
-        ride_requests.append(ride_request)
+    ride_requests = [RideRequestGenericDao().get_by_id(rid) for rid in ride_request_ids]
 
     num_ride_requests = len(ride_requests)
     assert num_ride_requests >= 2
