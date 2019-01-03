@@ -22,13 +22,13 @@ class OrbitForceMatchService(Resource):
         responseDict = None
 
         if operationMode == "two" and rideRequestIds != None:
-            responseDict = grouping.forceMatchTwo(rideRequestIds)
+            responseDict = grouping.group_two(rideRequestIds)
         elif operationMode == "many" and rideRequestIds != None:
-            grouping.groupMany(rideRequestIds)
+            grouping.group_many(rideRequestIds)
             responseDict = {"success": True, "operationMode": "many"}
         elif operationMode == "all":
             allRideRequestIds = RideRequestGenericDao().get_ids(incomplete=True)
-            grouping.groupMany(allRideRequestIds)
+            grouping.group_many(allRideRequestIds)
             responseDict = {"success": True, "operationMode": "all"}
         else:
             responseDict = {"error": "Not specified operation mode."}
@@ -45,4 +45,4 @@ def refreshGroupAll():
     :return:
     """
     allRideRequestIds = RideRequestGenericDao().get_ids(incomplete=True)
-    grouping.groupMany(allRideRequestIds)
+    grouping.group_many(allRideRequestIds)

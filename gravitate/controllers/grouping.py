@@ -10,7 +10,7 @@ from google.cloud.firestore import Transaction, transactional, DocumentReference
 db = context.Context.db
 
 
-def groupMany(ride_request_ids: list):
+def group_many(ride_request_ids: list):
     """
     This function tries to match rideRequests into groups with grouping algorithms.
     Note that the rideRequests may be in different orbits, and rideRequests may not
@@ -38,7 +38,7 @@ def groupMany(ride_request_ids: list):
         group_ride_requests(ride_requests)
 
 
-def forceMatchTwo(ride_request_ids: list):
+def group_two(ride_request_ids: list):
     """
     This function force matches two rideRequests into an orbit.
 
@@ -405,13 +405,6 @@ class Group:
         raise NotImplementedError
         # for userId in userIds:
         #     fcmessaging.sendMessageToUser(userId, "You are matched. ")
-
-
-"""
-
-	Author: Tyler, Zixuan Rao
-
-"""
 
 
 def pair(arr=None) -> (list, list):
