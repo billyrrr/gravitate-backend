@@ -97,3 +97,14 @@ class FormDictFactory:
             return mockForm.toDict()
         else:
             return mockForm
+
+class EventRideRequestFormDictFactory:
+
+    def create(self):
+        return {
+             'userId': 'testuserid1',
+             'eventId': "KxkUnYurkYL1hZGHdxUY",
+             'pickupAddress': 'Tenaya Hall, San Diego, CA 92161',
+             'driverStatus': False,
+             'toEvent': True
+        }

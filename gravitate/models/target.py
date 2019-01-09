@@ -106,6 +106,20 @@ class Target(FirestoreObject):
                 'latest': latest
             })
 
+    @staticmethod
+    def create_social_event_target(to_event: bool, earliest: int, latest: int):
+        if (to_event):
+            return ToEventTarget('eventRide', {
+                'earliest': earliest,
+                'latest': latest,
+                # TODO add timezone
+            })
+        else:
+            return FromEventTarget('eventRide', {
+                'earliest': earliest,
+                'latest': latest
+            })
+
     def to_dict(self):
         """ Description
             This function returns a dictionary of the target. 

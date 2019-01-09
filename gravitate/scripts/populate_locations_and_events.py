@@ -7,4 +7,4 @@ populate_airport_events.populate_events(start_string="2018-12-20T08:00:00.000", 
 
 # Populate database for airport location and events
 populate_locations.doWork()
-populate_airport_events.populate_events(start_string="2018-12-20T08:00:00.000", num_days=15)
+populate_airport_events.populate_events(start_string="2018-12-17T08:00:00.000", num_days=3)

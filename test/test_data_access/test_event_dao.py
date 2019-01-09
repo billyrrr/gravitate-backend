@@ -5,7 +5,11 @@ from google.cloud import firestore
 from gravitate.data_access import EventDao
 from gravitate.models import Event
 from test.factory import eventDict
+from gravitate import context
 
+CTX = context.Context
+
+db = CTX.db
 
 class EventDAOTest(unittest.TestCase):
 
@@ -22,6 +26,7 @@ class EventDAOTest(unittest.TestCase):
 	# 	self.event.set_firestore_ref(eventRef)
 	# 	self.delete(eventRef)
 	# 	# self.assertEquals()
+
 
 	def testFindByTimestamp(self):
 		event: Event = EventDao().find_by_timestamp(1546504400, category="airport")

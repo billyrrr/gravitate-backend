@@ -120,7 +120,9 @@ class EventDao:
 
         return None
 
-
+    def get_by_id(self, event_id: str):
+        event_ref = self.get_ref(event_id)
+        return self.get(event_ref)
 
 
     def get(self, eventRef: DocumentReference):
@@ -129,4 +131,3 @@ class EventDao:
         event = Event.from_dict(snapshotDict)
         event.set_firestore_ref(eventRef)
         return event
-        return eventResult

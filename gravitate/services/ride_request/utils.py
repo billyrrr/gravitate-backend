@@ -2,7 +2,7 @@ from typing import Type
 
 from gravitate.controllers import utils
 from gravitate.models import RideRequest, Target
-
+from gravitate.data_access import EventDao
 
 class RideRequestBaseBuilder:
 
@@ -40,9 +40,14 @@ class RideRequestBaseBuilder:
     pricing = None
     driver_status = None
 
+    event_id = None
+
+    # Helper data
+    event = None
+
     def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None,
                  to_event: bool = None, location_id=None, airport_code=None, pickup_address=None, pricing=None,
-                 driver_status: bool = None):
+                 driver_status: bool = None, event_id=None):
         self.user_id = user_id
         self.flight_local_time = flight_local_time
         self.flight_number = flight_number
@@ -58,6 +63,8 @@ class RideRequestBaseBuilder:
 
         self.to_event = to_event
         self.driver_status = driver_status
+
+        self.event_id = event_id
 
         return self
 
@@ -78,6 +85,9 @@ class RideRequestBaseBuilder:
     def _build_location_by_id(self):
         self._ride_request_dict["airportLocation"] = utils.get_location_ref_by_id(self.location_id)
 
+    def _build_location_by_event(self):
+        self._ride_request_dict["locationRef"] = self.event.location_ref
+
     @staticmethod
     def _get_location_ref(airport_code):
         location = utils.get_airport_location(airport_code)
@@ -87,11 +97,17 @@ class RideRequestBaseBuilder:
         target = Target.create_airport_event_target(self.to_event, self.earliest, self.latest)
         self._ride_request_dict["target"] = target.to_dict()
 
+    def _build_target_anytime(self):
+        earliest = self.event.start_timestamp
+        latest = self.event.end_timestamp
+        target = Target.create_social_event_target(self.to_event, earliest, latest)
+        self._ride_request_dict["target"] = target.to_dict()
+
     def _build_target_with_flight_local_time(self):
         target = Target.create_with_flight_local_time(self.flight_local_time, self.to_event)
         self._ride_request_dict["target"] = target.to_dict()
 
-    def _build_event_with_flight_local_time(self):
+    def _build_event_ref_with_flight_local_time(self):
         self._ride_request_dict["eventRef"] = utils.find_event(self.flight_local_time)
 
     def _build_event_with_id(self):
@@ -99,7 +115,12 @@ class RideRequestBaseBuilder:
         TODO: change to event id
         :return:
         """
-        self._ride_request_dict["eventRef"] = self.eventRef
+
+        event = EventDao().get_by_id(self.event_id)
+        self.event = event
+
+    def _build_event_ref_with_event(self):
+        self._ride_request_dict["eventRef"] = self.event.get_firestore_ref()
 
     def _build_disabilities(self):
         self._ride_request_dict["disabilities"] = dict()
@@ -153,7 +174,7 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
         self._build_user()
         self._build_location_by_airport_code()  # Use airportCode to infer location
         self._build_target_with_flight_local_time()  # Use flightLocalTime to build target
-        self._build_event_with_flight_local_time()
+        self._build_event_ref_with_flight_local_time()
         self._build_disabilities()
         self._build_baggages()
         self._build_ride_request_default_values()
@@ -162,9 +183,50 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
         return self
 
 
+class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
+
+    def _build_ride_category(self):
+        self._ride_request_dict["rideCategory"] = "eventRide"
+
+    def set_with_form_and_user_id(self, d, user_id):
+        """
+        TODO: parse all fields from form. None if does not exist
+        :param d:
+        :param user_id:
+        :return:
+        """
+        self.user_id = user_id
+        self.set_data(
+            user_id=user_id, event_id=d["eventId"],
+            to_event=d["toEvent"], pickup_address=d["pickupAddress"],
+            driver_status=d["driverStatus"]
+        )
+        return self
+
+    def build_social_event_ride_request(self):
+
+        self._build_ride_category()
+
+        self._build_user()
+
+        self._build_event_with_id()
+
+        self._build_target_anytime()
+
+        self._build_location_by_event()
+
+        self._build_disabilities()
+        self._build_baggages()
+
+        self._build_pickup()
+
+        self._build_ride_request_default_values()
+
+        return self
+
+
 class CampusEventRideRequestBuilder(RideRequestBaseBuilder):
 
     def __init__(self):
         super().__init__()
-
 
