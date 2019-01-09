@@ -48,9 +48,9 @@ class RideRequest(FirestoreObject):
                                       event_ref, orbit_ref, user_id, target, pricing, request_completion, flight_local_time,
                                       flight_number, airport_location, baggages, disabilities)
         elif ride_request_type == 'eventRide':
-            # TODO change function calls
+            location_ref = d['location_ref']
             return SocialEventRideRequest(driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target,
-                                          pricing, request_completion)
+                                          pricing, request_completion, location_ref)
         else:
             raise Exception(
                 'Not supported rideRequestType: {}'.format(ride_request_type))
@@ -159,7 +159,7 @@ class SocialEventRideRequest(RideRequest):
 
     # TODO more arguments
     def __init__(self, driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
-                 request_completion):
+                 request_completion, location_ref):
         """ Description
             Initializes a SocialEventRideRequest Object
             Note that this class should not be initialized directly.
@@ -178,9 +178,11 @@ class SocialEventRideRequest(RideRequest):
 
         super().__init__(driver_status, pickup_address,
                          has_checked_in, event_ref, orbit_ref, user_id, target, pricing, request_completion)
+        self.location_ref = location_ref
         self.ride_category = 'eventRide'
 
     def to_dict(self):
         ride_request_dict = super().to_dict()
         ride_request_dict['rideCategory'] = 'eventRide'
+        ride_request_dict['location_ref'] = self.location_ref
         return ride_request_dict
