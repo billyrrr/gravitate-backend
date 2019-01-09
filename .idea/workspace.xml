@@ -9,7 +9,6 @@
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/services/ride_request/parsers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_services/test_airport_ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_services/test_airport_ride_request.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -83,16 +82,16 @@
         <counts>
           <entry key="dummy" value="277" />
           <entry key="md" value="1068" />
-          <entry key="py" value="43532" />
-          <entry key="txt" value="4783" />
+          <entry key="py" value="43601" />
+          <entry key="txt" value="4825" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1068" />
-          <entry key="PLAIN_TEXT" value="5060" />
-          <entry key="Python" value="43532" />
+          <entry key="PLAIN_TEXT" value="5102" />
+          <entry key="Python" value="43601" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -118,8 +117,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/parsers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+            <state relative-caret-position="495">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
             </state>
           </provider>
         </entry>
@@ -471,18 +470,18 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_event_dao.EventDAOTest" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_airport_ride_request.ReturnErrorsTest" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="gravitate-backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_event_dao.EventDAOTest&quot;" />
+      <option name="_new_target" value="&quot;test_airport_ride_request.ReturnErrorsTest&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -519,17 +518,17 @@
     <list>
       <item itemvalue="Python.populate_locations_and_events" />
       <item itemvalue="Python tests.pytest for test_ride_request_service.SocialEventDictBuilderTest" />
-      <item itemvalue="Python tests.pytest for test_event_dao.EventDAOTest" />
       <item itemvalue="Python tests.pytest for test_ride_request_service.AirportRideRequestDictBuilderTest" />
       <item itemvalue="Python tests.pytest for test_airport_ride_request.RefactorTempTest" />
+      <item itemvalue="Python tests.pytest for test_airport_ride_request.ReturnErrorsTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest for test_airport_ride_request.RefactorTempTest" />
+        <item itemvalue="Python tests.pytest for test_airport_ride_request.ReturnErrorsTest" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.SocialEventDictBuilderTest" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.AirportRideRequestDictBuilderTest" />
         <item itemvalue="Python.populate_locations_and_events" />
-        <item itemvalue="Python tests.pytest for test_event_dao.EventDAOTest" />
       </list>
     </recent_temporary>
   </component>
@@ -545,13 +544,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00081" summary="Move testing flag to Context">
-      <created>1545737554503</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1545737554503</updated>
     </task>
     <task id="LOCAL-00082" summary="Add tearDown to test_ride_request_service">
       <created>1545740035740</created>
@@ -889,7 +881,14 @@
       <option name="project" value="LOCAL" />
       <updated>1547009819974</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="Add parser for social event ride request">
+      <created>1547010861859</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1547010861859</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1012,7 +1011,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Fix camelCase variables (Stable Release)" />
     <MESSAGE value="Add docs" />
     <MESSAGE value="Include Id in POST &quot;/rideRequests&quot; response" />
     <MESSAGE value="Add bundle_errors=True in parsers" />
@@ -1037,7 +1035,8 @@
     <MESSAGE value="Clean up README" />
     <MESSAGE value="Add social event ride request builder" />
     <MESSAGE value="Change test structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change test structure" />
+    <MESSAGE value="Add parser for social event ride request" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add parser for social event ride request" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gravitate/data_access/user_dao.py">
@@ -1373,8 +1372,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/services/ride_request/parsers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+        <state relative-caret-position="495">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
     </entry>
