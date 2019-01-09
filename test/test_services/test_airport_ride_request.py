@@ -129,6 +129,7 @@ class SocialEventDictBuilderTest(TestCase):
             'pricing': 987654321,
             "baggages": dict(),
             "disabilities": dict(),
+
             "requestCompletion": False
         }
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
