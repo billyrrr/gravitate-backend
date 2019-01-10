@@ -49,7 +49,7 @@ class SocialEventRideRequestCreationService(Resource):
             .set_with_form_and_user_id(args, user_id) \
             .build_social_event_ride_request() \
             .export_as_class(SocialEventRideRequest)
-        location = LocationGenericDao().get(ride_request.airport_location)
+        location = LocationGenericDao().get(ride_request.location_ref)
 
         # Do Validation Tasks before saving rideRequest
         # 1. Check that rideRequest is not submitted by the same user

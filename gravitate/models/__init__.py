@@ -1,5 +1,5 @@
 # Import Model Classes
-from .location import Location, AirportLocation, UcLocation
+from .location import Location, AirportLocation, UcLocation, SocialEventLocation
 from .orbit import Orbit
 from .target import Target, ToEventTarget
 from .event_schedule import AirportEventSchedule

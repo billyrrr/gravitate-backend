@@ -62,6 +62,21 @@ campus_code_table = {
 }
 
 
+class SocialEventLocation(Location):
+    def __init__(self, coordinates, address, event_name):
+        super().__init__(coordinates, address)
+        self.location_category = 'campus'
+        self.event_name = event_name
+
+    def to_dict(self):
+        return {
+            'locationCategory': self.location_category,
+            'coordinates': self.coordinates,
+            'address': self.address,
+            'eventName': self.event_name
+        }
+
+
 class UcLocation(Location):
     """ Description
         This class represents a UC campus in another city.
