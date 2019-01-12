@@ -63,14 +63,14 @@ class EventScheduleBuilder():
         self.event_schedule.locationRef = location.get_firestore_ref()
 
     def _build_airport_location(self, location: AirportLocation):
-        if not location:
-            warnings.warn("LAX is hardcoded. Adapt to read from location object before release. ")
-            self.event_schedule.destName = "LAX"
-            warnings.warn("locationRef is hardcoded. Adapt to read from location object before release. ")
-            self.event_schedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
-        else:
-            self.event_schedule.destName = location.airport_code
-            self.event_schedule.locationRef = location.get_firestore_ref()
+        # if not location:
+        #     warnings.warn("LAX is hardcoded. Adapt to read from location object before release. ")
+        #     self.event_schedule.destName = "LAX"
+        #     warnings.warn("locationRef is hardcoded. Adapt to read from location object before release. ")
+        #     self.event_schedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
+        # else:
+        self.event_schedule.destName = location.airport_code
+        self.event_schedule.locationRef = location.get_firestore_ref()
 
     def build_orbit(self, pending=True, orbit: Orbit = None):
         if pending:
