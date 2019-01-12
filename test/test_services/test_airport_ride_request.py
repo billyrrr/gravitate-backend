@@ -118,7 +118,7 @@ class ReturnErrorsTest(TestCase):
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
             r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+                path='/airportRideRequests', json=form, headers=getMockAuthHeaders(userId))
             print(r.json)
             # self.assertRaises(service_errors.RequestAlreadyExistsError)
             # self.assertIn("firestoreRef", r.json.keys())
@@ -127,7 +127,7 @@ class ReturnErrorsTest(TestCase):
 
         userId = self.userIds[0]
         r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-            path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+            path='/airportRideRequests', json=form, headers=getMockAuthHeaders(userId))
         print(r.json)
         error_return_expected = {
                 "message": "Ride request on the same day (or for the same event) already exists",
@@ -148,7 +148,7 @@ class ReturnErrorsTest(TestCase):
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
             r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+                path='/airportRideRequests', json=form, headers=getMockAuthHeaders(userId))
             print(r.json)
             # self.assertRaises(service_errors.RequestAlreadyExistsError)
             firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
@@ -222,7 +222,7 @@ class RefactorTempTest(TestCase):
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
             r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
+                path='/airportRideRequests', json=form, headers=getMockAuthHeaders(userId))
             print(r.json)
             self.assertIn("firestoreRef", r.json.keys())
             firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
@@ -257,7 +257,7 @@ class RefactorTempTest(TestCase):
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/rideRequests',
+        r = self.app.post(path='/airportRideRequests',
                           json=form,
                           headers=getMockAuthHeaders()
                           )

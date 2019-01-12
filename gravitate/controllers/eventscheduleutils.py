@@ -9,6 +9,45 @@ from gravitate import context
 CTX = context.Context
 
 
+def _build_social_event_ride_request(event_schedule, event_ride_request: SocialEventRideRequest):
+    event_schedule.pickupAddress = event_ride_request.pickup_address
+    event_schedule.rideRequestRef = event_ride_request.get_firestore_ref()
+
+    try:
+        # Use destTime for sorting
+        target: ToEventTarget = event_ride_request.target
+        destTime = target.arrive_at_event_time["latest"]
+        event_schedule.destTime = destTime
+    except Exception as e:
+        print(e)
+
+
+def _build_airport_ride_request(event_schedule, airport_ride_request: AirportRideRequest):
+    event_schedule.pickupAddress = airport_ride_request.pickup_address
+    event_schedule.flightTime = airport_ride_request.flight_local_time
+    event_schedule.rideRequestRef = airport_ride_request.get_firestore_ref()
+
+    try:
+        # Use destTime for sorting
+        target: ToEventTarget = airport_ride_request.target
+        destTime = target.arrive_at_event_time["latest"]
+        event_schedule.destTime = destTime
+    except Exception as e:
+        print(e)
+
+
+def _build_social_event_location(event_schedule, location: SocialEventLocation):
+
+    event_schedule.destName = location.event_name  # Note that event name is not address
+    event_schedule.locationRef = location.get_firestore_ref()
+
+
+def _build_airport_location(event_schedule, location: AirportLocation):
+
+    event_schedule.destName = location.airport_code
+    event_schedule.locationRef = location.get_firestore_ref()
+
+
 class EventScheduleBuilder():
 
     def __init__(self, event_schedule: AirportEventSchedule = None):
@@ -19,58 +58,19 @@ class EventScheduleBuilder():
 
     def build_ride_request(self, ride_request: Type[RideRequest]):
         if isinstance(ride_request, AirportRideRequest):
-            self._build_airport_ride_request(ride_request)
+            _build_airport_ride_request(self.event_schedule, ride_request)
         elif isinstance(ride_request, SocialEventRideRequest):
-            self._build_social_event_ride_request(ride_request)
+            _build_social_event_ride_request(self.event_schedule, ride_request)
         else:
             raise NotImplementedError("Unsupported ride request type: {}".format(type(ride_request)))
 
-    def _build_social_event_ride_request(self, event_ride_request: SocialEventRideRequest):
-        self.event_schedule.pickupAddress = event_ride_request.pickup_address
-        self.event_schedule.rideRequestRef = event_ride_request.get_firestore_ref()
-
-        try:
-            # Use destTime for sorting
-            target: ToEventTarget = event_ride_request.target
-            destTime = target.arrive_at_event_time["latest"]
-            self.event_schedule.destTime = destTime
-        except Exception as e:
-            print(e)
-
-    def _build_airport_ride_request(self, airport_ride_request: AirportRideRequest):
-        self.event_schedule.pickupAddress = airport_ride_request.pickup_address
-        self.event_schedule.flightTime = airport_ride_request.flight_local_time
-        self.event_schedule.rideRequestRef = airport_ride_request.get_firestore_ref()
-
-        try:
-            # Use destTime for sorting
-            target: ToEventTarget = airport_ride_request.target
-            destTime = target.arrive_at_event_time["latest"]
-            self.event_schedule.destTime = destTime
-        except Exception as e:
-            print(e)
-
     def build_location(self, location: Type[Location]):
         if isinstance(location, AirportLocation):
-            self._build_airport_location(location)
+            _build_airport_location(self.event_schedule, location)
         elif isinstance(location, SocialEventLocation):
-            self._build_social_event_location(location)
+            _build_social_event_location(self.event_schedule, location)
         else:
             raise NotImplementedError("Unsupported location type: {}".format(type(location)))
-
-    def _build_social_event_location(self, location: SocialEventLocation):
-        self.event_schedule.destName = location.event_name  # Note that event name is not address
-        self.event_schedule.locationRef = location.get_firestore_ref()
-
-    def _build_airport_location(self, location: AirportLocation):
-        # if not location:
-        #     warnings.warn("LAX is hardcoded. Adapt to read from location object before release. ")
-        #     self.event_schedule.destName = "LAX"
-        #     warnings.warn("locationRef is hardcoded. Adapt to read from location object before release. ")
-        #     self.event_schedule.locationRef = "/locations/AedTfnR2FhaLnVHriAMn"
-        # else:
-        self.event_schedule.destName = location.airport_code
-        self.event_schedule.locationRef = location.get_firestore_ref()
 
     def build_orbit(self, pending=True, orbit: Orbit = None):
         if pending:

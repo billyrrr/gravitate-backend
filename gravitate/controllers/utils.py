@@ -52,7 +52,7 @@ def add_ride_request(transaction, ride_request, location, user_id):
     # [START] Update the user's eventSchedule
     user_ref = UserDao().get_ref(user_id)
     # Build the eventSchedule for user
-    event_schedule = eventscheduleutils.buildEventSchedule(
+    event_schedule = eventscheduleutils.create_event_schedule(
         ride_request, location)
     UserDao.add_to_event_schedule_with_transaction(
         transaction, user_ref=user_ref, event_ref=ride_request.event_ref, event_schedule=event_schedule)
