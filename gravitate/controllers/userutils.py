@@ -16,7 +16,7 @@ def randomId():
 
 def saveUser(user, transaction: Transaction = None):
     if (user.get_firestore_ref()):
-        if not transaction:
+        if transaction is None:
             raise Exception('transaction is not provided. ')
         UserDao().set_user_with_transaction(transaction, user, user.get_firestore_ref())
         fireauthutils.update_user(user)
@@ -30,7 +30,7 @@ def saveUser(user, transaction: Transaction = None):
         #Name, Contact Email, Phone, Address 
 def editUser(user, transaction: Transaction = None):
     if (user.get_firestore_ref()):
-        if not transaction:
+        if transaction is None:
             raise Exception('transaction is not provided.')
     else:
         UserDao().get_user_by_id(user.userId)
