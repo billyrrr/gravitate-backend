@@ -318,9 +318,15 @@ class Group:
         """
         Experimental feature for N+1 joining
         This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
+
+        Note that rideRequests should not be deep-copied/duplicated in this method, since we need to
+            refresh related entities with their values even after the grouping operation has ended.
+
         :return: a list of rideRequests that are not joined
         """
         orbit = self.intended_orbit
+
+        ids_before = [ticket["rideRequestRef"].id for user_id, ticket in orbit.user_ticket_pairs.items()]
 
         # Create a transaction so that an exception is thrown when updating an object that is
         #   changed since last read from database
@@ -354,26 +360,15 @@ class Group:
 
         transaction.commit()
 
-        ids_in_orbit = list()
+        ids_after = [ticket["rideRequestRef"].id for user_id, ticket in orbit.user_ticket_pairs.items()]
+        ids_just_joined = [r.get_firestore_ref().id for r in self.joined]
 
-        def ids_from_pairs():
-            for user_id, ticket in orbit.user_ticket_pairs.items():
-                ids_in_orbit.append(ticket["rideRequestRef"].id)
+        print("Grouping operation: ids before: {}, ids after: {}. ".format(ids_before, ids_after))
 
-        ids_from_pairs()
+        ids_involved = list(set(ids_before) | set(ids_after))
+        # ride_requests_involved = [  for id in ids_involved ]
 
-        ids_just_joined = list()
-
-        def ids_from_joined():
-            for ride_request in self.joined:
-                ids_just_joined.append(ride_request.get_firestore_ref().id)
-
-        ids_from_joined()
-
-        ids_to_refresh = list(set(ids_in_orbit) - set(ids_just_joined))
-        for id in ids_to_refresh:
-            # TODO: add code for refreshing ride_requests
-            raise NotImplementedError
+        # refresh_event_schedules_all(transaction, , self.intended_orbit, self.event, self.location)
 
         return self.not_joined
 

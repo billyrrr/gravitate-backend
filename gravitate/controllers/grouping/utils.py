@@ -64,33 +64,38 @@ def remove_ride_request_from_orbit(transaction, ride_request: Type[RideRequest],
     return True
 
 
-def update_event_schedule(transaction: Transaction, ride_request: RideRequest, orbit: Orbit, event: Event,
-                          location: Location):
-    """ Description
-
-            Populate eventSchedule (client view model)
-
-
-    :type transaction:Transaction:
-    :param transaction:Transaction:
-
-    :type ride_request:RideRequest:
-    :param ride_request:RideRequest:
-
-    :type orbit:Orbit:
-    :param orbit:Orbit:
-
-    :raises:
-
-    :rtype:
+def update_in_orbit_event_schedule(transaction: Transaction, ride_request: Type[RideRequest], orbit: Orbit,
+                                   event: Event, location: Location):
+    """ Populate eventSchedule (client view model)
+    :param transaction:
+    :param ride_request:
+    :param orbit:
+    :param event:
+    :param location:
+    :return:
     """
+
     # update eventSchedule
     user_id = ride_request.user_id
     user_ref = UserDao().get_ref(user_id)
     event_ref = event.get_firestore_ref()
 
-    event_schedule = eventscheduleutils.buildEventScheduleOrbit(
-        rideRequest=ride_request, location=location, orbit=orbit)
+    event_schedule = eventscheduleutils.create_event_schedule_orbit(
+        ride_request=ride_request, location=location, orbit=orbit)
+    UserDao().add_to_event_schedule_with_transaction(transaction,
+                                                     user_ref=user_ref,
+                                                     event_ref=event_ref,
+                                                     event_schedule=event_schedule)
+
+
+def update_not_in_orbit_event_schedule(transaction: Transaction, ride_request: RideRequest, event: Event,
+                                       location: Location):
+    # update eventSchedule
+    user_id = ride_request.user_id
+    user_ref = UserDao().get_ref(user_id)
+    event_ref = event.get_firestore_ref()
+
+    event_schedule = eventscheduleutils.create_event_schedule(ride_request, location)
     UserDao().add_to_event_schedule_with_transaction(transaction,
                                                      user_ref=user_ref,
                                                      event_ref=event_ref,
