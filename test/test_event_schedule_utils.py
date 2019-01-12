@@ -28,5 +28,3 @@ class EventScheduleUtilsTest(unittest.TestCase):
         # orbit: make an orbit that is matched to a pair of users
 
 # class EventScheduleDAOTest(unittest.TestCase):
-
-    

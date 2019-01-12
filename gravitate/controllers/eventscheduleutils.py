@@ -18,9 +18,9 @@ class EventScheduleBuilder():
             self.event_schedule = event_schedule
 
     def build_ride_request(self, ride_request: Type[RideRequest]):
-        if type(ride_request) == "AirportRideRequest":
+        if isinstance(ride_request, AirportRideRequest):
             self._build_airport_ride_request(ride_request)
-        elif type(ride_request) == "SocialEventRideRequest":
+        elif isinstance(ride_request, SocialEventRideRequest):
             self._build_social_event_ride_request(ride_request)
         else:
             raise NotImplementedError("Unsupported ride request type: {}".format(type(ride_request)))
@@ -51,9 +51,9 @@ class EventScheduleBuilder():
             print(e)
 
     def build_location(self, location: Type[Location]):
-        if type(location) == "AirportLocation":
+        if isinstance(location, AirportLocation):
             self._build_airport_location(location)
-        elif type(location) == "SocialEventLocation":
+        elif isinstance(location, SocialEventLocation):
             self._build_social_event_location(location)
         else:
             raise NotImplementedError("Unsupported location type: {}".format(type(location)))
@@ -91,10 +91,10 @@ class EventScheduleBuilder():
 def create_event_schedule(ride_request: Type[RideRequest], location: Type[Location]):
 
     # Validate that type of location and type of ride request match
-    if type(ride_request) == "AirportRideRequest":
-        assert type(location) == "AirportLocation"
-    elif type(ride_request) == "SocialEventRideRequest":
-        assert type(location) == "SocialEventLocation"
+    if isinstance(ride_request, AirportRideRequest):
+        assert isinstance(location, AirportLocation)
+    elif isinstance(ride_request, SocialEventRideRequest):
+        assert isinstance(location, SocialEventLocation)
     else:
         raise NotImplementedError("Unsupported ride request type: {}".format(type(ride_request)))
 

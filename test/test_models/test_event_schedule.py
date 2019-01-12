@@ -16,6 +16,6 @@ class EventScheduleDaoTest(unittest.TestCase):
     def testCreate(self):
         rideRequest = test.factory.model.getMockRideRequest()
         location = test.factory.model.getLocation()
-        eventSch = eventscheduleutils.buildEventSchedule(rideRequest, location)
+        eventSch = eventscheduleutils.create_event_schedule(rideRequest, location)
         eventScheduleDict["destTime"] = 1545069600  # .destTime is used off-label for sorting
         self.assertDictEqual(eventScheduleDict, eventSch.to_dict())
