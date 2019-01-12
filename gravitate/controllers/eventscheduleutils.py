@@ -48,6 +48,20 @@ def _build_airport_location(event_schedule, location: AirportLocation):
     event_schedule.locationRef = location.get_firestore_ref()
 
 
+def _build_pending_orbit(event_schedule):
+    event_schedule.memberProfilePhotoUrls = []
+    event_schedule.pending = True
+    event_schedule.orbitRef = None
+
+
+def _build_orbit(event_schedule, orbit):
+    event_schedule.pending = False
+    event_schedule.memberProfilePhotoUrls = []
+    # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
+    event_schedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
+    event_schedule.orbitRef = orbit.get_firestore_ref()
+
+
 class EventScheduleBuilder():
 
     def __init__(self, event_schedule: AirportEventSchedule = None):
@@ -74,15 +88,9 @@ class EventScheduleBuilder():
 
     def build_orbit(self, pending=True, orbit: Orbit = None):
         if pending:
-            self.event_schedule.memberProfilePhotoUrls = []
-            self.event_schedule.pending = True
-            self.event_schedule.orbitRef = None
+            _build_pending_orbit(self.event_schedule)
         else:
-            self.event_schedule.pending = False
-            self.event_schedule.memberProfilePhotoUrls = []
-            # TODO implement and replace self.eventSchedule.memberProfilePhotoUrls = []
-            self.event_schedule.memberProfilePhotoUrls = getMemberProfilePhotoUrls(orbit)
-            self.event_schedule.orbitRef = orbit.get_firestore_ref()
+            _build_orbit(self.event_schedule, orbit)
 
     def export(self) -> AirportEventSchedule:
         return self.event_schedule

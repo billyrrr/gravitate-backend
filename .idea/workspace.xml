@@ -9,8 +9,6 @@
     <list default="true" id="fee011dd-26de-498e-8f37-10ee45c58c87" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gravitate/controllers/eventscheduleutils.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/eventscheduleutils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gravitate/controllers/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/gravitate/controllers/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_services/test_airport_ride_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_services/test_airport_ride_request.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -84,16 +82,16 @@
         <counts>
           <entry key="dummy" value="277" />
           <entry key="md" value="1068" />
-          <entry key="py" value="45548" />
-          <entry key="txt" value="5010" />
+          <entry key="py" value="45696" />
+          <entry key="txt" value="5056" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="1068" />
-          <entry key="PLAIN_TEXT" value="5287" />
-          <entry key="Python" value="45548" />
+          <entry key="PLAIN_TEXT" value="5333" />
+          <entry key="Python" value="45696" />
           <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
@@ -143,11 +141,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gravitate/controllers/eventscheduleutils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1049">
-              <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
+            <state relative-caret-position="357">
+              <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
-                <marker date="1547254683475" expanded="true" signature="2115:2507" ph="..." />
+                <marker date="1547254904166" expanded="true" signature="1997:2295" ph="..." />
+                <marker date="1547254904166" expanded="true" signature="2613:3005" ph="..." />
               </folding>
             </state>
           </provider>
@@ -449,7 +448,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_airport_ride_request.RefactorTempTest">
+  <component name="RunManager" selected="Python tests.pytest for test_event_schedule.EventScheduleDaoTest">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -579,8 +578,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_airport_ride_request.RefactorTempTest" />
         <item itemvalue="Python tests.pytest for test_event_schedule.EventScheduleDaoTest" />
+        <item itemvalue="Python tests.pytest for test_airport_ride_request.RefactorTempTest" />
         <item itemvalue="Python tests.pytest for test_event_schedule_utils.EventScheduleUtilsTest" />
         <item itemvalue="Python tests.pytest for test_airport_ride_request.ReturnErrorsTest" />
         <item itemvalue="Python tests.pytest for test_ride_request_service.SocialEventDictBuilderTest" />
@@ -599,13 +598,6 @@
       <updated>1542009168371</updated>
       <workItem from="1542009171558" duration="3288000" />
       <workItem from="1542224199735" duration="281000" />
-    </task>
-    <task id="LOCAL-00087" summary="Add tests for builder">
-      <created>1545838000729</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1545838000729</updated>
     </task>
     <task id="LOCAL-00088" summary="Fix builder for ride request creation">
       <created>1545838019086</created>
@@ -943,19 +935,17 @@
       <option name="project" value="LOCAL" />
       <updated>1547253641096</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="Refactor event schedule builder helpers">
+      <created>1547254739727</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1547254739727</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_for_test_event_schedule_utils_EventScheduleUtilsTest - 2019.01.11 at 16h 21m 49s.xml">
-      <configuration name="pytest for test_event_schedule_utils.EventScheduleUtilsTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_event_schedule_EventScheduleDaoTest - 2019.01.11 at 16h 22m 06s.xml">
-      <configuration name="pytest for test_event_schedule.EventScheduleDaoTest" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_event_schedule_EventScheduleDaoTest - 2019.01.11 at 16h 23m 07s.xml">
-      <configuration name="pytest for test_event_schedule.EventScheduleDaoTest" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_for_test_event_schedule_EventScheduleDaoTest - 2019.01.11 at 16h 23m 32s.xml">
       <configuration name="pytest for test_event_schedule.EventScheduleDaoTest" configurationId="tests" />
     </history-entry>
@@ -975,6 +965,15 @@
       <configuration name="pytest for test_airport_ride_request.RefactorTempTest" configurationId="tests" />
     </history-entry>
     <history-entry file="pytest_for_test_airport_ride_request_RefactorTempTest - 2019.01.11 at 16h 50m 19s.xml">
+      <configuration name="pytest for test_airport_ride_request.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_event_schedule_EventScheduleDaoTest - 2019.01.11 at 16h 58m 28s.xml">
+      <configuration name="pytest for test_event_schedule.EventScheduleDaoTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_airport_ride_request_RefactorTempTest - 2019.01.11 at 16h 58m 40s.xml">
+      <configuration name="pytest for test_airport_ride_request.RefactorTempTest" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_airport_ride_request_RefactorTempTest - 2019.01.11 at 17h 01m 40s.xml">
       <configuration name="pytest for test_airport_ride_request.RefactorTempTest" configurationId="tests" />
     </history-entry>
   </component>
@@ -1066,7 +1065,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Remove deprecated code" />
     <MESSAGE value="Rename variables in utils to snake_case" />
     <MESSAGE value="Rename variables in groupingutils to snake_case" />
     <MESSAGE value="Remove unused code" />
@@ -1091,7 +1089,8 @@
     <MESSAGE value="Add event schedule support for other types of ride requests" />
     <MESSAGE value="Fix event schedule creation" />
     <MESSAGE value="Clean up code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean up code" />
+    <MESSAGE value="Refactor event schedule builder helpers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor event schedule builder helpers" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gravitate/services/grouping_service.py">
@@ -1402,11 +1401,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gravitate/controllers/eventscheduleutils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1049">
-          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
+        <state relative-caret-position="357">
+          <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <marker date="1547254683475" expanded="true" signature="2115:2507" ph="..." />
+            <marker date="1547254904166" expanded="true" signature="1997:2295" ph="..." />
+            <marker date="1547254904166" expanded="true" signature="2613:3005" ph="..." />
           </folding>
         </state>
       </provider>
