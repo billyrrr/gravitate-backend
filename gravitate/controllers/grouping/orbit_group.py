@@ -2,7 +2,6 @@ from typing import Type
 
 from google.cloud.firestore_v1beta1 import Transaction
 
-from gravitate.controllers.grouping.grouping import db
 from gravitate.data_access import EventDao, LocationGenericDao, OrbitDao, RideRequestGenericDao
 from gravitate.models import Orbit, Location, Event, RideRequest
 import gravitate.controllers.grouping.utils as utils
@@ -53,9 +52,12 @@ class OrbitGroup:
     location: Type[Location] = None
     event: Event = None
 
-    def __init__(self):
+    def __init__(self, transaction):
         # Start a transaction
-        self.transaction = db.transaction()
+        self.transaction = transaction
+
+    def setup_with_ref(self, orbit_ref = None, refs_to_add: list = None, event_ref=None, location_ref=None):
+        return self.setup(orbit_ref.id, {ref.id for ref in refs_to_add}, event_ref.id, location_ref.id )
 
     def setup(self, intended_orbit_id=None, ids_to_add: set = None, event_id=None, location_id=None):
         self.orbit = OrbitGroup._get_orbit(transaction=self.transaction, orbit_id=intended_orbit_id)
@@ -66,6 +68,7 @@ class OrbitGroup:
         self.event = OrbitGroup._get_event(transaction=self.transaction, event_id=event_id)
 
         self._validate_setup()  # Validate fields
+        return self
 
     @staticmethod
     def _get_event(transaction: Transaction = None, event_id: str = None) -> Type[Event]:
@@ -110,16 +113,20 @@ class OrbitGroup:
         assert self.location is not None
         assert self.orbit is not None
 
+    def validate_entities_not_changed(self):
+        # TODO: implement
+        raise NotImplementedError
+
     def execute(self) -> set:
         """
                 This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
                 :return: a list of rideRequests that are not joined
                 """
+        transaction = self.transaction
         orbit = self.orbit
 
         # Create a transaction so that an exception is thrown when updating an object that is
         #   changed since last read from database
-        transaction: Transaction = db.transaction()
 
         joined_ids = set()
         not_joined_ids = set()
@@ -164,8 +171,6 @@ class OrbitGroup:
         print("About to commit: just joined ids {}; not joined ids {}; all ids in orbit after operation: {}"
               .format(joined_ids, not_joined_ids, in_orbit.keys()))
 
-        transaction.commit()
-
         return not_joined_ids
 
     @staticmethod
@@ -199,6 +204,6 @@ class OrbitGroup:
 
     @staticmethod
     def _get_ride_requests_to_add(transaction: Transaction = None, ids: set = None) -> dict:
-        refs = {RideRequestGenericDao().ref_from_id(rid) for rid in ids}
+        refs = [RideRequestGenericDao().ref_from_id(rid) for rid in ids]
         ride_requests = {ref.id: RideRequestGenericDao.get_with_transaction(transaction, ref) for ref in refs}
         return ride_requests
