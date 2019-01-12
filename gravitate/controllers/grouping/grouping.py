@@ -368,7 +368,7 @@ class Group:
             for ride_request in self.joined:
                 ids_just_joined.append(ride_request.get_firestore_ref().id)
 
-        ids_just_joined()
+        ids_from_joined()
 
         ids_to_refresh = list(set(ids_in_orbit) - set(ids_just_joined))
         for id in ids_to_refresh:
