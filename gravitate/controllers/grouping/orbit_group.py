@@ -28,7 +28,7 @@ def _refresh_event_schedules_all(transaction: Transaction, in_orbit: dict, not_i
 
 
 def _refresh_ride_requests_all(transaction: Transaction, in_orbit: dict, not_in_orbit: dict, orbit: Orbit, event,
-                                 location):
+                               location):
     """ This function refreshes each rideRequests
 
     :param transaction:
@@ -51,7 +51,6 @@ def id_set_from_dict(d: dict) -> set:
 
 
 class OrbitGroup:
-
     """
     This class handles operations of grouping ride requests into orbits.
     Compared to Group, this new class has better atomicity.
@@ -76,14 +75,14 @@ class OrbitGroup:
         # Start a transaction
         self.transaction = transaction
 
-    def setup_with_ref(self, orbit_ref=None, refs_to_add: list=None, refs_to_drop: list=None,
+    def setup_with_ref(self, orbit_ref=None, refs_to_add: list = None, refs_to_drop: list = None,
                        event_ref=None, location_ref=None):
         return self.setup(orbit_ref.id, ids_to_add={ref.id for ref in refs_to_add},
                           ids_to_drop={ref.id for ref in refs_to_drop},
                           event_id=event_ref.id,
                           location_id=location_ref.id)
 
-    def setup(self, intended_orbit_id=None, ids_to_add: set=None, ids_to_drop: set=None, event_id=None,
+    def setup(self, intended_orbit_id=None, ids_to_add: set = None, ids_to_drop: set = None, event_id=None,
               location_id=None):
         self.orbit = OrbitGroup._get_orbit(transaction=self.transaction, orbit_id=intended_orbit_id)
         self.ride_requests_existing = \
@@ -97,22 +96,22 @@ class OrbitGroup:
         return self
 
     @staticmethod
-    def _get_event(transaction: Transaction=None, event_id: str=None) -> Type[Event]:
+    def _get_event(transaction: Transaction = None, event_id: str = None) -> Type[Event]:
         event_ref = EventDao().get_ref(event_id)
         return EventDao().get_with_transaction(transaction, event_ref)
 
     @staticmethod
-    def _get_location(transaction: Transaction=None, location_id: str=None) -> Type[Location]:
+    def _get_location(transaction: Transaction = None, location_id: str = None) -> Type[Location]:
         location_ref = LocationGenericDao().get_ref_by_id(location_id)
         return LocationGenericDao.get_with_transaction(transaction, location_ref)
 
     @staticmethod
-    def _get_orbit(transaction: Transaction=None, orbit_id: str=None) -> Orbit:
+    def _get_orbit(transaction: Transaction = None, orbit_id: str = None) -> Orbit:
         orbit_ref = OrbitDao().ref_from_id(orbit_id)
         return OrbitDao.get_with_transaction(transaction, orbit_ref)
 
     @staticmethod
-    def _get_existing_ride_requests(transaction: Transaction=None, orbit: Orbit=None) -> dict:
+    def _get_existing_ride_requests(transaction: Transaction = None, orbit: Orbit = None) -> dict:
         refs = [ticket["rideRequestRef"] for user_id, ticket in orbit.user_ticket_pairs.items()]
         ride_requests = {ref.id: RideRequestGenericDao.get_with_transaction(transaction, ref) for ref in refs}
         return ride_requests
@@ -120,7 +119,6 @@ class OrbitGroup:
     def _validate_setup(self):
 
         def validate_to_add_ids(existing, to_add):
-
             """ Check that we are not adding ride request to one that already exists.
 
             :param existing:
@@ -208,8 +206,9 @@ class OrbitGroup:
         _refresh_event_schedules_all(transaction=transaction, in_orbit=in_orbit, not_in_orbit=not_in_orbit,
                                      orbit=orbit, event=self.event, location=self.location)
 
-        print("About to commit: just joined ids {}; not joined ids {}; all ids in orbit after operation: {}"
-              .format(joined_ids, not_joined_ids, in_orbit.keys()))
+        print(
+            "About to commit: just joined ids {}; not joined ids {}; just dropped ids: {}; not_dropped_ids: {}; all ids in orbit after operation: {}"
+            .format(joined_ids, not_joined_ids, dropped_ids, not_dropped_ids, in_orbit.keys()))
 
         return not_joined_ids
 
@@ -293,6 +292,7 @@ class OrbitGroup:
         ride_requests_all: dict = get_ride_requests_all()
 
         return {rid: r for rid, r in ride_requests_all.items() if rid in in_orbit_ids}
+
     #
     # @staticmethod
     # def _get_ride_requests_to_add(transaction: Transaction=None, ids: set=None) -> dict:
