@@ -3,7 +3,9 @@ import gravitate.controllers.grouping.paring
 import gravitate.controllers.grouping.remove
 import test.factory.model
 from gravitate.controllers.grouping import grouping
+import gravitate.controllers.grouping.utils as grouping_utils
 from gravitate.controllers.grouping.utils import _add_to_orbit
+from gravitate.data_access import OrbitDao
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
 from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
@@ -13,6 +15,22 @@ from test import context
 db = context.Context.db
 
 rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k"]
+
+
+class TestOrbitGroupHelpers(unittest.TestCase):
+
+    def setUp(self):
+        self.r = RideRequestGenericDao().get_by_id("CmTvs1VcnavAnanhl8Nu00OmWkJYou2o")
+        self.o = OrbitDao().get_by_id("1mozA22dmuFWBZbLRkdg")
+
+    def test_add(self):
+
+        is_successful = grouping_utils.add_orbit_to_ride_request(self.r, self.o)
+        self.assertTrue(is_successful)
+
+    def test_validate_add(self):
+        is_valid = grouping_utils._validate_to_add(self.r, self.o)
+        self.assertTrue(is_valid)
 
 
 class TestTempForceGroupUsers(unittest.TestCase):

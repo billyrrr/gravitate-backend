@@ -65,7 +65,7 @@ def _build_orbit(event_schedule, orbit):
 class EventScheduleBuilder():
 
     def __init__(self, event_schedule: AirportEventSchedule = None):
-        if not event_schedule:
+        if event_schedule is None:
             self.event_schedule = AirportEventSchedule()
         else:
             self.event_schedule = event_schedule

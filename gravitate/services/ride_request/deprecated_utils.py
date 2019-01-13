@@ -50,7 +50,7 @@ def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userI
     eventRef = utils.find_event(form.flightLocalTime)
     rideRequestDict['eventRef'] = eventRef
     location = utils.get_airport_location(form.airportCode)
-    if not location:
+    if location is None:
         return rideRequestDict, None
     airportLocationRef = location.get_firestore_ref()
     rideRequestDict['airportLocation'] = airportLocationRef

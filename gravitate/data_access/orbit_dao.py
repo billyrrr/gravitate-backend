@@ -1,7 +1,7 @@
 """Author: Zixuan Rao
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, transactional
+from google.cloud.firestore import Transaction, DocumentReference, CollectionReference, DocumentSnapshot, transactional
 from gravitate.models.orbit import Orbit
 import google
 from gravitate import context
@@ -15,7 +15,10 @@ class OrbitDao:
     """
 
     def __init__(self):
-        self.orbitCollectionRef = db.collection('orbits')
+        self.orbitCollectionRef: CollectionReference = db.collection('orbits')
+
+    def ref_from_id(self, orbit_id: str):
+        return self.orbitCollectionRef.document(orbit_id)
 
     @staticmethod
     # @transactional
@@ -37,11 +40,16 @@ class OrbitDao:
             raise Exception('No such document! ' + str(orbitRef.id))
 
     def get(self, orbitRef: DocumentReference):
-        transaction = db.transaction()
-        orbitResult = self.get_with_transaction(
-            transaction, orbitRef)
-        transaction.commit()
-        return orbitResult
+        snapshot: DocumentSnapshot = orbitRef.get()
+        snapshot_dict: dict = snapshot.to_dict()
+        orbit = Orbit.from_dict(snapshot_dict)
+        orbit.set_firestore_ref(orbitRef)
+        return orbit
+
+    def get_by_id(self, rid: str):
+        ref = self.ref_from_id(rid)
+        orbit = self.get(ref)
+        return orbit
 
     def create(self, orbit: Orbit)->DocumentReference:
         """ Description

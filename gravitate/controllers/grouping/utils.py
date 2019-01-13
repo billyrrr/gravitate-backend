@@ -1,5 +1,5 @@
 from gravitate.models import RideRequest, Location, Orbit, Event
-from gravitate.data_access import RideRequestGenericDao, OrbitDao, UserDao
+from gravitate.data_access import UserDao
 from google.cloud.firestore import Transaction
 from gravitate.controllers import eventscheduleutils
 from typing import Type
@@ -8,16 +8,8 @@ from gravitate import context
 db = context.Context.db
 
 
-def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) -> bool:
-    """ Description
-    This function joins a rideRequest to an orbit in the database.
-            Firstly, the function accesses database copy of the objects and download them as local copies
-            Secondly, the function validates that the database copy of the object matches those passed along by the decision maker[1]
-            Thirdly, the function modifies local copies so that a rideRequest is joined to an orbit
-            Fourthly, the function updates database copy of the objects, and throw an error if they changed since last read
-
-    [1] Note that decision maker should refresh local copies of the objects after each join,
-            since this function will raise an exception if they don't match.
+def add_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) -> bool:
+    """ Returns True if ride request object and orbit is modified. False if join is not permitted.
 
     :param ride_request:
     :param orbit:
@@ -26,6 +18,26 @@ def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) ->
     # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
     # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
 
+    is_valid = _validate_to_add(ride_request, orbit)
+    if is_valid:
+
+        # Modify local copies of rideRequest and orbit
+        _add_to_orbit(ride_request, orbit)
+
+        return True
+
+    else:
+
+        return False
+
+
+def _validate_to_add(ride_request: Type[RideRequest], orbit: Orbit):
+    """ Returns True if add operation is considered valid.
+
+    :param ride_request:
+    :param orbit:
+    :return:
+    """
     if ride_request.request_completion:
         return False
     pairs: dict = orbit.user_ticket_pairs
@@ -33,71 +45,10 @@ def join_orbit_to_ride_request(ride_request: Type[RideRequest], orbit: Orbit) ->
         if ticket["userWillDrive"] and ride_request.driver_status:
             # There is already an I-4 driver. Do not join another driver to the orbit
             return False
-
-    # Modify local copies of rideRequest and orbit
-    place_in_orbit(ride_request, orbit)
-
     return True
 
 
-class GroupOrbitInteractor(object):
-    """
-        TODO: replace functions with Command Pattern operations
-    """
-
-    def __init__(self):
-        pass
-
-
-def remove_ride_request_from_orbit(transaction, ride_request: Type[RideRequest], orbit: Orbit) -> bool:
-    remove_from_orbit(ride_request, orbit)
-
-    try:
-        RideRequestGenericDao().set_with_transaction(
-            transaction, ride_request, ride_request.get_firestore_ref())
-        OrbitDao.set_with_transaction(
-            transaction, orbit, orbit.get_firestore_ref())
-    except Exception as e:
-        print(e)
-        return False
-
-    return True
-
-
-def update_event_schedule(transaction: Transaction, ride_request: RideRequest, orbit: Orbit, event: Event,
-                          location: Location):
-    """ Description
-
-            Populate eventSchedule (client view model)
-
-
-    :type transaction:Transaction:
-    :param transaction:Transaction:
-
-    :type ride_request:RideRequest:
-    :param ride_request:RideRequest:
-
-    :type orbit:Orbit:
-    :param orbit:Orbit:
-
-    :raises:
-
-    :rtype:
-    """
-    # update eventSchedule
-    user_id = ride_request.user_id
-    user_ref = UserDao().get_ref(user_id)
-    event_ref = event.get_firestore_ref()
-
-    event_schedule = eventscheduleutils.buildEventScheduleOrbit(
-        rideRequest=ride_request, location=location, orbit=orbit)
-    UserDao().add_to_event_schedule_with_transaction(transaction,
-                                                     user_ref=user_ref,
-                                                     event_ref=event_ref,
-                                                     event_schedule=event_schedule)
-
-
-def place_in_orbit(r: RideRequest, o: Orbit):
+def _add_to_orbit(r: RideRequest, o: Orbit):
     """ Description
 
             :type r:RideRequest:
@@ -132,7 +83,44 @@ def place_in_orbit(r: RideRequest, o: Orbit):
     return
 
 
-def remove_from_orbit(r: RideRequest, o: Orbit):
+def drop_orbit_from_ride_request(ride_request: Type[RideRequest], orbit: Orbit) -> bool:
+    """ Returns True if ride request object and orbit is modified. False if drop is not permitted.
+
+    :param ride_request:
+    :param orbit:
+    :return:
+    """
+    # TODO: validate that rideRequest is the same as when the decision is made to join rideRequest to orbit
+    # TODO: validate that orbit is the same as when the decision is made to join rideRequest to orbit
+
+    is_valid = _validate_to_drop(ride_request, orbit)
+    if is_valid:
+
+        # Modify local copies of rideRequest and orbit
+        _drop_from_orbit(ride_request, orbit)
+
+        return True
+
+    else:
+
+        return False
+
+
+def _validate_to_drop(ride_request: Type[RideRequest], orbit: Orbit):
+    """ Returns True if drop operation is considered valid.
+    TODO: add more
+    :param ride_request:
+    :param orbit:
+    :return:
+    """
+    if not ride_request.request_completion:
+        # If the ride request is not completed
+        return False
+
+    return True
+
+
+def _drop_from_orbit(r: RideRequest, o: Orbit):
     # remove userRef from orbitRef's userTicketPairs
     # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
     userIds = list(o.user_ticket_pairs.keys())
@@ -141,3 +129,62 @@ def remove_from_orbit(r: RideRequest, o: Orbit):
             o.user_ticket_pairs.pop(userId)
     r.orbit_ref = None
     r.request_completion = False
+
+
+def update_in_orbit_event_schedule(transaction: Transaction, ride_request: Type[RideRequest], orbit: Orbit,
+                                   event: Event, location: Location):
+    """ Populate eventSchedule (client view model)
+    :param transaction:
+    :param ride_request:
+    :param orbit:
+    :param event:
+    :param location:
+    :return:
+    """
+
+    # update eventSchedule
+    user_id = ride_request.user_id
+    user_ref = UserDao().get_ref(user_id)
+    event_ref = event.get_firestore_ref()
+
+    event_schedule = eventscheduleutils.create_event_schedule_orbit(
+        ride_request=ride_request, location=location, orbit=orbit)
+    UserDao().add_to_event_schedule_with_transaction(transaction,
+                                                     user_ref=user_ref,
+                                                     event_ref=event_ref,
+                                                     event_schedule=event_schedule)
+
+
+def update_not_in_orbit_event_schedule(transaction: Transaction, ride_request: RideRequest, event: Event,
+                                       location: Location):
+    # update eventSchedule
+    user_id = ride_request.user_id
+    user_ref = UserDao().get_ref(user_id)
+    event_ref = event.get_firestore_ref()
+
+    event_schedule = eventscheduleutils.create_event_schedule(ride_request, location)
+    UserDao().add_to_event_schedule_with_transaction(transaction,
+                                                     user_ref=user_ref,
+                                                     event_ref=event_ref,
+                                                     event_schedule=event_schedule)
+
+
+def remove_from_orbit(r: RideRequest, o: Orbit):
+    # DEPRECATED
+    # remove userRef from orbitRef's userTicketPairs
+    # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+    userIds = list(o.user_ticket_pairs.keys())
+    for userId in userIds:
+        if userId == r.user_id:
+            o.user_ticket_pairs.pop(userId)
+    r.orbit_ref = None
+    r.request_completion = False
+
+
+class GroupOrbitInteractor(object):
+    """
+        TODO: replace functions with Command Pattern operations
+    """
+
+    def __init__(self):
+        pass
