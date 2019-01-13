@@ -1,5 +1,4 @@
 import gravitate.controllers.grouping.pairing
-import gravitate.controllers.grouping.paring
 import gravitate.controllers.grouping.remove
 import test.factory.model
 from gravitate.controllers.grouping import grouping
@@ -75,7 +74,7 @@ class TestGroupUsers(unittest.TestCase):
         paired = []
         unpaired = []
 
-        gravitate.controllers.grouping.paring.pair(arr=arr, paired=paired, unpaired=unpaired)
+        gravitate.controllers.grouping.pairing.pair(arr=arr, paired=paired, unpaired=unpaired)
         expectedPaired = [['A', 'B'], ['C', 'D']]
         expectedUnpaired = [['G'], ['E'], ['F']]
 

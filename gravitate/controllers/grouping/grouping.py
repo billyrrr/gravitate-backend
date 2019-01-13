@@ -131,12 +131,12 @@ def run_orbit_group(ride_requests: dict):
 
     transaction = db.transaction()
     # TODO: implement and call validate_entities_not_changed
-    not_joined = _gt(transaction, orbit_ref, ride_request_refs, event_ref, location_ref)
+    not_joined = _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location_ref)
     return not_joined
 
 
 @transactional
-def _gt(transaction, orbit_ref, ride_request_refs, event_ref, location_ref):
+def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location_ref):
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup_with_ref(orbit_ref=orbit_ref,
                                                                            refs_to_add=ride_request_refs,
                                                                            refs_to_drop=list(),
