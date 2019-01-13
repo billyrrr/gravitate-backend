@@ -139,6 +139,20 @@ def run_orbit_group(ride_requests: dict):
 def _gt(transaction, orbit_ref, ride_request_refs, event_ref, location_ref):
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup_with_ref(orbit_ref=orbit_ref,
                                                                            refs_to_add=ride_request_refs,
+                                                                           refs_to_drop=list(),
                                                                            event_ref=event_ref,
                                                                            location_ref=location_ref)
+    group.execute()
+
+
+def drop_group(ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
+    transaction = db.transaction()
+    _drop_group(transaction, ids, orbit_id=orbit_id, event_id=event_id, location_id=location_id)
+
+
+@transactional
+def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
+    group: OrbitGroup = OrbitGroup(transaction=transaction).setup(intended_orbit_id=orbit_id, ids_to_add=set(),
+                                                                  ids_to_drop=ids, event_id=event_id,
+                                                                  location_id=location_id)
     group.execute()

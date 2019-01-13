@@ -40,11 +40,16 @@ class OrbitDao:
             raise Exception('No such document! ' + str(orbitRef.id))
 
     def get(self, orbitRef: DocumentReference):
-        transaction = db.transaction()
-        orbitResult = self.get_with_transaction(
-            transaction, orbitRef)
-        transaction.commit()
-        return orbitResult
+        snapshot: DocumentSnapshot = orbitRef.get()
+        snapshot_dict: dict = snapshot.to_dict()
+        orbit = Orbit.from_dict(snapshot_dict)
+        orbit.set_firestore_ref(orbitRef)
+        return orbit
+
+    def get_by_id(self, rid: str):
+        ref = self.ref_from_id(rid)
+        orbit = self.get(ref)
+        return orbit
 
     def create(self, orbit: Orbit)->DocumentReference:
         """ Description

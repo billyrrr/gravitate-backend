@@ -45,6 +45,7 @@ def _validate_to_add(ride_request: Type[RideRequest], orbit: Orbit):
         if ticket["userWillDrive"] and ride_request.driver_status:
             # There is already an I-4 driver. Do not join another driver to the orbit
             return False
+    return True
 
 
 def _add_to_orbit(r: RideRequest, o: Orbit):
@@ -115,6 +116,8 @@ def _validate_to_drop(ride_request: Type[RideRequest], orbit: Orbit):
     if not ride_request.request_completion:
         # If the ride request is not completed
         return False
+
+    return True
 
 
 def _drop_from_orbit(r: RideRequest, o: Orbit):
