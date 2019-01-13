@@ -10,7 +10,6 @@ import json
 from flask import request
 from flask_restful import Resource
 
-import gravitate.controllers.grouping.remove
 from gravitate.context import Context
 from gravitate.controllers import utils
 from gravitate.controllers.grouping import grouping
@@ -126,10 +125,10 @@ class DeleteMatchService(Resource):
         ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
         r = RideRequestGenericDao().get(ride_request_ref)
         location_ref = r.airport_location
-        gravitate.controllers.grouping.grouping.drop_group({ride_request_id},
-                                                           orbit_id=r.orbit_ref.id,
-                                                           event_id=r.event_ref.id,
-                                                           location_id=location_ref.id)
+        grouping.drop_group({ride_request_id},
+                            orbit_id=r.orbit_ref.id,
+                            event_id=r.event_ref.id,
+                            location_id=location_ref.id)
         response_dict = {"success": True}
 
         return response_dict, 200
