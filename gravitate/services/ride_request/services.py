@@ -10,6 +10,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
+import gravitate.controllers.grouping.remove
 from gravitate.context import Context
 from gravitate.controllers import utils
 from gravitate.controllers.grouping import grouping
@@ -125,7 +126,7 @@ class DeleteMatchService(Resource):
 
         try:
             ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
-            grouping.remove(ride_request_ref)
+            gravitate.controllers.grouping.remove.remove(ride_request_ref)
             response_dict = {"success": True}
         except Exception as e:
             print(e)

@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, List
 
 from google.cloud.firestore_v1beta1 import Transaction
 
@@ -56,10 +56,10 @@ class OrbitGroup:
         # Start a transaction
         self.transaction = transaction
 
-    def setup_with_ref(self, orbit_ref = None, refs_to_add: list = None, event_ref=None, location_ref=None):
-        return self.setup(orbit_ref.id, {ref.id for ref in refs_to_add}, event_ref.id, location_ref.id )
+    def setup_with_ref(self, orbit_ref=None, refs_to_add: list=None, event_ref=None, location_ref=None):
+        return self.setup(orbit_ref.id, {ref.id for ref in refs_to_add}, event_ref.id, location_ref.id)
 
-    def setup(self, intended_orbit_id=None, ids_to_add: set = None, event_id=None, location_id=None):
+    def setup(self, intended_orbit_id=None, ids_to_add: set=None, event_id=None, location_id=None):
         self.orbit = OrbitGroup._get_orbit(transaction=self.transaction, orbit_id=intended_orbit_id)
         self.ride_requests_existing = \
             OrbitGroup._get_existing_ride_requests(transaction=self.transaction, orbit=self.orbit)
@@ -71,22 +71,22 @@ class OrbitGroup:
         return self
 
     @staticmethod
-    def _get_event(transaction: Transaction = None, event_id: str = None) -> Type[Event]:
+    def _get_event(transaction: Transaction=None, event_id: str=None) -> Type[Event]:
         event_ref = EventDao().get_ref(event_id)
         return EventDao().get_with_transaction(transaction, event_ref)
 
     @staticmethod
-    def _get_location(transaction: Transaction = None, location_id: str = None) -> Type[Location]:
+    def _get_location(transaction: Transaction=None, location_id: str=None) -> Type[Location]:
         location_ref = LocationGenericDao().get_ref_by_id(location_id)
         return LocationGenericDao.get_with_transaction(transaction, location_ref)
 
     @staticmethod
-    def _get_orbit(transaction: Transaction = None, orbit_id: str = None) -> Orbit:
+    def _get_orbit(transaction: Transaction=None, orbit_id: str=None) -> Orbit:
         orbit_ref = OrbitDao().ref_from_id(orbit_id)
         return OrbitDao.get_with_transaction(transaction, orbit_ref)
 
     @staticmethod
-    def _get_existing_ride_requests(transaction: Transaction = None, orbit: Orbit = None) -> dict:
+    def _get_existing_ride_requests(transaction: Transaction=None, orbit: Orbit=None) -> dict:
         refs = {ticket["rideRequestRef"] for user_id, ticket in orbit.user_ticket_pairs.items()}
         ride_requests = {ref.id: RideRequestGenericDao.get_with_transaction(transaction, ref) for ref in refs}
         return ride_requests
@@ -128,24 +128,13 @@ class OrbitGroup:
         # Create a transaction so that an exception is thrown when updating an object that is
         #   changed since last read from database
 
-        joined_ids = set()
-        not_joined_ids = set()
+        joined_ids, not_joined_ids = OrbitGroup._add(to_add=self.ride_requests_to_add, orbit=orbit)
 
-        for rid, r in self.ride_requests_to_add.items():
-
-            print(r.to_dict())
-
-            # Join one rideRequest to the orbit
-            is_joined = utils.join_orbit_to_ride_request(r, orbit)
-
-            # when failing to join, record and move on to the next
-            if is_joined:
-                joined_ids.add(rid)
-            else:
-                not_joined_ids.add(r)
-
-        # Update database copy of rideRequests
-        for rid in joined_ids:
+        # Update database copy of rideRequests that was just joined
+        # TODO: Implement update_all method to refresh all ride requests dropped, added, and etc.
+        #   (no need for now since ride request is independent from orbit)
+        ride_request_ids_to_refresh: List[str] = joined_ids
+        for rid in ride_request_ids_to_refresh:
             r = self.ride_requests_to_add.get(rid)
 
             RideRequestGenericDao.set_with_transaction(
@@ -172,6 +161,42 @@ class OrbitGroup:
               .format(joined_ids, not_joined_ids, in_orbit.keys()))
 
         return not_joined_ids
+
+    @staticmethod
+    def _add(to_add, orbit) -> (List[str], List[str]):
+        """ Add ride request to orbit
+
+        :param to_add:
+        :return:
+        """
+        joined_ids = set()
+        not_joined_ids = set()
+
+        for rid, r in to_add.items():
+
+            print(r.to_dict())
+
+            # Join one rideRequest to the orbit
+            is_joined = utils.add_orbit_to_ride_request(r, orbit)
+
+            # when failing to join, record and move on to the next
+            if is_joined:
+                joined_ids.add(rid)
+            else:
+                not_joined_ids.add(r)
+        return joined_ids, not_joined_ids
+
+    @staticmethod
+    def _drop(to_drop, orbit) -> (List[str], List[str]):
+        dropped_ids = set()
+        not_dropped_ids = set()
+
+        for rid, r in to_drop.items():
+            print(r.to_dict())
+
+            # Drop one rideRequest from the orbit
+            # utils.remove_ride_request_from_orbit()
+
 
     @staticmethod
     def _get_not_in_orbit(not_joined_ids: set, existing_r: dict) -> dict:
@@ -203,7 +228,7 @@ class OrbitGroup:
         return {rid: r for rid, r in ride_requests_all.items() if rid in in_orbit_ids}
 
     @staticmethod
-    def _get_ride_requests_to_add(transaction: Transaction = None, ids: set = None) -> dict:
+    def _get_ride_requests_to_add(transaction: Transaction=None, ids: set=None) -> dict:
         refs = [RideRequestGenericDao().ref_from_id(rid) for rid in ids]
         ride_requests = {ref.id: RideRequestGenericDao.get_with_transaction(transaction, ref) for ref in refs}
         return ride_requests
