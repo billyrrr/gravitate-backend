@@ -122,9 +122,7 @@ class DeleteMatchService(Resource):
                 type(request_json) != dict) else request_json
 
         ride_request_id = request_form.get("rideRequestId", None)
-        response_dict = None
 
-        # try:
         ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
         r = RideRequestGenericDao().get(ride_request_ref)
         location_ref = r.airport_location
@@ -133,13 +131,7 @@ class DeleteMatchService(Resource):
                                                            event_id=r.event_ref.id,
                                                            location_id=location_ref.id)
         response_dict = {"success": True}
-        # except Exception as e:
-        #     raise e
-        #     print(e)
-        #     response_dict = {"error": str(e)}
-        #     return response_dict, 500
 
-        # return rideRequest.get_firestore_ref().id, 200
         return response_dict, 200
 
 
@@ -157,9 +149,6 @@ class AirportRideRequestService(Resource):
         :param uid:
         :return:
         """
-        # requestJson = request.get_json()
-        # requestForm = json.loads(requestJson) if (
-        #         type(requestJson) != dict) else requestJson
 
         user_id = uid
         user_ref = UserDao().get_ref(user_id)

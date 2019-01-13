@@ -96,17 +96,6 @@ class OrbitGroup:
         self._validate_setup()  # Validate fields
         return self
 
-    # def set_up_with_orbit_id(self, orbit_id, ids_to_add: set=None, ids_to_drop: set=None):
-    #     self.orbit = OrbitGroup._get_orbit(transaction=self.transaction, orbit_id=orbit_id)
-    #     self.ride_requests_to_add = OrbitGroup._get_ride_requests(transaction=self.transaction, ids=ids_to_add)
-    #     self.ride_requests_existing = \
-    #         OrbitGroup._get_existing_ride_requests(transaction=self.transaction, orbit=self.orbit)
-    #     self.ride_requests_to_drop = OrbitGroup._get_ride_requests(transaction=self.transaction, ids=ids_to_drop)
-    #     event_id = self.orbit.event_ref.id
-    #     self.event = OrbitGroup._get_event(transaction=self.transaction, event_id=event_id)
-    #     location_id = self.event.location_ref.id
-    #     self.location = OrbitGroup._get_location(transaction=self.transaction, location_id=location_id)
-
     @staticmethod
     def _get_event(transaction: Transaction=None, event_id: str=None) -> Type[Event]:
         event_ref = EventDao().get_ref(event_id)
