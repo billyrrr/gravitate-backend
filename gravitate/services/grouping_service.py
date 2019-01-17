@@ -21,9 +21,9 @@ class OrbitForceMatchService(Resource):
         ride_request_ids = request_form.get("rideRequestIds", None)
         response_dict = None
 
-        if operation_mode == "two" and ride_request_ids != None:
+        if operation_mode == "two" and ride_request_ids is not None:
             response_dict = grouping.group_two(ride_request_ids)
-        elif operation_mode == "many" and ride_request_ids != None:
+        elif operation_mode == "many" and ride_request_ids is not None:
             grouping.group_many(ride_request_ids)
             response_dict = {"success": True, "operationMode": "many"}
         elif operation_mode == "all":
