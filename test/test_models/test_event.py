@@ -1,7 +1,7 @@
 import unittest
 from gravitate.models import Event
 from test import context
-from test.factory import eventDict
+from test.store import eventDict
 
 db = context.Context.db
 

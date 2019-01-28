@@ -7,9 +7,9 @@ from gravitate import main as main
 import gravitate.services.ride_request.utils as service_utils
 import gravitate.services.errors as service_errors
 
-import test.factory as factory
+import test.store as factory
 
-from test.factory import FormDictFactory
+from test.store import FormDictFactory
 from test.test_main import getMockAuthHeaders
 
 from test import context
@@ -45,7 +45,7 @@ class SocialEventDictBuilderTest(TestCase):
 
     def testSetWithForm(self):
         userId = 'testuserid1'
-        d = factory.EventRideRequestFormDictFactory().create()
+        d = store.EventRideRequestFormDictFactory().create()
 
         b = service_utils.SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=userId)
         expected_vars = {'user_id': 'testuserid1',
@@ -59,7 +59,7 @@ class SocialEventDictBuilderTest(TestCase):
 
     def testBuild(self):
         def setUp(self):
-            d = factory.EventRideRequestFormDictFactory().create()
+            d = store.EventRideRequestFormDictFactory().create()
             self.user_id = 'testuserid1'
             self.builder: service_utils.SocialEventRideRequestBuilder = \
                 service_utils.SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=self.user_id)

@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 from gravitate.data_access import EventDao
 from gravitate.models import Event
-from test.factory import eventDict
+from test.store import eventDict
 from gravitate import context
 
 CTX = context.Context

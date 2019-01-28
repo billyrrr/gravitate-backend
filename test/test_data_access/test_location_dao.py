@@ -2,7 +2,7 @@ import unittest
 from gravitate.data_access import LocationGenericDao
 from google.cloud.firestore import Transaction, transactional
 from gravitate import context
-import test.factory.model as model
+import test.store.model as model
 
 db = context.Context.db
 

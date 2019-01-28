@@ -7,9 +7,9 @@ from gravitate import main as main
 import gravitate.services.ride_request.utils as service_utils
 import gravitate.services.errors as service_errors
 
-import test.factory as factory
+import test.store as factory
 
-from test.factory import FormDictFactory
+from test.store import FormDictFactory
 from test.test_main import getMockAuthHeaders
 
 from test import context

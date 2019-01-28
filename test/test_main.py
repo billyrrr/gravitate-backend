@@ -15,11 +15,14 @@ from gravitate.data_access import UserDao, EventDao
 from google.cloud import firestore
 from firebase_admin import auth
 
-from test.factory.form import FormDictFactory
-import test.factory as factory
+from test.store.form import FormDictFactory
+import test.store as factory
 from unittest import TestCase
 import json
 from test import context
+
+from gravitate.scripts.location import populate_locations
+from gravitate.scripts.event import populate_airport_events
 
 db = context.Context.db
 firebaseApp = context.Context.firebaseApp
@@ -48,6 +51,19 @@ def getMockAuthHeaders(uid="testuid1"):
     headers = {'Authorization': userIdTokenMock}
     return headers
 
+
+
+#
+# # Populate database for uc/campus location and events
+# populate_locations.doWorkUc("UCSB")
+# populate_airport_events.populate_events(start_string="2018-12-20T08:00:00.000", num_days=15, event_category="campus")
+
+# Populate database for airport location and events
+# class ScriptTempTestCase(TestCase):
+#
+#     def testNothing(self):
+#         # populate_locations.doWork()
+#         populate_airport_events.populate_events(start_string="2019-01-22T08:00:00.000", num_days=30)
 
 class MainAppTestCase(TestCase):
     app: FlaskClient = None
@@ -191,7 +207,7 @@ class TestEndpoints(TestCase):
         :return:
         """
         requestDict = {}
-        path = "/rideRequests/{}/unmatch".format(factory.mock1["rideRequestId"])
+        path = "/rideRequests/{}/unmatch".format(store.mock1["rideRequestId"])
         r = self.app.post(path=path, json=requestDict, headers=getMockAuthHeaders())
 
 

@@ -1,11 +1,11 @@
 import unittest
 
-import test.factory.model
+import test.store.model
 from gravitate.controllers import eventscheduleutils
 from gravitate.models import AirportEventSchedule
-from test import factory
+from test import store
 
-eventScheduleDict = factory.eventScheduleDict.copy()
+eventScheduleDict = store.eventScheduleDict.copy()
 
 class EventScheduleDaoTest(unittest.TestCase):
 
@@ -14,8 +14,8 @@ class EventScheduleDaoTest(unittest.TestCase):
         self.assertDictEqual(eventScheduleDict, eventSchedule.to_dict())
 
     def testCreate(self):
-        rideRequest = test.factory.model.getMockRideRequest()
-        location = test.factory.model.getLocation()
+        rideRequest = test.store.model.getMockRideRequest()
+        location = test.store.model.getLocation()
         eventSch = eventscheduleutils.create_event_schedule(rideRequest, location)
         eventScheduleDict["destTime"] = 1545069600  # .destTime is used off-label for sorting
         self.assertDictEqual(eventScheduleDict, eventSch.to_dict())

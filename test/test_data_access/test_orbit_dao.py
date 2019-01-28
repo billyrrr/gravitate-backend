@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from gravitate import data_access
 from test import context
 from gravitate.models import Orbit
-from test.factory import orbitDict
+from test.store import orbitDict
 
 
 class OrbitDaoTest(unittest.TestCase):
