@@ -2,10 +2,8 @@ class Luggages:
     """ Keeps track of luggage amount
     """
 
-    _luggage_list = []
-
-    def init(self):
-        raise NotImplementedError
+    def __init__(self):
+        self._luggage_list = []
 
     def add(self, luggage: dict):
         """ Append a piece of luggage to self._luggage_list

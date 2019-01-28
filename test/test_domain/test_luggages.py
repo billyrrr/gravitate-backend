@@ -1,6 +1,10 @@
+"""
+Instruction: run LuggagesTest in your IDE. Run test_context first to show that your environment is configured
+    correctly.
+"""
+
 from gravitate.domain.luggages import Luggages
 from unittest import TestCase
-
 
 class LuggagesTest(TestCase):
 
@@ -26,6 +30,9 @@ class LuggagesTest(TestCase):
         }
 
         self.luggage_list = [luggage_a, luggage_b, luggage_c, luggage_d]
+
+    def test_context(self):
+        self.assertTrue("Context set up correctly")
 
     def test_init(self):
         """
