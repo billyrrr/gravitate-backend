@@ -1,5 +1,6 @@
 import unittest
 from gravitate.models import AirportRideRequest, RideRequest
+from .. import store
 import json
 from test import context
 
@@ -7,24 +8,23 @@ db = context.Context.db
 
 
 class RideRequestTest(unittest.TestCase):
+    """
+    Tests that RideRequest model works.
+    """
+
     def setUp(self):
         self.db = context.Context.db
-
-        JSON_FILENAME = 'rideRequest_1.json'
-        with open('test/jsons_written_by_david_a/{}'.format(JSON_FILENAME)) as json_file:
-            self.rideRequestData1 = json.load(json_file)
-
-    # def testInitWithDict(self):
-    #     initialData = {"rideCategory": "", "rRef": 1, "driverStatus": False, "pickupAddress": "", "hasCheckedIn": False, "eventRef": 1, "orbitRef": 1,
-    #                    "target": "", "pricing": 1, "flightTime": 1, "flightNumber": 1, "airportLocation": 1, "baggages": "", "disabilities": {}, "requestCompletion": False}
-    #     newRideRequest = RideRequest.from_dict(initialData)
-    #     dictNewRideRequest = vars(newRideRequest)
-    #     self.assertEquals(initialData, dictNewRideRequest)
+        self.rideRequestData1 = store.get_json_file('rideRequest_1.json')
 
     def testAfterDictEqualsOriginalDict(self):
-        rideRequestDict = self.rideRequestData1['rideRequest']
-        rideRequestRef = self.rideRequestData1['rideRequestRef']
-        airportRideRequest: AirportRideRequest = RideRequest.from_dict_and_reference(rideRequestDict, rideRequestRef)
-        afterDict = airportRideRequest.to_dict()
-        self.assertDictEqual(rideRequestDict, afterDict,
+        """ Tests that to_dict returns the same dict as the passed to from_dict.
+
+        :return:
+        """
+        ride_request_dict = self.rideRequestData1['rideRequest']
+        ride_request_ref = self.rideRequestData1['rideRequestRef']
+        airport_ride_request: AirportRideRequest = RideRequest.from_dict_and_reference(ride_request_dict,
+                                                                                       ride_request_ref)
+        result = airport_ride_request.to_dict()
+        self.assertDictEqual(ride_request_dict, result,
                              "The dictionaries should equal if RideRequest was not modified. ")

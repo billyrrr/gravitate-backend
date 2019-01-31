@@ -1,5 +1,5 @@
 import gravitate.controllers.grouping.pairing
-import gravitate.controllers.grouping.remove
+# import gravitate.controllers.grouping.remove
 import test.store.model
 from gravitate.controllers.grouping import grouping
 import gravitate.controllers.grouping.utils as grouping_utils
@@ -31,74 +31,19 @@ class TestOrbitGroupHelpers(unittest.TestCase):
         is_valid = grouping_utils._validate_to_add(self.r, self.o)
         self.assertTrue(is_valid)
 
-
-class TestTempForceGroupUsers(unittest.TestCase):
-
-    def testMatchTwo(self):
-        result = grouping.group_two(rideRequestIds)
-        print(result)
-        self.assertIsNone(result)  # So that we see debug log
-
-    def testRemoveMatch(self):
-        # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
-        rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
-        rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        gravitate.controllers.grouping.remove.remove(rideRequestRef)
-
-
-class TestGroupUsers(unittest.TestCase):
-
-    def setUp(self):
-        self.arr = [[12000000, 12005000, 'A'],
-                    [12000000, 12005000, 'B'],
-                    [12000000, 12005000, 'C'],
-                    [12005000, 12006000, 'D'],
-                    [12007000, 12009000, 'E'],
-                    [12009001, 12009900, 'F'],
-                    [11000000, 11009000, 'G']]
-
-        arr = self.arr
-
-        rideRequests = list()
-
-        for earliest, latest, firestoreRef in arr:
-            rideRequest = test.store.model.getMockRideRequest(
-                earliest=earliest, latest=latest, firestoreRef=firestoreRef)
-            rideRequests.append(rideRequest)
-
-        self.rideRequests = rideRequests
-
-    def testPairAlgorithm(self):
-        arr = self.arr
-
-        paired = []
-        unpaired = []
-
-        gravitate.controllers.grouping.pairing.pair(arr=arr, paired=paired, unpaired=unpaired)
-        expectedPaired = [['A', 'B'], ['C', 'D']]
-        expectedUnpaired = [['G'], ['E'], ['F']]
-
-        self.assertListEqual(expectedPaired, paired, 'paired does not match')
-        self.assertListEqual(expectedUnpaired, unpaired,
-                             'unpaired does not match')
-
-    def testConstructTupleList(self):
-        rideRequests: list = self.rideRequests
-        tupleList = gravitate.controllers.grouping.pairing.construct_tuple_list(rideRequests)
-        # Note that this test may fail when the list in a different order.
-        # The list is allowed to be in a different order.
-        self.assertListEqual(self.arr, tupleList)
-
-    def testGrouping(self):
-        expectedPaired = [['A', 'B'], ['C', 'D']]
-        expectedUnpaired = [['G'], ['E'], ['F']]
-
-        rideRequests: list = self.rideRequests
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(rideRequests)
-
-        self.assertListEqual(expectedPaired, paired, 'paired does not match')
-        self.assertListEqual(expectedUnpaired, unpaired,
-                             'unpaired does not match')
+#
+# class TestTempForceGroupUsers(unittest.TestCase):
+#
+#     def testMatchTwo(self):
+#         result = grouping.group_two(rideRequestIds)
+#         print(result)
+#         self.assertIsNone(result)  # So that we see debug log
+#
+#     def testRemoveMatch(self):
+#         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
+#         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
+#         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+#         gravitate.controllers.grouping.remove.remove(rideRequestRef)
 
 
 class TestGroupUsersWithRideRequestRef(unittest.TestCase):

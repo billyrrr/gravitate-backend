@@ -1,3 +1,5 @@
+import json
+
 from gravitate import context
 import gravitate.models as models
 
@@ -141,8 +143,14 @@ airportLocationDict = {
 def getLocationDict():
     return airportLocationDict
 
+
 def getLocation():
     locationDict = getLocationDict()
     location = models.Location.from_dict(locationDict)
     location.set_firestore_ref(mock1["locationRef"])
     return location
+
+
+def get_json_file(json_filename):
+    with open('test/jsons_written_by_david_a/{}'.format(json_filename)) as json_file:
+        return json.load(json_file)
