@@ -47,14 +47,3 @@ class TestTarget(TestCase):
         expected_target_dict = Target.create_with_flight_local_time(
             "2018-12-17T08:26:40.000", True).to_dict()
         self.assertDictEqual(expected_target_dict, target_dict)
-
-    #
-    # def testCreateAirportTarget(self):
-    #     mockForm = FormDictFactory.create(
-    #         hasEarliestLatest=False, returnDict=False)
-    #     targetDict = Target.create_with_form(mockForm).to_dict()
-    #     valueExpected = {'eventCategory': 'airportRide',
-    #                      'toEvent': True,
-    #                      'arriveAtEventTime':
-    #                          {'earliest': 1545066000, 'latest': 1545073200}}
-    #     self.assertDictEqual(targetDict, valueExpected)
