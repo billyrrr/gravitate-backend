@@ -17,14 +17,14 @@ class TestGroupUsers(unittest.TestCase):
 
         arr = self.arr
 
-        rideRequests = list()
+        ride_requests = list()
 
         for earliest, latest, firestoreRef in arr:
-            rideRequest = test.store.model.getMockRideRequest(
+            ride_request = test.store.model.getMockRideRequest(
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef)
-            rideRequests.append(rideRequest)
+            ride_requests.append(ride_request)
 
-        self.rideRequests = rideRequests
+        self.rideRequests = ride_requests
 
     def testPairAlgorithm(self):
         arr = self.arr
@@ -33,27 +33,27 @@ class TestGroupUsers(unittest.TestCase):
         # unpaired = []
 
         paired, unpaired = gravitate.controllers.grouping.pairing.pair(arr=arr)
-        expectedPaired = [['A', 'B'], ['C', 'D']]
-        expectedUnpaired = [['G'], ['E'], ['F']]
+        expected_paired = [['A', 'B'], ['C', 'D']]
+        expected_unpaired = [['G'], ['E'], ['F']]
 
-        self.assertListEqual(expectedPaired, paired, 'paired does not match')
-        self.assertListEqual(expectedUnpaired, unpaired,
+        self.assertListEqual(expected_paired, paired, 'paired does not match')
+        self.assertListEqual(expected_unpaired, unpaired,
                              'unpaired does not match')
 
     def testConstructTupleList(self):
-        rideRequests: list = self.rideRequests
-        tupleList = gravitate.controllers.grouping.pairing.construct_tuple_list(rideRequests)
+        ride_requests: list = self.rideRequests
+        tuple_list = gravitate.controllers.grouping.pairing.construct_tuple_list(ride_requests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
-        self.assertListEqual(self.arr, tupleList)
+        self.assertListEqual(self.arr, tuple_list)
 
     def testGrouping(self):
-        expectedPaired = [['A', 'B'], ['C', 'D']]
-        expectedUnpaired = [['G'], ['E'], ['F']]
+        expected_paired = [['A', 'B'], ['C', 'D']]
+        expected_unpaired = [['G'], ['E'], ['F']]
 
-        rideRequests: list = self.rideRequests
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(rideRequests)
+        ride_requests: list = self.rideRequests
+        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(ride_requests)
 
-        self.assertListEqual(expectedPaired, paired, 'paired does not match')
-        self.assertListEqual(expectedUnpaired, unpaired,
+        self.assertListEqual(expected_paired, paired, 'paired does not match')
+        self.assertListEqual(expected_unpaired, unpaired,
                              'unpaired does not match')
