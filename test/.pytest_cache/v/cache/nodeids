@@ -1,0 +1,5 @@
+[
+  "test_orbit_group.py::TestGroupUsers::testConstructTupleList",
+  "test_orbit_group.py::TestGroupUsers::testGrouping",
+  "test_orbit_group.py::TestGroupUsers::testPairAlgorithm"
+]

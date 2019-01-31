@@ -1,0 +1,5 @@
+[
+  "test_target.py::TestTarget::testCreateAirportTarget",
+  "test_target.py::TestTarget::testCreateWithFlightLocalTime",
+  "test_target.py::TestTarget::testDefaultParams"
+]
