@@ -1,5 +1,5 @@
 import gravitate.controllers.grouping.pairing
-import gravitate.controllers.grouping.remove
+# import gravitate.controllers.grouping.remove
 import test.store.model
 from gravitate.controllers.grouping import grouping
 import gravitate.controllers.grouping.utils as grouping_utils
@@ -31,19 +31,19 @@ class TestOrbitGroupHelpers(unittest.TestCase):
         is_valid = grouping_utils._validate_to_add(self.r, self.o)
         self.assertTrue(is_valid)
 
-
-class TestTempForceGroupUsers(unittest.TestCase):
-
-    def testMatchTwo(self):
-        result = grouping.group_two(rideRequestIds)
-        print(result)
-        self.assertIsNone(result)  # So that we see debug log
-
-    def testRemoveMatch(self):
-        # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
-        rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
-        rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        gravitate.controllers.grouping.remove.remove(rideRequestRef)
+#
+# class TestTempForceGroupUsers(unittest.TestCase):
+#
+#     def testMatchTwo(self):
+#         result = grouping.group_two(rideRequestIds)
+#         print(result)
+#         self.assertIsNone(result)  # So that we see debug log
+#
+#     def testRemoveMatch(self):
+#         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
+#         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
+#         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+#         gravitate.controllers.grouping.remove.remove(rideRequestRef)
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -71,10 +71,10 @@ class TestGroupUsers(unittest.TestCase):
     def testPairAlgorithm(self):
         arr = self.arr
 
-        paired = []
-        unpaired = []
+        # paired = []
+        # unpaired = []
 
-        gravitate.controllers.grouping.pairing.pair(arr=arr, paired=paired, unpaired=unpaired)
+        paired, unpaired = gravitate.controllers.grouping.pairing.pair(arr=arr)
         expectedPaired = [['A', 'B'], ['C', 'D']]
         expectedUnpaired = [['G'], ['E'], ['F']]
 

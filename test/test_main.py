@@ -16,7 +16,7 @@ from google.cloud import firestore
 from firebase_admin import auth
 
 from test.store.form import FormDictFactory
-import test.store as factory
+from . import store
 from unittest import TestCase
 import json
 from test import context
