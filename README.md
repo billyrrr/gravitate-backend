@@ -170,6 +170,13 @@ Partially handled by firebase-admin:
 https://firebase.google.com/docs/auth/admin/verify-id-tokens
 
 
+## Generate Docs
+
+(TODO: change Makefile)
+``` 
+sphinx-apidoc -o source/ ../gravitate
+python3 -msphinx -b html docs/source docs/build
+```
 
 
 ## Reference
