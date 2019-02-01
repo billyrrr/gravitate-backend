@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.services.grouping_service &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.services.grouping_service</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">Resource</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.controllers.grouping</span> <span class="k">import</span> <span class="n">grouping</span>
+<span class="kn">from</span> <span class="nn">gravitate.data_access</span> <span class="k">import</span> <span class="n">RideRequestGenericDao</span>
+
+
+<div class="viewcode-block" id="OrbitForceMatchService"><a class="viewcode-back" href="../../../gravitate.services.html#gravitate.services.grouping_service.OrbitForceMatchService">[docs]</a><span class="k">class</span> <span class="nc">OrbitForceMatchService</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class provides service layer functionality for force matching rideRequests.</span>
+<span class="sd">        This service should be used in development environment to force a match for testing purposes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="OrbitForceMatchService.post"><a class="viewcode-back" href="../../../gravitate.services.html#gravitate.services.grouping_service.OrbitForceMatchService.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">request_json</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="n">request_form</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request_json</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">request_json</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">request_json</span>
+
+        <span class="n">operation_mode</span> <span class="o">=</span> <span class="n">request_form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;operationMode&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">ride_request_ids</span> <span class="o">=</span> <span class="n">request_form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rideRequestIds&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">response_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">operation_mode</span> <span class="o">==</span> <span class="s2">&quot;two&quot;</span> <span class="ow">and</span> <span class="n">ride_request_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">response_dict</span> <span class="o">=</span> <span class="n">grouping</span><span class="o">.</span><span class="n">group_two</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operation_mode</span> <span class="o">==</span> <span class="s2">&quot;many&quot;</span> <span class="ow">and</span> <span class="n">ride_request_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grouping</span><span class="o">.</span><span class="n">group_many</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">)</span>
+            <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;operationMode&quot;</span><span class="p">:</span> <span class="s2">&quot;many&quot;</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="n">operation_mode</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="n">all_ride_request_ids</span> <span class="o">=</span> <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ids</span><span class="p">(</span><span class="n">incomplete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">grouping</span><span class="o">.</span><span class="n">group_many</span><span class="p">(</span><span class="n">all_ride_request_ids</span><span class="p">)</span>
+            <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;operationMode&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Not specified operation mode.&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="n">response_dict</span><span class="p">,</span> <span class="mi">400</span>
+
+        <span class="c1"># return rideRequest.get_firestore_ref().id, 200</span>
+        <span class="k">return</span> <span class="n">response_dict</span><span class="p">,</span> <span class="mi">200</span></div></div>
+
+
+<div class="viewcode-block" id="refreshGroupAll"><a class="viewcode-back" href="../../../gravitate.services.html#gravitate.services.grouping_service.refreshGroupAll">[docs]</a><span class="k">def</span> <span class="nf">refreshGroupAll</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">    This function corresponds to use case &quot;grouping ride requests&quot;.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">allRideRequestIds</span> <span class="o">=</span> <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ids</span><span class="p">(</span><span class="n">incomplete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">grouping</span><span class="o">.</span><span class="n">group_many</span><span class="p">(</span><span class="n">allRideRequestIds</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

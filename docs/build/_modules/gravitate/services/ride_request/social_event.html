@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.services.ride_request.social_event &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.services.ride_request.social_event</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Author: Leon Wu, Zixuan Rao</span>
+
+<span class="sd">This module implements the service for creating and managing rideRequests.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">Resource</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.context</span> <span class="k">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">gravitate.controllers</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">gravitate.controllers.grouping</span> <span class="k">import</span> <span class="n">grouping</span>
+<span class="kn">from</span> <span class="nn">gravitate.data_access</span> <span class="k">import</span> <span class="n">RideRequestGenericDao</span><span class="p">,</span> <span class="n">UserDao</span><span class="p">,</span> <span class="n">EventScheduleGenericDao</span><span class="p">,</span> <span class="n">LocationGenericDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">AirportRideRequest</span><span class="p">,</span> <span class="n">SocialEventRideRequest</span>
+<span class="kn">import</span> <span class="nn">gravitate.services.utils</span> <span class="k">as</span> <span class="nn">service_utils</span>
+<span class="kn">import</span> <span class="nn">gravitate.services.ride_request.utils</span> <span class="k">as</span> <span class="nn">creation_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">parsers</span> <span class="k">as</span> <span class="n">ride_request_parsers</span>
+<span class="kn">from</span> <span class="nn">gravitate.services</span> <span class="k">import</span> <span class="n">errors</span> <span class="k">as</span> <span class="n">service_errors</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="SocialEventRideRequestCreationService"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.social_event.SocialEventRideRequestCreationService">[docs]</a><span class="k">class</span> <span class="nc">SocialEventRideRequestCreationService</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class replaces web-form with reqparse for form validation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SocialEventRideRequestCreationService.post"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.social_event.SocialEventRideRequestCreationService.post">[docs]</a>    <span class="nd">@service_utils</span><span class="o">.</span><span class="n">authenticate</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span> <span class="c1"># TODO: implement</span>
+        <span class="c1"># Verify Firebase auth.</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">uid</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">ride_request_parsers</span><span class="o">.</span><span class="n">social_event_ride_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+        <span class="c1"># if not location:</span>
+        <span class="c1">#     errorResponseDict = {</span>
+        <span class="c1">#         &quot;error&quot;: &quot;invalid airport code and datetime combination or error finding airport location in backend&quot;,</span>
+        <span class="c1">#         &quot;originalArgs&quot;: args</span>
+        <span class="c1">#     }</span>
+        <span class="c1">#     return errorResponseDict, 400</span>
+
+        <span class="c1"># Create RideRequest Object</span>
+        <span class="n">builder</span> <span class="o">=</span> <span class="n">creation_utils</span><span class="o">.</span><span class="n">SocialEventRideRequestBuilder</span><span class="p">()</span>
+        <span class="n">ride_request</span><span class="p">:</span> <span class="n">SocialEventRideRequest</span> <span class="o">=</span> <span class="n">builder</span> \
+            <span class="o">.</span><span class="n">set_with_form_and_user_id</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">build_social_event_ride_request</span><span class="p">()</span> \
+            <span class="o">.</span><span class="n">export_as_class</span><span class="p">(</span><span class="n">SocialEventRideRequest</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ride_request</span><span class="o">.</span><span class="n">location_ref</span><span class="p">)</span>
+
+        <span class="c1"># Do Validation Tasks before saving rideRequest</span>
+        <span class="c1"># 1. Check that rideRequest is not submitted by the same user</span>
+        <span class="c1">#       for the flight on the same day already</span>
+        <span class="c1"># TODO: move to transactional logic for better atomicity</span>
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">check_duplicate</span><span class="p">(</span><span class="n">ride_request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">event_ref</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">service_errors</span><span class="o">.</span><span class="n">RequestAlreadyExistsError</span>
+
+        <span class="c1"># Starts database operations to (save rideRequest and update user&#39;s eventSchedule)</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+
+        <span class="c1"># Transactional business logic for adding rideRequest</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">add_ride_request</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ride_request</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+
+        <span class="c1"># Save write result</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="c1"># rideRequest Response</span>
+        <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;firestoreRef&quot;</span><span class="p">:</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">response_dict</span><span class="p">,</span> <span class="mi">200</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

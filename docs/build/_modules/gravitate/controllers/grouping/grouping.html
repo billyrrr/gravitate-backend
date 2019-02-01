@@ -1,0 +1,259 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.controllers.grouping.grouping &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.controllers.grouping.grouping</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.controllers.grouping.orbit_group</span> <span class="k">import</span> <span class="n">OrbitGroup</span>
+<span class="kn">from</span> <span class="nn">gravitate.controllers.grouping.pairing</span> <span class="k">import</span> <span class="n">pair_ride_requests</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">Orbit</span><span class="p">,</span> <span class="n">RideRequest</span>
+<span class="kn">from</span> <span class="nn">gravitate.data_access</span> <span class="k">import</span> <span class="n">RideRequestGenericDao</span><span class="p">,</span> <span class="n">EventDao</span><span class="p">,</span> <span class="n">LocationGenericDao</span><span class="p">,</span> <span class="n">OrbitDao</span>
+<span class="kn">from</span> <span class="nn">gravitate</span> <span class="k">import</span> <span class="n">context</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">transactional</span><span class="p">,</span> <span class="n">DocumentReference</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="group_many"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.group_many">[docs]</a><span class="k">def</span> <span class="nf">group_many</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function tries to match rideRequests into groups with grouping algorithms.</span>
+<span class="sd">    Note that the rideRequests may be in different orbits, and rideRequests may not</span>
+<span class="sd">        be grouped into any orbit.</span>
+
+<span class="sd">    :param ride_request_ids:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">separate_by_event_id</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">event_id</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">ride_requests_all</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">event_id</span><span class="p">]</span>
+        <span class="n">pair_list</span> <span class="o">=</span> <span class="n">pair_all</span><span class="p">(</span><span class="n">ride_requests_all</span><span class="p">)</span>
+        <span class="n">group_all_pairs_of_event</span><span class="p">(</span><span class="n">pair_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="separate_by_event_id"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.separate_by_event_id">[docs]</a><span class="k">def</span> <span class="nf">separate_by_event_id</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot; Returns a dict with event id as key and ride request object as value</span>
+<span class="sd">    :param ride_request_ids: a list of ride requests from any number of events</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">ride_request_id</span> <span class="ow">in</span> <span class="n">ride_request_ids</span><span class="p">:</span>
+
+        <span class="n">ride_request</span> <span class="o">=</span> <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="n">ride_request_id</span><span class="p">)</span>
+
+        <span class="c1"># Do not add to rideRequests queue if the request is complete</span>
+        <span class="k">if</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">request_completion</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">event_id</span> <span class="o">=</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">event_ref</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">if</span> <span class="n">event_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">event_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">event_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ride_request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="pair_all"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.pair_all">[docs]</a><span class="k">def</span> <span class="nf">pair_all</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns a list of list of ride requests.</span>
+<span class="sd">        Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]</span>
+
+<span class="sd">    :param ride_requests:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span> <span class="o">=</span> <span class="n">pair_ride_requests</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span>
+    <span class="c1"># Since we are adopting list over tuple</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">paired</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pairs</span></div>
+
+
+<div class="viewcode-block" id="group_all_pairs_of_event"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.group_all_pairs_of_event">[docs]</a><span class="k">def</span> <span class="nf">group_all_pairs_of_event</span><span class="p">(</span><span class="n">pair_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description (Experimental)</span>
+<span class="sd">        Groups all pairs of ride requests under an event</span>
+
+<span class="sd">        This function</span>
+<span class="sd">        1. reads all ride requests associated with an event</span>
+<span class="sd">        2. puts ride requests into groups</span>
+<span class="sd">        3. call join method on each grouping</span>
+
+<span class="sd">    :param pair_list: a list of all pairs of ride requests under an event</span>
+<span class="sd">    :return: a list of ride request ids not joined</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">not_joined_all</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pair_list</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">ref</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">}</span>
+        <span class="n">not_joined</span> <span class="o">=</span> <span class="n">run_orbit_group</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">not_joined_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">not_joined</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">not_joined_all</span></div>
+
+
+<div class="viewcode-block" id="group_two"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.group_two">[docs]</a><span class="k">def</span> <span class="nf">group_two</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Force matches two rideRequests into an orbit.</span>
+
+<span class="sd">    :param ride_request_ids: Two rideRequest Ids</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ride_requests</span> <span class="o">=</span> <span class="p">[</span><span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="n">rid</span><span class="p">)</span> <span class="k">for</span> <span class="n">rid</span> <span class="ow">in</span> <span class="n">ride_request_ids</span><span class="p">]</span>
+
+    <span class="n">num_ride_requests</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">num_ride_requests</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+
+    <span class="n">ride_requests_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ride_requests</span>
+    <span class="p">}</span>
+    <span class="n">not_joined_ids</span> <span class="o">=</span> <span class="n">run_orbit_group</span><span class="p">(</span><span class="n">ride_requests_dict</span><span class="p">)</span>
+
+    <span class="n">response_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;notJoined&quot;</span><span class="p">:</span> <span class="n">not_joined_ids</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">response_dict</span></div>
+
+
+<div class="viewcode-block" id="run_orbit_group"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.run_orbit_group">[docs]</a><span class="k">def</span> <span class="nf">run_orbit_group</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">event_ids</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">event_ref</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">rid</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ride_requests</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">event_ref</span> <span class="o">=</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ref</span><span class="p">(</span><span class="n">event_ids</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+
+    <span class="n">orbit</span> <span class="o">=</span> <span class="n">Orbit</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span>
+        <span class="s2">&quot;orbitCategory&quot;</span><span class="p">:</span> <span class="s2">&quot;airportRide&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eventRef&quot;</span><span class="p">:</span> <span class="n">event_ref</span><span class="p">,</span>
+        <span class="s2">&quot;userTicketPairs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;chatroomRef&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;costEstimate&quot;</span><span class="p">:</span> <span class="mi">987654321</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">})</span>
+    <span class="n">orbit_ref</span> <span class="o">=</span> <span class="n">OrbitDao</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">orbit</span><span class="p">)</span>
+    <span class="n">orbit</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">orbit_ref</span><span class="p">)</span>
+
+    <span class="n">event</span> <span class="o">=</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event_ref</span><span class="p">)</span>
+    <span class="n">location_ref</span><span class="p">:</span> <span class="n">DocumentReference</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">location_ref</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">location_ref</span><span class="p">)</span>
+    <span class="n">ride_request_refs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span> <span class="k">for</span> <span class="n">rid</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ride_requests</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+    <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+    <span class="c1"># TODO: implement and call validate_entities_not_changed</span>
+    <span class="n">not_joined</span> <span class="o">=</span> <span class="n">_add_to_group</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">ride_request_refs</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">not_joined</span></div>
+
+
+<span class="nd">@transactional</span>
+<span class="k">def</span> <span class="nf">_add_to_group</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">ride_request_refs</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">):</span>
+    <span class="n">group</span><span class="p">:</span> <span class="n">OrbitGroup</span> <span class="o">=</span> <span class="n">OrbitGroup</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span><span class="o">.</span><span class="n">setup_with_ref</span><span class="p">(</span><span class="n">orbit_ref</span><span class="o">=</span><span class="n">orbit_ref</span><span class="p">,</span>
+                                                                           <span class="n">refs_to_add</span><span class="o">=</span><span class="n">ride_request_refs</span><span class="p">,</span>
+                                                                           <span class="n">refs_to_drop</span><span class="o">=</span><span class="nb">list</span><span class="p">(),</span>
+                                                                           <span class="n">event_ref</span><span class="o">=</span><span class="n">event_ref</span><span class="p">,</span>
+                                                                           <span class="n">location_ref</span><span class="o">=</span><span class="n">location_ref</span><span class="p">)</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="drop_group"><a class="viewcode-back" href="../../../../gravitate.controllers.grouping.html#gravitate.controllers.grouping.grouping.drop_group">[docs]</a><span class="k">def</span> <span class="nf">drop_group</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">orbit_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+    <span class="n">_drop_group</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">orbit_id</span><span class="o">=</span><span class="n">orbit_id</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="n">location_id</span><span class="p">)</span></div>
+
+
+<span class="nd">@transactional</span>
+<span class="k">def</span> <span class="nf">_drop_group</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">orbit_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">group</span><span class="p">:</span> <span class="n">OrbitGroup</span> <span class="o">=</span> <span class="n">OrbitGroup</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">intended_orbit_id</span><span class="o">=</span><span class="n">orbit_id</span><span class="p">,</span> <span class="n">ids_to_add</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span>
+                                                                  <span class="n">ids_to_drop</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span>
+                                                                  <span class="n">location_id</span><span class="o">=</span><span class="n">location_id</span><span class="p">)</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

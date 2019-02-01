@@ -1,0 +1,407 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.controllers.grouping package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-controllers-grouping-package">
+<h1>gravitate.controllers.grouping package<a class="headerlink" href="#gravitate-controllers-grouping-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.controllers.grouping.grouping">
+<span id="gravitate-controllers-grouping-grouping-module"></span><h2>gravitate.controllers.grouping.grouping module<a class="headerlink" href="#module-gravitate.controllers.grouping.grouping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.drop_group">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">drop_group</code><span class="sig-paren">(</span><em>ids: set</em>, <em>orbit_id: str = None</em>, <em>event_id: str = None</em>, <em>location_id: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#drop_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.drop_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.group_all_pairs_of_event">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">group_all_pairs_of_event</code><span class="sig-paren">(</span><em>pair_list: list</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#group_all_pairs_of_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.group_all_pairs_of_event" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description (Experimental)</dt>
+<dd><p class="first">Groups all pairs of ride requests under an event</p>
+<p class="last">This function
+1. reads all ride requests associated with an event
+2. puts ride requests into groups
+3. call join method on each grouping</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pair_list</strong> – a list of all pairs of ride requests under an event</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of ride request ids not joined</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.group_many">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">group_many</code><span class="sig-paren">(</span><em>ride_request_ids: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#group_many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.group_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function tries to match rideRequests into groups with grouping algorithms.
+Note that the rideRequests may be in different orbits, and rideRequests may not</p>
+<blockquote>
+<div>be grouped into any orbit.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ride_request_ids</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.group_two">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">group_two</code><span class="sig-paren">(</span><em>ride_request_ids: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#group_two"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.group_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force matches two rideRequests into an orbit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ride_request_ids</strong> – Two rideRequest Ids</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.pair_all">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">pair_all</code><span class="sig-paren">(</span><em>ride_requests: list</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#pair_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.pair_all" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns a list of list of ride requests.</dt>
+<dd>Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ride_requests</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.run_orbit_group">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">run_orbit_group</code><span class="sig-paren">(</span><em>ride_requests: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#run_orbit_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.run_orbit_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.grouping.separate_by_event_id">
+<code class="descclassname">gravitate.controllers.grouping.grouping.</code><code class="descname">separate_by_event_id</code><span class="sig-paren">(</span><em>ride_request_ids: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, List[Type[gravitate.models.ride_request.RideRequest]]]<a class="reference internal" href="_modules/gravitate/controllers/grouping/grouping.html#separate_by_event_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.grouping.separate_by_event_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict with event id as key and ride request object as value
+:param ride_request_ids: a list of ride requests from any number of events</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.controllers.grouping.orbit_group">
+<span id="gravitate-controllers-grouping-orbit-group-module"></span><h2>gravitate.controllers.grouping.orbit_group module<a class="headerlink" href="#module-gravitate.controllers.grouping.orbit_group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup">
+<em class="property">class </em><code class="descclassname">gravitate.controllers.grouping.orbit_group.</code><code class="descname">OrbitGroup</code><span class="sig-paren">(</span><em>transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#OrbitGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This class handles operations of grouping ride requests into orbits.
+Compared to Group, this new class has better atomicity.</p>
+<p>(Experimental)</p>
+<p>TODO: test</p>
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.event">
+<code class="descname">event</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; set<a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#OrbitGroup.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
+:return: a list of rideRequests that are not joined</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.location">
+<code class="descname">location</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.orbit">
+<code class="descname">orbit</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.orbit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_existing">
+<code class="descname">ride_requests_existing</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_existing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_to_add">
+<code class="descname">ride_requests_to_add</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_to_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_to_drop">
+<code class="descname">ride_requests_to_drop</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.ride_requests_to_drop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><em>intended_orbit_id=None</em>, <em>ids_to_add: set = None</em>, <em>ids_to_drop: set = None</em>, <em>event_id=None</em>, <em>location_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#OrbitGroup.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.setup_with_ref">
+<code class="descname">setup_with_ref</code><span class="sig-paren">(</span><em>orbit_ref=None</em>, <em>refs_to_add: list = None</em>, <em>refs_to_drop: list = None</em>, <em>event_ref=None</em>, <em>location_ref=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#OrbitGroup.setup_with_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.setup_with_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.controllers.grouping.orbit_group.OrbitGroup.validate_entities_not_changed">
+<code class="descname">validate_entities_not_changed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#OrbitGroup.validate_entities_not_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.OrbitGroup.validate_entities_not_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.orbit_group.id_set_from_dict">
+<code class="descclassname">gravitate.controllers.grouping.orbit_group.</code><code class="descname">id_set_from_dict</code><span class="sig-paren">(</span><em>d: dict</em><span class="sig-paren">)</span> &#x2192; set<a class="reference internal" href="_modules/gravitate/controllers/grouping/orbit_group.html#id_set_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.orbit_group.id_set_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.controllers.grouping.pairing">
+<span id="gravitate-controllers-grouping-pairing-module"></span><h2>gravitate.controllers.grouping.pairing module<a class="headerlink" href="#module-gravitate.controllers.grouping.pairing" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.controllers.grouping.pairing.construct_tuple_list">
+<code class="descclassname">gravitate.controllers.grouping.pairing.</code><code class="descname">construct_tuple_list</code><span class="sig-paren">(</span><em>ride_requests: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/pairing.html#construct_tuple_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.pairing.construct_tuple_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function constructs tuple list consisting only variables relevant to the</p>
+<blockquote>
+<div>grouping algorithm.</div></blockquote>
+<p>Note that this function only supports rideRequests with ToEventTarget as Target.</p>
+<p>:type ride_requests:list:
+:param ride_requests:list:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.pairing.pair">
+<code class="descclassname">gravitate.controllers.grouping.pairing.</code><code class="descname">pair</code><span class="sig-paren">(</span><em>arr=None) -&gt; (&lt;class 'list'&gt;</em>, <em>&lt;class 'list'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/pairing.html#pair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.pairing.pair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description</p>
+<blockquote>
+<div><p>Author: Tyler</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param arr:</th><td class="field-body">an array of ride requests
+[the first is earliest allowable time, second is latest time, third is firestore reference]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param paired:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">param unpaired:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.pairing.pair_ride_requests">
+<code class="descclassname">gravitate.controllers.grouping.pairing.</code><code class="descname">pair_ride_requests</code><span class="sig-paren">(</span><em>ride_requests: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/pairing.html#pair_ride_requests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.pairing.pair_ride_requests" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function serves as an adaptor for grouping algorithms.
+:param ride_requests:
+:return:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.controllers.grouping.utils">
+<span id="gravitate-controllers-grouping-utils-module"></span><h2>gravitate.controllers.grouping.utils module<a class="headerlink" href="#module-gravitate.controllers.grouping.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.controllers.grouping.utils.GroupOrbitInteractor">
+<em class="property">class </em><code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">GroupOrbitInteractor</code><a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#GroupOrbitInteractor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.GroupOrbitInteractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>TODO: replace functions with Command Pattern operations</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.utils.add_orbit_to_ride_request">
+<code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">add_orbit_to_ride_request</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#add_orbit_to_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.add_orbit_to_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if ride request object and orbit is modified. False if join is not permitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ride_request</strong> – </li>
+<li><strong>orbit</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.utils.drop_orbit_from_ride_request">
+<code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">drop_orbit_from_ride_request</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#drop_orbit_from_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.drop_orbit_from_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if ride request object and orbit is modified. False if drop is not permitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ride_request</strong> – </li>
+<li><strong>orbit</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.utils.remove_from_orbit">
+<code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">remove_from_orbit</code><span class="sig-paren">(</span><em>r: gravitate.models.ride_request.RideRequest</em>, <em>o: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#remove_from_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.remove_from_orbit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.utils.update_in_orbit_event_schedule">
+<code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">update_in_orbit_event_schedule</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, ride_request: Type[gravitate.models.ride_request.RideRequest], orbit: gravitate.models.orbit.Orbit, event: gravitate.models.event.Event, location: gravitate.models.location.Location</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#update_in_orbit_event_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.update_in_orbit_event_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate eventSchedule (client view model)
+:param transaction:
+:param ride_request:
+:param orbit:
+:param event:
+:param location:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.controllers.grouping.utils.update_not_in_orbit_event_schedule">
+<code class="descclassname">gravitate.controllers.grouping.utils.</code><code class="descname">update_not_in_orbit_event_schedule</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>ride_request: gravitate.models.ride_request.RideRequest</em>, <em>event: gravitate.models.event.Event</em>, <em>location: gravitate.models.location.Location</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/grouping/utils.html#update_not_in_orbit_event_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.grouping.utils.update_not_in_orbit_event_schedule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.controllers.grouping">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.controllers.grouping" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.controllers.grouping.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

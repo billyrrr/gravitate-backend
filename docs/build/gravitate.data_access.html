@@ -1,0 +1,918 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.data_access package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-data-access-package">
+<h1>gravitate.data_access package<a class="headerlink" href="#gravitate-data-access-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.data_access.event_dao">
+<span id="gravitate-data-access-event-dao-module"></span><h2>gravitate.data_access.event_dao module<a class="headerlink" href="#module-gravitate.data_access.event_dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, David Nong</p>
+<dl class="class">
+<dt id="gravitate.data_access.event_dao.EventDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.event_dao.</code><code class="descname">EventDao</code><a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for events</p>
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>event: gravitate.models.event.Event</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This function deletes a ride request from the database</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type eventRef:DocumentReference:
+:param eventRef:DocumentReference:
+:raises:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.find_by_timestamp">
+<code class="descname">find_by_timestamp</code><span class="sig-paren">(</span><em>timestamp</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.find_by_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.find_by_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This method finds an airportEvent that “overlaps” with the timestamp provided.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timestamp</strong> – the point-in-time that the eventSchedule has to include.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>event_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_dao.EventDao.get_ref">
+<code class="descname">get_ref</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.get_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.get_ref" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This method returns EventRef with EventId provided.
+Example: converts “testeventid1” to “/events/testeventid1” of type DocumentReference</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> – eventId</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.event_dao.EventDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.event.Event]<a class="reference internal" href="_modules/gravitate/data_access/event_dao.html#EventDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_dao.EventDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that this cannot take place if transaction already received write operations.
+“If a transaction is used and it already has write operations added, this method cannot be used
+(i.e. read-after-write is not allowed).”</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:
+:type eventRef:DocumentReference:
+:param eventRef:DocumentReference:
+:raises:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.event_schedule_dao">
+<span id="gravitate-data-access-event-schedule-dao-module"></span><h2>gravitate.data_access.event_schedule_dao module<a class="headerlink" href="#module-gravitate.data_access.event_schedule_dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: David Nong</p>
+<dl class="class">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.event_schedule_dao.</code><code class="descname">EventScheduleGenericDao</code><span class="sig-paren">(</span><em>userId=None</em>, <em>userRef=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description    
+Database access object for eventSchedules</p>
+<dl class="method">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>eventSchedule: Type[gravitate.models.event_schedule.AirportEventSchedule]</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+:type self:
+:param self:</p>
+<p>:type eventSchedule
+:Type[AirportEventSchedule]:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleEventScheduleRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This function deletes a ride request from the database</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type singleEventScheduleRef:DocumentReference:
+:param singleEventScheduleRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete_event_by_id">
+<code class="descname">delete_event_by_id</code><span class="sig-paren">(</span><em>eventId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.delete_event_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete_event_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function deletes an event from EventSchedules</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>eventScheduleRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get_with_transaction">
+<code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>eventScheduleRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.event_schedule.AirportEventSchedule]<a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd><p class="first">Note that this cannot take place if transaction already received write operations. 
+“If a transaction is used and it already has write operations added, this method cannot be used</p>
+<blockquote class="last">
+<div>(i.e. read-after-write is not allowed).”</div></blockquote>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type eventScheduleRef:DocumentReference:
+:param eventScheduleRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newEventSchedule: Type[gravitate.models.event_schedule.AirportEventSchedule], eventScheduleRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/event_schedule_dao.html#EventScheduleGenericDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that a read action must have taken place before anything is set with that transaction.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type newEventSchedule:Type[AirportEventSchedule]:
+:param newEventSchedule:Type[AirportEventSchedule]:</p>
+<p>:type eventScheduleRef:DocumentReference:
+:param eventScheduleRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.id_to_json">
+<span id="gravitate-data-access-id-to-json-module"></span><h2>gravitate.data_access.id_to_json module<a class="headerlink" href="#module-gravitate.data_access.id_to_json" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.data_access.location_dao">
+<span id="gravitate-data-access-location-dao-module"></span><h2>gravitate.data_access.location_dao module<a class="headerlink" href="#module-gravitate.data_access.location_dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, David Nong</p>
+<dl class="class">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.location_dao.</code><code class="descname">LocationGenericDao</code><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>location: Type[gravitate.models.location.Location]</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+:type self:
+:param self:</p>
+<p>:type location:Type[Location]:
+:param location:Type[Location]:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleLocationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This function deletes a ride request from the database</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type singleLocationRef:DocumentReference:
+:param singleLocationRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.find_by_airport_code">
+<code class="descname">find_by_airport_code</code><span class="sig-paren">(</span><em>airportCode</em><span class="sig-paren">)</span> &#x2192; gravitate.models.location.AirportLocation<a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.find_by_airport_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.find_by_airport_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.find_by_campus_code">
+<code class="descname">find_by_campus_code</code><span class="sig-paren">(</span><em>campusCode</em><span class="sig-paren">)</span> &#x2192; gravitate.models.location.UcLocation<a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.find_by_campus_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.find_by_campus_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.get_ref_by_id">
+<code class="descname">get_ref_by_id</code><span class="sig-paren">(</span><em>location_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.get_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.get_ref_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns location_ref by location_id.
+:param location_id:
+:return:</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.location.Location]<a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that this cannot take place if transaction already received write operations.
+“If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed).”</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type locationRef:DocumentReference:
+:param locationRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>airportCode</em>, <em>terminal</em><span class="sig-paren">)</span> &#x2192; gravitate.models.location.Location<a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newLocation: Type[gravitate.models.location.Location], locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that a read action must have taken place before anything is set with that transaction.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type newLocation:Type[Location]:
+:param newLocation:Type[Location]:</p>
+<p>:type locationRef:DocumentReference:
+:param locationRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_new">
+<em class="property">static </em><code class="descname">set_with_transaction_new</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newLocation: Type[gravitate.models.location.Location], locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/location_dao.html#LocationGenericDao.set_with_transaction_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_transactional">
+<code class="descname">set_with_transaction_transactional</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_transactional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.orbit_dao">
+<span id="gravitate-data-access-orbit-dao-module"></span><h2>gravitate.data_access.orbit_dao module<a class="headerlink" href="#module-gravitate.data_access.orbit_dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao</p>
+<dl class="class">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.orbit_dao.</code><code class="descname">OrbitDao</code><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description    
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleOrbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function deletes an orbit from the database
+Note that this function should not be called directly from any logics,</p>
+<blockquote>
+<div>since you have to delete all references to it from RideRequest, Event, etc.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; gravitate.models.orbit.Orbit<a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+Note that this cannot take place if transaction already received write operations. 
+“If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed).”</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.ref_from_id">
+<code class="descname">ref_from_id</code><span class="sig-paren">(</span><em>orbit_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.ref_from_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.ref_from_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.orbit_dao.OrbitDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>newOrbit: gravitate.models.orbit.Orbit</em>, <em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/orbit_dao.html#OrbitDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.orbit_dao.OrbitDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+Note that a read action must have taken place before anything is set with that transaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.ride_request_dao">
+<span id="gravitate-data-access-ride-request-dao-module"></span><h2>gravitate.data_access.ride_request_dao module<a class="headerlink" href="#module-gravitate.data_access.ride_request_dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao</p>
+<dl class="class">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.ride_request_dao.</code><code class="descname">RideRequestGenericDao</code><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description    
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>rideRequest: Type[gravitate.models.ride_request.RideRequest]</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.ride_request.RideRequest]<a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This method sets the firestoreRef of the rideRequest.
+Note that rideRequest is not saved to database with this method.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type rideRequest:Type[RideRequest]:
+:param rideRequest:Type[RideRequest]:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleRideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>This function deletes a ride request from the database</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type singleRideRequestRef:DocumentReference:
+:param singleRideRequestRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_user">
+<code class="descname">get_by_user</code><span class="sig-paren">(</span><em>userId</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.get_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Returns a list of rideRequests by a user</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>self</strong> – </li>
+<li><strong>userId</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">a list of ride requests</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_ids">
+<code class="descname">get_ids</code><span class="sig-paren">(</span><em>incomplete=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.get_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_ids" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Get the ids of RideRequests</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>self</strong> – </li>
+<li><strong>incomplete</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If set to true, only RideRequests with requestCompletion=False will be returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.ride_request.RideRequest]<a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that this cannot take place if transaction already received write operations. 
+“If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed).”</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type rideRequestRef:DocumentReference:
+:param rideRequestRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.ref_from_id">
+<code class="descname">ref_from_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.ref_from_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.ref_from_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.ride_request_dao.RideRequestGenericDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newRideRequest: Type[gravitate.models.ride_request.RideRequest], rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/ride_request_dao.html#RideRequestGenericDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.ride_request_dao.RideRequestGenericDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>Note that a read action must have taken place before anything is set with that transaction.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>self</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type newRideRequest:Type[RideRequest]:
+:param newRideRequest:Type[RideRequest]:</p>
+<p>:type rideRequestRef:DocumentReference:
+:param rideRequestRef:DocumentReference:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.strategy">
+<span id="gravitate-data-access-strategy-module"></span><h2>gravitate.data_access.strategy module<a class="headerlink" href="#module-gravitate.data_access.strategy" title="Permalink to this headline">¶</a></h2>
+<p>Strategy pattern for Firestore transactions</p>
+<dl class="class">
+<dt id="gravitate.data_access.strategy.TransactionStrategy">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.strategy.</code><code class="descname">TransactionStrategy</code><a class="reference internal" href="_modules/gravitate/data_access/strategy.html#TransactionStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.strategy.TransactionStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.data_access.strategy.TransactionStrategy.add_step">
+<code class="descname">add_step</code><span class="sig-paren">(</span><em>strategy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/strategy.html#TransactionStrategy.add_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.strategy.TransactionStrategy.add_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.strategy.TransactionStrategy.execute_all">
+<code class="descname">execute_all</code><span class="sig-paren">(</span><em>transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/strategy.html#TransactionStrategy.execute_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.strategy.TransactionStrategy.execute_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.data_access.strategy.TransactionStrategy.strategies">
+<code class="descname">strategies</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.data_access.strategy.TransactionStrategy.strategies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.user_dao">
+<span id="gravitate-data-access-user-dao-module"></span><h2>gravitate.data_access.user_dao module<a class="headerlink" href="#module-gravitate.data_access.user_dao" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.data_access.user_dao.UserDao">
+<em class="property">class </em><code class="descclassname">gravitate.data_access.user_dao.</code><code class="descname">UserDao</code><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for user</p>
+<blockquote>
+<div># TODO delete object.set_firestore_ref()</div></blockquote>
+<dl class="staticmethod">
+<dt id="gravitate.data_access.user_dao.UserDao.add_to_event_schedule_with_transaction">
+<em class="property">static </em><code class="descname">add_to_event_schedule_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>user_ref: str = None</em>, <em>event_ref: google.cloud.firestore_v1beta1.document.DocumentReference = None</em>, <em>event_schedule: gravitate.models.event_schedule.AirportEventSchedule = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.add_to_event_schedule_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.add_to_event_schedule_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd><dl class="first last docutils">
+<dt>Add a event schedule to users/&lt;userId&gt;/eventSchedule</dt>
+<dd>Note that the toEventRideRequestRef will be overwritten without warning if already set.
+(Same for fromEventRideRequestRef.)</dd>
+</dl>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:
+:type user_ref:str:
+:param user_ref:str:
+:type event_ref:str:
+:param event_ref:str:
+:type event_schedule:dict:
+:param event_schedule:dict:
+:raises:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.create_user">
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>user: gravitate.models.user.User</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.create_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.get_by_id_with_transaction">
+<code class="descname">get_by_id_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>userId: str</em><span class="sig-paren">)</span> &#x2192; gravitate.models.user.User<a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.get_by_id_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_by_id_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.get_fcm_token">
+<code class="descname">get_fcm_token</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.get_fcm_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_fcm_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.get_ref">
+<code class="descname">get_ref</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.get_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.get_user">
+<code class="descname">get_user</code><span class="sig-paren">(</span><em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.get_user_by_id">
+<code class="descname">get_user_by_id</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.get_user_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_user_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.data_access.user_dao.UserDao.get_user_with_transaction">
+<code class="descname">get_user_with_transaction</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.get_user_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.user_dao.UserDao.remove_event_schedule_with_transaction">
+<em class="property">static </em><code class="descname">remove_event_schedule_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference = None</em>, <em>orbitId: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.remove_event_schedule_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.remove_event_schedule_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.data_access.user_dao.UserDao.set_user_with_transaction">
+<code class="descname">set_user_with_transaction</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.set_user_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.set_with_transaction">
+<code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>new_user: gravitate.models.user.User</em>, <em>user_ref: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.update_fcm_token">
+<code class="descname">update_fcm_token</code><span class="sig-paren">(</span><em>userId: str</em>, <em>token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.update_fcm_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.update_fcm_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.data_access.user_dao.UserDao.user_exists">
+<em class="property">static </em><code class="descname">user_exists</code><span class="sig-paren">(</span><em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.user_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.user_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.data_access.user_dao.UserDao.user_id_exists">
+<code class="descname">user_id_exists</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/user_dao.html#UserDao.user_id_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.user_dao.UserDao.user_id_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access.utils">
+<span id="gravitate-data-access-utils-module"></span><h2>gravitate.data_access.utils module<a class="headerlink" href="#module-gravitate.data_access.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.data_access.utils.random_id">
+<code class="descclassname">gravitate.data_access.utils.</code><code class="descname">random_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/data_access/utils.html#random_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.data_access.utils.random_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.data_access">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.data_access" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.data_access.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
