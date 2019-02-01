@@ -1,0 +1,289 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.models.ride_request &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.models.ride_request</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Author: Zixuan Rao, Andrew Kim</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.models.target</span> <span class="k">import</span> <span class="n">Target</span><span class="p">,</span> <span class="n">ToEventTarget</span><span class="p">,</span> <span class="n">FromEventTarget</span>
+<span class="kn">from</span> <span class="nn">.firestore_object</span> <span class="k">import</span> <span class="n">FirestoreObject</span>
+
+
+<div class="viewcode-block" id="RideRequest"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.RideRequest">[docs]</a><span class="k">class</span> <span class="nc">RideRequest</span><span class="p">(</span><span class="n">FirestoreObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This class represents a RideRequest object</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RideRequest.from_dict_and_reference"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.RideRequest.from_dict_and_reference">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict_and_reference</span><span class="p">(</span><span class="n">ride_request_dict</span><span class="p">,</span> <span class="n">ride_request_ref</span><span class="p">):</span>
+        <span class="n">ride_request</span> <span class="o">=</span> <span class="n">RideRequest</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ride_request_dict</span><span class="p">)</span>
+        <span class="n">ride_request</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">ride_request_ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ride_request</span></div>
+
+<div class="viewcode-block" id="RideRequest.from_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.RideRequest.from_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function creates AirportRideRequest or SocialEventRideRequest. </span>
+<span class="sd">                (RideRequest Factory)</span>
+
+<span class="sd">            :param d:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ride_request_type</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;rideCategory&#39;</span><span class="p">]</span>
+
+        <span class="n">driver_status</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;driverStatus&#39;</span><span class="p">]</span>
+        <span class="n">pickup_address</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;pickupAddress&#39;</span><span class="p">]</span>
+        <span class="n">has_checked_in</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;hasCheckedIn&#39;</span><span class="p">]</span>
+        <span class="n">event_ref</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;eventRef&#39;</span><span class="p">]</span>
+        <span class="n">orbit_ref</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;orbitRef&#39;</span><span class="p">]</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">]</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+        <span class="n">pricing</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;pricing&#39;</span><span class="p">]</span>
+        <span class="n">request_completion</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;requestCompletion&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">ride_request_type</span> <span class="o">==</span> <span class="s1">&#39;airportRide&#39;</span><span class="p">:</span>
+            <span class="n">flight_local_time</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;flightLocalTime&#39;</span><span class="p">]</span>
+            <span class="n">flight_number</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;flightNumber&#39;</span><span class="p">]</span>
+            <span class="n">airport_location</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;airportLocation&#39;</span><span class="p">]</span>
+            <span class="n">baggages</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;baggages&#39;</span><span class="p">]</span>
+            <span class="n">disabilities</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">AirportRideRequest</span><span class="p">(</span><span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span>
+                                      <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">,</span> <span class="n">flight_local_time</span><span class="p">,</span>
+                                      <span class="n">flight_number</span><span class="p">,</span> <span class="n">airport_location</span><span class="p">,</span> <span class="n">baggages</span><span class="p">,</span> <span class="n">disabilities</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ride_request_type</span> <span class="o">==</span> <span class="s1">&#39;eventRide&#39;</span><span class="p">:</span>
+            <span class="n">location_ref</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;location_ref&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">SocialEventRideRequest</span><span class="p">(</span><span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
+                                          <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s1">&#39;Not supported rideRequestType: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ride_request_type</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RideRequest.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.RideRequest.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ride_request_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;driverStatus&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver_status</span><span class="p">,</span>
+            <span class="s1">&#39;pickupAddress&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickup_address</span><span class="p">,</span>
+            <span class="s1">&#39;hasCheckedIn&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_checked_in</span><span class="p">,</span>
+            <span class="s1">&#39;eventRef&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_ref</span><span class="p">,</span>
+            <span class="s1">&#39;orbitRef&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbit_ref</span><span class="p">,</span>
+            <span class="s1">&#39;userId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;pricing&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span><span class="p">,</span>
+            <span class="s1">&#39;requestCompletion&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_completion</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">ride_request_dict</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span>
+                 <span class="n">request_completion</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function initializes a RideRequest Object. </span>
+<span class="sd">            Note that this function should not be called directly. </span>
+
+<span class="sd">            :param self: </span>
+<span class="sd">            :param driver_status: </span>
+<span class="sd">            :param pickup_address: </span>
+<span class="sd">            :param has_checked_in: </span>
+<span class="sd">            :param event_ref: </span>
+<span class="sd">            :param orbit_ref: </span>
+<span class="sd">            :param target: </span>
+<span class="sd">            :param pricing: </span>
+<span class="sd">            :param request_completion:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver_status</span> <span class="o">=</span> <span class="n">driver_status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickup_address</span> <span class="o">=</span> <span class="n">pickup_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_checked_in</span> <span class="o">=</span> <span class="n">has_checked_in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_ref</span> <span class="o">=</span> <span class="n">event_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orbit_ref</span> <span class="o">=</span> <span class="n">orbit_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span> <span class="o">=</span> <span class="n">pricing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_completion</span> <span class="o">=</span> <span class="n">request_completion</span></div>
+
+
+<div class="viewcode-block" id="AirportRideRequest"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.AirportRideRequest">[docs]</a><span class="k">class</span> <span class="nc">AirportRideRequest</span><span class="p">(</span><span class="n">RideRequest</span><span class="p">):</span>
+
+    <span class="c1"># TODO more arguments</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span>
+                 <span class="n">request_completion</span><span class="p">,</span> <span class="n">flight_local_time</span><span class="p">,</span> <span class="n">flight_number</span><span class="p">,</span> <span class="n">airport_location</span><span class="p">,</span> <span class="n">baggages</span><span class="p">,</span> <span class="n">disabilities</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Initializes an AirportRideRequest Object </span>
+<span class="sd">            Note that this class should not be initialzed directly.</span>
+<span class="sd">            Use RideRequest.from_dict to create an AirportRideRequest.</span>
+
+<span class="sd">            :param self: </span>
+<span class="sd">            :param driver_status: </span>
+<span class="sd">            :param pickup_address: </span>
+<span class="sd">            :param has_checked_in: </span>
+<span class="sd">            :param event_ref: </span>
+<span class="sd">            :param orbit_ref: </span>
+<span class="sd">            :param target: </span>
+<span class="sd">            :param pricing: </span>
+<span class="sd">            :param flight_local_time:</span>
+<span class="sd">            :param flight_number:</span>
+<span class="sd">            :param airport_location:</span>
+<span class="sd">            :param baggages: </span>
+<span class="sd">            :param disabilities: </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span>
+                         <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ride_category</span> <span class="o">=</span> <span class="s1">&#39;airportRide&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span> <span class="o">=</span> <span class="n">flight_local_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_number</span> <span class="o">=</span> <span class="n">flight_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airport_location</span> <span class="o">=</span> <span class="n">airport_location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baggages</span> <span class="o">=</span> <span class="n">baggages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disabilities</span> <span class="o">=</span> <span class="n">disabilities</span>
+
+<div class="viewcode-block" id="AirportRideRequest.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.AirportRideRequest.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function returns the dictionary representation of a RideRequest object </span>
+<span class="sd">                so that it can be stored in the database. </span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ride_request_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;rideCategory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;airportRide&#39;</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;flightLocalTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;flightNumber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_number</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;airportLocation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">airport_location</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;baggages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baggages</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabilities</span>
+        <span class="k">return</span> <span class="n">ride_request_dict</span></div></div>
+
+
+<div class="viewcode-block" id="SocialEventRideRequest"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.SocialEventRideRequest">[docs]</a><span class="k">class</span> <span class="nc">SocialEventRideRequest</span><span class="p">(</span><span class="n">RideRequest</span><span class="p">):</span>
+
+    <span class="c1"># TODO more arguments</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span>
+                 <span class="n">request_completion</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Initializes a SocialEventRideRequest Object</span>
+<span class="sd">            Note that this class should not be initialized directly.</span>
+<span class="sd">            Use RideRequest.from_dict to create a SocialEventRideRequest.</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type dictionary:</span>
+<span class="sd">        :param dictionary:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span>
+                         <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span> <span class="o">=</span> <span class="n">location_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ride_category</span> <span class="o">=</span> <span class="s1">&#39;eventRide&#39;</span>
+
+<div class="viewcode-block" id="SocialEventRideRequest.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.SocialEventRideRequest.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ride_request_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;rideCategory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eventRide&#39;</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;location_ref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span>
+        <span class="k">return</span> <span class="n">ride_request_dict</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

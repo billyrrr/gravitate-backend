@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.controllers.fcmessaging &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.controllers.fcmessaging</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">gravitate.context</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">firebase_admin</span> <span class="k">import</span> <span class="n">messaging</span>
+<span class="kn">import</span> <span class="nn">gravitate.data_access</span> <span class="k">as</span> <span class="nn">data_access</span>
+
+
+<div class="viewcode-block" id="sendMessageToUser"><a class="viewcode-back" href="../../../gravitate.controllers.html#gravitate.controllers.fcmessaging.sendMessageToUser">[docs]</a><span class="k">def</span> <span class="nf">sendMessageToUser</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">fcmToken</span> <span class="o">=</span> <span class="n">data_access</span><span class="o">.</span><span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_fcm_token</span><span class="p">(</span><span class="n">userId</span><span class="p">)</span>
+    <span class="n">sendMessage</span><span class="p">(</span><span class="n">fcmToken</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sendMessage"><a class="viewcode-back" href="../../../gravitate.controllers.html#gravitate.controllers.fcmessaging.sendMessage">[docs]</a><span class="k">def</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="n">registration_token</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This method sends notifications to front-end. </span>
+<span class="sd">            Note that registration_token may not always be refreshed and </span>
+<span class="sd">                the operation may fail if client FCM token has changed. </span>
+
+<span class="sd">        Reference: https://firebase.google.com/docs/cloud-messaging/admin/send-messages</span>
+
+<span class="sd">    :type registration_token: </span>
+<span class="sd">    :param registration_token: FCM token represesenting a single client device</span>
+
+<span class="sd">    :type data: </span>
+<span class="sd">    :param data: data to send as notification</span>
+
+<span class="sd">    :type dry_run:</span>
+<span class="sd">    :param dry_run: set to True to emulate in unittests</span>
+
+<span class="sd">    :raises:</span>
+
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># This registration token comes from the client FCM SDKs.</span>
+
+    <span class="c1"># See documentation on defining a message payload.</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">messaging</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">token</span><span class="o">=</span><span class="n">registration_token</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Send a message to the device corresponding to the provided</span>
+    <span class="c1"># registration token.</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">messaging</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="n">dry_run</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
