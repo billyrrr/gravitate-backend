@@ -1,9 +1,8 @@
-from gravitate.controllers import utils
-from gravitate.domain.request_ride import utils as creation_utils
+from gravitate.domain.request_ride import builders as creation_utils, utils
 from gravitate.data_access import LocationGenericDao
 from gravitate.models import AirportRideRequest
-from gravitate.services import errors as service_errors
-from gravitate.services.ride_request.services import db
+from gravitate.api_server import errors as service_errors
+from gravitate.api_server.ride_request.services import db
 
 
 def create(args, user_id):

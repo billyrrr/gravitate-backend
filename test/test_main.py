@@ -1,10 +1,10 @@
 import gravitate.main as main
 from flask.testing import FlaskClient
 
-from gravitate.services.ride_request.deprecated_utils import fill_ride_request_dict_with_form, \
+from gravitate.api_server.ride_request.deprecated_utils import fill_ride_request_dict_with_form, \
     fill_ride_request_dict_builder_regression
 
-from gravitate.controllers.utils import check_duplicate
+from gravitate.domain.request_ride.utils import check_duplicate
 
 from gravitate.forms.ride_request_creation_form import RideRequestCreationValidateForm
 
@@ -20,9 +20,6 @@ from . import store
 from unittest import TestCase
 import json
 from test import context
-
-from gravitate.scripts.location import populate_locations
-from gravitate.scripts.event import populate_airport_events
 
 db = context.Context.db
 firebaseApp = context.Context.firebaseApp

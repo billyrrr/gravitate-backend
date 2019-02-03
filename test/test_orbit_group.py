@@ -1,7 +1,7 @@
 import gravitate.domain.grouping.pairing
 # import gravitate.controllers.grouping.remove
 import test.store.model
-from gravitate.domain.grouping import grouping
+from gravitate.domain.grouping import actions
 import gravitate.domain.grouping.utils as grouping_utils
 from gravitate.domain.grouping.utils import _add_to_orbit
 from gravitate.data_access import OrbitDao
@@ -91,7 +91,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                    RideRequestGenericDao().rideRequestCollectionRef.document('B')],
                   [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
                    RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = grouping.construct_groups(paired)
+        groups = actions.construct_groups(paired)
 
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
@@ -109,7 +109,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                              'unpaired does not match')
 
     def testPrimaryGroupingFunc(self):
-        grouping.group_ride_requests(self.rideRequests)
+        actions.group_ride_requests(self.rideRequests)
 
     def testPlaceInOrbit(self):
         orbitDict = {

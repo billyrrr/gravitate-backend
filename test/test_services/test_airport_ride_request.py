@@ -1,10 +1,10 @@
 import json
 from unittest import TestCase
 
-import gravitate.services.ride_request.deprecated_utils
+import gravitate.api_server.ride_request.deprecated_utils
 from gravitate import main as main
 
-import gravitate.domain.request_ride.utils as service_utils
+import gravitate.domain.request_ride.builders as service_utils
 
 from test.store import FormDictFactory
 from test.test_main import getMockAuthHeaders
@@ -92,8 +92,8 @@ class CreateRideRequestServiceUtilsTest(TestCase):
     def testRideRequestDictBuilder(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
         userId = 'testuserid1'
-        result, _ = gravitate.services.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression(mockForm, userId)
-        valueExpected, _ = gravitate.services.ride_request.deprecated_utils.fill_ride_request_dict_with_form(mockForm, userId)
+        result, _ = gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression(mockForm, userId)
+        valueExpected, _ = gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_with_form(mockForm, userId)
         self.assertDictEqual(valueExpected, result)
         self.assertIsNotNone(result["eventRef"])
         self.assertIsNotNone(result["airportLocation"])

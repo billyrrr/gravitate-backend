@@ -1,7 +1,7 @@
 import gravitate.domain.grouping.pairing
 import gravitate.domain.grouping.remove
 import test.store.model
-from gravitate.domain.grouping import grouping
+from gravitate.domain.grouping import actions
 from gravitate.domain.grouping.utils import _add_to_orbit
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
 from gravitate.models.ride_request import RideRequest
@@ -17,7 +17,7 @@ rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2V
 class TestTempForceGroupUsers(unittest.TestCase):
 
     def testMatchTwo(self):
-        result = grouping.group_two(rideRequestIds)
+        result = actions.group_two(rideRequestIds)
         print(result)
         self.assertIsNone(result)  # So that we see debug log
 
@@ -128,7 +128,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                    RideRequestGenericDao().rideRequestCollectionRef.document('B')],
                   [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
                    RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = grouping.construct_groups(paired)
+        groups = actions.construct_groups(paired)
 
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
@@ -146,7 +146,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
                              'unpaired does not match')
 
     def testPrimaryGroupingFunc(self):
-        grouping.group_ride_requests(self.rideRequests)
+        actions.group_ride_requests(self.rideRequests)
 
     def testPlaceInOrbit(self):
         orbitDict = {

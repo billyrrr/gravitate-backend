@@ -11,12 +11,12 @@ from flask import request
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.domain.grouping import grouping
+from gravitate.domain.grouping import actions
 from gravitate.domain import request_ride
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
-import gravitate.services.utils as service_utils
+import gravitate.api_server.utils as service_utils
 from . import parsers as ride_request_parsers
-from gravitate.services import errors as service_errors
+from gravitate.api_server import errors as service_errors
 
 db = Context.db
 
@@ -102,10 +102,10 @@ class DeleteMatchService(Resource):
         ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
         r = RideRequestGenericDao().get(ride_request_ref)
         location_ref = r.airport_location
-        grouping.drop_group({ride_request_id},
-                            orbit_id=r.orbit_ref.id,
-                            event_id=r.event_ref.id,
-                            location_id=location_ref.id)
+        actions.drop_group({ride_request_id},
+                           orbit_id=r.orbit_ref.id,
+                           event_id=r.event_ref.id,
+                           location_id=location_ref.id)
         response_dict = {"success": True}
 
         return response_dict, 200

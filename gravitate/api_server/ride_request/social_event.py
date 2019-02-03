@@ -8,13 +8,13 @@ This module implements the service for creating and managing rideRequests.
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.controllers import utils
+from gravitate.domain.request_ride import utils
 from gravitate.data_access import LocationGenericDao
 from gravitate.models import SocialEventRideRequest
-import gravitate.services.utils as service_utils
+import gravitate.api_server.utils as service_utils
 import gravitate.controllers.ride_request.utils as creation_utils
 from . import parsers as ride_request_parsers
-from gravitate.services import errors as service_errors
+from gravitate.api_server import errors as service_errors
 
 db = Context.db
 
