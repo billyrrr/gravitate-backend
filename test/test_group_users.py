@@ -1,8 +1,8 @@
-import gravitate.controllers.grouping.pairing
-import gravitate.controllers.grouping.remove
+import gravitate.domain.grouping.pairing
+import gravitate.domain.grouping.remove
 import test.store.model
-from gravitate.controllers.grouping import grouping
-from gravitate.controllers.grouping.utils import _add_to_orbit
+from gravitate.domain.grouping import grouping
+from gravitate.domain.grouping.utils import _add_to_orbit
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
 from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
@@ -25,7 +25,7 @@ class TestTempForceGroupUsers(unittest.TestCase):
         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        gravitate.controllers.grouping.remove.remove(rideRequestRef)
+        gravitate.domain.grouping.remove.remove(rideRequestRef)
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -56,7 +56,7 @@ class TestGroupUsers(unittest.TestCase):
         paired = []
         unpaired = []
 
-        gravitate.controllers.grouping.pairing.pair(arr=arr, paired=paired, unpaired=unpaired)
+        gravitate.domain.grouping.pairing.pair(arr=arr, paired=paired, unpaired=unpaired)
         expectedPaired = [['A', 'B'], ['C', 'D']]
         expectedUnpaired = [['G'], ['E'], ['F']]
 
@@ -66,7 +66,7 @@ class TestGroupUsers(unittest.TestCase):
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
-        tupleList = gravitate.controllers.grouping.pairing.construct_tuple_list(rideRequests)
+        tupleList = gravitate.domain.grouping.pairing.construct_tuple_list(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
@@ -76,7 +76,7 @@ class TestGroupUsers(unittest.TestCase):
         expectedUnpaired = [['G'], ['E'], ['F']]
 
         rideRequests: list = self.rideRequests
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(rideRequests)
+        paired, unpaired = gravitate.domain.grouping.pairing.pair_ride_requests(rideRequests)
 
         self.assertListEqual(expectedPaired, paired, 'paired does not match')
         self.assertListEqual(expectedUnpaired, unpaired,
@@ -118,7 +118,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
-        tupleList = gravitate.controllers.grouping.pairing.construct_tuple_list(rideRequests)
+        tupleList = gravitate.domain.grouping.pairing.construct_tuple_list(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
@@ -139,7 +139,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         ).rideRequestCollectionRef.document('E')], [RideRequestGenericDao().rideRequestCollectionRef.document('F')]]
 
         rideRequests: list = self.rideRequests
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(rideRequests)
+        paired, unpaired = gravitate.domain.grouping.pairing.pair_ride_requests(rideRequests)
 
         self.assertListEqual(expectedPaired, paired, 'paired does not match')
         self.assertListEqual(expectedUnpaired, unpaired,

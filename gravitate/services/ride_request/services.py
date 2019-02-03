@@ -11,7 +11,7 @@ from flask import request
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.controllers.grouping import grouping
+from gravitate.domain.grouping import grouping
 from gravitate.controllers import ride_request_controller
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
 import gravitate.services.utils as service_utils

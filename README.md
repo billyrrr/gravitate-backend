@@ -169,8 +169,8 @@ One exception is flightLocalTime, which is defined as local time without offset 
 Partially handled by firebase-admin: 
 https://firebase.google.com/docs/auth/admin/verify-id-tokens
 
-
-
+# Organizing Modules
+[Useful Guide](https://stackoverflow.com/questions/12578908/separation-of-business-logic-and-data-access-in-django/12579490#12579490)
 
 ## Reference
 

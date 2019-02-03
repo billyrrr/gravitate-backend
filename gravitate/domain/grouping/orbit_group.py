@@ -3,8 +3,8 @@ from typing import Type, List
 from google.cloud.firestore_v1beta1 import Transaction
 
 from gravitate.data_access import EventDao, LocationGenericDao, OrbitDao, RideRequestGenericDao
-from gravitate.models import Orbit, Location, Event, RideRequest
-import gravitate.controllers.grouping.utils as utils
+from gravitate.models import Orbit, Location, Event
+import gravitate.domain.grouping.utils as utils
 
 
 def _refresh_event_schedules_all(transaction: Transaction, in_orbit: dict, not_in_orbit: dict, orbit: Orbit, event,
