@@ -3,7 +3,7 @@ import warnings
 from gravitate.controllers import utils
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, Target
-from gravitate.controllers.ride_request_controller.utils import AirportRideRequestBuilder
+from gravitate.domain.request_ride.utils import AirportRideRequestBuilder
 
 
 def fill_ride_request_dict_with_form(form: AirportRideRequestCreationForm, userId) -> (dict, AirportLocation):

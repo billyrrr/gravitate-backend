@@ -4,7 +4,7 @@ from unittest import TestCase
 import gravitate.services.ride_request.deprecated_utils
 from gravitate import main as main
 
-import gravitate.controllers.ride_request_controller.utils as service_utils
+import gravitate.domain.request_ride.utils as service_utils
 
 from test.store import FormDictFactory
 from test.test_main import getMockAuthHeaders

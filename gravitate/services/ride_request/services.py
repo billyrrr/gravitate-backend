@@ -12,7 +12,7 @@ from flask_restful import Resource
 
 from gravitate.context import Context
 from gravitate.domain.grouping import grouping
-from gravitate.controllers import ride_request_controller
+from gravitate.domain import request_ride
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
 import gravitate.services.utils as service_utils
 from . import parsers as ride_request_parsers
@@ -41,7 +41,7 @@ class AirportRideRequestCreationService(Resource):
         #     return errorResponseDict, 400
 
         # Create RideRequest Object
-        ride_request = ride_request_controller.create(args, user_id)
+        ride_request = request_ride.create(args, user_id)
 
         # rideRequest Response
         response_dict = {

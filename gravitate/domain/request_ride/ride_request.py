@@ -1,5 +1,5 @@
 from gravitate.controllers import utils
-from gravitate.controllers.ride_request_controller import utils as creation_utils
+from gravitate.domain.request_ride import utils as creation_utils
 from gravitate.data_access import LocationGenericDao
 from gravitate.models import AirportRideRequest
 from gravitate.services import errors as service_errors
