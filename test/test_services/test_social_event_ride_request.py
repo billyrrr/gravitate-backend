@@ -1,16 +1,9 @@
-import json
 from unittest import TestCase
 
-import gravitate.services.ride_request.deprecated_utils
-from gravitate import main as main
+import gravitate.controllers.ride_request.utils as service_utils
 
-import gravitate.services.ride_request.utils as service_utils
-import gravitate.services.errors as service_errors
-
-import test.store as factory
-
+from test import store
 from test.store import FormDictFactory
-from test.test_main import getMockAuthHeaders
 
 from test import context
 
