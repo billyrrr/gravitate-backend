@@ -44,6 +44,7 @@ sched.start()
 # Initialize Flask
 firebase_request_adapter = requests.Request()
 app = Flask(__name__)
+
 db = Context.db
 parser = reqparse.RequestParser()
 

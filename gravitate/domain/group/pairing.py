@@ -9,12 +9,12 @@ def pair_ride_requests(ride_requests: list):
     :param ride_requests:
     :return:
     """
-    tuple_list = construct_tuple_list(ride_requests)
-    paired, unpaired = pair(arr=tuple_list)
+    tuple_list = _construct_tuple_list(ride_requests)
+    paired, unpaired = _pair(arr=tuple_list)
     return paired, unpaired
 
 
-def construct_tuple_list(ride_requests: list):
+def _construct_tuple_list(ride_requests: list):
     """ Description
         This function constructs tuple list consisting only variables relevant to the
             grouping algorithm.
@@ -44,7 +44,7 @@ def construct_tuple_list(ride_requests: list):
     return arr
 
 
-def pair(arr=None) -> (list, list):
+def _pair(arr=None) -> (list, list):
     """
     Description
 

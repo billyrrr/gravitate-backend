@@ -81,7 +81,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
-        tupleList = gravitate.domain.group.pairing.construct_tuple_list(rideRequests)
+        tupleList = gravitate.domain.group.pairing._construct_tuple_list(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
