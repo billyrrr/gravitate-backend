@@ -2,6 +2,7 @@ from unittest import TestCase
 
 import gravitate.controllers.ride_request.utils as service_utils
 
+from test import store
 from test.store import FormDictFactory
 
 from test import context
