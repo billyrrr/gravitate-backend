@@ -8,7 +8,7 @@ import gravitate.domain.request_ride.builders as service_utils
 
 from test.store import FormDictFactory
 from test.test_main import getMockAuthHeaders
-
+from test import scripts
 from test import context
 
 db = context.Context.db
@@ -213,6 +213,7 @@ class RefactorTempTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
+
 
     def testCreateRideRequestsTemp(self):
         # Create new rideRequests
