@@ -16,7 +16,7 @@ from gravitate.controllers.grouping import grouping
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
 from gravitate.models import AirportRideRequest
 import gravitate.services.utils as service_utils
-import gravitate.services.ride_request.utils as creation_utils
+import gravitate.controllers.ride_request.utils as creation_utils
 from . import parsers as ride_request_parsers
 from gravitate.services import errors as service_errors
 
