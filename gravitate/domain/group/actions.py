@@ -1,7 +1,7 @@
 from typing import Type, List, Dict
 
-from gravitate.domain.grouping import OrbitGroup
-from gravitate.domain.grouping.pairing import pair_ride_requests
+from gravitate.domain.group import OrbitGroup
+from gravitate.domain.group.pairing import pair_ride_requests
 from gravitate.models import Orbit, RideRequest
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao
 from gravitate import context
