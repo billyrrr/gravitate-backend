@@ -1,7 +1,8 @@
+# import gravitate.domain.event_schedule.actions
 from gravitate.models import RideRequest, Location, Orbit, Event
 from gravitate.data_access import UserDao
 from google.cloud.firestore import Transaction
-from gravitate.controllers import eventscheduleutils
+from gravitate.domain.event_schedule import actions as event_schedule_actions
 from typing import Type
 from gravitate import context
 
@@ -147,7 +148,7 @@ def update_in_orbit_event_schedule(transaction: Transaction, ride_request: Type[
     user_ref = UserDao().get_ref(user_id)
     event_ref = event.get_firestore_ref()
 
-    event_schedule = eventscheduleutils.create_event_schedule_orbit(
+    event_schedule = event_schedule_actions.create_event_schedule_orbit(
         ride_request=ride_request, location=location, orbit=orbit)
     UserDao().add_to_event_schedule_with_transaction(transaction,
                                                      user_ref=user_ref,
@@ -162,7 +163,7 @@ def update_not_in_orbit_event_schedule(transaction: Transaction, ride_request: R
     user_ref = UserDao().get_ref(user_id)
     event_ref = event.get_firestore_ref()
 
-    event_schedule = eventscheduleutils.create_event_schedule(ride_request, location)
+    event_schedule = event_schedule_actions.create_event_schedule(ride_request, location)
     UserDao().add_to_event_schedule_with_transaction(transaction,
                                                      user_ref=user_ref,
                                                      event_ref=event_ref,

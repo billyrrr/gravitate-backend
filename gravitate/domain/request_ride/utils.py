@@ -1,10 +1,10 @@
 from typing import Type
 
+import gravitate.domain.event_schedule.actions
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, RideRequest, User
 from google.cloud.firestore import DocumentReference, transactional
 from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, UserDao
-from gravitate.controllers import eventscheduleutils
 
 import iso8601
 import pytz
@@ -52,7 +52,7 @@ def add_ride_request(transaction, ride_request, location, user_id):
     # [START] Update the user's eventSchedule
     user_ref = UserDao().get_ref(user_id)
     # Build the eventSchedule for user
-    event_schedule = eventscheduleutils.create_event_schedule(
+    event_schedule = gravitate.domain.event_schedule.actions.create_event_schedule(
         ride_request, location)
     UserDao.add_to_event_schedule_with_transaction(
         transaction, user_ref=user_ref, event_ref=ride_request.event_ref, event_schedule=event_schedule)
