@@ -170,18 +170,6 @@ def update_not_in_orbit_event_schedule(transaction: Transaction, ride_request: R
                                                      event_schedule=event_schedule)
 
 
-def remove_from_orbit(r: RideRequest, o: Orbit):
-    # DEPRECATED
-    # remove userRef from orbitRef's userTicketPairs
-    # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
-    userIds = list(o.user_ticket_pairs.keys())
-    for userId in userIds:
-        if userId == r.user_id:
-            o.user_ticket_pairs.pop(userId)
-    r.orbit_ref = None
-    r.request_completion = False
-
-
 class GroupOrbitInteractor(object):
     """
         TODO: replace functions with Command Pattern operations

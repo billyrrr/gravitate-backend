@@ -172,6 +172,14 @@ https://firebase.google.com/docs/auth/admin/verify-id-tokens
 # Organizing Modules
 [Useful Guide](https://stackoverflow.com/questions/12578908/separation-of-business-logic-and-data-access-in-django/12579490#12579490)
 
+## Generate Docs
+
+(TODO: change Makefile)
+``` 
+sphinx-apidoc -o source/ ../gravitate
+python3 -msphinx -b html docs/source docs/build
+```
+
 ## Reference
 
 <https://help.github.com/articles/cloning-a-repository/#platform-windows>

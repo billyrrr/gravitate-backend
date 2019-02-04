@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-import gravitate.controllers.ride_request.utils as service_utils
+from gravitate.domain.request_ride import utils as service_utils
+from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder, \
+    AirportRideRequestBuilder
 
 from test import store
 from test.store import FormDictFactory
@@ -16,7 +18,7 @@ class RideRequestDictBuilderTest(TestCase):
         userId = 'testuserid1'
         d = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
 
-        b = service_utils.RideRequestBaseBuilder().set_data(
+        b = RideRequestBaseBuilder().set_data(
             user_id=userId, flight_local_time=d["flightLocalTime"], flight_number=d["flightNumber"],
             # pricing=d["pricing"],  # diabilities=d["disabilities"], baggages=d["baggages"],
             airport_code=d["airportCode"], to_event=d["toEvent"], pickup_address=d["pickupAddress"],
@@ -34,13 +36,13 @@ class RideRequestDictBuilderTest(TestCase):
 
 
 class SocialEventDictBuilderTest(TestCase):
-    builder: service_utils.AirportRideRequestBuilder = None
+    builder: AirportRideRequestBuilder = None
 
     def testSetWithForm(self):
         userId = 'testuserid1'
         d = store.EventRideRequestFormDictFactory().create()
 
-        b = service_utils.SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=userId)
+        b = SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=userId)
         expected_vars = {'user_id': 'testuserid1',
                          'event_id': "KxkUnYurkYL1hZGHdxUY",
                          'pickup_address': 'Tenaya Hall, San Diego, CA 92161',
@@ -54,8 +56,8 @@ class SocialEventDictBuilderTest(TestCase):
         def setUp(self):
             d = store.EventRideRequestFormDictFactory().create()
             self.user_id = 'testuserid1'
-            self.builder: service_utils.SocialEventRideRequestBuilder = \
-                service_utils.SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=self.user_id)
+            self.builder: SocialEventRideRequestBuilder = \
+                SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=self.user_id)
         setUp(self)
         self.builder.build_social_event_ride_request()
         _d_expected = {

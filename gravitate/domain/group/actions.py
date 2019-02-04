@@ -155,3 +155,15 @@ def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, l
                                                                   ids_to_drop=ids, event_id=event_id,
                                                                   location_id=location_id)
     group.execute()
+
+
+def remove_from_orbit(r: RideRequest, o: Orbit):
+    # DEPRECATED
+    # remove userRef from orbitRef's userTicketPairs
+    # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+    userIds = list(o.user_ticket_pairs.keys())
+    for userId in userIds:
+        if userId == r.user_id:
+            o.user_ticket_pairs.pop(userId)
+    r.orbit_ref = None
+    r.request_completion = False

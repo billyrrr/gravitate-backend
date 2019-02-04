@@ -2,6 +2,7 @@ import unittest
 
 import gravitate.controllers
 import test.store
+from gravitate.domain import group
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -32,7 +33,7 @@ class TestGroupUsers(unittest.TestCase):
         # paired = []
         # unpaired = []
 
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair(arr=arr)
+        paired, unpaired = group.pairing._pair(arr=arr)
         expected_paired = [['A', 'B'], ['C', 'D']]
         expected_unpaired = [['G'], ['E'], ['F']]
 
@@ -42,7 +43,7 @@ class TestGroupUsers(unittest.TestCase):
 
     def testConstructTupleList(self):
         ride_requests: list = self.rideRequests
-        tuple_list = gravitate.controllers.grouping.pairing.construct_tuple_list(ride_requests)
+        tuple_list = group.pairing._construct_tuple_list(ride_requests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tuple_list)
@@ -52,7 +53,7 @@ class TestGroupUsers(unittest.TestCase):
         expected_unpaired = [['G'], ['E'], ['F']]
 
         ride_requests: list = self.rideRequests
-        paired, unpaired = gravitate.controllers.grouping.pairing.pair_ride_requests(ride_requests)
+        paired, unpaired = group.pairing.pair_ride_requests(ride_requests)
 
         self.assertListEqual(expected_paired, paired, 'paired does not match')
         self.assertListEqual(expected_unpaired, unpaired,

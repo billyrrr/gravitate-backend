@@ -1,9 +1,10 @@
 import gravitate.domain.group.pairing
-import gravitate.domain.group.remove
+from gravitate.domain.group import remove_from_orbit
 import test.store.model
 from gravitate.domain.group import actions
+from gravitate.domain.group import pairing
 from gravitate.domain.group.utils import _add_to_orbit
-from gravitate.data_access.ride_request_dao import RideRequestGenericDao
+from gravitate.data_access import RideRequestGenericDao, OrbitDao
 from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
 import unittest
@@ -25,7 +26,10 @@ class TestTempForceGroupUsers(unittest.TestCase):
         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        gravitate.domain.group.remove.remove(rideRequestRef)
+        rideRequest = RideRequestGenericDao().get(rideRequestRef)
+        orbitRef = rideRequest.orbit_ref
+        orbit = OrbitDao().get(orbitRef)
+        remove_from_orbit(rideRequest, orbit)
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -123,13 +127,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
 
-    def testConstructGroup(self):
-        paired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
-                   RideRequestGenericDao().rideRequestCollectionRef.document('B')],
-                  [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
-                   RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = actions.construct_groups(paired)
-
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
                            RideRequestGenericDao().rideRequestCollectionRef.document('B')],
@@ -144,9 +141,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         self.assertListEqual(expectedPaired, paired, 'paired does not match')
         self.assertListEqual(expectedUnpaired, unpaired,
                              'unpaired does not match')
-
-    def testPrimaryGroupingFunc(self):
-        actions.group_ride_requests(self.rideRequests)
 
     def testPlaceInOrbit(self):
         orbitDict = {

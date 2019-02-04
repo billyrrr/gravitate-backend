@@ -1,5 +1,5 @@
 from unittest import TestCase
-from data_access.strategy import TransactionStrategy
+from gravitate.data_access.strategy import TransactionStrategy
 from functools import partial
 
 def exampleExecutable(a, b):
