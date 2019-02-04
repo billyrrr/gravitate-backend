@@ -1,6 +1,7 @@
 from gravitate import scripts
 from gravitate import models
 from gravitate import data_access
+from gravitate.domain.group import actions as group_actions
 from test import store
 from typing import Type
 from gravitate import context
@@ -11,7 +12,7 @@ db = CTX.db
 
 def generate_test_data():
     scripts.populate_locations.doWork()
-    scripts.populate_airport_events.populate_events(start_string="2018-12-19T08:00:00.000", num_days=15)
+    scripts.populate_airport_events.populate_events(start_string="2018-12-01T08:00:00.000", num_days=35)
 
 
 def generate_ride_request() -> Type[models.RideRequest]:
@@ -28,6 +29,14 @@ def generate_orbit(event_ref) -> models.Orbit:
     orbit = models.Orbit.from_dict(orbit_dict)
     data_access.OrbitDao().create(orbit)
     return orbit
+
+
+def remove_match_tmp(ride_request_id):
+    ride_request_ref = data_access.RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
+    ride_request = data_access.RideRequestGenericDao().get(ride_request_ref)
+    orbit_ref = ride_request.orbit_ref
+    orbit = data_access.OrbitDao().get(orbit_ref)
+    group_actions.remove_from_orbit(ride_request, orbit)
 
 
 if __name__ == "__main__":

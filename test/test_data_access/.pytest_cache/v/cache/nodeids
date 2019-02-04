@@ -1,1 +1,5 @@
-[]
+[
+  "test_location_dao.py::LocationDAOTest::testFindByAirportCode",
+  "test_location_dao.py::LocationDAOTest::testSetWithTransaction",
+  "test_location_dao.py::LocationDAOTest::testSetWithTransactionTransactional"
+]

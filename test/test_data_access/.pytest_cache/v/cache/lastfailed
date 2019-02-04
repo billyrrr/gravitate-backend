@@ -1,4 +1,5 @@
 {
   "test_event_dao.py": true,
+  "test_location_dao.py::LocationDAOTest::testFindByAirportCode": true,
   "test_orbit_dao.py": true
 }

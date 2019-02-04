@@ -2,9 +2,9 @@ import json
 
 from gravitate import context
 import gravitate.models as models
+import os
 
 db = context.Context.db
-
 
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",
                 userId="testuserid1", orbitId="testorbitid1"):

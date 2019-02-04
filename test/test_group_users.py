@@ -21,8 +21,7 @@ rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2V
 #         result = actions.group_two(rideRequestIds)
 #         print(result)
 #         self.assertIsNone(result)  # So that we see debug log
-#
-#     def testRemoveMatch(self):
+#def testRemoveMatch(self):
 #         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
 #         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
 #         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
@@ -30,6 +29,7 @@ rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2V
 #         orbitRef = rideRequest.orbit_ref
 #         orbit = OrbitDao().get(orbitRef)
 #         remove_from_orbit(rideRequest, orbit)
+#
 
 
 class TestGroupUsers(unittest.TestCase):
@@ -57,10 +57,7 @@ class TestGroupUsers(unittest.TestCase):
     def testPairAlgorithm(self):
         arr = self.arr
 
-        paired = []
-        unpaired = []
-
-        gravitate.domain.group.pairing._pair(arr=arr, paired=paired, unpaired=unpaired)
+        paired, unpaired = gravitate.domain.group.pairing._pair(arr=arr)
         expectedPaired = [['A', 'B'], ['C', 'D']]
         expectedUnpaired = [['G'], ['E'], ['F']]
 
@@ -165,7 +162,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         _add_to_orbit(rideRequest, orbit)
         userTicketPairsDict = orbit.to_dict()["userTicketPairs"]
         expectedDict = {
-            'SQytDq13q00e0N3H4agR': {
+            rideRequest.user_id: {
                 "rideRequestRef": db.document('rideRequests', 'testriderequestid1'),
                 "userWillDrive": False,
                 "hasCheckedIn": False,

@@ -98,6 +98,7 @@ class FormDictFactory:
         else:
             return mockForm
 
+
 class EventRideRequestFormDictFactory:
 
     def create(self):

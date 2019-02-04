@@ -9,8 +9,13 @@ db = context.Context.db
 
 class LocationDAOTest(unittest.TestCase):
 
-    # def setUp(self):
-    #     self.user = User.from_dict(userDict)
+    def setUp(self):
+        # self.user = User.from_dict(userDict)
+        self.to_delete = list()
+
+    def tearDown(self):
+        for ref in self.to_delete:
+            ref.delete()
 
     def testFindByAirportCode(self):
         result = LocationGenericDao().find_by_airport_code('LAX')
@@ -18,11 +23,15 @@ class LocationDAOTest(unittest.TestCase):
 
     def testSetWithTransaction(self):
         transaction = db.transaction()
-        LocationGenericDao.set_with_transaction(transaction, model.getLocation(), model.mock1["locationFirestoreRef"])
+        ref = model.mock1["locationFirestoreRef"]
+        LocationGenericDao.set_with_transaction(transaction, model.getLocation(), ref)
+        self.to_delete.append(ref)
         transaction.commit()
 
     def testSetWithTransactionTransactional(self):
         transaction = db.transaction()
-        LocationGenericDao.set_with_transaction_transactional(transaction, model.getLocation(), model.mock1["locationFirestoreRef"])
+        ref = model.mock1["locationFirestoreRef"]
+        LocationGenericDao.set_with_transaction_transactional(transaction, model.getLocation(), ref)
+        self.to_delete.append(ref)
         # transaction.commit()
 
