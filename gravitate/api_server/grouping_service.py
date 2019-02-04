@@ -3,7 +3,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from gravitate.controllers.grouping import grouping
+from gravitate.domain.group import actions
 from gravitate.data_access import RideRequestGenericDao
 
 
@@ -22,13 +22,13 @@ class OrbitForceMatchService(Resource):
         response_dict = None
 
         if operation_mode == "two" and ride_request_ids is not None:
-            response_dict = grouping.group_two(ride_request_ids)
+            response_dict = actions.group_two(ride_request_ids)
         elif operation_mode == "many" and ride_request_ids is not None:
-            grouping.group_many(ride_request_ids)
+            actions.group_many(ride_request_ids)
             response_dict = {"success": True, "operationMode": "many"}
         elif operation_mode == "all":
             all_ride_request_ids = RideRequestGenericDao().get_ids(incomplete=True)
-            grouping.group_many(all_ride_request_ids)
+            actions.group_many(all_ride_request_ids)
             response_dict = {"success": True, "operationMode": "all"}
         else:
             response_dict = {"error": "Not specified operation mode."}
@@ -45,4 +45,4 @@ def refreshGroupAll():
     :return:
     """
     allRideRequestIds = RideRequestGenericDao().get_ids(incomplete=True)
-    grouping.group_many(allRideRequestIds)
+    actions.group_many(allRideRequestIds)

@@ -141,6 +141,9 @@ class RideRequestGenericDao:
         rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 
+    def set(self, rideRequest: Type[RideRequest]) -> DocumentReference:
+        rideRequest.get_firestore_ref().set(rideRequest.to_dict())
+
     def delete(self, singleRideRequestRef: DocumentReference):
         """ Description
             This function deletes a ride request from the database

@@ -30,12 +30,12 @@ from gravitate.context import Context
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from gravitate.services.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.services.ride_request.services import AirportRideRequestCreationService, DeleteMatchService, \
+from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll
+from gravitate.api_server.ride_request.services import AirportRideRequestCreationService, DeleteMatchService, \
     AirportRideRequestService
-from gravitate.services.user_service import UserService
-from gravitate.services.utils import authenticate
-from gravitate.services import errors as service_errors
+from gravitate.api_server.user_service import UserService
+from gravitate.api_server.utils import authenticate
+from gravitate.api_server import errors as service_errors
 
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(refreshGroupAll, 'interval', minutes=1)
@@ -44,6 +44,7 @@ sched.start()
 # Initialize Flask
 firebase_request_adapter = requests.Request()
 app = Flask(__name__)
+
 db = Context.db
 parser = reqparse.RequestParser()
 

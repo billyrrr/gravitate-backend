@@ -1,5 +1,5 @@
 import unittest
-from gravitate.controllers.eventscheduleutils import getMemberProfilePhotoUrls
+from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
 from google.cloud.firestore import DocumentReference, DocumentSnapshot
 from gravitate.models.orbit import Orbit
 from test import context

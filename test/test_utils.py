@@ -1,9 +1,5 @@
 import unittest
-import gravitate.controllers.utils as controller_utils
-import json
-from test import context
-import datetime
-import iso8601
+import gravitate.domain.request_ride.utils as controller_utils
 
 
 class UtilsTest(unittest.TestCase):

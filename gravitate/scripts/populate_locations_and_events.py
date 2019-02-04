@@ -9,5 +9,3 @@ from gravitate.scripts.event import populate_airport_events
 populate_locations.doWork()
 populate_airport_events.populate_events(start_string="2019-01-22T08:00:00.000", num_days=30)
 
-
-
