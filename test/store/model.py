@@ -125,6 +125,19 @@ orbitDict = {
 }
 
 
+def get_orbit_dict_empty(event_ref):
+    return {
+        "orbitCategory": "airportRide",
+        "eventRef": event_ref,
+        "userTicketPairs": {
+
+        },
+        "chatroomRef": "testchatroomref1",
+        "costEstimate": 987654321,
+        "status": 1
+}
+
+
 def getOrbitDict():
     return orbitDict
 

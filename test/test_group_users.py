@@ -14,22 +14,22 @@ db = context.Context.db
 
 rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k"]
 
-
-class TestTempForceGroupUsers(unittest.TestCase):
-
-    def testMatchTwo(self):
-        result = actions.group_two(rideRequestIds)
-        print(result)
-        self.assertIsNone(result)  # So that we see debug log
-
-    def testRemoveMatch(self):
-        # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
-        rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
-        rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
-        rideRequest = RideRequestGenericDao().get(rideRequestRef)
-        orbitRef = rideRequest.orbit_ref
-        orbit = OrbitDao().get(orbitRef)
-        remove_from_orbit(rideRequest, orbit)
+#
+# class TestTempForceGroupUsers(unittest.TestCase):
+#
+#     def testMatchTwo(self):
+#         result = actions.group_two(rideRequestIds)
+#         print(result)
+#         self.assertIsNone(result)  # So that we see debug log
+#
+#     def testRemoveMatch(self):
+#         # rideRequestId = "nOb3TWzUpSopqhNbwVxyfnTU7u91pRmO" # "gganvzHRUCyGiLf2tZAle5Z11HicZ6dR" # "PBQILbyLowYlv2WZsDRnPvP61lM6NzoC" # "9msl3amhAj503pAtSjSQod4qy6N26e7h" # "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k" # "7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU"
+#         rideRequestId = "ZjOsvcOHyUKKAJwYnCSHNM0cC8YsEjWo"
+#         rideRequestRef = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+#         rideRequest = RideRequestGenericDao().get(rideRequestRef)
+#         orbitRef = rideRequest.orbit_ref
+#         orbit = OrbitDao().get(orbitRef)
+#         remove_from_orbit(rideRequest, orbit)
 
 
 class TestGroupUsers(unittest.TestCase):

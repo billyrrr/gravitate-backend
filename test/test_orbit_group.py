@@ -10,6 +10,7 @@ from gravitate.models.ride_request import RideRequest
 from gravitate.models.orbit import Orbit
 import unittest
 from test import context
+from test import scripts
 
 db = context.Context.db
 
@@ -17,15 +18,23 @@ rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2V
 
 
 class TestOrbitGroupHelpers(unittest.TestCase):
+    #
+    # def setUp(self):
+    #     self.r = RideRequestGenericDao().get_by_id("CmTvs1VcnavAnanhl8Nu00OmWkJYou2o")
+    #     self.o = OrbitDao().get_by_id("1mozA22dmuFWBZbLRkdg")
 
     def setUp(self):
-        self.r = RideRequestGenericDao().get_by_id("CmTvs1VcnavAnanhl8Nu00OmWkJYou2o")
-        self.o = OrbitDao().get_by_id("1mozA22dmuFWBZbLRkdg")
+        self.r = scripts.generate_ride_request()
+        self.o = scripts.generate_orbit(self.r.event_ref)
 
     def test_add(self):
 
         is_successful = grouping_utils.add_orbit_to_ride_request(self.r, self.o)
         self.assertTrue(is_successful)
+
+    def tearDown(self):
+        self.r.get_firestore_ref().delete()
+        self.o.get_firestore_ref().delete()
 
     def test_validate_add(self):
         is_valid = grouping_utils._validate_to_add(self.r, self.o)

@@ -44,8 +44,6 @@
   "test_orbit_group.py::TestGroupUsersWithRideRequestRef::testConstructGroup": true,
   "test_orbit_group.py::TestGroupUsersWithRideRequestRef::testPlaceInOrbit": true,
   "test_orbit_group.py::TestGroupUsersWithRideRequestRef::testPrimaryGroupingFunc": true,
-  "test_orbit_group.py::TestOrbitGroupHelpers::test_add": true,
-  "test_orbit_group.py::TestOrbitGroupHelpers::test_validate_add": true,
   "test_scripts.py": true,
   "test_scripts.py::TestBuildLaxEvent::testBuildLaxSampleEvent": true,
   "test_scripts.py::TestGenerateEvent::testGenerateEvent": true,

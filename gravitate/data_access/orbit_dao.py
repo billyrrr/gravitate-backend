@@ -56,6 +56,7 @@ class OrbitDao:
         """
         print(orbit.to_dict())
         _, orbitRef = self.orbitCollectionRef.add(orbit.to_dict())
+        orbit.set_firestore_ref(orbitRef)
         return orbitRef
 
     def delete(self, singleOrbitRef: DocumentReference):
