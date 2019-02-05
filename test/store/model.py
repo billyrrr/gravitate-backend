@@ -4,6 +4,11 @@ from gravitate import context
 import gravitate.models as models
 import os
 
+import os
+
+# gravitate_module_path = os.path.dirname()  # should be equivalent to "../gravitate"
+# config_jsons_path = os.path.join(gravitate_module_path, "config_jsons")
+
 db = context.Context.db
 
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",
@@ -165,5 +170,5 @@ def getLocation():
 
 
 def get_json_file(json_filename):
-    with open('test/jsons_written_by_david_a/{}'.format(json_filename)) as json_file:
+    with open('./test/jsons_written_by_david_a/{}'.format(json_filename)) as json_file:
         return json.load(json_file)
