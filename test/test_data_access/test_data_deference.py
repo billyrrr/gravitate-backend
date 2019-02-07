@@ -9,6 +9,7 @@ CTX = context.Context
 db = CTX.db
 
 datastore_client = datastore.Client(project="gravitate-dsfb-testing")
+document_id = "testreferenceid"
 
 
 def add_task():
@@ -37,7 +38,7 @@ def add_task():
 class TestDataReference(TestCase):
 
     def setUp(self):
-        self.firestore_ref: firestore.DocumentReference = db.collection("testcollectionid").document("testreferenceid")
+        self.firestore_ref: firestore.DocumentReference = db.collection("testcollectionid").document(document_id)
         self.datastore_key: datastore.Key = add_task()
 
     def tearDown(self):
@@ -84,3 +85,6 @@ class TestDataReference(TestCase):
         self.assertIsNotNone(self.data_reference._firestore_reference, "obj._firestore_reference should be set")
         self.assertEqual(self.data_reference._reference_type, firestore.DocumentReference)
 
+    def test_property_id_firestore(self):
+        self.data_reference: DataReference = DataReference(self.firestore_ref)
+        self.assertEqual(self.data_reference.id, document_id)

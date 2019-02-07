@@ -12,3 +12,10 @@ class FirestoreObject(object):
 
     def get_firestore_ref(self):
         return self.__firestoreRef
+
+    @staticmethod
+    def from_dict(d):
+        raise NotImplementedError("Should be implemented in subclass. ")
+
+    def to_dict(self) -> dict:
+        raise NotImplementedError("Should be implemented in subclass. ")
