@@ -1,5 +1,8 @@
 [
-  "test_location_dao.py::LocationDAOTest::testFindByAirportCode",
-  "test_location_dao.py::LocationDAOTest::testSetWithTransaction",
-  "test_location_dao.py::LocationDAOTest::testSetWithTransactionTransactional"
+  "test_data_deference.py::TestDataReference::test__get_reference_datastore",
+  "test_data_deference.py::TestDataReference::test__get_reference_firestore",
+  "test_data_deference.py::TestDataReference::test__set_reference_datastore",
+  "test_data_deference.py::TestDataReference::test__set_reference_firestore",
+  "test_data_deference.py::TestDataReference::test_init_with_datastore_key",
+  "test_data_deference.py::TestDataReference::test_init_with_firestore_ref"
 ]

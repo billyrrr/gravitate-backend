@@ -138,6 +138,7 @@ class RideRequestGenericDao:
         rideRequestId = utils.random_id()
         rideRequestRef = RideRequestGenericDao(
         ).rideRequestCollectionRef.document(document_id=rideRequestId)
+        print(rideRequestRef)
         rideRequest.set_firestore_ref(rideRequestRef)
         return rideRequest
 

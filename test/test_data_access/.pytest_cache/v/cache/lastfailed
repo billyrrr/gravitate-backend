@@ -1,5 +1,5 @@
 {
-  "test_event_dao.py": true,
-  "test_location_dao.py::LocationDAOTest::testFindByAirportCode": true,
-  "test_orbit_dao.py": true
+  "test_data_deference.py": true,
+  "test_data_deference.py::TestDataReference::test_nothing": true,
+  "test_transaction_strategy.py::TestTransactionStrategyExecuteAll::testExecuteAll": true
 }
