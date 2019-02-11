@@ -50,9 +50,9 @@ class RequestRideTest(TestCase):
             print(ride_request.to_dict())
             firestore_ref = ride_request.get_firestore_ref()  # Not that it is actually rideRequestId
 
-            self.ride_request_ids_to_delete.append((userId, firestore_ref))
+            self.ride_request_ids_to_delete.append((userId, firestore_ref.id))
 
-    def _tear_down(self):
+    def tearDown(self):
         """
         Deletes all rideRequests created by the test
         :return:

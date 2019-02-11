@@ -1,13 +1,9 @@
 from unittest import TestCase
 
+from gravitate import models, data_access
 from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder
-from gravitate import data_access
-from gravitate import models
-
-from test import store
+from test import context, store
 from test.store import FormDictFactory
-
-from test import context
 
 db = context.Context.db
 
@@ -94,4 +90,3 @@ class SocialEventDictBuilderTest(TestCase):
         for ref in self.refs_to_delete:
             ref.delete()
         self.refs_to_delete.clear()
-
