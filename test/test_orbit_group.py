@@ -95,13 +95,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tupleList)
 
-    def testConstructGroup(self):
-        paired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
-                   RideRequestGenericDao().rideRequestCollectionRef.document('B')],
-                  [RideRequestGenericDao().rideRequestCollectionRef.document('C'),
-                   RideRequestGenericDao().rideRequestCollectionRef.document('D')]]
-        groups = actions.construct_groups(paired)
-
     def testGrouping(self):
         expectedPaired = [[RideRequestGenericDao().rideRequestCollectionRef.document('A'),
                            RideRequestGenericDao().rideRequestCollectionRef.document('B')],
@@ -117,9 +110,6 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         self.assertListEqual(expectedUnpaired, unpaired,
                              'unpaired does not match')
 
-    def testPrimaryGroupingFunc(self):
-        actions.group_ride_requests(self.rideRequests)
-
     def testPlaceInOrbit(self):
         orbitDict = {
             "orbitCategory": "airportRide",
@@ -133,8 +123,10 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
         orbit = Orbit.from_dict(orbitDict)
 
+        uid = 'SQytDq13q00e0N3H4agR'
         rideRequestDict = test.store.model.getMockRideRequest(
-            useDocumentRef=True, returnDict=True, returnSubset=False)
+            useDocumentRef=True, returnDict=True, returnSubset=False, userId=uid)
+
 
         rideRequest = RideRequest.from_dict(rideRequestDict)
         rideRequest.set_firestore_ref(db.document(

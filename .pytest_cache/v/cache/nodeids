@@ -1,3 +1,3 @@
 [
-  "test/test_models/test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict2"
+  "test/test_main.py::MainAppTestCase::testAuth"
 ]
