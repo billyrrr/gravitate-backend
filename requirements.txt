@@ -4,6 +4,8 @@ gunicorn==19.9.0
 google-auth==1.5.1
 google-cloud-datastore
 google-api-python-client
+googlemaps
+
 firebase-admin
 
 flask_wtf

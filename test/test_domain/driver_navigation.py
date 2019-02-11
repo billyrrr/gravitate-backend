@@ -1,4 +1,3 @@
-from gravitate.domain.driver_navigation import DriverNavigation
 from gravitate.models import Orbit
 from gravitate.domain import driver_navigation
 from test import store
