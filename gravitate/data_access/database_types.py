@@ -86,18 +86,6 @@ class DataAccessObject:
             Note that this cannot take place if transaction already received write operations.
             "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
 
-        :type self:
-        :param self:
-
-        :type transaction:Transaction:
-        :param transaction:Transaction:
-
-        :type rideRequestRef:DocumentReference:
-        :param rideRequestRef:DocumentReference:
-
-        :raises:
-
-        :rtype:
         """
 
         firestore_document_ref = ref.get_firestore_ref()
@@ -105,27 +93,25 @@ class DataAccessObject:
         try:
             snapshot: firestore.DocumentSnapshot = firestore_document_ref.get(
                 transaction=transaction)
-            snapshotDict: dict = snapshot.to_dict()
-            obj = obj_class.from_dict(snapshotDict)
+            snapshot_dict: dict = snapshot.to_dict()
+            obj = obj_class.from_dict(snapshot_dict)
             obj.set_firestore_ref(firestore_document_ref)
             return obj
         except google.cloud.exceptions.NotFound:
             raise Exception('No such document! ' + str(firestore_document_ref.id))
 
-    def get(self, ref: DataReference, obj_class: Type[FirestoreObject] ):
+    def get(self, ref: DataReference, obj_class: Type[FirestoreObject]):
         firestore_document_ref = ref.get_firestore_ref()
         snapshot: firestore.DocumentSnapshot = firestore_document_ref.get()
-        snapshotDict: dict = snapshot.to_dict()
-        rideRequest = obj_class.from_dict(snapshotDict)
-        rideRequest.set_firestore_ref(firestore_document_ref)
-        return rideRequest
+        snapshot_dict: dict = snapshot.to_dict()
+        obj = obj_class.from_dict(snapshot_dict)
+        obj.set_firestore_ref(firestore_document_ref)
+        return obj
 
     def ref_from_id(self, rid: str):
         """ Returns DataReference from id
         TODO: implement
 
-        :param rid:
-        :return:
         """
         # return self.rideRequestCollectionRef.document(rid)
         raise NotImplementedError
@@ -134,8 +120,6 @@ class DataAccessObject:
         """ Returns object from id
         TODO: implement
 
-        :param rid:
-        :return:
         """
         # ref = self.ref_from_id(rid)
         # ride_request = self.get(ref)
@@ -149,14 +133,6 @@ class DataAccessObject:
 
             TODO: implement
 
-        :type self:
-        :param self:
-        :type rideRequest:Type[RideRequest]:
-        :param rideRequest:Type[RideRequest]:
-
-        :raises:
-
-        :rtype:
         """
         # rideRequestId = utils.random_id()
         # rideRequestRef = RideRequestGenericDao(
@@ -170,8 +146,6 @@ class DataAccessObject:
         """ Set an object without a transaction
             TODO: implement
 
-        :param obj:
-        :return:
         """
         # rideRequest.get_firestore_ref().set(rideRequest.to_dict())
         raise NotImplementedError
@@ -179,44 +153,16 @@ class DataAccessObject:
     def delete(self, ref: DataReference):
         """ Description
             This function deletes an object from the database
-
-        :type self:
-        :param self:
-
-        :type singleRideRequestRef:DocumentReference:
-        :param singleRideRequestRef:DocumentReference:
-
-        :raises:
-
-        :rtype:
         """
         # return singleRideRequestRef.delete()
         raise NotImplementedError
 
     @staticmethod
-    # @transactional
-    def set_with_transaction(transaction: Transaction, obj: Type[FirestoreObject],
+    def set_with_transaction(transaction: firestore.Transaction, obj: Type[FirestoreObject],
                              ref: DataReference):
         """ Description
-            Note that a read action must have taken place before anything is set with that transaction.
 
             TODO: implement
-
-        :type self:
-        :param self:
-
-        :type transaction:Transaction:
-        :param transaction:Transaction:
-
-        :type newRideRequest:Type[RideRequest]:
-        :param newRideRequest:Type[RideRequest]:
-
-        :type rideRequestRef:DocumentReference:
-        :param rideRequestRef:DocumentReference:
-
-        :raises:
-
-        :rtype:
         """
         # return transaction.set(rideRequestRef, newRideRequest.to_dict())
         raise NotImplementedError

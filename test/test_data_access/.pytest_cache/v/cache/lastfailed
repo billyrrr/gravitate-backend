@@ -1,4 +1,5 @@
 {
+  "test_data_deference.py": true,
   "test_data_deference.py::TestDataReference::test_nothing": true,
   "test_data_deference.py::TestDataReference::test_property_id": true,
   "test_transaction_strategy.py::TestTransactionStrategyExecuteAll::testExecuteAll": true
