@@ -206,7 +206,7 @@ class ReturnErrorsTest(TestCase):
         super().tearDown()
 
 
-class RefactorTempTest(TestCase):
+class RequestRideTest(TestCase):
     ride_request_ids_to_delete = list()
 
     def setUp(self):
@@ -214,6 +214,43 @@ class RefactorTempTest(TestCase):
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
 
+    def testCreateRideRequestsTemp(self):
+        # Create new rideRequests
+        for userId in self.userIds:
+            form = FormDictFactory().create(returnDict=True)
+            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+            form["testUserId"] = userId
+            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+                path='/requestRide/airport', json=form, headers=getMockAuthHeaders(userId))
+            print(r)
+            self.assertIn("firestoreRef", r.json.keys())
+            firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
+            self.ride_request_ids_to_delete.append((userId, firestore_ref))
+
+    def _tear_down(self):
+        """
+        Deletes all rideRequests created by the test
+        :return:
+        """
+        for uid, rid in self.ride_request_ids_to_delete:
+            r = self.app.delete(path='/rideRequests' + '/' + rid,
+                                headers=getMockAuthHeaders(uid=uid)
+                                )
+            assert r.status_code == 200
+        self.ride_request_ids_to_delete.clear()
+
+    def tearDown(self):
+        self._tear_down()
+        super().tearDown()
+
+
+class RefactorTempTest(TestCase):
+    ride_request_ids_to_delete = list()
+
+    def setUp(self):
+        main.app.testing = True
+        self.app = main.app.test_client()
+        self.userIds = ["testuid1", "testuid2"]
 
     def testCreateRideRequestsTemp(self):
         # Create new rideRequests

@@ -21,6 +21,37 @@ from gravitate.api_server import errors as service_errors
 db = Context.db
 
 
+class RideRequestCreation(Resource):
+
+    @service_utils.authenticate
+    def post(self, rideCategory, uid):
+        # Verify Firebase auth.
+        user_id = uid
+
+        args = None
+
+        if rideCategory == "airport":
+            args = ride_request_parsers.airport_parser.parse_args()
+
+        elif rideCategory == "event":
+            args = ride_request_parsers.social_event_ride_parser.parse_args()
+        else:
+            raise Exception("Unsupported rideType: {}".format(rideCategory))
+
+        print(args)
+
+        # Create RideRequest Object
+        ride_request = request_ride.create(args, user_id)
+
+        # rideRequest Response
+        response_dict = {
+            "id": ride_request.get_firestore_ref().id,
+            "firestoreRef": ride_request.get_firestore_ref().id  # Legacy support
+        }
+
+        return response_dict, 200
+
+
 class AirportRideRequestCreationService(Resource):
     """
     This class replaces web-form with reqparse for form validation.

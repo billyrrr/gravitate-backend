@@ -4,6 +4,7 @@ from gravitate.domain.request_ride import utils
 from gravitate.models import RideRequest, Target
 from gravitate.data_access import EventDao
 
+
 class RideRequestBaseBuilder:
 
     def __init__(self):
