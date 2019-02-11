@@ -135,7 +135,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
         _add_to_orbit(rideRequest, orbit)
         userTicketPairsDict = orbit.to_dict()["userTicketPairs"]
         expectedDict = {
-            'SQytDq13q00e0N3H4agR': {
+            uid: {
                 "rideRequestRef": db.document('rideRequests', 'testriderequestid1'),
                 "userWillDrive": False,
                 "hasCheckedIn": False,
