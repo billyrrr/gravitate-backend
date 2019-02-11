@@ -101,10 +101,10 @@ class FormDictFactory:
 
 class EventRideRequestFormDictFactory:
 
-    def create(self):
+    def create(self, event_id="testformeventid1"):
         return {
              'userId': 'testuserid1',
-             'eventId': "KxkUnYurkYL1hZGHdxUY",
+             'eventId': event_id,
              'pickupAddress': 'Tenaya Hall, San Diego, CA 92161',
              'driverStatus': False,
              'toEvent': True

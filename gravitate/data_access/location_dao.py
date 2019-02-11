@@ -64,6 +64,8 @@ class LocationGenericDao:
             raise Exception('No such document! ' + str(locationRef.id))
 
     def get(self, locationRef: DocumentReference):
+        if isinstance(locationRef, str):
+            locationRef = str_to_ref(locationRef)
         snapshot: DocumentSnapshot = locationRef.get()
         snapshotDict: dict = snapshot.to_dict()
         location = Location.from_dict(snapshotDict)
@@ -202,3 +204,10 @@ class LocationGenericDao:
         """
         locationDict = newLocation.to_dict()
         return transaction.set(locationRef, locationDict)
+
+
+def str_to_ref(ref_str: str):
+    k = ref_str.split("/")
+    if k[0] == "":
+        k.pop(0)
+    return db.document("/".join(k))

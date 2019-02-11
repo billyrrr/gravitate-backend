@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from gravitate.domain.request_ride import utils as service_utils
-from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder, \
-    AirportRideRequestBuilder
+from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder
+from gravitate import data_access
+from gravitate import models
 
 from test import store
 from test.store import FormDictFactory
@@ -36,7 +36,10 @@ class RideRequestDictBuilderTest(TestCase):
 
 
 class SocialEventDictBuilderTest(TestCase):
-    builder: AirportRideRequestBuilder = None
+    builder: SocialEventRideRequestBuilder = None
+
+    def setUp(self):
+        self.refs_to_delete = list()
 
     def testSetWithForm(self):
         userId = 'testuserid1'
@@ -44,17 +47,23 @@ class SocialEventDictBuilderTest(TestCase):
 
         b = SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=userId)
         expected_vars = {'user_id': 'testuserid1',
-                         'event_id': "KxkUnYurkYL1hZGHdxUY",
+                         'event_id': 'testformeventid1',
                          'pickup_address': 'Tenaya Hall, San Diego, CA 92161',
                          'driver_status': False,
                          'to_event': True
                          }
         # Assert that all required variables are set
+        print(vars(b))
         self.assertTrue(expected_vars.items() <= vars(b).items())
 
     def testBuild(self):
         def setUp(self):
-            d = store.EventRideRequestFormDictFactory().create()
+            event_dict = store.getEventDict(event_category="social")
+            event = models.Event.from_dict(event_dict)
+            event_ref = data_access.EventDao().create(event)
+            self.refs_to_delete.append(event_ref)
+            self.event_id = event_ref.id
+            d = store.EventRideRequestFormDictFactory().create(event_id=self.event_id)
             self.user_id = 'testuserid1'
             self.builder: SocialEventRideRequestBuilder = \
                 SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=self.user_id)
@@ -68,8 +77,8 @@ class SocialEventDictBuilderTest(TestCase):
             'target': {'eventCategory': 'eventRide',
                        'toEvent': True,
                        'arriveAtEventTime':
-                           {'earliest': 1545292800, 'latest': 1545379199}},
-            # 'eventRef': db.document('events', 'testeventid1'),
+                           {'earliest': 1545033600, 'latest': 1545119999}},
+            'eventRef': db.document('events', self.event_id),
             'userId': self.user_id,
             'hasCheckedIn': False,
             'pricing': 987654321,
@@ -81,4 +90,8 @@ class SocialEventDictBuilderTest(TestCase):
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
         self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
 
+    def tearDown(self):
+        for ref in self.refs_to_delete:
+            ref.delete()
+        self.refs_to_delete.clear()
 

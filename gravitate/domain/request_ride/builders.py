@@ -87,6 +87,7 @@ class RideRequestBaseBuilder:
         self._ride_request_dict["airportLocation"] = utils.get_location_ref_by_id(self.location_id)
 
     def _build_location_by_event(self):
+        print(self.event.to_dict())
         self._ride_request_dict["locationRef"] = self.event.location_ref
 
     @staticmethod
@@ -215,6 +216,8 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
         self._build_target_anytime()
 
         self._build_location_by_event()
+
+        self._build_event_ref_with_event()
 
         self._build_disabilities()
         self._build_baggages()

@@ -1,5 +1,6 @@
 [
-  "test_location_dao.py::LocationDAOTest::testFindByAirportCode",
-  "test_location_dao.py::LocationDAOTest::testSetWithTransaction",
-  "test_location_dao.py::LocationDAOTest::testSetWithTransactionTransactional"
+  "test_event_dao.py::EventDAOTest::testCreate",
+  "test_event_dao.py::EventDAOTest::testFindByTimestamp",
+  "test_event_dao.py::EventDAOTest::testGet",
+  "test_event_dao.py::EventDAOTest::testGetStrRef"
 ]

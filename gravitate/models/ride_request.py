@@ -48,7 +48,7 @@ class RideRequest(FirestoreObject):
                                       event_ref, orbit_ref, user_id, target, pricing, request_completion, flight_local_time,
                                       flight_number, airport_location, baggages, disabilities)
         elif ride_request_type == 'eventRide':
-            location_ref = d['location_ref']
+            location_ref = d['locationRef']
             return SocialEventRideRequest(driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target,
                                           pricing, request_completion, location_ref)
         else:
@@ -184,5 +184,5 @@ class SocialEventRideRequest(RideRequest):
     def to_dict(self):
         ride_request_dict = super().to_dict()
         ride_request_dict['rideCategory'] = 'eventRide'
-        ride_request_dict['location_ref'] = self.location_ref
+        ride_request_dict['locationRef'] = self.location_ref
         return ride_request_dict

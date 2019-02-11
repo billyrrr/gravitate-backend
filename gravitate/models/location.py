@@ -21,8 +21,8 @@ class Location(FirestoreObject):
             airport_code = location_dict['airportCode']
             return AirportLocation(coordinates, address, airport_code)
         elif location_category == 'social':
-            raise NotImplementedError(
-                'Social event location is not yet implemented.')
+            event_name = location_dict['eventName']
+            return SocialEventLocation(coordinates, address, event_name)
         elif location_category == 'campus':
             campus_code = location_dict['campusCode']
             campus_name = location_dict['campusName']
@@ -65,7 +65,7 @@ campus_code_table = {
 class SocialEventLocation(Location):
     def __init__(self, coordinates, address, event_name):
         super().__init__(coordinates, address)
-        self.location_category = 'campus'
+        self.location_category = 'social'
         self.event_name = event_name
 
     def to_dict(self):

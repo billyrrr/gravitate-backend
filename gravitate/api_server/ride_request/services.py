@@ -41,7 +41,7 @@ class RideRequestCreation(Resource):
         print(args)
 
         # Create RideRequest Object
-        ride_request = request_ride.create(args, user_id)
+        ride_request = request_ride.create(args, user_id, ride_category=rideCategory)
 
         # rideRequest Response
         response_dict = {

@@ -124,10 +124,18 @@ class EventDao:
         event_ref = self.get_ref(event_id)
         return self.get(event_ref)
 
-
     def get(self, eventRef: DocumentReference):
+        if isinstance(eventRef, str):
+            eventRef = str_to_ref(eventRef)
         snapshot: DocumentSnapshot = eventRef.get()
         snapshotDict: dict = snapshot.to_dict()
         event = Event.from_dict(snapshotDict)
         event.set_firestore_ref(eventRef)
         return event
+
+
+def str_to_ref(ref_str: str):
+    k = ref_str.split("/")
+    if k[0] == "":
+        k.pop(0)
+    return db.document("/".join(k))

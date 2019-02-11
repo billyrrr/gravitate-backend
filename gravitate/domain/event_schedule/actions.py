@@ -5,12 +5,14 @@ from gravitate.domain.event_schedule.builders import EventScheduleBuilder
 from gravitate.models import RideRequest, Location, AirportRideRequest, AirportLocation, SocialEventRideRequest, \
     SocialEventLocation, Orbit
 
+
 def create_event_schedule(ride_request: Type[RideRequest], location: Type[Location]):
 
     # Validate that type of location and type of ride request match
     if isinstance(ride_request, AirportRideRequest):
         assert isinstance(location, AirportLocation)
     elif isinstance(ride_request, SocialEventRideRequest):
+        print(location.to_dict())
         assert isinstance(location, SocialEventLocation)
     else:
         raise NotImplementedError("Unsupported ride request type: {}".format(type(ride_request)))

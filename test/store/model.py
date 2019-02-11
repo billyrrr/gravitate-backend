@@ -3,6 +3,7 @@ import json
 from gravitate import context
 import gravitate.models as models
 import os
+import warnings
 
 db = context.Context.db
 
@@ -86,8 +87,23 @@ eventDict = {
 }
 
 
-def getEventDict():
-    return eventDict
+def getEventDict(event_category="airport"):
+    if event_category == "airport":
+        return eventDict
+    elif event_category == "social":
+        return {
+            "eventCategory": "social",
+            "participants": [
+            ],
+            "eventLocation": "Las Vegas Convention Center",
+            "locationRef": mock1["locationRef"],
+            "startTimestamp": 1545033600,
+            "endTimestamp": 1545119999,
+            "pricing": 100,
+            "isClosed": False
+        }
+    else:
+        raise ValueError("event_category not supported: {}".format(event_category))
 
 
 eventScheduleDict = {
@@ -152,15 +168,30 @@ airportLocationDict = {
     'airportCode': "LAX",
 }
 
+socialEventLocationDict = {
+    'locationCategory': "social",
+    'coordinates': {
+        "latitude": 33.9416,
+        "longitude": -118.4085
+    },
+    'address': "3150 Paradise Rd, Las Vegas, NV 89109",
+    "eventName": "CES"
+}
 
-def getLocationDict():
-    return airportLocationDict
+
+def getLocationDict(location_category="airport"):
+    if location_category == "airport":
+        return airportLocationDict
+    elif location_category == "social":
+        return socialEventLocationDict
+    else:
+        raise ValueError("unsupported location_category: {}".format(location_category))
 
 
 def getLocation():
     locationDict = getLocationDict()
     location = models.Location.from_dict(locationDict)
-    location.set_firestore_ref(mock1["locationRef"])
+    location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
 
 
