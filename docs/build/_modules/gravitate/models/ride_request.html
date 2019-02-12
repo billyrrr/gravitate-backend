@@ -83,7 +83,7 @@
                                       <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">,</span> <span class="n">flight_local_time</span><span class="p">,</span>
                                       <span class="n">flight_number</span><span class="p">,</span> <span class="n">airport_location</span><span class="p">,</span> <span class="n">baggages</span><span class="p">,</span> <span class="n">disabilities</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">ride_request_type</span> <span class="o">==</span> <span class="s1">&#39;eventRide&#39;</span><span class="p">:</span>
-            <span class="n">location_ref</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;location_ref&#39;</span><span class="p">]</span>
+            <span class="n">location_ref</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;locationRef&#39;</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">SocialEventRideRequest</span><span class="p">(</span><span class="n">driver_status</span><span class="p">,</span> <span class="n">pickup_address</span><span class="p">,</span> <span class="n">has_checked_in</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span>
                                           <span class="n">pricing</span><span class="p">,</span> <span class="n">request_completion</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -219,7 +219,7 @@
 <div class="viewcode-block" id="SocialEventRideRequest.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.ride_request.SocialEventRideRequest.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ride_request_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;rideCategory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;eventRide&#39;</span>
-        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;location_ref&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span>
+        <span class="n">ride_request_dict</span><span class="p">[</span><span class="s1">&#39;locationRef&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span>
         <span class="k">return</span> <span class="n">ride_request_dict</span></div></div>
 </pre></div>
 

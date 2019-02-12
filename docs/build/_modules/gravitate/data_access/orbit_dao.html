@@ -91,6 +91,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">orbit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">orbitRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbitCollectionRef</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">orbit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">orbit</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">orbitRef</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbitRef</span></div>
 
 <div class="viewcode-block" id="OrbitDao.delete"><a class="viewcode-back" href="../../../gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singleOrbitRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>

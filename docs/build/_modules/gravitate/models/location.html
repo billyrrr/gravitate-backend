@@ -56,8 +56,8 @@
             <span class="n">airport_code</span> <span class="o">=</span> <span class="n">location_dict</span><span class="p">[</span><span class="s1">&#39;airportCode&#39;</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">AirportLocation</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">airport_code</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">location_category</span> <span class="o">==</span> <span class="s1">&#39;social&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s1">&#39;Social event location is not yet implemented.&#39;</span><span class="p">)</span>
+            <span class="n">event_name</span> <span class="o">=</span> <span class="n">location_dict</span><span class="p">[</span><span class="s1">&#39;eventName&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">SocialEventLocation</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">event_name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">location_category</span> <span class="o">==</span> <span class="s1">&#39;campus&#39;</span><span class="p">:</span>
             <span class="n">campus_code</span> <span class="o">=</span> <span class="n">location_dict</span><span class="p">[</span><span class="s1">&#39;campusCode&#39;</span><span class="p">]</span>
             <span class="n">campus_name</span> <span class="o">=</span> <span class="n">location_dict</span><span class="p">[</span><span class="s1">&#39;campusName&#39;</span><span class="p">]</span>
@@ -100,7 +100,7 @@
 <div class="viewcode-block" id="SocialEventLocation"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.location.SocialEventLocation">[docs]</a><span class="k">class</span> <span class="nc">SocialEventLocation</span><span class="p">(</span><span class="n">Location</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">event_name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">location_category</span> <span class="o">=</span> <span class="s1">&#39;campus&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_category</span> <span class="o">=</span> <span class="s1">&#39;social&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_name</span> <span class="o">=</span> <span class="n">event_name</span>
 
 <div class="viewcode-block" id="SocialEventLocation.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.location.SocialEventLocation.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

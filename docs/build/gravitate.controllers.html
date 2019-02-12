@@ -40,11 +40,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gravitate.controllers.grouping.html">gravitate.controllers.grouping package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-gravitate.controllers.grouping.grouping">gravitate.controllers.grouping.grouping module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-gravitate.controllers.grouping.orbit_group">gravitate.controllers.grouping.orbit_group module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-gravitate.controllers.grouping.pairing">gravitate.controllers.grouping.pairing module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-gravitate.controllers.grouping.utils">gravitate.controllers.grouping.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-gravitate.controllers.grouping">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#gravitate-controllers-grouping-grouping-module">gravitate.controllers.grouping.grouping module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#gravitate-controllers-grouping-orbit-group-module">gravitate.controllers.grouping.orbit_group module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#gravitate-controllers-grouping-pairing-module">gravitate.controllers.grouping.pairing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#gravitate-controllers-grouping-utils-module">gravitate.controllers.grouping.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.controllers.grouping.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -53,81 +53,11 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.controllers.event_status">
-<span id="gravitate-controllers-event-status-module"></span><h2>gravitate.controllers.event_status module<a class="headerlink" href="#module-gravitate.controllers.event_status" title="Permalink to this headline">¶</a></h2>
-<p>Author: Andrew Kim</p>
-<dl class="function">
-<dt id="gravitate.controllers.event_status.close_event">
-<code class="descclassname">gravitate.controllers.event_status.</code><code class="descname">close_event</code><span class="sig-paren">(</span><em>event: gravitate.models.event.Event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/event_status.html#close_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.event_status.close_event" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.event_status.refresh_event_status">
-<code class="descclassname">gravitate.controllers.event_status.</code><code class="descname">refresh_event_status</code><span class="sig-paren">(</span><em>event: gravitate.models.event.Event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/event_status.html#refresh_event_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.event_status.refresh_event_status" title="Permalink to this definition">¶</a></dt>
-<dd><p>Definition
-Sets the event to a past event category one day after the start time</p>
-</dd></dl>
-
+<div class="section" id="gravitate-controllers-event-status-module">
+<h2>gravitate.controllers.event_status module<a class="headerlink" href="#gravitate-controllers-event-status-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.controllers.eventscheduleutils">
-<span id="gravitate-controllers-eventscheduleutils-module"></span><h2>gravitate.controllers.eventscheduleutils module<a class="headerlink" href="#module-gravitate.controllers.eventscheduleutils" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="gravitate.controllers.eventscheduleutils.EventScheduleBuilder">
-<em class="property">class </em><code class="descclassname">gravitate.controllers.eventscheduleutils.</code><code class="descname">EventScheduleBuilder</code><span class="sig-paren">(</span><em>event_schedule: gravitate.models.event_schedule.AirportEventSchedule = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#EventScheduleBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.EventScheduleBuilder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<dl class="method">
-<dt id="gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_location">
-<code class="descname">build_location</code><span class="sig-paren">(</span><em>location: Type[gravitate.models.location.Location]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#EventScheduleBuilder.build_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_location" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_orbit">
-<code class="descname">build_orbit</code><span class="sig-paren">(</span><em>pending=True</em>, <em>orbit: gravitate.models.orbit.Orbit = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#EventScheduleBuilder.build_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_orbit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_ride_request">
-<code class="descname">build_ride_request</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#EventScheduleBuilder.build_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.EventScheduleBuilder.build_ride_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.controllers.eventscheduleutils.EventScheduleBuilder.export">
-<code class="descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; gravitate.models.event_schedule.AirportEventSchedule<a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#EventScheduleBuilder.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.EventScheduleBuilder.export" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.eventscheduleutils.create_event_schedule">
-<code class="descclassname">gravitate.controllers.eventscheduleutils.</code><code class="descname">create_event_schedule</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], location: Type[gravitate.models.location.Location]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#create_event_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.create_event_schedule" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.eventscheduleutils.create_event_schedule_orbit">
-<code class="descclassname">gravitate.controllers.eventscheduleutils.</code><code class="descname">create_event_schedule_orbit</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], location: Type[gravitate.models.location.Location], orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#create_event_schedule_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.create_event_schedule_orbit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.eventscheduleutils.getMemberProfilePhotoUrls">
-<code class="descclassname">gravitate.controllers.eventscheduleutils.</code><code class="descname">getMemberProfilePhotoUrls</code><span class="sig-paren">(</span><em>orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/gravitate/controllers/eventscheduleutils.html#getMemberProfilePhotoUrls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.eventscheduleutils.getMemberProfilePhotoUrls" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd>[Assigned to Leon]
-Don’t have to follow the method signature, but the signature is required to get other code working. 
-Orbits can be obtained through any other ways, and buildEventSchedule can be called from elsewhere.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="gravitate-controllers-eventscheduleutils-module">
+<h2>gravitate.controllers.eventscheduleutils module<a class="headerlink" href="#gravitate-controllers-eventscheduleutils-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-gravitate.controllers.fcmessaging">
 <span id="gravitate-controllers-fcmessaging-module"></span><h2>gravitate.controllers.fcmessaging module<a class="headerlink" href="#module-gravitate.controllers.fcmessaging" title="Permalink to this headline">¶</a></h2>
@@ -204,123 +134,8 @@ Orbits can be obtained through any other ways, and buildEventSchedule can be cal
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-gravitate.controllers.utils">
-<span id="gravitate-controllers-utils-module"></span><h2>gravitate.controllers.utils module<a class="headerlink" href="#module-gravitate.controllers.utils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="gravitate.controllers.utils.check_duplicate">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">check_duplicate</code><span class="sig-paren">(</span><em>user_id: str</em>, <em>event_ref: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/utils.html#check_duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.check_duplicate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description Returns a boolean whether the user is trying to make a duplicate ride request</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>user_id</strong> – </li>
-<li><strong>event_ref</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True: it is a duplicate, False: it is not a duplicate</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.find_event">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">find_event</code><span class="sig-paren">(</span><em>flight_local_time</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/controllers/utils.html#find_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.find_event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description
-1. Find event reference by querying events with flightLocalTime
-2. Return the reference of such event</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flight_local_time</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.get_airport_location">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">get_airport_location</code><span class="sig-paren">(</span><em>airport_code</em><span class="sig-paren">)</span> &#x2192; gravitate.models.location.AirportLocation<a class="reference internal" href="_modules/gravitate/controllers/utils.html#get_airport_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.get_airport_location" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd>This method returns an airportLocation with airportCode.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>airport_code</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.get_event_ref_by_id">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">get_event_ref_by_id</code><span class="sig-paren">(</span><em>event_id: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/controllers/utils.html#get_event_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.get_event_ref_by_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method returns the event_ref by event_id.
-:param event_id:
-:return: DocumentReference of the event.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.get_location_ref_by_id">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">get_location_ref_by_id</code><span class="sig-paren">(</span><em>location_id: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/controllers/utils.html#get_location_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.get_location_ref_by_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method return the location_ref by location_id.
-:param location_id:
-:return:</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.get_pickup_address">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">get_pickup_address</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/gravitate/controllers/utils.html#get_pickup_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.get_pickup_address" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method returns the default pickup address of a user.
-:param user_id:
-:return:</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.get_ride_request">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">get_ride_request</code><span class="sig-paren">(</span><em>d: dict</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.models.ride_request.RideRequest]<a class="reference internal" href="_modules/gravitate/controllers/utils.html#get_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.get_ride_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.local_time_as_timestamp">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">local_time_as_timestamp</code><span class="sig-paren">(</span><em>flight_local_time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/utils.html#local_time_as_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.local_time_as_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.utils.set_disabilities">
-<code class="descclassname">gravitate.controllers.utils.</code><code class="descname">set_disabilities</code><span class="sig-paren">(</span><em>form: gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm</em>, <em>rideRequestDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/utils.html#set_disabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.utils.set_disabilities" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>This method sets the accommodation options in rideRequest dict.
-Note that the method needs refactoring to pass values with parameters rather than structures.</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>form</strong> – </li>
-<li><strong>rideRequestDict</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="gravitate-controllers-utils-module">
+<h2>gravitate.controllers.utils module<a class="headerlink" href="#gravitate-controllers-utils-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-gravitate.controllers">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.controllers" title="Permalink to this headline">¶</a></h2>

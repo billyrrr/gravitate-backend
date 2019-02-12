@@ -40,12 +40,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gravitate.services.ride_request.html">gravitate.services.ride_request package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request.deprecated_utils">gravitate.services.ride_request.deprecated_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request.parsers">gravitate.services.ride_request.parsers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request.services">gravitate.services.ride_request.services module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request.social_event">gravitate.services.ride_request.social_event module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request.utils">gravitate.services.ride_request.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-gravitate.services.ride_request">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#gravitate-services-ride-request-deprecated-utils-module">gravitate.services.ride_request.deprecated_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#gravitate-services-ride-request-parsers-module">gravitate.services.ride_request.parsers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#gravitate-services-ride-request-services-module">gravitate.services.ride_request.services module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#gravitate-services-ride-request-social-event-module">gravitate.services.ride_request.social_event module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#gravitate-services-ride-request-utils-module">gravitate.services.ride_request.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gravitate.services.ride_request.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -54,308 +54,26 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.errors">
-<span id="gravitate-services-errors-module"></span><h2>gravitate.services.errors module<a class="headerlink" href="#module-gravitate.services.errors" title="Permalink to this headline">¶</a></h2>
-<dl class="exception">
-<dt id="gravitate.services.errors.RequestAlreadyExistsError">
-<em class="property">exception </em><code class="descclassname">gravitate.services.errors.</code><code class="descname">RequestAlreadyExistsError</code><span class="sig-paren">(</span><em>description=None</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/errors.html#RequestAlreadyExistsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.errors.RequestAlreadyExistsError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">werkzeug.exceptions.HTTPException</span></code></p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="gravitate.services.errors.RequestAlreadyMatchedError">
-<em class="property">exception </em><code class="descclassname">gravitate.services.errors.</code><code class="descname">RequestAlreadyMatchedError</code><span class="sig-paren">(</span><em>description=None</em>, <em>response=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/errors.html#RequestAlreadyMatchedError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.errors.RequestAlreadyMatchedError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">werkzeug.exceptions.HTTPException</span></code></p>
-</dd></dl>
-
+<div class="section" id="gravitate-services-errors-module">
+<h2>gravitate.services.errors module<a class="headerlink" href="#gravitate-services-errors-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.event_service">
-<span id="gravitate-services-event-service-module"></span><h2>gravitate.services.event_service module<a class="headerlink" href="#module-gravitate.services.event_service" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="gravitate.services.event_service.EventService">
-<em class="property">class </em><code class="descclassname">gravitate.services.event_service.</code><code class="descname">EventService</code><a class="reference internal" href="_modules/gravitate/services/event_service.html#EventService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.event_service.EventService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
-<p>This class allows user to create an event.</p>
-<dl class="attribute">
-<dt id="gravitate.services.event_service.EventService.methods">
-<code class="descname">methods</code><em class="property"> = {'POST'}</em><a class="headerlink" href="#gravitate.services.event_service.EventService.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.event_service.EventService.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/event_service.html#EventService.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.event_service.EventService.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO: implement</p>
-<dl class="docutils">
-<dt>This method allows the user to post an event.</dt>
-<dd>Expect a JSON form in request.json</dd>
-</dl>
-<p>For now, handle only local time in “America/Los_Angeles”</p>
-<dl class="docutils">
-<dt>Form fields required:</dt>
-<dd>“eventCategory”: “campus” | “social”
-“eventLocation” (A user-defined text description such as “LAX”)
-“locationRef” (Should have been generated by earlier steps in workflow)
-“startLocalTime”
-“endLocalTime”
-“pricing”: 100</dd>
-<dt>Validation:</dt>
-<dd><dl class="first docutils">
-<dt>Reject if:</dt>
-<dd>eventCategory is “airport”, or is not one of “campus”, “social”
-locationRef is the same as any airport locationRef
-…</dd>
-</dl>
-<p class="last">Allow pricing to be empty, and fill in default value</p>
-</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uid</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="gravitate-services-event-service-module">
+<h2>gravitate.services.event_service module<a class="headerlink" href="#gravitate-services-event-service-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.grouping_service">
-<span id="gravitate-services-grouping-service-module"></span><h2>gravitate.services.grouping_service module<a class="headerlink" href="#module-gravitate.services.grouping_service" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="gravitate.services.grouping_service.OrbitForceMatchService">
-<em class="property">class </em><code class="descclassname">gravitate.services.grouping_service.</code><code class="descname">OrbitForceMatchService</code><a class="reference internal" href="_modules/gravitate/services/grouping_service.html#OrbitForceMatchService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.grouping_service.OrbitForceMatchService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
-<dl class="docutils">
-<dt>This class provides service layer functionality for force matching rideRequests.</dt>
-<dd>This service should be used in development environment to force a match for testing purposes.</dd>
-</dl>
-<dl class="attribute">
-<dt id="gravitate.services.grouping_service.OrbitForceMatchService.endpoint">
-<code class="descname">endpoint</code><em class="property"> = 'orbitforcematchservice'</em><a class="headerlink" href="#gravitate.services.grouping_service.OrbitForceMatchService.endpoint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.grouping_service.OrbitForceMatchService.mediatypes">
-<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.services.grouping_service.OrbitForceMatchService.mediatypes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="gravitate.services.grouping_service.OrbitForceMatchService.methods">
-<code class="descname">methods</code><em class="property"> = {'POST'}</em><a class="headerlink" href="#gravitate.services.grouping_service.OrbitForceMatchService.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.grouping_service.OrbitForceMatchService.post">
-<code class="descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/grouping_service.html#OrbitForceMatchService.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.grouping_service.OrbitForceMatchService.post" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.services.grouping_service.refreshGroupAll">
-<code class="descclassname">gravitate.services.grouping_service.</code><code class="descname">refreshGroupAll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/grouping_service.html#refreshGroupAll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.grouping_service.refreshGroupAll" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description
-This function corresponds to use case “grouping ride requests”.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="gravitate-services-grouping-service-module">
+<h2>gravitate.services.grouping_service module<a class="headerlink" href="#gravitate-services-grouping-service-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.location_service">
-<span id="gravitate-services-location-service-module"></span><h2>gravitate.services.location_service module<a class="headerlink" href="#module-gravitate.services.location_service" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="gravitate.services.location_service.LocationService">
-<em class="property">class </em><code class="descclassname">gravitate.services.location_service.</code><code class="descname">LocationService</code><a class="reference internal" href="_modules/gravitate/services/location_service.html#LocationService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.location_service.LocationService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
-<p>This class allows user to create an event.</p>
-<dl class="attribute">
-<dt id="gravitate.services.location_service.LocationService.methods">
-<code class="descname">methods</code><em class="property"> = {'POST'}</em><a class="headerlink" href="#gravitate.services.location_service.LocationService.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.location_service.LocationService.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/location_service.html#LocationService.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.location_service.LocationService.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO: implement</p>
-<dl class="docutils">
-<dt>This method allows the user to post a location.</dt>
-<dd>Expect a JSON form in request.json</dd>
-<dt>Form fields required (Note that field names are different from location model):</dt>
-<dd><p class="first">“category”: “campus”,
-“coordinates”: {</p>
-<blockquote>
-<div>“latitude”: 34.414132,
-“longitude”: -119.848868</div></blockquote>
-<p class="last">},
-“address”: “C572+HC Isla Vista, California”,
-“name”: “University of California, Santa Barbara”</p>
-</dd>
-<dt>Validation:</dt>
-<dd><dl class="first docutils">
-<dt>Reject if:</dt>
-<dd>eventCategory is “airport”, or is not one of “campus”, “social”
-locationRef is the same as any airport locationRef
-…</dd>
-</dl>
-<p class="last">Allow pricing to be empty, and fill in default value</p>
-</dd>
-<dt>Workflow:</dt>
-<dd>…
-Generate campusCode from name</dd>
-<dt>Note that this method is only for generating location of an event. User-specific pick up and drop off</dt>
-<dd>are represented with address string, so there is no need to call this endpoint.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uid</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="gravitate-services-location-service-module">
+<h2>gravitate.services.location_service module<a class="headerlink" href="#gravitate-services-location-service-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.user_service">
-<span id="gravitate-services-user-service-module"></span><h2>gravitate.services.user_service module<a class="headerlink" href="#module-gravitate.services.user_service" title="Permalink to this headline">¶</a></h2>
-<p>Author: Leon Wu
-Reviewer: Zixuan Rao</p>
-<dl class="class">
-<dt id="gravitate.services.user_service.UserService">
-<em class="property">class </em><code class="descclassname">gravitate.services.user_service.</code><code class="descname">UserService</code><a class="reference internal" href="_modules/gravitate/services/user_service.html#UserService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.user_service.UserService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
-<dl class="attribute">
-<dt id="gravitate.services.user_service.UserService.endpoint">
-<code class="descname">endpoint</code><em class="property"> = 'userservice'</em><a class="headerlink" href="#gravitate.services.user_service.UserService.endpoint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.user_service.UserService.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/user_service.html#UserService.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.user_service.UserService.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.user_service.UserService.mediatypes">
-<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.services.user_service.UserService.mediatypes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="gravitate.services.user_service.UserService.methods">
-<code class="descname">methods</code><em class="property"> = {'GET', 'POST'}</em><a class="headerlink" href="#gravitate.services.user_service.UserService.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.user_service.UserService.post">
-<code class="descname">post</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/user_service.html#UserService.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.user_service.UserService.post" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd>This method handles POST request to handle use case “create ride request”</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uid</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gravitate.services.user_service.UserService.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/user_service.html#UserService.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.user_service.UserService.update" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd><dl class="first last docutils">
-<dt>Handles client FCM Token refresh</dt>
-<dd><a class="reference external" href="https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation">https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation</a></dd>
-<dt>Note that FCM refresh shall not override the user’s settings for enabling notification</dt>
-<dd>(if specified in requirement).</dd>
-</dl>
-</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>self</strong> – </li>
-<li><strong>uid</strong> – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.services.user_service.fillUserDictWithForm">
-<code class="descclassname">gravitate.services.user_service.</code><code class="descname">fillUserDictWithForm</code><span class="sig-paren">(</span><em>form: gravitate.forms.user_creation_form.UserCreationForm</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/gravitate/services/user_service.html#fillUserDictWithForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.user_service.fillUserDictWithForm" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="gravitate-services-user-service-module">
+<h2>gravitate.services.user_service module<a class="headerlink" href="#gravitate-services-user-service-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services.utils">
-<span id="gravitate-services-utils-module"></span><h2>gravitate.services.utils module<a class="headerlink" href="#module-gravitate.services.utils" title="Permalink to this headline">¶</a></h2>
-<p>Reference: flask-restful docs</p>
-<dl class="function">
-<dt id="gravitate.services.utils.auth_verify_id_token">
-<code class="descclassname">gravitate.services.utils.</code><code class="descname">auth_verify_id_token</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.services.utils.auth_verify_id_token" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.services.utils.authenticate">
-<code class="descclassname">gravitate.services.utils.</code><code class="descname">authenticate</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/utils.html#authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.utils.authenticate" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Wraps a resource to provide authentication.
-Note that the resource need to take uid in kwargs</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gravitate.services.utils.default_gravitate_authentication">
-<code class="descclassname">gravitate.services.utils.</code><code class="descname">default_gravitate_authentication</code><span class="sig-paren">(</span><em>id_token) -&gt; (&lt;class 'str'&gt;</em>, <em>&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/utils.html#default_gravitate_authentication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.utils.default_gravitate_authentication" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.services.utils.mock_auth_verify_id_token">
-<code class="descclassname">gravitate.services.utils.</code><code class="descname">mock_auth_verify_id_token</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/services/utils.html#mock_auth_verify_id_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.services.utils.mock_auth_verify_id_token" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="gravitate-services-utils-module">
+<h2>gravitate.services.utils module<a class="headerlink" href="#gravitate-services-utils-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.services">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.services" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

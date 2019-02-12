@@ -159,13 +159,21 @@
         <span class="n">event_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ref</span><span class="p">(</span><span class="n">event_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event_ref</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="EventDao.get"><a class="viewcode-back" href="../../../gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eventRef</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">eventRef</span> <span class="o">=</span> <span class="n">str_to_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
         <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">eventRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
         <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">event</span></div></div>
+
+
+<div class="viewcode-block" id="str_to_ref"><a class="viewcode-back" href="../../../gravitate.data_access.html#gravitate.data_access.event_dao.str_to_ref">[docs]</a><span class="k">def</span> <span class="nf">str_to_ref</span><span class="p">(</span><span class="n">ref_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">ref_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

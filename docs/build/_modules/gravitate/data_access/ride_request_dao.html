@@ -176,6 +176,9 @@
         <span class="n">rideRequest</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rideRequest</span></div>
 
+<div class="viewcode-block" id="RideRequestGenericDao.set"><a class="viewcode-back" href="../../../gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rideRequest</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="n">rideRequest</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rideRequest</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div>
+
 <div class="viewcode-block" id="RideRequestGenericDao.delete"><a class="viewcode-back" href="../../../gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singleRideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Description</span>
 <span class="sd">            This function deletes a ride request from the database</span>
