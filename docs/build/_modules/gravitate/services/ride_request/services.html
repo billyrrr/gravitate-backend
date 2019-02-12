@@ -169,13 +169,13 @@
         <span class="k">return</span> <span class="n">response_dict</span><span class="p">,</span> <span class="mi">200</span></div></div>
 
 
-<div class="viewcode-block" id="AirportRideRequestService"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.services.AirportRideRequestService">[docs]</a><span class="k">class</span> <span class="nc">AirportRideRequestService</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+<div class="viewcode-block" id="RideRequestService"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.services.RideRequestService">[docs]</a><span class="k">class</span> <span class="nc">RideRequestService</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Description</span>
 <span class="sd">        Deletes a ride request.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="AirportRideRequestService.delete"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.services.AirportRideRequestService.delete">[docs]</a>    <span class="nd">@service_utils</span><span class="o">.</span><span class="n">authenticate</span>
+<div class="viewcode-block" id="RideRequestService.delete"><a class="viewcode-back" href="../../../../gravitate.services.ride_request.html#gravitate.services.ride_request.services.RideRequestService.delete">[docs]</a>    <span class="nd">@service_utils</span><span class="o">.</span><span class="n">authenticate</span>
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rideRequestId</span><span class="p">,</span> <span class="n">uid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replaces POST &quot;/deleteRideRequest&quot;</span>

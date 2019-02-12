@@ -259,7 +259,7 @@ class RefactorTempTest(TestCase):
             form["flightLocalTime"] = "2018-12-20T12:00:00.000"
             form["testUserId"] = userId
             r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/airportRideRequests', json=form, headers=getMockAuthHeaders(userId))
+                path='/requestRide/airport', json=form, headers=getMockAuthHeaders(userId))
             print(r.json)
             self.assertIn("firestoreRef", r.json.keys())
             firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
@@ -294,7 +294,7 @@ class RefactorTempTest(TestCase):
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
         # form["testUserId"] = "KlRLbJCAORfbZxCm8ou1SEBJLt62"
-        r = self.app.post(path='/airportRideRequests',
+        r = self.app.post(path='/requestRide/airport',
                           json=form,
                           headers=getMockAuthHeaders()
                           )

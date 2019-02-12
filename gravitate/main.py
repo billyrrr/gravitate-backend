@@ -30,9 +30,8 @@ from gravitate.context import Context
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll
-from gravitate.api_server.ride_request.services import AirportRideRequestCreationService, DeleteMatchService, \
-    AirportRideRequestService, RideRequestCreation
+from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchService
+from gravitate.api_server.ride_request.services import AirportRideRequestCreationService, RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
 from gravitate.api_server.utils import authenticate
 from gravitate.api_server import errors as service_errors
@@ -69,18 +68,23 @@ class EndpointTestService(Resource):
 
 
 api = Api(app, errors=service_errors.errors)
+
+# User Related Endpoints
 api.add_resource(UserService, '/users/<string:uid>')
-# api.add_resource(RideRequestServiceTempTesting, '/rideRequests')
-api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 
-# New Format
+# Ride Request Related Endpoints
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
+api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 
-# api.add_resource(SocialEventRideRequestCreationService, '/eventRideRequests')
-api.add_resource(AirportRideRequestService, '/rideRequests/<string:rideRequestId>')
+# Grouping Related Endpoints
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
-api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(DeleteMatchService, '/deleteMatch')
+
+# Endpoint for Testing Purposes
+api.add_resource(EndpointTestService, '/endpointTest')
+
+# Deprecated
+api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])

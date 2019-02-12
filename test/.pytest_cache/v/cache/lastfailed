@@ -44,7 +44,6 @@
   "test_scripts.py": true,
   "test_scripts.py::TestBuildLaxEvent::testBuildLaxSampleEvent": true,
   "test_scripts.py::TestGenerateEvent::testGenerateEvent": true,
-  "test_services/test_event_ride_request/test_services.py::RequestRideTest::testCreateRideRequestsTemp": true,
   "test_users.py::FirestoreUserTest::testUserCollectionExists": true,
   "test_users.py::UserDAOTest::testGetUser": true,
   "test_users.py::UserDAOTest::testGetUserId": true,

@@ -38,6 +38,8 @@
   "test_controllers/test_grouping/test_paring.py::TestGroupUsers::testPairAlgorithm",
   "test_data_access/test_event_dao.py::EventDAOTest::testCreate",
   "test_data_access/test_event_dao.py::EventDAOTest::testFindByTimestamp",
+  "test_data_access/test_event_dao.py::EventDAOTest::testGet",
+  "test_data_access/test_event_dao.py::EventDAOTest::testGetStrRef",
   "test_data_access/test_location_dao.py::LocationDAOTest::testFindByAirportCode",
   "test_data_access/test_location_dao.py::LocationDAOTest::testSetWithTransaction",
   "test_data_access/test_location_dao.py::LocationDAOTest::testSetWithTransactionTransactional",
@@ -84,8 +86,8 @@
   "test_services/test_airport_ride_request.py::RefactorTempTest::testCreateRideRequestsTemp",
   "test_services/test_airport_ride_request.py::RefactorTempTest::testGroupRideRequestsTemp",
   "test_services/test_airport_ride_request.py::RefactorTempTest::testNewRideRequestServiceTemp",
-  "test_services/test_social_event_ride_request.py::RideRequestDictBuilderTest::testSetVariables",
-  "test_services/test_social_event_ride_request.py::SocialEventDictBuilderTest::testBuild",
-  "test_services/test_social_event_ride_request.py::SocialEventDictBuilderTest::testSetWithForm",
+  "test_services/test_event_ride_request/test_builders.py::RideRequestDictBuilderTest::testSetVariables",
+  "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testBuild",
+  "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testSetWithForm",
   "test_services/test_event_ride_request/test_services.py::RequestRideTest::testCreateRideRequestsTemp"
 ]

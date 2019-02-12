@@ -8,6 +8,10 @@ errors = {
     'RequestAlreadyExistsError': {
         "message": "Ride request on the same day (or for the same event) already exists",
         "status": 400
+    },
+    'EventNotFoundError': {
+        "message": "invalid airport code and datetime combination or error finding airport location in backend",
+        "status": 400
     }
 }
 

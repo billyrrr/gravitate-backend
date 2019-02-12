@@ -67,7 +67,7 @@
 
 <span class="kn">from</span> <span class="nn">gravitate.services.grouping_service</span> <span class="k">import</span> <span class="n">OrbitForceMatchService</span><span class="p">,</span> <span class="n">refreshGroupAll</span>
 <span class="kn">from</span> <span class="nn">gravitate.services.ride_request.services</span> <span class="k">import</span> <span class="n">AirportRideRequestCreationService</span><span class="p">,</span> <span class="n">DeleteMatchService</span><span class="p">,</span> \
-    <span class="n">AirportRideRequestService</span>
+    <span class="n">RideRequestService</span>
 <span class="kn">from</span> <span class="nn">gravitate.services.user_service</span> <span class="k">import</span> <span class="n">UserService</span>
 <span class="kn">from</span> <span class="nn">gravitate.services.utils</span> <span class="k">import</span> <span class="n">authenticate</span>
 <span class="kn">from</span> <span class="nn">gravitate.services</span> <span class="k">import</span> <span class="n">errors</span> <span class="k">as</span> <span class="n">service_errors</span>
@@ -107,7 +107,7 @@
 <span class="c1"># api.add_resource(RideRequestServiceTempTesting, &#39;/rideRequests&#39;)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">AirportRideRequestCreationService</span><span class="p">,</span> <span class="s1">&#39;/airportRideRequests&#39;</span><span class="p">)</span>
 <span class="c1"># api.add_resource(SocialEventRideRequestCreationService, &#39;/eventRideRequests&#39;)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">AirportRideRequestService</span><span class="p">,</span> <span class="s1">&#39;/rideRequests/&lt;string:rideRequestId&gt;&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">RideRequestService</span><span class="p">,</span> <span class="s1">&#39;/rideRequests/&lt;string:rideRequestId&gt;&#39;</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">OrbitForceMatchService</span><span class="p">,</span> <span class="s1">&#39;/devForceMatch&#39;</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">EndpointTestService</span><span class="p">,</span> <span class="s1">&#39;/endpointTest&#39;</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">DeleteMatchService</span><span class="p">,</span> <span class="s1">&#39;/deleteMatch&#39;</span><span class="p">)</span>

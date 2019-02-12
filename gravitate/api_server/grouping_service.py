@@ -46,3 +46,23 @@ def refreshGroupAll():
     """
     allRideRequestIds = RideRequestGenericDao().get_ids(incomplete=True)
     actions.group_many(allRideRequestIds)
+
+
+class DeleteMatchService(Resource):
+    def post(self):
+        request_json = request.get_json()
+        request_form = json.loads(request_json) if (
+                type(request_json) != dict) else request_json
+
+        ride_request_id = request_form.get("rideRequestId", None)
+
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
+        r = RideRequestGenericDao().get(ride_request_ref)
+        location_ref = r.airport_location
+        actions.drop_group({ride_request_id},
+                           orbit_id=r.orbit_ref.id,
+                           event_id=r.event_ref.id,
+                           location_id=location_ref.id)
+        response_dict = {"success": True}
+
+        return response_dict, 200
