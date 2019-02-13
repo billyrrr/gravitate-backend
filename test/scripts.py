@@ -39,6 +39,43 @@ def remove_match_tmp(ride_request_id):
     group_actions.remove_from_orbit(ride_request, orbit)
 
 
+class SetUpTestDatabase:
+
+    def __init__(self):
+        self.refs_to_delete = list()
+
+    @staticmethod
+    def clear_before():
+        """ Delete all events and locations before test
+        :return:
+        """
+        scripts.delete_all_events()
+        scripts.delete_all_locations()
+
+    def generate_test_data(self,
+                           airport_code="LAX", start_string="2018-12-07T08:00:00.000",
+                           num_days=3, event_category="airport"):
+        """
+        Generate data needed by the test
+        :param airport_code:
+        :param start_string:
+        :param num_days:
+        :param event_category:
+        :return:
+        """
+        c = scripts.populate_locations.PopulateLocationCommand(airport_code=airport_code)
+        refs = c.execute()
+        self.refs_to_delete.extend(refs)
+        c = scripts.populate_airport_events.PopulateEventCommand(
+            start_string=start_string, num_days=num_days, event_category=event_category)
+        refs = c.execute()
+        self.refs_to_delete.extend(refs)
+
+    def clear_after(self):
+        for ref in self.refs_to_delete:
+            ref.delete()
+
+
 if __name__ == "__main__":
     scripts.delete_all_events()
     scripts.delete_all_locations()

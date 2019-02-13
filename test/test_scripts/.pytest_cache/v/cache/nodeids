@@ -1,1 +1,9 @@
-[]
+[
+  "test_builders.py::TestBuildLaxTerminal::testBuildTerminal1",
+  "test_builders.py::TestBuildLaxEvent::testBuildLaxSampleEvent",
+  "test_builders.py::TestBuildLaxEvent::testGenerateStartDatetime",
+  "test_builders.py::TestBuildLaxEvent::testGenerateTimestamps",
+  "test_builders.py::TestGenerateEvent::testGenerateEvent",
+  "test_populate_events.py::PopulateEventCommandTest::test_generate_events",
+  "test_populate_locations.py::PopulateLocationCommandTest::test_generate_locations"
+]

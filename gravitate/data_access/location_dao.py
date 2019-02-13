@@ -114,7 +114,7 @@ class LocationGenericDao:
         # TODO implement
         pass
 
-    def create(self, location: Type[Location]) -> DocumentReference:
+    def insert_new(self, location: Type[Location]) -> DocumentReference:
         """ Description
         :type self:
         :param self:

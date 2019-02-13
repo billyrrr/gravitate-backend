@@ -74,7 +74,7 @@ def buildLaxTerminal(terminal: str):
 
 def doWorkUc(campusCode="UCSB"):
     campusLocation = Location.from_code("UCSB", "campus")
-    ref = LocationGenericDao().create(campusLocation)
+    ref = LocationGenericDao().insert_new(campusLocation)
     campusLocation.set_firestore_ref(ref)
 
 
@@ -84,7 +84,7 @@ def doWorkDeprecated():
 
     for terminal in terminals:
         airportLocation = buildLaxTerminal(terminal)
-        ref = LocationGenericDao().create(airportLocation)
+        ref = LocationGenericDao().insert_new(airportLocation)
         airportLocation.set_firestore_ref(ref)
         print(vars(airportLocation))
 
@@ -94,13 +94,45 @@ def doWork(airportCode='LAX'):
 
     if airportCode == 'LAX':
         airportLocation = LaxBuilder().exportToLocation()
-        ref = LocationGenericDao().create(airportLocation)
+        ref = LocationGenericDao().insert_new(airportLocation)
         airportLocation.set_firestore_ref(ref)
     elif airportCode == 'SAN':
         airportLocation = SanBuilder().exportToLocation()
-        ref = LocationGenericDao().create(airportLocation)
+        ref = LocationGenericDao().insert_new(airportLocation)
         airportLocation.set_firestore_ref(ref)
     else:
         raise ValueError
 
     print(vars(airportLocation))
+
+
+class PopulateLocationCommand:
+
+    def __init__(self, airport_code='LAX'):
+        self.airport_code = airport_code
+
+    def execute(self) -> list:
+        """
+
+        :return: a list of DocumentReference for all Documents created
+        """
+
+        airportLocation = None
+        refs = list()
+
+        if self.airport_code == 'LAX':
+            airportLocation = LaxBuilder().exportToLocation()
+            ref = LocationGenericDao().insert_new(airportLocation)
+            airportLocation.set_firestore_ref(ref)
+            refs.append(ref)
+        elif self.airport_code == 'SAN':
+            airportLocation = SanBuilder().exportToLocation()
+            ref = LocationGenericDao().insert_new(airportLocation)
+            airportLocation.set_firestore_ref(ref)
+            refs.append(ref)
+        else:
+            raise ValueError("unsupported airportCode: {}".format(self.airport_code))
+
+        print(vars(airportLocation))
+
+        return refs

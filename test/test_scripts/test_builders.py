@@ -5,6 +5,7 @@ from gravitate.scripts.event.populate_airport_events import generate_airport_eve
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
 from gravitate.scripts.event.event_builders import SampleLaxEventBuilder
 
+from test import scripts as setup_scripts
 
 class TestBuildLaxTerminal(unittest.TestCase):
 
@@ -25,6 +26,11 @@ sampleLaxEventDict = {
 
 
 class TestBuildLaxEvent(unittest.TestCase):
+
+    def setUp(self):
+        self.c = setup_scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data()
 
     def testBuildLaxSampleEvent(self):
         laxSampleEvent = SampleLaxEventBuilder(1545033600, 1545119999)
@@ -47,8 +53,16 @@ class TestBuildLaxEvent(unittest.TestCase):
             self.assertEqual(endTimestamp, expectedValue[count][1])
             count += 1
 
+    def tearDown(self):
+        self.c.clear_after()
+
 
 class TestGenerateEvent(unittest.TestCase):
+
+    def setUp(self):
+        self.c = setup_scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data()
 
     def testGenerateEvent(self):
         startDatetime = generateStartDatetime("2018-12-01T08:00:00.000")
@@ -58,3 +72,6 @@ class TestGenerateEvent(unittest.TestCase):
                                  'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100,
                                  'isClosed': False}
         self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].to_dict())
+
+    def tearDown(self):
+        self.c.clear_after()

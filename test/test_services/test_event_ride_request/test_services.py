@@ -21,7 +21,7 @@ class RequestRideTest(TestCase):
 
         location_dict = store.getLocationDict(location_category="social")
         location = models.Location.from_dict(location_dict)
-        location_ref = data_access.LocationGenericDao().create(location)
+        location_ref = data_access.LocationGenericDao().insert_new(location)
         self.refs_to_delete.append(location_ref)
 
         event_dict = store.getEventDict(event_category="social")
