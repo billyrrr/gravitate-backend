@@ -1,5 +1,8 @@
 # Gravitate Backend
 
+[![Build Status](https://travis-ci.com/billyrrr/gravitate-backend.svg?token=V7MxKCogppX3CT7QjvhV&branch=master)](https://travis-ci.com/billyrrr/gravitate-backend)
+
+## Summary
 From looking through hundreds of posts in Facebook carpooling groups to spending an unreasonable amount of money on rideshare applications such as Uber and Lyft, finding reliable and affordable transportation to Los Angeles International Airport (LAX) from San Diego can be a nightmare for students looking to return home during school breaks. International students attending UCSD often choose to fly home from LAX instead of San Diego International Airport (SAN) due to the vast difference in airfare, and must decide between largely inefficient modes of transportation such as taking the train or finding rideshare drivers who are willing to make the long trip to the airport. In addition, current rideshare services such as Uber and Lyft do not offer options to carpool with others who are also traveling long distances. To accommodate for these issues our Android application “Gravitate” will provide a platform for users to group up with each other, coordinate long-distance trips to the airport, and split the cost efficiently among the group.
 
 ## Gravitate By Team VIBE
