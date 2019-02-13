@@ -12,12 +12,13 @@ from test.test_main import getMockAuthHeaders
 
 class RequestRideTest(TestCase):
     ride_request_ids_to_delete = list()
-    refs_to_delete = list()
 
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
+
+        self.refs_to_delete = list()
 
         location_dict = store.getLocationDict(location_category="social")
         location = models.Location.from_dict(location_dict)
@@ -28,7 +29,6 @@ class RequestRideTest(TestCase):
         event_dict["locationRef"] = location_ref
         event = models.Event.from_dict(event_dict)
         event_ref = data_access.EventDao().create(event)
-        self.refs_to_delete = list()
         self.refs_to_delete.append(event_ref)
 
         event_id = event_ref.id
