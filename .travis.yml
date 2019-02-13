@@ -2,8 +2,8 @@ language: python
 python:
 #  - "3.6"
   - "3.7-dev"
-before_install:
-  - "export PYTHONPATH=$PYTHONPATH:$(pwd)"
+#before_install:
+#  - "export PYTHONPATH=$PYTHONPATH:$(pwd)"
 # command to install dependencies
 install:
   - pip install -r requirements.txt
