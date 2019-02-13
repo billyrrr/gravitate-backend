@@ -40,6 +40,11 @@ class RideRequestDictBuilderTest(TestCase):
 class AirportRideRequestDictBuilderTest(TestCase):
     builder: service_utils.AirportRideRequestBuilder = None
 
+    def setUp(self):
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=1)
+
     def testSetWithForm(self):
         userId = 'testuserid1'
         d = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
@@ -85,9 +90,20 @@ class AirportRideRequestDictBuilderTest(TestCase):
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
         self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
 
+    def tearDown(self):
+        self.c.clear_after()
+
 
 class CreateRideRequestServiceUtilsTest(TestCase):
     maxDiff = 2000
+
+    def setUp(self):
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
+    def tearDown(self):
+        self.c.clear_after()
 
     def testRideRequestDictBuilder(self):
         mockForm = FormDictFactory().create(hasEarliestLatest=False, returnDict=False)
@@ -107,6 +123,12 @@ class ReturnErrorsTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
+    def tearDown(self):
+        self.c.clear_after()
 
     def testRaiseRequestAlreadyExistsError(self):
         # Create new rideRequests
