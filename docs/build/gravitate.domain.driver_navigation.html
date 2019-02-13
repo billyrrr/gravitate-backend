@@ -1,0 +1,154 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.domain.driver_navigation package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-driver-navigation-package">
+<h1>gravitate.domain.driver_navigation package<a class="headerlink" href="#gravitate-domain-driver-navigation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.driver_navigation.models">
+<span id="gravitate-domain-driver-navigation-models-module"></span><h2>gravitate.domain.driver_navigation.models module<a class="headerlink" href="#module-gravitate.domain.driver_navigation.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.driver_navigation.models.DriverNavigation">
+<em class="property">class </em><code class="descclassname">gravitate.domain.driver_navigation.models.</code><code class="descname">DriverNavigation</code><a class="reference internal" href="_modules/gravitate/domain/driver_navigation/models.html#DriverNavigation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.driver_navigation.models.DriverNavigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.driver_navigation.models.DriverNavigation.from_dict">
+<code class="descname">from_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/driver_navigation/models.html#DriverNavigation.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.driver_navigation.models.DriverNavigation.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.driver_navigation.models.DriverNavigation.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/driver_navigation/models.html#DriverNavigation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.driver_navigation.models.DriverNavigation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.driver_navigation.models.build_driver_navigation_from_orbit">
+<code class="descclassname">gravitate.domain.driver_navigation.models.</code><code class="descname">build_driver_navigation_from_orbit</code><span class="sig-paren">(</span><em>orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/driver_navigation/models.html#build_driver_navigation_from_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.driver_navigation.models.build_driver_navigation_from_orbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a DriverNavigation that briefs the driver of all pickup addresses and their order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>orbit</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.driver_navigation.utils">
+<span id="gravitate-domain-driver-navigation-utils-module"></span><h2>gravitate.domain.driver_navigation.utils module<a class="headerlink" href="#module-gravitate.domain.driver_navigation.utils" title="Permalink to this headline">¶</a></h2>
+<p>googlemaps python documentation: <a class="reference external" href="https://googlemaps.github.io/google-maps-services-python/docs/">https://googlemaps.github.io/google-maps-services-python/docs/</a></p>
+<dl class="function">
+<dt id="gravitate.domain.driver_navigation.utils.get_distance_and_duration">
+<code class="descclassname">gravitate.domain.driver_navigation.utils.</code><code class="descname">get_distance_and_duration</code><span class="sig-paren">(</span><em>origin</em>, <em>destination</em>, <em>mode='driving'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/driver_navigation/utils.html#get_distance_and_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.driver_navigation.utils.get_distance_and_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.driver_navigation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.driver_navigation" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.driver_navigation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

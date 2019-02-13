@@ -1,0 +1,207 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.api_server.user_service &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.api_server.user_service</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Author: Leon Wu</span>
+<span class="sd">Reviewer: Zixuan Rao</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">Resource</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.controllers</span> <span class="k">import</span> <span class="n">userutils</span>
+<span class="kn">from</span> <span class="nn">gravitate.data_access</span> <span class="k">import</span> <span class="n">UserDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.forms.user_creation_form</span> <span class="k">import</span> <span class="n">UserCreationValidateForm</span><span class="p">,</span> <span class="n">UserCreationForm</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">gravitate.context</span> <span class="k">import</span> <span class="n">Context</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="UserService"><a class="viewcode-back" href="../../../gravitate.api_server.html#gravitate.api_server.user_service.UserService">[docs]</a><span class="k">class</span> <span class="nc">UserService</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+
+<div class="viewcode-block" id="UserService.get"><a class="viewcode-back" href="../../../gravitate.api_server.html#gravitate.api_server.user_service.UserService.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">):</span>
+        <span class="c1"># Check Firestore to see if UID Already Exists</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">user_id_exists</span><span class="p">(</span><span class="n">uid</span><span class="p">)):</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_user_by_id</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+            <span class="n">userDict</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">userDict</span><span class="p">,</span> <span class="mi">200</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">errorResponseDict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;User Does not Exist&quot;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">errorResponseDict</span><span class="p">,</span> <span class="mi">400</span></div>
+
+<div class="viewcode-block" id="UserService.update"><a class="viewcode-back" href="../../../gravitate.api_server.html#gravitate.api_server.user_service.UserService.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Handles client FCM Token refresh</span>
+<span class="sd">                https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation</span>
+<span class="sd">            Note that FCM refresh shall not override the user&#39;s settings for enabling notification</span>
+<span class="sd">                (if specified in requirement).</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type uid:</span>
+<span class="sd">        :param uid:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="UserService.post"><a class="viewcode-back" href="../../../gravitate.api_server.html#gravitate.api_server.user_service.UserService.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This method handles POST request to handle use case &quot;create ride request&quot;</span>
+
+<span class="sd">        :param uid:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">requestJson</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="n">requestForm</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">requestJson</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">requestJson</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">requestJson</span>
+
+        <span class="n">validateForm</span> <span class="o">=</span> <span class="n">UserCreationValidateForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">requestForm</span><span class="p">)</span>
+
+        <span class="c1"># POST REQUEST</span>
+        <span class="k">if</span> <span class="n">validateForm</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+
+            <span class="c1"># Transfer data from validateForm to an internal representation of the form</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">UserCreationForm</span><span class="p">()</span>
+            <span class="n">validateForm</span><span class="o">.</span><span class="n">populate_obj</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+            <span class="n">userDict</span> <span class="o">=</span> <span class="n">fillUserDictWithForm</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+
+            <span class="c1"># Create User Object</span>
+            <span class="n">newUser</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">userDict</span><span class="p">)</span>
+
+            <span class="n">userId</span> <span class="o">=</span> <span class="n">newUser</span><span class="o">.</span><span class="n">uid</span>
+            <span class="n">userRef</span> <span class="o">=</span> <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">userCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_id</span><span class="o">=</span><span class="n">userId</span><span class="p">)</span>
+            <span class="n">newUser</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">userRef</span><span class="p">)</span>
+            <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+
+            <span class="c1"># Saves User Object to Firestore</span>
+            <span class="n">userutils</span><span class="o">.</span><span class="n">saveUser</span><span class="p">(</span><span class="n">newUser</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">userRef</span> <span class="o">=</span> <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">userCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">userId</span><span class="p">)</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+            <span class="n">responseDict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;userId&quot;</span><span class="p">:</span> <span class="n">newUser</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">responseDict</span><span class="p">,</span> <span class="mi">200</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">validateForm</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">validateForm</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="mi">400</span></div></div>
+
+
+<div class="viewcode-block" id="fillUserDictWithForm"><a class="viewcode-back" href="../../../gravitate.api_server.html#gravitate.api_server.user_service.fillUserDictWithForm">[docs]</a><span class="k">def</span> <span class="nf">fillUserDictWithForm</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">UserCreationForm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">userDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="c1"># Move data from the form frontend submitted to userDict</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;uid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">uid</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;membership&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">membership</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">display_name</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;phone_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">phone_number</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;photo_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">photo_url</span>
+    <span class="n">userDict</span><span class="p">[</span><span class="s1">&#39;pickupAddress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">pickupAddress</span>
+
+    <span class="k">return</span> <span class="n">userDict</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

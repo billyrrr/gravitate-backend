@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.api_server.ride_request package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-api-server-ride-request-package">
+<h1>gravitate.api_server.ride_request package<a class="headerlink" href="#gravitate-api-server-ride-request-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.api_server.ride_request.deprecated_utils">
+<span id="gravitate-api-server-ride-request-deprecated-utils-module"></span><h2>gravitate.api_server.ride_request.deprecated_utils module<a class="headerlink" href="#module-gravitate.api_server.ride_request.deprecated_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression">
+<code class="descclassname">gravitate.api_server.ride_request.deprecated_utils.</code><code class="descname">fill_ride_request_dict_builder_regression</code><span class="sig-paren">(</span><em>form: gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm</em>, <em>userId) -&gt; (&lt;class 'dict'&gt;</em>, <em>&lt;class 'gravitate.models.location.AirportLocation'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/deprecated_utils.html#fill_ride_request_dict_builder_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adaptor pattern for testing purposes only
+:param form:
+:param userId:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_with_form">
+<code class="descclassname">gravitate.api_server.ride_request.deprecated_utils.</code><code class="descname">fill_ride_request_dict_with_form</code><span class="sig-paren">(</span><em>form: gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm</em>, <em>userId) -&gt; (&lt;class 'dict'&gt;</em>, <em>&lt;class 'gravitate.models.location.AirportLocation'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/deprecated_utils.html#fill_ride_request_dict_with_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_with_form" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Description</dt>
+<dd>DEPRECATED
+This method fills a rideRequest dict that can later be used to call RideRequest().from_dict method.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>form</strong> – </li>
+<li><strong>userId</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of rideRequest dict and AirportLocation</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.api_server.ride_request.parsers">
+<span id="gravitate-api-server-ride-request-parsers-module"></span><h2>gravitate.api_server.ride_request.parsers module<a class="headerlink" href="#module-gravitate.api_server.ride_request.parsers" title="Permalink to this headline">¶</a></h2>
+<p>Switch to reqparse to reduce repeated code for different types of rideRequest</p>
+</div>
+<div class="section" id="module-gravitate.api_server.ride_request.services">
+<span id="gravitate-api-server-ride-request-services-module"></span><h2>gravitate.api_server.ride_request.services module<a class="headerlink" href="#module-gravitate.api_server.ride_request.services" title="Permalink to this headline">¶</a></h2>
+<p>Author: Leon Wu, Zixuan Rao</p>
+<p>This module implements the service for creating and managing rideRequests.</p>
+<dl class="class">
+<dt id="gravitate.api_server.ride_request.services.AirportRideRequestCreationService">
+<em class="property">class </em><code class="descclassname">gravitate.api_server.ride_request.services.</code><code class="descname">AirportRideRequestCreationService</code><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#AirportRideRequestCreationService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.AirportRideRequestCreationService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>This class replaces web-form with reqparse for form validation.</p>
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.AirportRideRequestCreationService.endpoint">
+<code class="descname">endpoint</code><em class="property"> = 'airportriderequestcreationservice'</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.AirportRideRequestCreationService.mediatypes">
+<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.mediatypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.AirportRideRequestCreationService.methods">
+<code class="descname">methods</code><em class="property"> = {'POST'}</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.AirportRideRequestCreationService.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#AirportRideRequestCreationService.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.api_server.ride_request.services.RideRequestCreation">
+<em class="property">class </em><code class="descclassname">gravitate.api_server.ride_request.services.</code><code class="descname">RideRequestCreation</code><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#RideRequestCreation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestCreation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.RideRequestCreation.endpoint">
+<code class="descname">endpoint</code><em class="property"> = 'riderequestcreation'</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestCreation.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.RideRequestCreation.mediatypes">
+<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestCreation.mediatypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.RideRequestCreation.methods">
+<code class="descname">methods</code><em class="property"> = {'POST'}</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestCreation.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.RideRequestCreation.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>rideCategory</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#RideRequestCreation.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestCreation.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService">
+<em class="property">class </em><code class="descclassname">gravitate.api_server.ride_request.services.</code><code class="descname">RideRequestService</code><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#RideRequestService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>Description
+Deletes a ride request.</p>
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>rideRequestId</em>, <em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#RideRequestService.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces POST “/deleteRideRequest”
+:param rideRequestId:
+:param uid:
+:return:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService.endpoint">
+<code class="descname">endpoint</code><em class="property"> = 'riderequestservice'</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService.mediatypes">
+<code class="descname">mediatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService.mediatypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService.methods">
+<code class="descname">methods</code><em class="property"> = {'DELETE', 'PATCH'}</em><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.api_server.ride_request.services.RideRequestService.patch">
+<code class="descname">patch</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/api_server/ride_request/services.html#RideRequestService.patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.api_server.ride_request.services.RideRequestService.patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO implement</p>
+<dl class="docutils">
+<dt>This method modifies fields in an airportRideRequest.</dt>
+<dd><dl class="first last docutils">
+<dt>Allow user to patch these fields at any time:</dt>
+<dd><ul class="first last simple">
+<li>disabilities</li>
+<li>pickupAddress</li>
+<li>“baggages”</li>
+</ul>
+</dd>
+<dt>If the rideRequest is not matched into an orbit, allow user to patch these fields:</dt>
+<dd><ul class="first simple">
+<li>driverStatus</li>
+</ul>
+<dl class="last docutils">
+<dt>furthermore, if flightLocalTime still in the same event and eventLocation is “LAX”,</dt>
+<dd><ul class="first last simple">
+<li>flightLocalTime</li>
+<li>earliest</li>
+<li>latest</li>
+<li>flightNumber</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Note that this operation should be done in a transaction to ensure atomicity of the operation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uid</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.api_server.ride_request">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.api_server.ride_request" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.api_server.ride_request.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

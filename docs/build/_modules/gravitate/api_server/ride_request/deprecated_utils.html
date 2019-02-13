@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gravitate.api_server.ride_request.deprecated_utils &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.api_server.ride_request.deprecated_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.domain.request_ride</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">gravitate.forms.ride_request_creation_form</span> <span class="k">import</span> <span class="n">AirportRideRequestCreationForm</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.request_ride.builders</span> <span class="k">import</span> <span class="n">AirportRideRequestBuilder</span>
+
+
+<div class="viewcode-block" id="fill_ride_request_dict_with_form"><a class="viewcode-back" href="../../../../gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_with_form">[docs]</a><span class="k">def</span> <span class="nf">fill_ride_request_dict_with_form</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">AirportRideRequestCreationForm</span><span class="p">,</span> <span class="n">userId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        DEPRECATED</span>
+<span class="sd">        This method fills a rideRequest dict that can later be used to call RideRequest().from_dict method.</span>
+<span class="sd">    :param form:</span>
+<span class="sd">    :param userId:</span>
+<span class="sd">    :return: a tuple of rideRequest dict and AirportLocation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Deprecated. Use AirportRideRequestBuilder instead. &quot;</span><span class="p">)</span>
+
+    <span class="n">rideRequestDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;rideCategory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;airportRide&#39;</span>
+
+    <span class="c1"># Move data from the form frontend submitted to rideRequestDict</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;pickupAddress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">pickupAddress</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;driverStatus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">driverStatus</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;flightLocalTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">flightLocalTime</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;flightNumber&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">flightNumber</span>
+
+    <span class="c1"># Fields to be filled &quot;immediately&quot;</span>
+
+    <span class="c1"># TODO fill unspecified options with default values</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;pricing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">987654321</span>  <span class="c1"># TODO change</span>
+
+    <span class="c1"># Populate rideRequestDict with default service data</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;baggages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;hasCheckedIn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;orbitRef&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">userId</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;requestCompletion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Fields to be filled &quot;after some thinking&quot;</span>
+
+    <span class="c1"># Set Target</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_with_flight_local_time</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">flightLocalTime</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">toEvent</span><span class="p">)</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="c1"># Set EventRef</span>
+    <span class="n">eventRef</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">find_event</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">flightLocalTime</span><span class="p">)</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;eventRef&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eventRef</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_airport_location</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">airportCode</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rideRequestDict</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">airportLocationRef</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+    <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;airportLocation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airportLocationRef</span>
+
+    <span class="k">return</span> <span class="n">rideRequestDict</span><span class="p">,</span> <span class="n">location</span></div>
+
+
+<div class="viewcode-block" id="fill_ride_request_dict_builder_regression"><a class="viewcode-back" href="../../../../gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression">[docs]</a><span class="k">def</span> <span class="nf">fill_ride_request_dict_builder_regression</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">AirportRideRequestCreationForm</span><span class="p">,</span> <span class="n">userId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adaptor pattern for testing purposes only</span>
+<span class="sd">    :param form:</span>
+<span class="sd">    :param userId:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;This method is for testing purposes only. Do not use in production. &quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">AirportRideRequestBuilder</span> <span class="o">=</span> <span class="n">AirportRideRequestBuilder</span><span class="p">()</span><span class="o">.</span><span class="n">set_with_form_and_user_id</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">userId</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">build_airport_ride_request</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_airport_location</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">airportCode</span><span class="p">)</span></div>
+
+<span class="c1">#</span>
+<span class="c1"># def create_ride_request(form: dict, user_id: str) -&gt; Type[RideRequest]:</span>
+<span class="c1">#     &quot;&quot;&quot; Description</span>
+<span class="c1">#         DEPRECATED</span>
+<span class="c1">#         This method creates a rideRequest from form of type:</span>
+<span class="c1">#             FL-3: flightNumber, flightLocalTime, airportCode, ...</span>
+<span class="c1">#             ... other use cases</span>
+<span class="c1">#</span>
+<span class="c1">#     :param form:</span>
+<span class="c1">#     :param user_id:</span>
+<span class="c1">#     :return: rideRequest</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#     raise NotImplementedError</span>
+<span class="c1">#</span>
+<span class="c1">#     d = dict()</span>
+<span class="c1">#</span>
+<span class="c1">#     d[&#39;rideCategory&#39;] = &#39;airportRide&#39;</span>
+<span class="c1">#     toEvent = form[&quot;toEvent&quot;]</span>
+<span class="c1">#</span>
+<span class="c1">#     # Move data from the form frontend submitted to rideRequestDict</span>
+<span class="c1">#     if &quot;pickupAddress&quot; in form.keys():</span>
+<span class="c1">#         d[&#39;pickupAddress&#39;] = form[&quot;pickupAddress&quot;]</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         d[&#39;pickupAddress&#39;] = utils.getPickupAddress(user_id)</span>
+<span class="c1">#     d[&#39;driverStatus&#39;] = form[&quot;driverStatus&quot;]</span>
+<span class="c1">#     d[&#39;flightLocalTime&#39;] = form[&quot;flightLocalTime&quot;]</span>
+<span class="c1">#     d[&#39;flightNumber&#39;] = form[&quot;flightNumber&quot;]</span>
+<span class="c1">#</span>
+<span class="c1">#     # Fields to be filled &quot;immediately&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#     # TODO fill unspecified options with default values</span>
+<span class="c1">#     d[&#39;pricing&#39;] = 987654321  # TODO change</span>
+<span class="c1">#</span>
+<span class="c1">#     # Populate rideRequestDict with default service data</span>
+<span class="c1">#     d[&#39;disabilities&#39;] = dict()</span>
+<span class="c1">#     d[&#39;baggages&#39;] = dict()</span>
+<span class="c1">#     d[&#39;hasCheckedIn&#39;] = False</span>
+<span class="c1">#     d[&#39;orbitRef&#39;] = None</span>
+<span class="c1">#     d[&#39;userId&#39;] = user_id</span>
+<span class="c1">#     d[&#39;requestCompletion&#39;] = False</span>
+<span class="c1">#</span>
+<span class="c1">#     # Fields to be filled &quot;after some thinking&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#     # Set Target</span>
+<span class="c1">#     target = Target.create_with_flight_local_time(d[&quot;flightLocalTime&quot;], toEvent)</span>
+<span class="c1">#     d[&#39;target&#39;] = target.to_dict()</span>
+<span class="c1">#</span>
+<span class="c1">#     if &quot;eventId&quot; in form.keys() and &quot;locationId&quot; in form.keys():</span>
+<span class="c1">#         d[&#39;eventRef&#39;] = utils.get_event_ref_by_id(form[&quot;eventId&quot;])</span>
+<span class="c1">#         d[&#39;airportLocation&#39;] = utils.get_location_ref_by_id(form[&quot;locationId&quot;])</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         location = utils.get_airport_location(form[&quot;airportCode&quot;])</span>
+<span class="c1">#         if not location:</span>
+<span class="c1">#             raise ValueError(</span>
+<span class="c1">#                 &quot;AirportLocation cannot be found with airportCode provided. &quot;)  # TODO: error handling: https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha/21297608</span>
+<span class="c1">#</span>
+<span class="c1">#     # Set EventRef</span>
+<span class="c1">#     event_ref = utils.find_event(d[&quot;flightLocalTime&quot;])</span>
+<span class="c1">#     d[&#39;eventRef&#39;] = event_ref</span>
+<span class="c1">#</span>
+<span class="c1">#     airport_location_ref = location.get_firestore_ref()</span>
+<span class="c1">#     d[&#39;airportLocation&#39;] = airport_location_ref</span>
+<span class="c1">#</span>
+<span class="c1">#     ride_request = utils.get_ride_request(d)</span>
+<span class="c1">#</span>
+<span class="c1">#     return ride_request</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
