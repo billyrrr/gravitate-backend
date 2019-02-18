@@ -82,6 +82,7 @@
   "test_services/test_airport_ride_request.py::ReturnErrorsTest::testRaiseRequestAlreadyExistsError",
   "test_services/test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsTemp",
   "test_services/test_airport_ride_request.py::DeleteRequestTest::testDelete",
+  "test_services/test_grouping.py::DeleteMatchTest::test_delete_match",
   "test_services/test_grouping.py::GroupRequestsTest::testForceMatchRideRequests",
   "test_services/test_grouping.py::GroupRequestsTest::testGroupRideRequestsTemp",
   "test_services/test_event_ride_request/test_builders.py::RideRequestDictBuilderTest::testSetVariables",
