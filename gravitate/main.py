@@ -30,8 +30,8 @@ from gravitate.context import Context
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchService, DeleteMatchServiceNew
-from gravitate.api_server.ride_request.services import AirportRideRequestCreationService, RideRequestService, RideRequestCreation
+from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
+from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
 from gravitate.api_server.utils import authenticate
 from gravitate.api_server import errors as service_errors
@@ -83,7 +83,7 @@ api.add_resource(OrbitForceMatchService, '/devForceMatch')
 # Endpoint for Testing Purposes
 api.add_resource(EndpointTestService, '/endpointTest')
 
-# Deprecated
+# No longer used
 # api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 # api.add_resource(DeleteMatchService, '/deleteMatch')
 
