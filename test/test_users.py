@@ -1,5 +1,5 @@
 import json
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from firebase_admin import auth
 from flask.testing import FlaskClient
@@ -167,7 +167,12 @@ class FirebaseUserTest(TestCase):
 
 class FirestoreUserTest(TestCase):
 
+    @skip("test is not functional for now, add setup first")
     def testUserCollectionExists(self):
+        """
+        TODO: add setUp to create the user specified in uid
+        :return:
+        """
         uid = "1GFLeGxBaaUvudqh3XYbFv2sRHx2"
         user = UserDao().get_user_by_id(uid)
         self.assertEqual(user.uid, userDict["uid"])

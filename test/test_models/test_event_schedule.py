@@ -18,5 +18,12 @@ class EventScheduleDaoTest(unittest.TestCase):
         ride_request = test.store.model.getMockRideRequest()
         location = test.store.model.getLocation()
         event_sch = event_schedule_actions.create_event_schedule(ride_request, location)
-        event_schedule_dict["destTime"] = 1545069600  # .destTime is used off-label for sorting
-        self.assertDictEqual(event_schedule_dict, event_sch.to_dict())
+
+        d = event_schedule_dict.copy()
+        d.pop("locationRef")
+        d.pop("destTime")
+
+        self.assertEqual(event_sch.destTime, 1545069600, "destTime should be set for sorting purposes")
+        self.assertIsNotNone(event_sch.locationRef, "locationRef should not be none. ")
+
+        self.assertDictContainsSubset(d, event_sch.to_dict())

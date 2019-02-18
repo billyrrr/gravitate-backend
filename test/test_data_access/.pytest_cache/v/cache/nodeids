@@ -1,6 +1,3 @@
 [
-  "test_event_dao.py::EventDAOTest::testCreate",
-  "test_event_dao.py::EventDAOTest::testFindByTimestamp",
-  "test_event_dao.py::EventDAOTest::testGet",
-  "test_event_dao.py::EventDAOTest::testGetStrRef"
+  "test_transaction_strategy.py::TestTransactionStrategyExecuteAll::testExecuteAll"
 ]
