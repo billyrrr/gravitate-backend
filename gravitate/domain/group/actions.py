@@ -141,7 +141,8 @@ def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location
                                                                            refs_to_drop=list(),
                                                                            event_ref=event_ref,
                                                                            location_ref=location_ref)
-    group.execute()
+    not_joined: set = group.execute()
+    return list(not_joined)
 
 
 def drop_group(ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
@@ -154,7 +155,8 @@ def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, l
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup(intended_orbit_id=orbit_id, ids_to_add=set(),
                                                                   ids_to_drop=ids, event_id=event_id,
                                                                   location_id=location_id)
-    group.execute()
+    not_joined: set = group.execute()
+    return list(not_joined)
 
 
 def remove_from_orbit(r: RideRequest, o: Orbit):
