@@ -66,3 +66,21 @@ class DeleteMatchService(Resource):
         response_dict = {"success": True}
 
         return response_dict, 200
+
+
+class DeleteMatchServiceNew(Resource):
+
+    def post(self, rideRequestId):
+
+        ride_request_id = rideRequestId
+
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
+        r = RideRequestGenericDao().get(ride_request_ref)
+        location_ref = r.airport_location
+        actions.drop_group({ride_request_id},
+                           orbit_id=r.orbit_ref.id,
+                           event_id=r.event_ref.id,
+                           location_id=location_ref.id)
+        response_dict = {"success": True}
+
+        return response_dict, 200
