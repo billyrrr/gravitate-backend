@@ -30,7 +30,7 @@ from gravitate.context import Context
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchService
+from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchService, DeleteMatchServiceNew
 from gravitate.api_server.ride_request.services import AirportRideRequestCreationService, RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
 from gravitate.api_server.utils import authenticate
@@ -75,16 +75,17 @@ api.add_resource(UserService, '/users/<string:uid>')
 # Ride Request Related Endpoints
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
+api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
 
 # Grouping Related Endpoints
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
-api.add_resource(DeleteMatchService, '/deleteMatch')
 
 # Endpoint for Testing Purposes
 api.add_resource(EndpointTestService, '/endpointTest')
 
 # Deprecated
-api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
+# api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
+# api.add_resource(DeleteMatchService, '/deleteMatch')
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
