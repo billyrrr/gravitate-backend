@@ -74,6 +74,11 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
         return rideRequest
 
 
+"""
+Monday, December 17, 2018 12:00:00 AM GMT-08:00 to
+Monday, December 17, 2018 11:59:59 PM GMT-08:00
+"""
+
 eventDict = {
     "eventCategory": "airport",
     "participants": [
