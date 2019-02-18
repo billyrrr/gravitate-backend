@@ -62,7 +62,6 @@
   "test_models/test_event_schedule.py::EventScheduleDaoTest::test_create",
   "test_models/test_event_schedule.py::EventScheduleDaoTest::test_from_and_to_dict",
   "test_models/test_orbit.py::OrbitTest::test_init_with_dict",
-  "test_models/test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict",
   "test_models/test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict2",
   "test_models/test_target.py::TestTarget::testCreateAirportTarget",
   "test_models/test_target.py::TestTarget::testCreateWithFlightLocalTime",

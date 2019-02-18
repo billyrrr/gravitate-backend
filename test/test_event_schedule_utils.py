@@ -22,6 +22,7 @@ class EventScheduleUtilsTest(unittest.TestCase):
             print("Not Found")
             return False
 
+    @unittest.skip("not yet implemented. Comment this decorator when test is needed")
     def testCreateCompletedRideRequest(self):
         raise NotImplementedError
         # rideRequest: make a mock ride request that is matched to an orbit

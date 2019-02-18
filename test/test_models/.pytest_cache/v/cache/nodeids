@@ -1,5 +1,3 @@
 [
-  "test_target.py::TestTarget::testCreateAirportTarget",
-  "test_target.py::TestTarget::testCreateWithFlightLocalTime",
-  "test_target.py::TestTarget::testDefaultParams"
+  "test_event_schedule.py::EventScheduleDaoTest::test_create"
 ]

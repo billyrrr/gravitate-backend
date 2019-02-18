@@ -4,8 +4,10 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
 """
 
 from gravitate.domain.luggages import Luggages
-from unittest import TestCase
+from unittest import TestCase, skip
 
+
+@skip("not yet implemented. Comment this decorator when test is needed")
 class LuggagesTest(TestCase):
 
     def setUp(self):

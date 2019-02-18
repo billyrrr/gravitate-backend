@@ -1,9 +1,10 @@
-from unittest import TestCase
+from unittest import TestCase, skip, expectedFailure
 from gravitate.data_access.strategy import TransactionStrategy
 from functools import partial
 
 def exampleExecutable(a, b):
     print("a: {}, b: {}".format(a, b))
+
 
 class TestTransactionStrategy(TestCase):
 
@@ -15,6 +16,7 @@ class TestTransactionStrategy(TestCase):
         self.ts.add_step(step)
         self.assertEqual(self.ts.strategies, [step])
 
+
 class TestTransactionStrategyExecuteAll(TestCase):
 
     def setUp(self):
@@ -22,6 +24,7 @@ class TestTransactionStrategyExecuteAll(TestCase):
         step = partial(exampleExecutable, "operations")
         self.ts.add_step(step)
 
+    @skip("not yet implemented")
     def testExecuteAll(self):
         self.ts.execute_all("provided_transaction")
         self.fail()

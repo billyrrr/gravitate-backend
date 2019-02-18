@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from google.cloud import firestore
 
@@ -11,7 +11,12 @@ from test.store import FormDictFactory
 from test.test_main import userId, db
 
 
+@skip("test is not functional for now, add setup first")
 class TestCreateRideRequestLogics(TestCase):
+    """
+    Note that the module being tested is deprecated. The test is preserved for reference. 
+
+    """
 
     def setUp(self):
         self.maxDiff = None
