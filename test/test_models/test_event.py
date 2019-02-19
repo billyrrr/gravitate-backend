@@ -1,17 +1,37 @@
 import unittest
 from gravitate.models import Event
 from test import context
-from test.store import eventDict
+from test.store import getEventDict
 
 db = context.Context.db
 
 
 class EventModelTest(unittest.TestCase):
 
-	def testEventFactory(self):
-		event = Event.from_dict(eventDict)
-		# Assert that event converts to the same dict that generated the event
-		self.assertDictEqual(event.to_dict(), eventDict)
+    def testEventFactory(self):
+        eventDict = getEventDict()
+        event = Event.from_dict(eventDict)
+        # Assert that event converts to the same dict that generated the event
+        self.assertDictEqual(event.to_dict(), eventDict)
+
+    def testEvent(self):
+        eventDict = getEventDict(use_firestore_ref=True)
+        event = Event.from_dict(eventDict)
+        result = event.to_dict_view()
+
+        dict_view_expected = {
+            'eventCategory': "airport",
+            'participants': [],
+            'eventLocation': "LAX",
+            'eventEarliestArrival': "2018-12-17T00:00:00",
+            'eventLatestArrival': "2018-12-17T23:59:59",
+            'pricing': 100,
+            'locationId': "testairportlocationid1",
+            'isClosed': False
+        }
+
+        self.assertDictEqual(result, dict_view_expected)
+
 
 # class EventCollectionTest(unittest.TestCase):
 

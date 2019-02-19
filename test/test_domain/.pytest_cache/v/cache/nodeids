@@ -1,12 +1,3 @@
 [
-  "test_luggages.py::LuggagesTest::test_add_many",
-  "test_luggages.py::LuggagesTest::test_add_one",
-  "test_luggages.py::LuggagesTest::test_context",
-  "test_luggages.py::LuggagesTest::test_get_count",
-  "test_luggages.py::LuggagesTest::test_get_count_one",
-  "test_luggages.py::LuggagesTest::test_get_weight_one",
-  "test_luggages.py::LuggagesTest::test_init",
-  "test_luggages.py::LuggagesTest::test_to_dict_many_pcs",
-  "test_luggages.py::LuggagesTest::test_to_dict_one_pcs",
-  "test_luggages.py::LuggagesTest::test_to_dict_two_pcs"
+  "test_event.py::EventUtilsTest::test_local_time_from_timestamp"
 ]
