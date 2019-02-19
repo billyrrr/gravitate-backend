@@ -13,6 +13,7 @@ from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleG
 import gravitate.api_server.utils as service_utils
 from . import parsers as ride_request_parsers
 from gravitate.api_server import errors as service_errors
+import warnings
 
 db = Context.db
 
@@ -53,6 +54,28 @@ class RideRequestService(Resource):
         Deletes a ride request.
 
     """
+
+    @service_utils.authenticate
+    def get(self, rideRequestId, uid):
+        """
+        Get the JSON for ride request
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        user_id = uid
+
+        # TODO: validate that the user has permission to view the ride request
+
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
+
+        print("userId: {}, rideRequestId: {}".format(user_id, rideRequestId))
+
+        response_dict = ride_request.to_dict_view()
+
+        return response_dict, 200
 
     @service_utils.authenticate
     def delete(self, rideRequestId, uid):
@@ -120,31 +143,69 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
-class AirportRideRequestCreationService(Resource):
+class LuggageService(Resource):
+
     """
-    This class replaces web-form with reqparse for form validation.
+        /rideRequest/:rideRequestId/luggage/
+
     """
 
     @service_utils.authenticate
-    def post(self, uid):
-        # Verify Firebase auth.
+    def get(self, rideRequestId, uid):
+        """
+        Get the JSON for the luggage associatedd with ride request
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
         user_id = uid
 
-        args = ride_request_parsers.airport_parser.parse_args()
+        # TODO: validate that the user has permission to view the ride request
 
-        # if not location:
-        #     errorResponseDict = {
-        #         "error": "invalid airport code and datetime combination or error finding airport location in backend",
-        #         "originalArgs": args
-        #     }
-        #     return errorResponseDict, 400
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
 
-        # Create RideRequest Object
-        ride_request = request_ride.create(args, user_id)
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
 
-        # rideRequest Response
-        response_dict = {
-            "id": ride_request.get_firestore_ref().id,
-            "firestoreRef": ride_request.get_firestore_ref().id}
+        print("userId: {}, rideRequestId: {}".format(user_id, rideRequestId))
+
+        response_dict = ride_request.to_dict_view()["baggages"]
 
         return response_dict, 200
+
+    @service_utils.authenticate
+    def put(self, rideRequestId, uid):
+        """
+
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        args = ride_request_parsers.luggage_parser.parse_args()
+        # TODO use luggages domain module to put luggages
+        # TODO remove hardcoded results
+        warnings.warn("Inserting hardcoded luggage values. ")
+        rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
+        rideRequest.baggages = {
+            "luggages": [
+                {
+                    "luggage_type": "large",
+                    "weight_in_lbs": 20
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 15
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 25
+                }
+            ],
+            "total_weight": 60,
+            "total_count": 3
+        }
+        RideRequestGenericDao().set(rideRequest)
+
+        response_dict = {"newLuggageValues": rideRequest.baggages}
+
+        return response_dict, 200
+

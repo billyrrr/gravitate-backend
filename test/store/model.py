@@ -92,16 +92,29 @@ eventDict = {
 }
 
 
-def getEventDict(event_category="airport"):
+def getEventDict(event_category="airport", use_firestore_ref=False):
+
+    d = None
+
     if event_category == "airport":
-        return eventDict
+        d = {
+            "eventCategory": "airport",
+            "participants": [
+            ],
+            "eventLocation": "LAX",
+
+            "startTimestamp": 1545033600,
+            "endTimestamp": 1545119999,
+            "pricing": 100,
+            "isClosed": False
+        }
     elif event_category == "social":
-        return {
+        d = {
             "eventCategory": "social",
             "participants": [
             ],
             "eventLocation": "Las Vegas Convention Center",
-            "locationRef": mock1["locationRef"],
+
             "startTimestamp": 1545033600,
             "endTimestamp": 1545119999,
             "pricing": 100,
@@ -109,6 +122,10 @@ def getEventDict(event_category="airport"):
         }
     else:
         raise ValueError("event_category not supported: {}".format(event_category))
+
+    d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
+
+    return d
 
 
 eventScheduleDict = {

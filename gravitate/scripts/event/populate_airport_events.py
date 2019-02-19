@@ -1,6 +1,6 @@
 from gravitate.data_access import EventDao
 
-from gravitate.scripts.event.event_builders import LaxEventBuilder, UcsbEventBuilder
+from gravitate.domain.event.builders import LaxEventBuilder, UcsbEventBuilder
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
 
 

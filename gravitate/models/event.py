@@ -4,8 +4,8 @@ Reviewer: Zixuan Rao
 """
 
 from google.cloud.firestore import DocumentReference
+from gravitate.domain.event.utils import local_time_from_timestamp
 from .firestore_object import FirestoreObject
-
 
 # event class
 class Event(FirestoreObject):
@@ -93,3 +93,16 @@ class Event(FirestoreObject):
         self.pricing = pricing
         self.location_ref = location_ref
         self.is_closed = is_closed
+
+    def to_dict_view(self):
+        d_view = {
+            'eventCategory': self.event_category,
+            'participants': self.participants,
+            'eventLocation': self.event_location,
+            'eventEarliestArrival': local_time_from_timestamp(self.start_timestamp),
+            'eventLatestArrival': local_time_from_timestamp(self.end_timestamp),
+            'pricing': self.pricing,
+            'locationId': self.location_ref.id,
+            'isClosed': self.is_closed
+        }
+        return d_view

@@ -1,3 +1,3 @@
 [
-  "test_event_schedule.py::EventScheduleDaoTest::test_create"
+  "test_event.py::EventModelTest::testEvent"
 ]

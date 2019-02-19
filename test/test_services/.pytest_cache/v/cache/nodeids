@@ -1,17 +1,3 @@
 [
-  "test_airport_ride_request.py::RideRequestDictBuilderTest::testSetVariables",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuild",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm",
-  "test_airport_ride_request.py::CreateRideRequestServiceUtilsTest::testRideRequestDictBuilder",
-  "test_airport_ride_request.py::ReturnErrorsTest::testDeleteReturnsRequestAlreadyMatchedError",
-  "test_airport_ride_request.py::ReturnErrorsTest::testRaiseRequestAlreadyExistsError",
-  "test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsTemp",
-  "test_airport_ride_request.py::DeleteRequestTest::testDelete",
-  "test_grouping.py::DeleteMatchTest::test_delete_match",
-  "test_grouping.py::GroupRequestsTest::testForceMatchRideRequests",
-  "test_grouping.py::GroupRequestsTest::testGroupRideRequestsTemp",
-  "test_event_ride_request/test_builders.py::RideRequestDictBuilderTest::testSetVariables",
-  "test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testBuild",
-  "test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testSetWithForm",
-  "test_event_ride_request/test_services.py::RequestRideTest::testCreateRideRequestsTemp"
+  "test_event.py::EventDAOTest::testGet"
 ]
