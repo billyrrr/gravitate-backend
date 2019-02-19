@@ -142,31 +142,3 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
-class AirportRideRequestCreationService(Resource):
-    """
-    This class replaces web-form with reqparse for form validation.
-    """
-
-    @service_utils.authenticate
-    def post(self, uid):
-        # Verify Firebase auth.
-        user_id = uid
-
-        args = ride_request_parsers.airport_parser.parse_args()
-
-        # if not location:
-        #     errorResponseDict = {
-        #         "error": "invalid airport code and datetime combination or error finding airport location in backend",
-        #         "originalArgs": args
-        #     }
-        #     return errorResponseDict, 400
-
-        # Create RideRequest Object
-        ride_request = request_ride.create(args, user_id)
-
-        # rideRequest Response
-        response_dict = {
-            "id": ride_request.get_firestore_ref().id,
-            "firestoreRef": ride_request.get_firestore_ref().id}
-
-        return response_dict, 200

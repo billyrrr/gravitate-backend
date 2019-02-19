@@ -329,10 +329,6 @@ class GetRequestTest(TestCase):
 
         result = dict(r.json)
 
-        print("22222")
-        print(json.dumps(r.json))
-        print("122222")
-
         self.assertIsNotNone(result["locationId"])
         self.assertIsNotNone(result["eventId"])
         self.assertIsNone(result["orbitId"])
