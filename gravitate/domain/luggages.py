@@ -11,7 +11,9 @@ class Luggages:
         :param luggage:
         :return:
         """
-        raise NotImplementedError
+
+        self._luggage_list.append(luggage)
+
 
     def _get_count(self) -> int:
         """ Returns the count for luggages by counting all luggages in self._luggage_list.

@@ -7,7 +7,7 @@ from gravitate.domain.luggages import Luggages
 from unittest import TestCase, skip
 
 
-@skip("not yet implemented. Comment this decorator when test is needed")
+# @skip("not yet implemented. Comment this decorator when test is needed")
 class LuggagesTest(TestCase):
 
     def setUp(self):
