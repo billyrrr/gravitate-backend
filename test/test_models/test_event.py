@@ -14,7 +14,7 @@ class EventModelTest(unittest.TestCase):
         # Assert that event converts to the same dict that generated the event
         self.assertDictEqual(event.to_dict(), eventDict)
 
-    def testEvent(self):
+    def testEventView(self):
         eventDict = getEventDict(use_firestore_ref=True)
         event = Event.from_dict(eventDict)
         result = event.to_dict_view()
