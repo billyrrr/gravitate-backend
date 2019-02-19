@@ -14,6 +14,7 @@ ride_request_base_parser.add_argument('driverStatus', type=bool,
                                       help="whether the user want to be considered as a driver for the event",
                                       location="json")
 
+
 # Parse field values from json
 airport_parser = ride_request_base_parser.copy()
 airport_parser.add_argument('flightNumber', type=str, help='Flight Number', location="json")
@@ -31,3 +32,12 @@ RideRequest creation useCase: FL-3: Connecting Flight Using Flight Number
 mockJson = {
     "Nothing": True  # TODO: move mock JSON to test/factory
 }
+
+
+
+ride_request_patch_parser = ride_request_base_parser.copy()
+ride_request_patch_parser.add_argument('baggages', type=dict,
+                                      help="whether the user want to be considered as a driver for the event",
+                                      location="json")
+
+

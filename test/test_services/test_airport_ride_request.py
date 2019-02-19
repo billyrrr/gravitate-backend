@@ -284,6 +284,73 @@ class DeleteRequestTest(TestCase):
         self.assertEqual(r.status_code, 200)
 
 
+class GetRequestTest(TestCase):
+
+    def setUp(self):
+
+        self.maxDiff = None
+
+        self.ride_request_ids_to_delete = list()
+
+        main.app.testing = True
+        self.app = main.app.test_client()
+        self.userId = "testuid1"
+        rideRequestIds = list()
+        _create_ride_requests_for_tests(self.app, [self.userId], list(), rideRequestIds)
+        self.rideRequestId = rideRequestIds[0]
+        self.ride_request_ids_to_delete.append( (self.userId, rideRequestIds[0]) )
+
+    def testGet(self):
+        r = self.app.get(path='/rideRequests' + '/' + self.rideRequestId,
+                            headers=getMockAuthHeaders()
+                            )
+
+        ride_request_dict = {
+
+            'rideCategory': 'airportRide',
+            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            'driverStatus': False,
+
+            'target': {'eventCategory': 'airportRide',
+                       'toEvent': True,
+                       'arriveAtEventTime':
+                           {'earliest': 1545318000, 'latest': 1545328800}},
+
+            'userId': "testuid1",
+            'hasCheckedIn': False,
+            'pricing': 987654321,
+            "baggages": dict(),
+            "disabilities": dict(),
+            'flightLocalTime': "2018-12-20T12:00:00.000",
+            'flightNumber': "DL89",
+            "requestCompletion": False,
+
+        }
+
+        result = dict(r.json)
+        self.assertIsNotNone(result["locationId"])
+        self.assertIsNotNone(result["eventId"])
+        self.assertIsNone(result["orbitId"])
+        self.assertEqual(r.status_code, 200)
+        self.assertDictContainsSubset(ride_request_dict, result)
+
+    def _tear_down(self):
+        """
+        Deletes all rideRequests created by the test
+        :return:
+        """
+        for uid, rid in self.ride_request_ids_to_delete:
+            r = self.app.delete(path='/rideRequests' + '/' + rid,
+                                headers=getMockAuthHeaders(uid=uid)
+                                )
+            assert r.status_code == 200
+        self.ride_request_ids_to_delete.clear()
+
+    def tearDown(self):
+        self._tear_down()
+        super().tearDown()
+
+
 def _create_ride_requests_for_tests(app, userIds, to_tear_down, rideRequestIds):
 
     for userId in userIds:

@@ -55,6 +55,28 @@ class RideRequestService(Resource):
     """
 
     @service_utils.authenticate
+    def get(self, rideRequestId, uid):
+        """
+        Get the JSON for ride request
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        user_id = uid
+
+        # TODO: validate that the user has permission to view the ride request
+
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
+
+        print("userId: {}, rideRequestId: {}".format(user_id, rideRequestId))
+
+        response_dict = ride_request.to_dict_view()
+
+        return response_dict, 200
+
+    @service_utils.authenticate
     def delete(self, rideRequestId, uid):
         """
         Replaces POST "/deleteRideRequest"

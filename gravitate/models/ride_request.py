@@ -69,6 +69,24 @@ class RideRequest(FirestoreObject):
         }
         return ride_request_dict
 
+    def to_dict_view(self):
+        """
+        Dict for external presentation / returns for endpoint get
+        :return:
+        """
+        ride_request_dict = {
+            'driverStatus': self.driver_status,
+            'pickupAddress': self.pickup_address,
+            'hasCheckedIn': self.has_checked_in,
+            'eventId': self.event_ref.id,
+            'orbitId': self.orbit_ref.id if self.orbit_ref is not None else None,
+            'userId': self.user_id,
+            'target': self.target.to_dict(),
+            'pricing': self.pricing,
+            'requestCompletion': self.request_completion
+        }
+        return ride_request_dict
+
     def __init__(self, driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
                  request_completion):
         """ Description
@@ -154,6 +172,17 @@ class AirportRideRequest(RideRequest):
         ride_request_dict['disabilities'] = self.disabilities
         return ride_request_dict
 
+    def to_dict_view(self):
+        ride_request_dict = super().to_dict_view()
+
+        ride_request_dict['rideCategory'] = 'airportRide'
+        ride_request_dict['flightLocalTime'] = self.flight_local_time
+        ride_request_dict['flightNumber'] = self.flight_number
+        ride_request_dict['locationId'] = self.airport_location.id
+        ride_request_dict['baggages'] = self.baggages
+        ride_request_dict['disabilities'] = self.disabilities
+        return ride_request_dict
+
 
 class SocialEventRideRequest(RideRequest):
 
@@ -185,4 +214,13 @@ class SocialEventRideRequest(RideRequest):
         ride_request_dict = super().to_dict()
         ride_request_dict['rideCategory'] = 'eventRide'
         ride_request_dict['locationRef'] = self.location_ref
+
+        return ride_request_dict
+
+    def to_dict_view(self):
+        ride_request_dict = super().to_dict_view()
+
+        ride_request_dict['rideCategory'] = 'eventRide'
+        ride_request_dict['locationId'] = self.location_ref.id
+
         return ride_request_dict
