@@ -123,8 +123,7 @@ def getEventDict(event_category="airport", use_firestore_ref=False):
     else:
         raise ValueError("event_category not supported: {}".format(event_category))
 
-    if use_firestore_ref:
-        d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
+    d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
 
     return d
 
