@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from gravitate import main as main
 from test.test_main import getMockAuthHeaders
-from test.test_services.test_airport_ride_request import _create_ride_requests_for_tests
+from test.test_services.utils import _create_ride_requests_for_tests
 
 
 class DeleteMatchTest(TestCase):

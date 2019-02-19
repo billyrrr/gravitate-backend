@@ -32,6 +32,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
+from gravitate.api_server.ride_request.services import LuggageService
 from gravitate.api_server.user_service import UserService
 from gravitate.api_server.utils import authenticate
 from gravitate.api_server import errors as service_errors
@@ -76,6 +77,7 @@ api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
+api.add_resource(LuggageService, '/rideRequests/<string:rideRequestId>/luggage')
 
 # Grouping Related Endpoints
 api.add_resource(OrbitForceMatchService, '/devForceMatch')

@@ -13,6 +13,7 @@ from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleG
 import gravitate.api_server.utils as service_utils
 from . import parsers as ride_request_parsers
 from gravitate.api_server import errors as service_errors
+import warnings
 
 db = Context.db
 
@@ -141,4 +142,70 @@ class RideRequestService(Resource):
         """
         raise NotImplementedError
 
+
+class LuggageService(Resource):
+
+    """
+        /rideRequest/:rideRequestId/luggage/
+
+    """
+
+    @service_utils.authenticate
+    def get(self, rideRequestId, uid):
+        """
+        Get the JSON for the luggage associatedd with ride request
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        user_id = uid
+
+        # TODO: validate that the user has permission to view the ride request
+
+        ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(rideRequestId)
+
+        ride_request = RideRequestGenericDao().get(ride_request_ref)
+
+        print("userId: {}, rideRequestId: {}".format(user_id, rideRequestId))
+
+        response_dict = ride_request.to_dict_view()["baggages"]
+
+        return response_dict, 200
+
+    @service_utils.authenticate
+    def put(self, rideRequestId, uid):
+        """
+
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        args = ride_request_parsers.luggage_parser.parse_args()
+        # TODO use luggages domain module to put luggages
+        # TODO remove hardcoded results
+        warnings.warn("Inserting hardcoded luggage values. ")
+        rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
+        rideRequest.baggages = {
+            "luggages": [
+                {
+                    "luggage_type": "large",
+                    "weight_in_lbs": 20
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 15
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 25
+                }
+            ],
+            "total_weight": 60,
+            "total_count": 3
+        }
+        RideRequestGenericDao().set(rideRequest)
+
+        response_dict = {"newLuggageValues": rideRequest.baggages}
+
+        return response_dict, 200
 

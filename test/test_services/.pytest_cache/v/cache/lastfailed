@@ -1,3 +1,4 @@
 {
+  "test_luggage.py::GetLuggageTest::testGet": true,
   "test_ride_request_service.py": true
 }

@@ -35,9 +35,7 @@ mockJson = {
 
 
 
-ride_request_patch_parser = ride_request_base_parser.copy()
-ride_request_patch_parser.add_argument('baggages', type=dict,
-                                      help="whether the user want to be considered as a driver for the event",
+luggage_parser = reqparse.RequestParser(bundle_errors=True)
+luggage_parser.add_argument('luggages', type=list,
+                                      help="the list of luggages",
                                       location="json")
-
-
