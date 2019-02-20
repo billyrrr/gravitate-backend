@@ -11,7 +11,6 @@ class Luggages:
         :param luggage:
         :return:
         """
-
         self._luggage_list.append(luggage)
 
 
@@ -20,14 +19,21 @@ class Luggages:
 
         :return:
         """
-        raise NotImplementedError
+        return len(self._luggage_list)
 
     def _get_weight(self) -> float:
         """ Returns the weight for luggages by accumulating all luggages in self._luggage_list.
 
         :return:
         """
-        raise NotImplementedError
+        weight = 0
+
+        for i in self._luggage_list:
+            for k, v in i.items():
+                if k == "weight_in_lbs":
+                    weight += v
+
+        return weight
 
     def from_dict(self):
         """ Creates a Luggages class with a dict presentation of luggages.
