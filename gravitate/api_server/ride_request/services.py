@@ -10,6 +10,7 @@ from flask_restful import Resource
 from gravitate.context import Context
 from gravitate.domain import request_ride
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
+from gravitate.domain.luggages import Luggages
 import gravitate.api_server.utils as service_utils
 from . import parsers as ride_request_parsers
 from gravitate.api_server import errors as service_errors
@@ -185,24 +186,10 @@ class LuggageService(Resource):
         # TODO remove hardcoded results
         warnings.warn("Inserting hardcoded luggage values. ")
         rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
-        rideRequest.baggages = {
-            "luggages": [
-                {
-                    "luggage_type": "large",
-                    "weight_in_lbs": 20
-                },
-                {
-                    "luggage_type": "medium",
-                    "weight_in_lbs": 15
-                },
-                {
-                    "luggage_type": "medium",
-                    "weight_in_lbs": 25
-                }
-            ],
-            "total_weight": 60,
-            "total_count": 3
-        }
+        luggage_list = args["luggages"]
+        luggages = Luggages()
+        luggages.add_from_list(luggage_list)
+        rideRequest.baggages = luggages.to_dict()
         RideRequestGenericDao().set(rideRequest)
 
         response_dict = {"newLuggageValues": rideRequest.baggages}

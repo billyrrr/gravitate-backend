@@ -1,0 +1,16 @@
+{
+  "luggages": [
+    {
+      "luggage_type": "large",
+      "weight_in_lbs": 20
+    },
+    {
+      "luggage_type": "medium",
+      "weight_in_lbs": 15
+    },
+    {
+      "luggage_type": "medium",
+      "weight_in_lbs": 25
+    }
+  ]
+}
