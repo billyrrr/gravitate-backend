@@ -182,9 +182,6 @@ class LuggageService(Resource):
         :return:
         """
         args = ride_request_parsers.luggage_parser.parse_args()
-        # TODO use luggages domain module to put luggages
-        # TODO remove hardcoded results
-        warnings.warn("Inserting hardcoded luggage values. ")
         rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
         luggage_list = args["luggages"]
         luggages = Luggages()
