@@ -135,8 +135,3 @@ class LuggagesTest(TestCase):
             "total_count": 3
         }
         self.assertDictEqual(expected_dict, luggages.to_dict(), "Luggages did not return correct dict")
-
-
-
-
-
