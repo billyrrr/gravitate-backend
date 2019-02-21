@@ -35,12 +35,28 @@ class Luggages:
 
         return weight
 
-    def from_dict(self):
+    @staticmethod
+    def from_dict(d: dict):
         """ Creates a Luggages class with a dict presentation of luggages.
 
         :return:
         """
-        raise NotImplementedError
+
+        # Obtain the list from dictionary
+        # Create Luggages object
+        # Use add_from_list
+        # return the Luggages object that you created
+
+
+        luggagelist = []
+        index=0
+        for a in d['luggages']:
+            luggagelist.insert(index, a)
+            index += 1
+        updated = Luggages()
+        updated.add_from_list(luggagelist)
+        return updated
+
 
     def to_dict(self) -> dict:
         """ Returns a dict representation of all luggages
@@ -48,11 +64,22 @@ class Luggages:
 
         :return:
         """
-        raise NotImplementedError
 
-    def _add_luggages(self, luggage_storage):
-        """ Add luggages from another luggage object
+        return {"luggages": self._luggage_list, "total_weight": self._get_weight(), "total_count": self._get_count()}
+
+    def add_from_list(self, l: list):
+        """ Add luggages from a list of luggages
 
         :return:
         """
-        raise NotImplementedError
+        for s in l:
+            self._luggage_list.append(s)
+
+    def _add_luggages(self, luggages):
+        """ Add luggages from another luggages object
+
+        :return:
+        """
+        luggage_storage = luggages._luggage_list
+        for s in luggage_storage:
+            self._luggage_list.append(s)

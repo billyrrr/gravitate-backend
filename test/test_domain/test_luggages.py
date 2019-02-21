@@ -81,7 +81,7 @@ class LuggagesTest(TestCase):
         :return:
         """
         luggages = Luggages()
-        luggages._luggage_list = self.luggage_list[0]
+        luggages._luggage_list = [self.luggage_list[0]]
         expected_dict = {
             "luggages": [
                 {
@@ -136,7 +136,23 @@ class LuggagesTest(TestCase):
         }
         self.assertDictEqual(expected_dict, luggages.to_dict(), "Luggages did not return correct dict")
 
-
+    def test_from_dict(self):
+        d = {
+            "luggages": [
+                {
+                    "luggage_type": "large",
+                    "weight_in_lbs": 20
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 15
+                }
+            ],
+            "total_weight": 35,
+            "total_count": 2
+        }
+        luggages = Luggages.from_dict(d)
+        self.assertListEqual(luggages._luggage_list, [self.luggage_list[0], self.luggage_list[1]])
 
 
 
