@@ -1,5 +1,5 @@
 import unittest
-from gravitate.models import Event
+from gravitate.models import Event, SocialEvent
 from test import context
 from test.store import getEventDict
 
@@ -31,6 +31,32 @@ class EventModelTest(unittest.TestCase):
         }
 
         self.assertDictEqual(result, dict_view_expected)
+
+
+class SocialEventModelTest(unittest.TestCase):
+
+    def testEventFactory(self):
+        d = {
+            "eventCategory": "social",
+            "participants": [
+            ],
+            "eventLocation": "Las Vegas Convention Center",
+            "startTimestamp": 1545033600,
+            "endTimestamp": 1545119999,
+            "pricing": 100,
+            "isClosed": False,
+            "parkingInfo": {
+                "parkingAvailable": False, "parkingPrice": 0, "parkingLocation": "none"
+            },
+            "description": "what the event is",
+            "name": "name of the event",
+            "locationRef": "/locations/testlocationid1"
+        }
+        eventDict = d
+        event = SocialEvent.from_dict(eventDict)
+        # Assert that event converts to the same dict that generated the event
+        self.assertDictEqual(event.to_dict(), eventDict)
+
 
 
 # class EventCollectionTest(unittest.TestCase):
