@@ -13,3 +13,6 @@ event_parser.add_argument('locationId', type=str, help='location id associated w
 
 # Parser for social event
 social_event_parser = event_parser.copy()
+social_event_parser.add_argument('info', type=dict, help="relevant information (eg. parking information)", location="json",
+                          required=False)
+
