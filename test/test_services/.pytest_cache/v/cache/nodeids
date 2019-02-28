@@ -1,3 +1,4 @@
 [
-  "test_event.py::EventDAOTest::testGet"
+  "test_luggage.py::GetLuggageTest::testGetEmpty",
+  "test_luggage.py::GetLuggageTest::testPutAndGet"
 ]

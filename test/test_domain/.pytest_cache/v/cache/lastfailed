@@ -1,11 +1,3 @@
 {
-  "test_luggages.py": true,
-  "test_luggages.py::LuggagesTest::test_add_many": true,
-  "test_luggages.py::LuggagesTest::test_add_one": true,
-  "test_luggages.py::LuggagesTest::test_get_count": true,
-  "test_luggages.py::LuggagesTest::test_get_count_one": true,
-  "test_luggages.py::LuggagesTest::test_get_weight_one": true,
-  "test_luggages.py::LuggagesTest::test_to_dict_many_pcs": true,
-  "test_luggages.py::LuggagesTest::test_to_dict_one_pcs": true,
-  "test_luggages.py::LuggagesTest::test_to_dict_two_pcs": true
+  "test_luggages.py": true
 }

@@ -1,5 +1,6 @@
 {
   "test_event.py": true,
+  "test_luggage.py": true,
   "test_luggage.py::GetLuggageTest::testGet": true,
   "test_ride_request_service.py": true
 }
