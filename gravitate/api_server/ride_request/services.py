@@ -10,7 +10,8 @@ from flask_restful import Resource
 from gravitate.context import Context
 from gravitate.domain import request_ride
 from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
-from gravitate.domain.luggages import Luggages
+from gravitate.domain.luggage.models import Luggages
+from gravitate.domain.luggage import actions as luggage_actions
 import gravitate.api_server.utils as service_utils
 from . import parsers as ride_request_parsers
 from gravitate.api_server import errors as service_errors
@@ -182,14 +183,26 @@ class LuggageService(Resource):
         :return:
         """
         args = ride_request_parsers.luggage_parser.parse_args()
-        rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
+
         luggage_list = args["luggages"]
         luggages = Luggages()
         luggages.add_from_list(luggage_list)
-        rideRequest.baggages = luggages.to_dict()
-        RideRequestGenericDao().set(rideRequest)
 
-        response_dict = {"newLuggageValues": rideRequest.baggages}
+        # add_luggage_nontransactional(rideRequestId, luggages)
+        luggage_actions.put_luggages(ride_request_id=rideRequestId, luggages=luggages)
+
+        response_dict = {"newLuggageValues": luggages.to_dict()}
 
         return response_dict, 200
 
+
+def add_luggage_nontransactional(rideRequestId, luggages):
+    """
+    Add luggage to a rideRequest without a transaction (non-atomic). Using this method may result in modifications
+        done to rideRequest to be overridden.
+    :param rideRequestId:
+    :return:
+    """
+    rideRequest = RideRequestGenericDao().get_by_id(rideRequestId)
+    rideRequest.baggages = luggages.to_dict()
+    RideRequestGenericDao().set(rideRequest)

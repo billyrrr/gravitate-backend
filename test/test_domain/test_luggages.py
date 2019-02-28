@@ -3,7 +3,7 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
     correctly.
 """
 
-from gravitate.domain.luggages import Luggages
+from gravitate.domain.luggage.models import Luggages
 from unittest import TestCase, skip
 
 

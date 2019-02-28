@@ -106,3 +106,5 @@ class Event(FirestoreObject):
             'isClosed': self.is_closed
         }
         return d_view
+
+
