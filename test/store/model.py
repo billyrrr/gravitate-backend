@@ -73,6 +73,48 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
         rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
 
+def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
+                       userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False):
+    locationRefStr = mock1["locationRef"]
+    locationReference = mock1["locationFirestoreRef"]
+
+    eventRefStr = mock1["eventRef"]
+    eventReference = mock1["eventFirestoreRef"]
+
+    rideRequestDict = {
+
+        'rideCategory': 'airportRide',
+        'originRef': "/locations/testlocation1",
+        'destinationRef': "/locations/testlaxlocation1",
+        'driverStatus': False,
+        'orbitRef': None,
+        'target': {'eventCategory': 'airportRide',
+                   'toEvent': True,
+                   'arriveAtEventTime':
+                       {'earliest': earliest, 'latest': latest}},
+
+        'userId': userId,
+        'hasCheckedIn': False,
+        'pricing': 987654321,
+        "baggages": dict(),
+        "disabilities": dict(),
+        'flightLocalTime': "2018-12-17T12:00:00.000",
+        'flightNumber': "DL89",
+
+        "requestCompletion": False
+
+    }
+
+    if not returnSubset:
+        # rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
+        rideRequestDict["eventRef"] = eventReference if useDocumentRef else eventRefStr
+
+    if returnDict:
+        return rideRequestDict
+    else:
+        rideRequest = models.RideRequest.from_dict(rideRequestDict)
+        rideRequest.set_firestore_ref(firestoreRef)
+        return rideRequest
 
 """
 Monday, December 17, 2018 12:00:00 AM GMT-08:00 to
