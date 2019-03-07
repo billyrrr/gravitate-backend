@@ -50,12 +50,13 @@ class EventCreation(Resource):
         # Verify Firebase auth.
         user_id = uid
 
-        args = None
+        event_dict = None
 
         eventCategory = args["eventCategory"]
 
         if eventCategory == "social":
             args = event_parsers.social_event_parser.parse_args()
+            event_dict = args.values()
         else:
             raise Exception("Unsupported eventCategory: {}".format(eventCategory))
 
