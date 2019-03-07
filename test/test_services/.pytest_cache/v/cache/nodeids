@@ -1,5 +1,3 @@
 [
-  "test_grouping.py::DeleteMatchTest::test_delete_match",
-  "test_grouping.py::GroupRequestsTest::testForceMatchRideRequests",
-  "test_grouping.py::GroupRequestsTest::testGroupRideRequestsTemp"
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuildFromEvent"
 ]

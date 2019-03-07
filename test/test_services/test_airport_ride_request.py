@@ -91,6 +91,44 @@ class AirportRideRequestDictBuilderTest(TestCase):
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
         self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
 
+    def testBuildFromEvent(self):
+        """
+        Note that the expected return is illogical. Remove this test if necessary.
+        :return:
+        """
+        def testBuild(self):
+            def setUp(self):
+                d = FormDictFactory().create(hasEarliestLatest=False, returnDict=True)
+                d["toEvent"] = False
+                self.user_id = 'testuserid1'
+                self.builder = service_utils.AirportRideRequestBuilder().set_with_form_and_user_id(d,
+                                                                                                   user_id=self.user_id)
+
+            setUp(self)
+            self.builder.build_airport_ride_request()
+            _d_expected = {
+                'rideCategory': 'airportRide',
+                'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+                'driverStatus': False,
+                'orbitRef': None,
+                'target': {'eventCategory': 'airportRide',
+                           'toEvent': False,
+                           'arriveAtEventTime':
+                               {'earliest': 1545058800, 'latest': 1545069600}},
+                # 'eventRef': db.document('events', 'testeventid1'),
+                'userId': self.user_id,
+                'hasCheckedIn': False,
+                'pricing': 987654321,
+                "baggages": dict(),
+                "disabilities": dict(),
+                'flightLocalTime': "2018-12-17T12:00:00.000",
+                'flightNumber': "DL89",
+                # "airportLocation": db.document("locations", "testairportlocationid1"),
+                "requestCompletion": False
+            }
+            # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
+            self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
+
     def tearDown(self):
         self.c.clear_after()
 
