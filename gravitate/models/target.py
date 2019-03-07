@@ -80,6 +80,7 @@ class Target(FirestoreObject):
 
     def __init__(self, event_category):
         self.event_category = event_category
+        self.to_event = None
 
     create_with_flight_local_time = create_target_with_flight_local_time
     create_with_form = create_target_with_form
@@ -141,6 +142,7 @@ class ToEventTarget(Target):
 
     def __init__(self, event_category, arrive_at_event_time):
         super().__init__(event_category)
+        self.to_event = True
         self.arrive_at_event_time = arrive_at_event_time
 
     def to_dict(self):
@@ -154,6 +156,7 @@ class FromEventTarget(Target):
 
     def __init__(self, event_category, leave_event_time):
         super().__init__(event_category)
+        self.to_event = False
         self.leave_event_time = leave_event_time
 
     def to_dict(self):

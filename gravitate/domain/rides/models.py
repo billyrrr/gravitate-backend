@@ -28,7 +28,9 @@ class Ride(FirestoreObject):
         ride_request_type = d['rideCategory']
 
         driver_status = d['driverStatus']
-        pickup_address = d['pickupAddress']
+        # pickup_address = d['pickupAddress']
+        origin_ref = d["originRef"]  # New
+        destination_ref = d["destinationRef"]  # New
         has_checked_in = d['hasCheckedIn']
         event_ref = d['eventRef']
         orbit_ref = d['orbitRef']
@@ -44,13 +46,13 @@ class Ride(FirestoreObject):
             baggages = d['baggages']
             disabilities = d['disabilities']
 
-            return AirportRide(driver_status, pickup_address, has_checked_in,
+            return AirportRide(driver_status, origin_ref, destination_ref, has_checked_in,
                                       event_ref, orbit_ref, user_id, target, pricing, request_completion,
                                       flight_local_time,
                                       flight_number, airport_location, baggages, disabilities)
         elif ride_request_type == 'eventRide':
             location_ref = d['locationRef']
-            return SocialEventRide(driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id,
+            return SocialEventRide(driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id,
                                           target,
                                           pricing, request_completion, location_ref)
         else:
@@ -60,7 +62,9 @@ class Ride(FirestoreObject):
     def to_dict(self):
         ride_request_dict = {
             'driverStatus': self.driver_status,
-            'pickupAddress': self.pickup_address,
+            'originRef': self.origin_ref,
+            'destinationRef': self.destination_ref,
+            # 'pickupAddress': self.pickup_address,
             'hasCheckedIn': self.has_checked_in,
             'eventRef': self.event_ref,
             'orbitRef': self.orbit_ref,
@@ -78,7 +82,8 @@ class Ride(FirestoreObject):
         """
         ride_request_dict = {
             'driverStatus': self.driver_status,
-            'pickupAddress': self.pickup_address,
+            'originId': self.origin_ref.id,
+            'destinationId': self.destination_ref.id,
             'hasCheckedIn': self.has_checked_in,
             'eventId': self.event_ref.id,
             'orbitId': self.orbit_ref.id if self.orbit_ref is not None else None,
@@ -89,7 +94,7 @@ class Ride(FirestoreObject):
         }
         return ride_request_dict
 
-    def __init__(self, driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
                  request_completion):
         """ Description
             This function initializes a RideRequest Object.
@@ -107,7 +112,9 @@ class Ride(FirestoreObject):
         """
 
         self.driver_status = driver_status
-        self.pickup_address = pickup_address
+        self.origin_ref = origin_ref
+        self.destination_ref = destination_ref
+        # self.pickup_address = pickup_address
         self.has_checked_in = has_checked_in
         self.event_ref = event_ref
         self.orbit_ref = orbit_ref
@@ -120,7 +127,7 @@ class Ride(FirestoreObject):
 class AirportRide(Ride):
 
     # TODO more arguments
-    def __init__(self, driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
                  request_completion, flight_local_time, flight_number, airport_location, baggages, disabilities):
         """ Description
             Initializes an AirportRideRequest Object
@@ -142,7 +149,7 @@ class AirportRide(Ride):
             :param disabilities:
         """
 
-        super().__init__(driver_status, pickup_address,
+        super().__init__(driver_status, origin_ref, destination_ref,
                          has_checked_in, event_ref, orbit_ref, user_id, target, pricing, request_completion)
         self.ride_category = 'airportRide'
         self.flight_local_time = flight_local_time
@@ -189,7 +196,7 @@ class AirportRide(Ride):
 class SocialEventRide(Ride):
 
     # TODO more arguments
-    def __init__(self, driver_status, pickup_address, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
                  request_completion, location_ref):
         """ Description
             Initializes a SocialEventRideRequest Object
@@ -207,7 +214,7 @@ class SocialEventRide(Ride):
         :rtype:
         """
 
-        super().__init__(driver_status, pickup_address,
+        super().__init__(driver_status, origin_ref, destination_ref,
                          has_checked_in, event_ref, orbit_ref, user_id, target, pricing, request_completion)
         self.location_ref = location_ref
         self.ride_category = 'eventRide'

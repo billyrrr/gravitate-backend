@@ -1,4 +1,4 @@
-from typing import Type, List, Dict
+from typing import Type, List, Dict, Tuple
 
 from gravitate.domain.group import OrbitGroup
 from gravitate.domain.group.pairing import pair_ride_requests
@@ -27,6 +27,24 @@ def group_many(ride_request_ids: list):
         group_all_pairs_of_event(pair_list)
 
 
+def _group_with_driver(ride_request_ids: list):
+    """
+    This function tries to match rideRequests into groups with grouping algorithms.
+    Only group rides such that exactly one driver and >= 1 rider will be in the group.
+    Note that the rideRequests may be in different orbits, and rideRequests may not
+        be grouped into any orbit.
+
+    :param ride_request_ids:
+    :return:
+    """
+    d = separate_by_event_id_and_direction(ride_request_ids)
+
+    for (event_id, to_event) in d.keys():
+        ride_requests_all = d[event_id]
+        pair_list = pair_all(ride_requests_all, strategy="one_driver_many_riders")
+        group_all_pairs_of_event(pair_list)
+
+
 def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[RideRequest]]]:
     """ Returns a dict with event id as key and ride request object as value
     :param ride_request_ids: a list of ride requests from any number of events
@@ -47,7 +65,29 @@ def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[Rid
     return d
 
 
-def pair_all(ride_requests: list) -> list:
+def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tuple, List[Type[RideRequest]]]:
+    """ Returns a dict with event id as key and ride request object as value
+    :param ride_request_ids: a list of ride requests from any number of events
+    """
+    d = dict()
+    for ride_request_id in ride_request_ids:
+
+        ride_request = RideRequestGenericDao().get_by_id(ride_request_id)
+
+        # Do not add to rideRequests queue if the request is complete
+        if ride_request.request_completion:
+            continue
+
+        event_id = ride_request.event_ref.id
+        if event_id not in d.keys():
+            d[(event_id, True)] = list()  # event_id = event_id and to_event=True
+            d[(event_id, False)] = list()  # event_id = event_id and to_event=False
+
+        d[(event_id, ride_request.target.to_event)].append(ride_request)
+    return d
+
+
+def pair_all(ride_requests: list, strategy="all_riders") -> list:
     """ Returns a list of list of ride requests.
         Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]
 
@@ -55,7 +95,7 @@ def pair_all(ride_requests: list) -> list:
     :return:
     """
 
-    paired, unpaired = pair_ride_requests(ride_requests)
+    paired, unpaired = pair_ride_requests(ride_requests, strategy=strategy)
     # Since we are adopting list over tuple
     pairs = [list(pair) for pair in paired]
     return pairs

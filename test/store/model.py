@@ -74,7 +74,7 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
         return rideRequest
 
 def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
-                       userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False):
+                       userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False, driverStatus=False):
     locationRefStr = mock1["locationRef"]
     locationReference = mock1["locationFirestoreRef"]
 
@@ -86,7 +86,7 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
         'rideCategory': 'airportRide',
         'originRef': "/locations/testlocation1",
         'destinationRef': "/locations/testlaxlocation1",
-        'driverStatus': False,
+        'driverStatus': driverStatus,
         'orbitRef': None,
         'target': {'eventCategory': 'airportRide',
                    'toEvent': True,
@@ -106,7 +106,7 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
     }
 
     if not returnSubset:
-        # rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
+        rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
         rideRequestDict["eventRef"] = eventReference if useDocumentRef else eventRefStr
 
     if returnDict:

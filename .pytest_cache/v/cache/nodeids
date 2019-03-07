@@ -1,3 +1,3 @@
 [
-  "test/test_models/test_ride_request.py::RideRequestTest::testDictView"
+  "test/test_models/test_ride.py::RideRequestTest::testDriverRide"
 ]
