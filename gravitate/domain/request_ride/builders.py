@@ -9,6 +9,25 @@ class RideRequestBaseBuilder:
 
     def __init__(self):
         self._ride_request_dict = dict()
+        # _ride_request_dict = None
+
+        self.user_id = None
+        self.location_id = None
+        self.airport_code = None
+        self.earliest = None
+        self.latest = None
+        self.to_event = None
+        self.flight_local_time = None
+        self.flight_number = None
+        self.eventRef = None
+        self.pickup_address = None
+        self.pricing = None
+        self.driver_status = None
+
+        self.event_id = None
+
+        # Helper data
+        self.event = None
 
     def export_as_class(self, export_class) -> Type[RideRequest]:
         """
@@ -25,26 +44,6 @@ class RideRequestBaseBuilder:
 
             TODO: test and finish implementing
         """
-
-    _ride_request_dict = None
-
-    user_id = None
-    location_id = None
-    airport_code = None
-    earliest = None
-    latest = None
-    to_event = None
-    flight_local_time = None
-    flight_number = None
-    eventRef = None
-    pickup_address = None
-    pricing = None
-    driver_status = None
-
-    event_id = None
-
-    # Helper data
-    event = None
 
     def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None,
                  to_event: bool = None, location_id=None, airport_code=None, pickup_address=None, pricing=None,

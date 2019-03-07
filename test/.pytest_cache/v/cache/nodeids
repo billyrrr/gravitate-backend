@@ -82,6 +82,7 @@
   "test_scripts/test_populate_locations.py::PopulateLocationCommandTest::test_generate_locations",
   "test_services/test_airport_ride_request.py::RideRequestDictBuilderTest::testSetVariables",
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuild",
+  "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuildFromEvent",
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm",
   "test_services/test_airport_ride_request.py::CreateRideRequestServiceUtilsTest::testRideRequestDictBuilder",
   "test_services/test_airport_ride_request.py::ReturnErrorsTest::testDeleteReturnsRequestAlreadyMatchedError",
