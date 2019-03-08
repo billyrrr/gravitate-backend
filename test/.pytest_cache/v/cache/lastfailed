@@ -1,4 +1,6 @@
 {
+  "test_domain/test_event/test_builders.py": true,
+  "test_domain/test_events/test_builders.py::EventNewBuilderTest::testBuild": true,
   "test_group_users.py::TestGroupUsersWithRideRequestRef::testConstructGroup": true,
   "test_group_users.py::TestGroupUsersWithRideRequestRef::testPrimaryGroupingFunc": true,
   "test_group_users.py::TestTempForceGroupUsers::testMatchTwo": true,
