@@ -61,10 +61,13 @@ class EventNewBuilderTest(TestCase):
         b.build_parking()
         b._build_local_date_string("2018-12-17")
 
-        expected_d = self.eventDict
+        expected_d = self.eventDict.copy()
+        expected_d.pop("locationRef")
+
+        self.assertEqual(b._event_dict["locationRef"].id, "testlocationid1")
 
         # Assert that all required variables are set
-        self.assertDictEqual(expected_d, b._event_dict)
+        self.assertDictContainsSubset(expected_d, b._event_dict)
 
     def testBuild(self):
         b = AirportEventBuilder()
@@ -77,5 +80,8 @@ class EventNewBuilderTest(TestCase):
         b._build_local_date_string("2018-12-17")
         ae = b.export_as_class(AirportEvent)
         self.assertIsNotNone(ae, "AirportEvent should be built")
-        self.assertDictEqual(ae.to_dict(), self.eventDict)
+        expected_subset = self.eventDict.copy()
+        expected_subset.pop("locationRef")
+        self.assertEqual(ae.to_dict()["locationRef"].id, "testlocationid1")
+        self.assertDictContainsSubset(expected_subset, ae.to_dict())
 

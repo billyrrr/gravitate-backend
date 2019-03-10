@@ -33,12 +33,6 @@ class TestBuildLaxEvent(unittest.TestCase):
         self.c.clear_before()
         self.c.generate_test_data()
 
-    def testBuildLaxSampleEvent(self):
-        laxSampleEvent = SampleLaxEventBuilder(1545033600, 1545119999)
-        laxSampleEventDict = laxSampleEvent.to_dict()
-        self.assertDictContainsSubset(sampleLaxEventDict, laxSampleEventDict)
-        self.assertIn('locationRef', laxSampleEventDict.keys(), "Dict contains locationRef as key")
-
     def testGenerateStartDatetime(self):
         startDatetime = generateStartDatetime("2018-12-17T11:00:00.000")
         self.assertEqual(startDatetime.timestamp(), 1545033600.0)

@@ -154,10 +154,6 @@ def run_orbit_group(ride_requests: dict):
     })
     orbit_ref = OrbitDao().create(orbit)
     orbit.set_firestore_ref(orbit_ref)
-    print("=====")
-    print(event_ref)
-    print(event_ref.id)
-    print("=====")
     event = EventDao().get(event_ref)
     location_ref: DocumentReference = event.location_ref
     location = LocationGenericDao().get(location_ref)

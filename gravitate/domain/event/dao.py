@@ -161,7 +161,6 @@ class EventDao:
             eventRef = str_to_ref(eventRef)
         snapshot: DocumentSnapshot = eventRef.get()
         snapshotDict: dict = snapshot.to_dict()
-        print(snapshotDict)
         event = Event.from_dict(snapshotDict)
         event.set_firestore_ref(eventRef)
         return event
