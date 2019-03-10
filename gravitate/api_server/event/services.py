@@ -1,7 +1,7 @@
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.data_access import EventDao
+from gravitate.domain.event.dao import EventDao
 import gravitate.api_server.utils as service_utils
 import gravitate.domain.event.actions as event_actions
 from . import parsers as event_parsers

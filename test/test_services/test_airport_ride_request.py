@@ -58,6 +58,7 @@ class AirportRideRequestDictBuilderTest(TestCase):
                          'driver_status': False,
                          'to_event': True
                          }
+
         # Assert that all required variables are set
         self.assertTrue(expected_vars.items() <= vars(b).items())
 
@@ -88,8 +89,10 @@ class AirportRideRequestDictBuilderTest(TestCase):
             # "airportLocation": db.document("locations", "testairportlocationid1"),
             "requestCompletion": False
         }
+        result = self.builder._ride_request_dict
+        self.assertIsNotNone(result["eventRef"])
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
-        self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
+        self.assertDictContainsSubset(_d_expected, result)
 
     def testBuildFromEvent(self):
         """

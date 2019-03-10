@@ -4,7 +4,8 @@ import gravitate.domain.event_schedule.actions
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, RideRequest, User
 from google.cloud.firestore import DocumentReference, transactional
-from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, UserDao
+from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, UserDao
+from gravitate.domain.event.dao import EventDao
 
 import iso8601
 import pytz
@@ -113,11 +114,19 @@ def find_event(flight_local_time) -> DocumentReference:
     """
 
     # Parse the flightLocalTime of the ride request form, then query database 
-    event_time = local_time_as_timestamp(flight_local_time)
+    # event_time = local_time_as_timestamp(flight_local_time)
+    event_date_str = local_time_as_date_str(flight_local_time)
     # eventReference = EventDao().locateAirportEvent(eventTime)
-    event = EventDao().find_by_timestamp(event_time, "airport")
+    event = EventDao().find_by_date_str(event_date_str, "airport")
 
     return event.get_firestore_ref()
+
+def local_time_as_date_str(flight_local_time):
+    tz = pytz.timezone("America/Los_Angeles")
+    local_datetime = iso8601.parse_date(flight_local_time, default_timezone=None)
+    # utc_datetime = tz.localize(local_datetime)  # TODO: test DST
+    # utc_datetime = iso8601.parse_date(flight_local_time, default_timezone=None).astimezone(tz)
+    return local_datetime.strftime("%Y-%m-%d")
 
 
 def local_time_as_timestamp(flight_local_time):

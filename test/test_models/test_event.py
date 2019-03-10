@@ -1,5 +1,5 @@
 import unittest
-from gravitate.models import Event, SocialEvent
+from gravitate.domain.event.models import Event, SocialEvent
 from test import context
 from test.store import getEventDict
 

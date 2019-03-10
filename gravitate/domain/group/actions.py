@@ -3,7 +3,8 @@ from typing import Type, List, Dict, Tuple
 from gravitate.domain.group import OrbitGroup
 from gravitate.domain.group.pairing import pair_ride_requests
 from gravitate.models import Orbit, RideRequest
-from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao
+from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, OrbitDao
+from gravitate.domain.event.dao import EventDao
 from gravitate import context
 from google.cloud.firestore import transactional, DocumentReference
 
@@ -153,7 +154,10 @@ def run_orbit_group(ride_requests: dict):
     })
     orbit_ref = OrbitDao().create(orbit)
     orbit.set_firestore_ref(orbit_ref)
-
+    print("=====")
+    print(event_ref)
+    print(event_ref.id)
+    print("=====")
     event = EventDao().get(event_ref)
     location_ref: DocumentReference = event.location_ref
     location = LocationGenericDao().get(location_ref)

@@ -1,5 +1,5 @@
 from gravitate.data_access import LocationGenericDao
-from gravitate.models import Event
+from gravitate.domain.event.models import Event
 
 
 class EventBuilder(Event):

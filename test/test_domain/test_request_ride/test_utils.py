@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 from gravitate.api_server.ride_request.deprecated_utils import fill_ride_request_dict_with_form, \
     fill_ride_request_dict_builder_regression
-from gravitate.data_access import EventDao
+from gravitate.domain.event.dao import EventDao
 from gravitate.domain.request_ride.utils import check_duplicate
 from gravitate.models import RideRequest
 from test.store import FormDictFactory

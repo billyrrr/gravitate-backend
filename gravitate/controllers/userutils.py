@@ -1,7 +1,8 @@
 from gravitate.models import User, Orbit
 from gravitate.forms.user_creation_form import UserCreationForm
 from google.cloud.firestore import DocumentReference, Transaction
-from gravitate.data_access import UserDao, EventDao
+from gravitate.data_access import UserDao
+from gravitate.domain.event.dao import EventDao
 from gravitate.controllers import fireauthutils
 
 import random 

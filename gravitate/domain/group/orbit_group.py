@@ -2,8 +2,10 @@ from typing import Type, List
 
 from google.cloud.firestore_v1beta1 import Transaction
 
-from gravitate.data_access import EventDao, LocationGenericDao, OrbitDao, RideRequestGenericDao
-from gravitate.models import Orbit, Location, Event
+from gravitate.data_access import LocationGenericDao, OrbitDao, RideRequestGenericDao
+from gravitate.domain.event.dao import EventDao
+from gravitate.models import Orbit, Location
+from gravitate.domain.event.models import Event
 import gravitate.domain.group.utils as utils
 
 

@@ -1,6 +1,6 @@
 from gravitate import main as main
-from gravitate.models import Event
-from gravitate.data_access import EventDao
+from gravitate.domain.event.models import Event
+from gravitate.domain.event.dao import EventDao
 import unittest
 from google.cloud import firestore
 from test.store import getEventDict
@@ -8,7 +8,7 @@ from test.test_main import getMockAuthHeaders
 from test.test_services.utils import _create_ride_requests_for_tests
 
 
-class EventDAOTest(unittest.TestCase):
+class EventServiceTest(unittest.TestCase):
 
     def setUp(self):
         event_dict = getEventDict(use_firestore_ref=True)

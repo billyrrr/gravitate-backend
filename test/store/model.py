@@ -133,42 +133,81 @@ eventDict = {
     "isClosed": False
 }
 
+#
+# def getEventDict(event_category="airport", use_firestore_ref=False):
+#
+#     d = None
+#
+#     if event_category == "airport":
+#         d = {
+#             "eventCategory": "airport",
+#             "participants": [
+#             ],
+#             "eventLocation": "LAX",
+#
+#             "startTimestamp": 1545033600,
+#             "endTimestamp": 1545119999,
+#             "pricing": 100,
+#             "isClosed": False
+#         }
+#     elif event_category == "social":
+#         d = {
+#             "eventCategory": "social",
+#             "participants": [
+#             ],
+#             "eventLocation": "Las Vegas Convention Center",
+#
+#             "startTimestamp": 1545033600,
+#             "endTimestamp": 1545119999,
+#             "pricing": 100,
+#             "isClosed": False
+#         }
+#     else:
+#         raise ValueError("event_category not supported: {}".format(event_category))
+#
+#     d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
+#
+#     return d
+
 
 def getEventDict(event_category="airport", use_firestore_ref=False):
-
     d = None
-
     if event_category == "airport":
         d = {
             "eventCategory": "airport",
             "participants": [
             ],
-            "eventLocation": "LAX",
-
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
-            "pricing": 100,
-            "isClosed": False
-        }
-    elif event_category == "social":
-        d = {
-            "eventCategory": "social",
-            "participants": [
+            "targets": [
+                {
+                    'eventCategory': 'airportRide',
+                    'toEvent': True,
+                    'arriveAtEventTime': {'earliest': 1545066000, 'latest': 1545073200}
+                },
+                {
+                    'eventCategory': 'airportRide',
+                    'toEvent': False,
+                    'leaveEventTime': {'earliest': 1545066000, 'latest': 1545073200}
+                }
             ],
-            "eventLocation": "Las Vegas Convention Center",
-
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
+            "airportCode": "LAX",
+            "localDateString": "2018-12-17",  # YYYY-MM-DD
             "pricing": 100,
-            "isClosed": False
+            "isClosed": False,
+            "parkingInfo": {
+                "parkingAvailable": False,
+                "parkingPrice": 0,
+                "parkingLocation": "none"
+            },
+            "description": "what the event is",
+            "name": "name of the event",
+            # "locationRef": "/locations/testlocationid1"
         }
     else:
-        raise ValueError("event_category not supported: {}".format(event_category))
+        raise ValueError("unsupported event category: {}".format(event_category))
 
     d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
 
     return d
-
 
 eventScheduleDict = {
     "destName": "LAX",

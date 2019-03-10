@@ -1,7 +1,8 @@
 from typing import Type
 
 from gravitate.data_access import LocationGenericDao
-from gravitate.models import Event, Target, ToEventTarget, FromEventTarget
+from gravitate.models import Target, ToEventTarget, FromEventTarget
+from gravitate.domain.event.models import Event
 
 
 class EventBaseBuilder:
@@ -14,7 +15,7 @@ class EventBaseBuilder:
     def export_as_class(self, export_class) -> Type[Event]:
         return export_class.from_dict(self._event_dict)
 
-    def build_target(self, to_event, start_timestamp, end_timestamp):
+    def _build_target(self, to_event, start_timestamp, end_timestamp):
         """
         Note that this is an abstract class.
             self.event_category needs to be defined in subclass.
@@ -42,6 +43,9 @@ class EventBaseBuilder:
                                     'latest': end_timestamp
                                 }).to_dict()
             )
+
+    def _build_local_date_string(self, local_date_string):
+        self._event_dict["localDateString"] = local_date_string
 
 
 class AirportEventBuilder(EventBaseBuilder):
@@ -72,8 +76,6 @@ class AirportEventBuilder(EventBaseBuilder):
         self._event_dict["description"] = description
         self._event_dict["name"] = name
 
-    def build_local_date_string(self, local_date_string):
-        self._event_dict["localDateString"] = local_date_string
 
 
 class EventBuilder(Event):

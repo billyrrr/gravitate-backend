@@ -2,7 +2,7 @@ from typing import Type
 
 from gravitate.domain.request_ride import utils
 from gravitate.models import RideRequest, Target
-from gravitate.data_access import EventDao
+from gravitate.domain.event.dao import EventDao
 
 
 class RideRequestBaseBuilder:
@@ -109,7 +109,9 @@ class RideRequestBaseBuilder:
         self._ride_request_dict["target"] = target.to_dict()
 
     def _build_event_ref_with_flight_local_time(self):
+        print("-------------")
         self._ride_request_dict["eventRef"] = utils.find_event(self.flight_local_time)
+        print(utils.find_event(self.flight_local_time))
 
     def _build_event_with_id(self):
         """

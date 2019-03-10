@@ -5,7 +5,7 @@ from google.cloud.firestore import Transaction, DocumentReference, DocumentSnaps
     transactional, Query
 import google
 from typing import Type
-from . import EventDao
+from gravitate.domain.event.dao import EventDao
 from gravitate.models import AirportEventSchedule
 import warnings
 from gravitate import context
