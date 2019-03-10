@@ -43,9 +43,16 @@ class Event(FirestoreObject):
         name = eventDict['name']
         description = eventDict['description']
         parking_info = eventDict['parkingInfo']
-
-        return Event(event_category, participants, targets, pricing, location_ref,
-                     is_closed, local_date_string, name, description, parking_info)
+        if event_category == "airport":
+            airport_code = eventDict['airportCode']
+            return AirportEvent(event_category, participants, targets, pricing, location_ref,
+                         is_closed, local_date_string, name, description, parking_info, airport_code)
+        elif event_category == "social":
+            raise NotImplementedError
+            # return SocialEvent(event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
+            #                    is_closed, parking_info, event_description, event_name, location_ref)
+        else:
+            raise NotImplementedError
 
     def to_dict(self):
         eventDict = {
@@ -126,25 +133,25 @@ class AirportEvent(Event):
     def from_dict_and_reference(eventDict, eventRef):
         raise NotImplementedError
 
-    @staticmethod
-    def from_dict(eventDict):
-        event_category = eventDict['eventCategory']
-        participants = eventDict['participants']
-        # event_location = eventDict['eventLocation']
-        # start_timestamp = eventDict['startTimestamp']
-        # end_timestamp = eventDict['endTimestamp']
-        targets = eventDict['targets']
-        pricing = eventDict['pricing']
-        location_ref = eventDict['locationRef']
-        is_closed = eventDict['isClosed']
-        local_date_string = eventDict['localDateString']
-        name = eventDict['name']
-        description = eventDict['description']
-        airport_code = eventDict['airportCode']
-        parking_info = eventDict['parkingInfo']
-
-        return AirportEvent(event_category, participants, targets, pricing, location_ref,
-                     is_closed, local_date_string, name, description, parking_info, airport_code)
+    # @staticmethod
+    # def from_dict(eventDict):
+    #     event_category = eventDict['eventCategory']
+    #     participants = eventDict['participants']
+    #     # event_location = eventDict['eventLocation']
+    #     # start_timestamp = eventDict['startTimestamp']
+    #     # end_timestamp = eventDict['endTimestamp']
+    #     targets = eventDict['targets']
+    #     pricing = eventDict['pricing']
+    #     location_ref = eventDict['locationRef']
+    #     is_closed = eventDict['isClosed']
+    #     local_date_string = eventDict['localDateString']
+    #     name = eventDict['name']
+    #     description = eventDict['description']
+    #     airport_code = eventDict['airportCode']
+    #     parking_info = eventDict['parkingInfo']
+    #
+    #     return AirportEvent(event_category, participants, targets, pricing, location_ref,
+    #                  is_closed, local_date_string, name, description, parking_info, airport_code)
 
     def __init__(self, event_category, participants, targets, pricing, location_ref,
                  is_closed, local_date_string, name, description, parking_info, airport_code):
@@ -172,27 +179,27 @@ class SocialEvent(Event):
         event.set_firestore_ref(eventRef)
         return event
 
-    @staticmethod
-    def from_dict(eventDict):
-        """ Description
-            This function creates an event
-
-            :param eventDict:
-        """
-        event_category = eventDict['eventCategory']
-        participants = eventDict['participants']
-        event_location = eventDict['eventLocation']
-        start_timestamp = eventDict['startTimestamp']
-        end_timestamp = eventDict['endTimestamp']
-        pricing = eventDict['pricing']
-        is_closed = eventDict['isClosed']
-        parking_info = eventDict['parkingInfo']
-        event_description = eventDict['description']
-        event_name = eventDict['name']
-        location_ref = eventDict['locationRef']
-
-        return SocialEvent(event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
-                           is_closed, parking_info, event_description, event_name, location_ref)
+    # @staticmethod
+    # def from_dict(eventDict):
+    #     """ Description
+    #         This function creates an event
+    #
+    #         :param eventDict:
+    #     """
+    #     event_category = eventDict['eventCategory']
+    #     participants = eventDict['participants']
+    #     event_location = eventDict['eventLocation']
+    #     start_timestamp = eventDict['startTimestamp']
+    #     end_timestamp = eventDict['endTimestamp']
+    #     pricing = eventDict['pricing']
+    #     is_closed = eventDict['isClosed']
+    #     parking_info = eventDict['parkingInfo']
+    #     event_description = eventDict['description']
+    #     event_name = eventDict['name']
+    #     location_ref = eventDict['locationRef']
+    #
+    #     return SocialEvent(event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
+    #                        is_closed, parking_info, event_description, event_name, location_ref)
 
     def to_dict(self):
         eventDict = {

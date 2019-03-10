@@ -170,7 +170,9 @@ eventDict = {
 #     return d
 
 
-def getEventDict(event_category="airport", use_firestore_ref=False):
+def getEventDict(event_category="airport", use_firestore_ref=False,
+                 to_earliest=1545066000, to_latest=1545073200,
+                 from_earliest=1545066000, from_latest=1545073200):
     d = None
     if event_category == "airport":
         d = {
@@ -181,12 +183,12 @@ def getEventDict(event_category="airport", use_firestore_ref=False):
                 {
                     'eventCategory': 'airportRide',
                     'toEvent': True,
-                    'arriveAtEventTime': {'earliest': 1545066000, 'latest': 1545073200}
+                    'arriveAtEventTime': {'earliest': to_earliest, 'latest': to_latest}
                 },
                 {
                     'eventCategory': 'airportRide',
                     'toEvent': False,
-                    'leaveEventTime': {'earliest': 1545066000, 'latest': 1545073200}
+                    'leaveEventTime': {'earliest': from_earliest, 'latest': from_latest}
                 }
             ],
             "airportCode": "LAX",

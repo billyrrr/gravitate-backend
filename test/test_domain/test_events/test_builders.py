@@ -64,7 +64,7 @@ class EventNewBuilderTest(TestCase):
         expected_d = self.eventDict.copy()
         expected_d.pop("locationRef")
 
-        self.assertEqual(b._event_dict["locationRef"].id, "testlocationid1")
+        self.assertIsNotNone(b._event_dict["locationRef"].id)
 
         # Assert that all required variables are set
         self.assertDictContainsSubset(expected_d, b._event_dict)
@@ -82,6 +82,6 @@ class EventNewBuilderTest(TestCase):
         self.assertIsNotNone(ae, "AirportEvent should be built")
         expected_subset = self.eventDict.copy()
         expected_subset.pop("locationRef")
-        self.assertEqual(ae.to_dict()["locationRef"].id, "testlocationid1")
+        self.assertIsNotNone(ae.to_dict()["locationRef"].id)
         self.assertDictContainsSubset(expected_subset, ae.to_dict())
 

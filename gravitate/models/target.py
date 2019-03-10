@@ -6,6 +6,7 @@ import pytz
 
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from .firestore_object import FirestoreObject
+from gravitate.domain.event.utils import local_time_from_timestamp
 
 # TODO: refactor to Business Object
 
@@ -151,6 +152,14 @@ class ToEventTarget(Target):
         target_dict[u'arriveAtEventTime'] = self.arrive_at_event_time
         return target_dict
 
+    def get_earliest_arrival_view(self):
+        timestamp = self.arrive_at_event_time["earliest"]
+        return local_time_from_timestamp(timestamp)
+
+    def get_latest_arrival_view(self):
+        timestamp = self.arrive_at_event_time["latest"]
+        return local_time_from_timestamp(timestamp)
+
 
 class FromEventTarget(Target):
 
@@ -165,3 +174,10 @@ class FromEventTarget(Target):
         target_dict[u'leaveEventTime'] = self.leave_event_time
         return target_dict
 
+    def get_earliest_departure_view(self):
+        timestamp = self.leave_event_time["earliest"]
+        return local_time_from_timestamp(timestamp)
+
+    def get_latest_departure_view(self):
+        timestamp = self.leave_event_time["latest"]
+        return local_time_from_timestamp(timestamp)
