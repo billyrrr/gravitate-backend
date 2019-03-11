@@ -1,6 +1,8 @@
 """Author: Zixuan Rao, Andrew Kim
 """
+import warnings
 
+from gravitate.data_access.location_dao import LocationGenericDao
 from gravitate.models.target import Target, ToEventTarget, FromEventTarget
 from gravitate.models.firestore_object import FirestoreObject
 
@@ -59,6 +61,31 @@ class Ride(FirestoreObject):
             raise Exception(
                 'Not supported rideRequestType: {}'.format(ride_request_type))
 
+    @property
+    def pickup_address(self):
+        return self._get_pickup_address()
+
+    def _get_pickup_address(self):
+        """
+        Note that this method is non-transactional. We are assuming that
+            Location objects are immutable and ready before the transaction.
+        :return:
+        """
+        pickup_location_ref = None
+        if self.target.to_event:
+            pickup_location_ref = self.origin_ref
+        else:
+            raise ValueError("Pickup address of to_event=False is not supported. ")
+        # if self._transaction is not None:
+        #     location = LocationGenericDao().get_with_transaction(self._transaction, pickup_location_ref)
+        #     return location.address
+        # else:
+        location = LocationGenericDao().get(pickup_location_ref)
+        return location.address
+        # warnings.warn("Using mock pickup address. Delete Before Release ")
+        #
+        # return "Tenaya Hall, San Diego, CA 92161"
+
     def to_dict(self):
         ride_request_dict = {
             'driverStatus': self.driver_status,
@@ -110,6 +137,8 @@ class Ride(FirestoreObject):
             :param pricing:
             :param request_completion:
         """
+
+        self._transaction = None
 
         self.driver_status = driver_status
         self.origin_ref = origin_ref

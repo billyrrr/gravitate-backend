@@ -9,7 +9,7 @@ from flask_restful import Resource
 
 from gravitate.context import Context
 from gravitate.domain import request_ride
-from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
+from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
 from gravitate.domain.luggage.models import Luggages
 from gravitate.domain.luggage import actions as luggage_actions
 import gravitate.api_server.utils as service_utils
@@ -76,6 +76,7 @@ class RideRequestService(Resource):
         print("userId: {}, rideRequestId: {}".format(user_id, rideRequestId))
 
         response_dict = ride_request.to_dict_view()
+        response_dict["pickupAddress"] = ride_request.pickup_address
 
         return response_dict, 200
 

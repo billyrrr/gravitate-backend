@@ -1,7 +1,8 @@
 from typing import Type
 
+from gravitate.data_access import LocationGenericDao
 from gravitate.domain.request_ride import utils
-from gravitate.models import RideRequest, Target
+from gravitate.models import RideRequest, Target, Location
 from gravitate.domain.event.dao import EventDao
 
 
@@ -79,15 +80,15 @@ class RideRequestBaseBuilder:
         self._ride_request_dict["flightNumber"] = self.flight_number
 
     def _build_location_by_airport_code(self):
-        # Note that the key is airportLocation rather than locationRef TODO: change model
         self._ride_request_dict["airportLocation"] = self._get_location_ref(self.airport_code)
+        self._ride_request_dict["destinationRef"] = self._get_location_ref(self.airport_code)
 
     def _build_location_by_id(self):
-        self._ride_request_dict["airportLocation"] = utils.get_location_ref_by_id(self.location_id)
+        self._ride_request_dict["destinationRef"] = utils.get_location_ref_by_id(self.location_id)
 
     def _build_location_by_event(self):
-        print(self.event.to_dict())
-        self._ride_request_dict["locationRef"] = self.event.location_ref
+        # print(self.event.to_dict())
+        self._ride_request_dict["destinationRef"] = self.event.location_ref
 
     @staticmethod
     def _get_location_ref(airport_code):
@@ -146,7 +147,10 @@ class RideRequestBaseBuilder:
         raise NotImplementedError("This is an abstract method. Override it in subclass. ")
 
     def _build_pickup(self):
-        self._ride_request_dict["pickupAddress"] = self.pickup_address
+        origin_location = Location.from_pickup_address(pickup_address=self.pickup_address)
+        origin_ref = LocationGenericDao().insert_new(origin_location)
+        self._ride_request_dict["originRef"] = origin_ref
+        # self._ride_request_dict["pickupAddress"] = self.pickup_address
 
 
 class AirportRideRequestBuilder(RideRequestBaseBuilder):

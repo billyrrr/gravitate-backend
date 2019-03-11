@@ -8,7 +8,7 @@ import warnings
 db = context.Context.db
 
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",
-                userId="testuserid1", orbitId="testorbitid1"):
+                userId="testuserid1", orbitId="testorbitid1", originId="testlocation1", destinationId="testlaxlocation1"):
     keys = {
         "rideRequestId": rideRequestId,
         "rideRequestRef": "/rideRequests/" + rideRequestId,
@@ -16,6 +16,12 @@ def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocat
         "locationId": locationId,
         "locationRef": "/locations/" + locationId,
         "locationFirestoreRef": db.collection("locations").document(locationId),
+        "originId": originId,
+        "originRef": "/locations/" + originId,
+        "originFirestoreRef": db.collection("locations").document(originId),
+        "destinationId": destinationId,
+        "destinationRef": "/locations/" + destinationId,
+        "destinationFirestoreRef": db.collection("locations").document(destinationId),
         "eventId": eventId,
         "eventRef": "/events/" + eventId,
         "eventFirestoreRef": db.collection("events").document(eventId),
@@ -31,7 +37,7 @@ def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocat
 mock1 = getMockKeys()
 
 
-def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
+def getMockRideRequestDeprecated(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
                        userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False):
     locationRefStr = mock1["locationRef"]
     locationReference = mock1["locationFirestoreRef"]
@@ -78,14 +84,19 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
     locationRefStr = mock1["locationRef"]
     locationReference = mock1["locationFirestoreRef"]
 
+    originRefStr = mock1["originRef"]
+    originReference = mock1["originFirestoreRef"]
+
+    destinationRefStr = mock1["destinationRef"]
+    destinationReference = mock1["destinationFirestoreRef"]
+
     eventRefStr = mock1["eventRef"]
     eventReference = mock1["eventFirestoreRef"]
 
     rideRequestDict = {
 
         'rideCategory': 'airportRide',
-        'originRef': "/locations/testlocation1",
-        'destinationRef': "/locations/testlaxlocation1",
+
         'driverStatus': driverStatus,
         'orbitRef': None,
         'target': {'eventCategory': 'airportRide',
@@ -108,6 +119,8 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
     if not returnSubset:
         rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
         rideRequestDict["eventRef"] = eventReference if useDocumentRef else eventRefStr
+        rideRequestDict['originRef'] =  originReference if useDocumentRef else originRefStr
+        rideRequestDict['destinationRef'] = destinationReference if useDocumentRef else destinationRefStr
 
     if returnDict:
         return rideRequestDict
@@ -115,6 +128,9 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
         rideRequest = models.RideRequest.from_dict(rideRequestDict)
         rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
+
+
+getMockRideRequest = getMockRide
 
 """
 Monday, December 17, 2018 12:00:00 AM GMT-08:00 to
@@ -298,6 +314,14 @@ def getLocation():
     location = models.Location.from_dict(locationDict)
     location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
+
+
+def getUserLocationDict():
+    return {
+        'locationCategory': "user",
+        'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
+        'address': 'Tenaya Hall, San Diego, CA 92161',
+    }
 
 
 def get_json_file(json_filename):

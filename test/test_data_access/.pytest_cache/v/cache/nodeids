@@ -1,3 +1,8 @@
 [
-  "test_transaction_strategy.py::TestTransactionStrategyExecuteAll::testExecuteAll"
+  "test_location_dao.py::LocationDAOTest::testFindByAirportCode",
+  "test_location_dao.py::LocationDAOTest::testGet",
+  "test_location_dao.py::LocationDAOTest::testGetUserLocation",
+  "test_location_dao.py::LocationDAOTest::testPickupAddress",
+  "test_location_dao.py::LocationDAOTest::testSetWithTransaction",
+  "test_location_dao.py::LocationDAOTest::testSetWithTransactionTransactional"
 ]

@@ -23,6 +23,10 @@ def _create_airport_ride_request(args, user_id):
         .build_airport_ride_request() \
         .export_as_class(AirportRideRequest)
     location = LocationGenericDao().get(ride_request.airport_location)
+    if ride_request.target.to_event:
+        user_location = LocationGenericDao().get(ride_request.origin_ref)
+    else:
+        raise ValueError("to_event is False ")
     # Do Validation Tasks before saving rideRequest
     # 1. Check that rideRequest is not submitted by the same user
     #       for the flight on the same day already
@@ -32,7 +36,7 @@ def _create_airport_ride_request(args, user_id):
     # Starts database operations to (save rideRequest and update user's eventSchedule)
     transaction = db.transaction()
     # Transactional business logic for adding rideRequest
-    utils.add_ride_request(transaction, ride_request, location, user_id)
+    utils.add_ride_request(transaction, ride_request, location, user_id, user_location)
     # Save write result
     transaction.commit()
     return ride_request

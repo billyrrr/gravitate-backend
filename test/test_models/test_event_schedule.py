@@ -4,11 +4,20 @@ import test.store.model
 from gravitate.domain.event_schedule import actions as event_schedule_actions
 from gravitate.models import AirportEventSchedule
 from test import store
+from test import scripts
 
 event_schedule_dict = store.eventScheduleDict.copy()
 
 
 class EventScheduleDaoTest(unittest.TestCase):
+
+    def setUp(self):
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
+    def tearDown(self):
+        self.c.clear_after()
 
     def test_from_and_to_dict(self):
         event_schedule = AirportEventSchedule.from_dict(event_schedule_dict)

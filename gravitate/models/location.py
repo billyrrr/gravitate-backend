@@ -1,4 +1,5 @@
 from .firestore_object import FirestoreObject
+from gravitate.domain.driver_navigation.utils import get_coordinates
 
 
 class Location(FirestoreObject):
@@ -11,6 +12,11 @@ class Location(FirestoreObject):
     def __init__(self, coordinates, address):
         self.coordinates = coordinates
         self.address = address
+
+    @staticmethod
+    def from_pickup_address(pickup_address):
+        coordinates = get_coordinates(pickup_address)
+        return UserLocation(coordinates=coordinates, address=pickup_address)
 
     @staticmethod
     def from_dict(location_dict):
@@ -29,6 +35,8 @@ class Location(FirestoreObject):
             coordinates = location_dict['coordinates']
             address = location_dict['address']
             return UcLocation(coordinates, address, campus_name, campus_code)
+        elif location_category == 'user':
+            return UserLocation(coordinates, address)
         else:
             raise NotImplementedError(
                 'Unsupported locationCategory ' + str(location_category) + '. ')
@@ -45,6 +53,20 @@ class Location(FirestoreObject):
         return {
             'coordinates': self.coordinates,
             'address': self.address
+        }
+
+
+class UserLocation(Location):
+
+    def __init__(self, coordinates, address):
+        super().__init__(coordinates, address)
+        self.location_category = 'user'
+
+    def to_dict(self):
+        return {
+            'locationCategory': self.location_category,
+            'coordinates': self.coordinates,
+            'address': self.address,
         }
 
 

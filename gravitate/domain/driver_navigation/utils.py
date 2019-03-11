@@ -34,7 +34,21 @@ def get_distance_and_duration(origin, destination, mode="driving"):
     return elem
 
 
-if __name__ == "__main__":
-
-    result = get_distance_and_duration("Sydney Town Hall", "Parramatta, NSW")
-    print(result)
+def get_coordinates(address=None):
+    assert address is not None
+    geocode_result = gmaps.geocode(address)
+    print(geocode_result[0]["geometry"]["location"])
+    latlng = geocode_result[0]["geometry"]["location"]
+    lat = latlng["lat"]
+    lng = latlng["lng"]
+    return {
+        'latitude': lat,
+        'longitude': lng
+    }
+#
+# if __name__ == "__main__":
+#
+#     result = get_distance_and_duration("Sydney Town Hall", "Parramatta, NSW")
+#     print(result)
+#
+#     coordinates = get_coordinates("Tenaya Hall, San Diego, CA 92161")

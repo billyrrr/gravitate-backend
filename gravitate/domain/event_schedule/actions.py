@@ -1,5 +1,6 @@
 from typing import Type
 
+from gravitate.models.location import UserLocation
 from . import CTX
 from gravitate.domain.event_schedule.builders import EventScheduleBuilder
 from gravitate.models import RideRequest, Location, AirportRideRequest, AirportLocation, SocialEventRideRequest, \
@@ -20,6 +21,7 @@ def create_event_schedule(ride_request: Type[RideRequest], location: Type[Locati
     event_schedule_builder = EventScheduleBuilder()
     event_schedule_builder.build_ride_request(ride_request)
     event_schedule_builder.build_location(location)  # Note that location=None defaults to LAX as destName
+    # event_schedule_builder.build_user_location(user_location)
     event_schedule_builder.build_orbit(pending=True)
     return event_schedule_builder.export()
 

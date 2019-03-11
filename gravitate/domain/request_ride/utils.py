@@ -32,7 +32,7 @@ def check_duplicate(user_id: str, event_ref: DocumentReference):
 
 
 @transactional
-def add_ride_request(transaction, ride_request, location, user_id):
+def add_ride_request(transaction, ride_request, location, user_id, user_location):
     """ Description
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
