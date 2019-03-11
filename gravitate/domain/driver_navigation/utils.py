@@ -4,7 +4,6 @@ googlemaps python documentation: https://googlemaps.github.io/google-maps-servic
 """
 
 import googlemaps
-import datetime
 
 """
 Initialize google maps with key from project "gravitate-testing"

@@ -1,5 +1,5 @@
-import gravitate.context as config
 from firebase_admin import messaging
+
 import gravitate.data_access as data_access
 
 

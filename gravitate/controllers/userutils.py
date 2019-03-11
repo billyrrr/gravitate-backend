@@ -1,13 +1,13 @@
-from gravitate.models import User, Orbit
-from gravitate.forms.user_creation_form import UserCreationForm
-from google.cloud.firestore import DocumentReference, Transaction
-from gravitate.data_access import UserDao
-from gravitate.domain.event.dao import EventDao
-from gravitate.controllers import fireauthutils
+from google.cloud.firestore import Transaction
+import random
+import string
 
-import random 
-import string 
-  
+from google.cloud.firestore import Transaction
+
+from gravitate.controllers import fireauthutils
+from gravitate.data_access import UserDao
+
+
 # Generate a random string 
 # with 32 characters. 
 # https://www.geeksforgeeks.org/generating-random-ids-python/

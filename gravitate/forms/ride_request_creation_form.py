@@ -1,10 +1,10 @@
 # from flask_wtf import Form
 # Note that Form is now imported from wtforms since it is more relevant to our usage of Form
-from wtforms import Form, StringField, PasswordField, DateTimeField, BooleanField
+from wtforms import Form, StringField, DateTimeField, BooleanField
 #### DateTimeField does not have Timezone #### 
 
 
-from wtforms.validators import DataRequired, length
+from wtforms.validators import DataRequired
 
 
 class RideRequestBaseCreationForm(object):

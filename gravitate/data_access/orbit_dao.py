@@ -1,10 +1,11 @@
 """Author: Zixuan Rao
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, CollectionReference, DocumentSnapshot, transactional
-from gravitate.models.orbit import Orbit
 import google
+from google.cloud.firestore import Transaction, DocumentReference, CollectionReference, DocumentSnapshot
+
 from gravitate import context
+from gravitate.models.orbit import Orbit
 
 db = context.Context.db
 

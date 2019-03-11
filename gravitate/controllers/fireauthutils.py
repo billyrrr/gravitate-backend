@@ -1,9 +1,8 @@
-from gravitate.models import User
-
-import string
 import gravitate.context as config
+from gravitate.models import User
+from firebase_admin import auth
+# auth = config.auth
 
-auth = config.auth
 
 def update_user(user:User):
     auth.update_user(user.uid,

@@ -2,6 +2,7 @@
 Reference: flask-restful docs
 """
 
+import warnings
 from functools import wraps, partial
 
 from firebase_admin import auth
@@ -9,7 +10,6 @@ from flask import request
 from flask_restful import abort
 
 from gravitate.context import Context
-import warnings
 
 # Flag for whether main app is in TESTING mode
 testing = Context.testing

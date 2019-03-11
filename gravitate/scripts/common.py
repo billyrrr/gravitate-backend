@@ -1,6 +1,8 @@
-from gravitate.context import Context
-from google.cloud.firestore import DocumentReference, CollectionReference
 import warnings
+
+from google.cloud.firestore import CollectionReference
+
+from gravitate.context import Context
 
 db = Context.db
 

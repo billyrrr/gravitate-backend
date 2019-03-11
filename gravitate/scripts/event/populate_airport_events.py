@@ -1,6 +1,6 @@
-from gravitate.domain.event.dao import EventDao
+from gravitate.domain.event.builders import UcsbEventBuilder
 from gravitate.domain.event.builders_new import AirportEventBuilder
-from gravitate.domain.event.builders import LaxEventBuilder, UcsbEventBuilder
+from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import AirportEvent
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
 

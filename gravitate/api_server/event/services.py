@@ -1,19 +1,11 @@
 from flask_restful import Resource
 
-from gravitate.context import Context
-from gravitate.domain.event.dao import EventDao
-from gravitate.domain.event.models import Event, AirportEvent
-from gravitate.models import Target
 import gravitate.api_server.utils as service_utils
 import gravitate.domain.event.actions as event_actions
-from . import parsers as event_parsers
-from gravitate.api_server import errors as service_errors
-import warnings
-
-from flask_restful import Resource
-
 from gravitate.context import Context
-import gravitate.api_server.utils as service_utils
+from gravitate.domain.event.dao import EventDao
+from gravitate.models import Target
+from . import parsers as event_parsers
 
 db = Context.db
 

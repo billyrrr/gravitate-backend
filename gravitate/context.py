@@ -10,18 +10,18 @@ Usage:
 
 """
 
-from google.cloud import firestore
 import logging
 
-# [START] Firebase Admin SDK
-
 import firebase_admin
-from firebase_admin import credentials, auth
+from firebase_admin import credentials
+from google.cloud import firestore
 
 #
 # # Original Firebase set-up certs
 #
 import gravitate.config as gravitate_config
+
+# [START] Firebase Admin SDK
 
 config = gravitate_config.TestingGravitateConfig
 

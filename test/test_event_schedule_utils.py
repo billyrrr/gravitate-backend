@@ -1,11 +1,14 @@
 import unittest
-from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
+
 from google.cloud.firestore import DocumentReference, DocumentSnapshot
+
+from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
 from gravitate.models.orbit import Orbit
-from test import context
+from gravitate import context
+# from firebase_admin import auth
 
 CTX = context.Context
-auth = context.auth
+# auth = context.auth
 
 db = CTX.db
 

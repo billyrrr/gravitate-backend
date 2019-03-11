@@ -1,13 +1,6 @@
 """Author: Zixuan Rao, Andrew Kim
 """
 
-from gravitate.models.target import Target, ToEventTarget, FromEventTarget
-from .firestore_object import FirestoreObject
-from gravitate.domain.rides.models import Ride as RideRequest
-from gravitate.domain.rides.models import SocialEventRide as SocialEventRideRequest
-from gravitate.domain.rides.models import AirportRide as AirportRideRequest
-
-
 #
 # class RideRequest(FirestoreObject):
 #     """ Description

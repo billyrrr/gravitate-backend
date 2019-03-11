@@ -1,10 +1,8 @@
 import unittest
 
-from gravitate.scripts.location.populate_locations import buildLaxTerminal
 from gravitate.scripts.event.populate_airport_events import generate_airport_events
+from gravitate.scripts.location.populate_locations import buildLaxTerminal
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
-from gravitate.domain.event.builders import SampleLaxEventBuilder
-
 from test import scripts as setup_scripts
 
 

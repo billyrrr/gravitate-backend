@@ -1,5 +1,5 @@
 from gravitate.models import Orbit
-from gravitate.models.firestore_object import FirestoreObject
+
 
 class DriverNavigation:
 

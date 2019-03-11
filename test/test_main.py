@@ -1,9 +1,10 @@
-import gravitate.main as main
+import json
+from unittest import TestCase
+
 from flask.testing import FlaskClient
 
-from unittest import TestCase
-import json
-from test import context
+import gravitate.main as main
+from gravitate import context
 
 db = context.Context.db
 firebaseApp = context.Context.firebaseApp

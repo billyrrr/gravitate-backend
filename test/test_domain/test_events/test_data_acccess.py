@@ -2,11 +2,11 @@ import unittest
 
 from google.cloud import firestore
 
+from gravitate import context
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
-from test.store import getEventDict
-from gravitate import context
 from test import scripts as setup_scripts
+from test.store import getEventDict
 
 CTX = context.Context
 

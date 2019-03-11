@@ -1,8 +1,8 @@
 import unittest
-from gravitate.domain.rides.models import Ride, AirportRide, SocialEventRide
+
+from gravitate.domain.rides.models import Ride, AirportRide
+from gravitate import context
 from .. import store
-import json
-from test import context
 
 db = context.Context.db
 

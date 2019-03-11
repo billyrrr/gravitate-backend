@@ -1,8 +1,8 @@
 import warnings
 
 from gravitate.data_access import UserDao
-from . import CTX
 from gravitate.models import Orbit
+from . import CTX
 
 
 def getMemberProfilePhotoUrls(orbit: Orbit) -> [str]:

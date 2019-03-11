@@ -7,15 +7,14 @@ This module implements the service for creating and managing rideRequests.
 
 from flask_restful import Resource
 
-from gravitate.context import Context
-from gravitate.domain import request_ride
-from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao, LocationGenericDao
-from gravitate.domain.luggage.models import Luggages
-from gravitate.domain.luggage import actions as luggage_actions
 import gravitate.api_server.utils as service_utils
-from . import parsers as ride_request_parsers
 from gravitate.api_server import errors as service_errors
-import warnings
+from gravitate.context import Context
+from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
+from gravitate.domain import request_ride
+from gravitate.domain.luggage import actions as luggage_actions
+from gravitate.domain.luggage.models import Luggages
+from . import parsers as ride_request_parsers
 
 db = Context.db
 

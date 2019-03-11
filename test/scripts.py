@@ -1,12 +1,14 @@
-from gravitate import scripts
-from gravitate import models
+from typing import Type
+
+from gravitate import context
 from gravitate import data_access
+from gravitate import models
+from gravitate import scripts
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.group import actions as group_actions
+from gravitate.domain.rides import RideRequest
 from gravitate.models import Location
 from test import store
-from typing import Type
-from gravitate import context
 
 CTX = context.Context
 db = CTX.db
@@ -17,9 +19,9 @@ def generate_test_data():
     scripts.populate_airport_events.populate_events(start_string="2018-12-01T08:00:00.000", num_days=35)
 
 
-def generate_ride_request() -> Type[models.RideRequest]:
+def generate_ride_request() -> Type[RideRequest]:
     ride_request_dict = store.getMockRideRequest(returnDict=True)
-    ride_request = models.RideRequest.from_dict(ride_request_dict)
+    ride_request = RideRequest.from_dict(ride_request_dict)
     data_access.RideRequestGenericDao().create(ride_request)
     data_access.RideRequestGenericDao().set(ride_request)
     # ref = ride_request.get_firestore_ref()

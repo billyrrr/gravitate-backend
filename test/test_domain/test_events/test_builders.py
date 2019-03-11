@@ -1,8 +1,7 @@
 from unittest import TestCase
+
 from gravitate.domain.event.builders_new import AirportEventBuilder
 from gravitate.domain.event.models import AirportEvent
-from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
-from gravitate.domain.event.builders import SampleLaxEventBuilder
 from test import scripts
 
 

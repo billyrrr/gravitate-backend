@@ -1,15 +1,14 @@
+import unittest
+
 import gravitate.domain.group.pairing
+import gravitate.domain.group.utils as grouping_utils
 # import gravitate.controllers.grouping.remove
 import test.store.model
-from gravitate.domain.group import actions
-import gravitate.domain.group.utils as grouping_utils
-from gravitate.domain.group.utils import _add_to_orbit
-from gravitate.data_access import OrbitDao
 from gravitate.data_access.ride_request_dao import RideRequestGenericDao
-from gravitate.models.ride_request import RideRequest
+from gravitate.domain.group.utils import _add_to_orbit
 from gravitate.models.orbit import Orbit
-import unittest
-from test import context
+from gravitate.domain.rides import RideRequest
+from gravitate import context
 from test import scripts
 
 db = context.Context.db

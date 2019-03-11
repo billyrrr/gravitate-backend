@@ -1,14 +1,15 @@
 from typing import Type
 
-import gravitate.domain.event_schedule.actions
-from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
-from gravitate.models import AirportLocation, RideRequest, User
-from google.cloud.firestore import DocumentReference, transactional
-from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, UserDao
-from gravitate.domain.event.dao import EventDao
-
 import iso8601
 import pytz
+from google.cloud.firestore import DocumentReference, transactional
+
+import gravitate.domain.event_schedule.actions
+from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, UserDao
+from gravitate.domain.event.dao import EventDao
+from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
+from gravitate.domain.rides import RideRequest
+from gravitate.models import AirportLocation, User
 
 
 def check_duplicate(user_id: str, event_ref: DocumentReference):

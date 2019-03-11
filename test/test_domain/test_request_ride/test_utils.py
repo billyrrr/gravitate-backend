@@ -6,7 +6,7 @@ from gravitate.api_server.ride_request.deprecated_utils import fill_ride_request
     fill_ride_request_dict_builder_regression
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.request_ride.utils import check_duplicate
-from gravitate.models import RideRequest
+from gravitate.domain.rides import RideRequest
 from test.store import FormDictFactory
 from test.test_main import userId, db
 

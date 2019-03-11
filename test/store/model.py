@@ -1,9 +1,9 @@
 import json
 
-from gravitate import context
 import gravitate.models as models
-import os
-import warnings
+from gravitate import context
+from gravitate.domain.rides import RideRequest
+from gravitate.models import Location
 
 db = context.Context.db
 
@@ -75,7 +75,7 @@ def getMockRideRequestDeprecated(earliest: int = 1545058800, latest: int = 15450
     if returnDict:
         return rideRequestDict
     else:
-        rideRequest = models.RideRequest.from_dict(rideRequestDict)
+        rideRequest = RideRequest.from_dict(rideRequestDict)
         rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
 
@@ -125,7 +125,7 @@ def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreR
     if returnDict:
         return rideRequestDict
     else:
-        rideRequest = models.RideRequest.from_dict(rideRequestDict)
+        rideRequest = RideRequest.from_dict(rideRequestDict)
         rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
 
@@ -311,7 +311,7 @@ def getLocationDict(location_category="airport"):
 
 def getLocation():
     locationDict = getLocationDict()
-    location = models.Location.from_dict(locationDict)
+    location = Location.from_dict(locationDict)
     location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
 

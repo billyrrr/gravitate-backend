@@ -1,12 +1,12 @@
 import datetime as dt
-from typing import Type
 
 import iso8601
 import pytz
 
+from gravitate.domain.event.utils import local_time_from_timestamp
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from .firestore_object import FirestoreObject
-from gravitate.domain.event.utils import local_time_from_timestamp
+
 
 # TODO: refactor to Business Object
 

@@ -1,7 +1,7 @@
 import unittest
-from gravitate.domain.event.models import Event, SocialEvent, AirportEvent
-from test import context
-from test.store import getEventDict
+
+from gravitate.domain.event.models import SocialEvent, AirportEvent
+from gravitate import context
 
 db = context.Context.db
 
