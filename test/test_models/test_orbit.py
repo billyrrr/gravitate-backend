@@ -1,4 +1,5 @@
 import unittest
+
 from gravitate.models import Orbit
 from test.store import orbitDict
 

@@ -1,8 +1,8 @@
-from gravitate.domain.request_ride import builders as creation_utils, utils
-from gravitate.data_access import LocationGenericDao
-from gravitate.models import AirportRideRequest, SocialEventRideRequest
-from gravitate.api_server import errors as service_errors
 from gravitate import context
+from gravitate.api_server import errors as service_errors
+from gravitate.data_access import LocationGenericDao
+from gravitate.domain.request_ride import builders as creation_utils, utils
+from gravitate.domain.rides import AirportRideRequest, SocialEventRideRequest
 
 db = context.Context.db
 

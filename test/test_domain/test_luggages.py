@@ -3,8 +3,9 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
     correctly.
 """
 
+from unittest import TestCase
+
 from gravitate.domain.luggage.models import Luggages
-from unittest import TestCase, skip
 
 
 # @skip("not yet implemented. Comment this decorator when test is needed")

@@ -2,7 +2,8 @@ from unittest import TestCase
 
 from gravitate import models, data_access
 from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder
-from test import context, store
+from test import store
+from gravitate import context
 from test.store import FormDictFactory
 
 db = context.Context.db

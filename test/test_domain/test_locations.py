@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from gravitate.models.location import Location
 
 

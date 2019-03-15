@@ -2,11 +2,11 @@ from typing import Type, List
 
 from google.cloud.firestore_v1beta1 import Transaction
 
+import gravitate.domain.group.utils as utils
 from gravitate.data_access import LocationGenericDao, OrbitDao, RideRequestGenericDao
 from gravitate.domain.event.dao import EventDao
-from gravitate.models import Orbit, Location
 from gravitate.domain.event.models import Event
-import gravitate.domain.group.utils as utils
+from gravitate.models import Orbit, Location
 
 
 def _refresh_event_schedules_all(transaction: Transaction, in_orbit: dict, not_in_orbit: dict, orbit: Orbit, event,

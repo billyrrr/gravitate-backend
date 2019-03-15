@@ -1,8 +1,8 @@
 from typing import Type
 
 from gravitate.data_access import LocationGenericDao
-from gravitate.models import Target, ToEventTarget, FromEventTarget
 from gravitate.domain.event.models import Event
+from gravitate.models import ToEventTarget, FromEventTarget
 
 
 class EventBaseBuilder:

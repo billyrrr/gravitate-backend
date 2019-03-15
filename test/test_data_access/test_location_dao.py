@@ -1,8 +1,8 @@
 import unittest
-from gravitate.data_access import LocationGenericDao
-from google.cloud.firestore import Transaction, transactional
-from gravitate import context
+
 import test.store.model as model
+from gravitate import context
+from gravitate.data_access import LocationGenericDao
 from gravitate.models import Location
 from test import scripts as setup_scripts
 

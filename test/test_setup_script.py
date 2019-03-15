@@ -1,7 +1,9 @@
 import unittest
+
+from google.cloud.firestore import CollectionReference
+
+from gravitate import context
 from test import scripts as setup_scripts
-from test import context
-from google.cloud.firestore import DocumentReference, CollectionReference
 
 CTX = context.Context
 db = CTX.db

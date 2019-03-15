@@ -1,11 +1,12 @@
-from gravitate import main as main
-from gravitate.domain.event.models import Event
-from gravitate.domain.event.dao import EventDao
 import unittest
+
 from google.cloud import firestore
+
+from gravitate import main as main
+from gravitate.domain.event.dao import EventDao
+from gravitate.domain.event.models import Event
 from test.store import getEventDict
 from test.test_main import getMockAuthHeaders
-from test.test_services.utils import _create_ride_requests_for_tests
 
 
 class EventServiceTest(unittest.TestCase):

@@ -1,4 +1,5 @@
 import unittest
+
 from gravitate.scripts import populate_airport_events, populate_locations
 
 

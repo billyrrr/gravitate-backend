@@ -1,13 +1,13 @@
 """Author: Zixuan Rao
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
-    transactional
-import google
 from typing import Type
-from gravitate.models import RideRequest, AirportRideRequest
-from gravitate import context
 
+import google
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot
+
+from gravitate import context
+from gravitate.domain.rides import RideRequest
 from . import utils
 
 CTX = context.Context

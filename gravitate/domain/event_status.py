@@ -3,6 +3,7 @@ Author: Andrew Kim
 """
 
 import datetime
+
 from gravitate.models import Event
 
 

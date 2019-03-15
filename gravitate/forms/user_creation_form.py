@@ -1,8 +1,9 @@
-from wtforms import Form, StringField, PasswordField, DateTimeField, BooleanField,  StringField, PasswordField
+from wtforms import Form, StringField
 #### DateTimeField does not have Timezone #### 
 
 
-from wtforms.validators import DataRequired,length
+from wtforms.validators import DataRequired
+
 
 class UserCreationForm():
     uid = None

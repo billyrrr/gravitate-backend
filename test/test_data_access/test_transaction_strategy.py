@@ -1,6 +1,8 @@
-from unittest import TestCase, skip, expectedFailure
-from gravitate.data_access.strategy import TransactionStrategy
 from functools import partial
+from unittest import TestCase, skip
+
+from gravitate.data_access.strategy import TransactionStrategy
+
 
 def exampleExecutable(a, b):
     print("a: {}, b: {}".format(a, b))

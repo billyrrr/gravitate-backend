@@ -1,5 +1,6 @@
-from gravitate.scripts.location import populate_locations
 from gravitate.scripts.event import populate_airport_events
+from gravitate.scripts.location import populate_locations
+
 #
 # # Populate database for uc/campus location and events
 # populate_locations.doWorkUc("UCSB")

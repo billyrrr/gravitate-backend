@@ -1,12 +1,11 @@
 import unittest
-import json
-from test import context
+from gravitate import context
+from gravitate.data_access import RideRequestGenericDao
+from gravitate.domain.rides import RideRequest
+from test import store
+
 db = context.Context.db
 
-from gravitate.data_access import RideRequestGenericDao
-from gravitate.models import RideRequest
-from test import store
-from google.cloud.firestore import DocumentReference
 
 class RideRequestDaoTest(unittest.TestCase):
 

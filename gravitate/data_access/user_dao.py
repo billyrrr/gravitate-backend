@@ -1,18 +1,15 @@
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
-    transactional
-
-import google
+import string
 from typing import Type
+
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, transactional
+from firebase_admin import auth
+from gravitate import context
 from gravitate.models import User, AirportEventSchedule
 
 # from config import auth
 
-import string
-import warnings
-from gravitate import context
-
 CTX = context.Context
-auth = context.auth
+# auth = context.auth
 
 db = CTX.db
 

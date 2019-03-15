@@ -1,14 +1,13 @@
 """Author: David Nong
 """
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
-    transactional, Query
-import google
 from typing import Type
-from gravitate.domain.event.dao import EventDao
-from gravitate.models import AirportEventSchedule
-import warnings
+
+import google
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot
+
 from gravitate import context
+from gravitate.models import AirportEventSchedule
 
 CTX = context.Context
 

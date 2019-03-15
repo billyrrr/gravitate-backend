@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import Mock
 
 from gravitate import data_access
-from test import context
 from gravitate.models import Orbit
+from gravitate import context
 from test.store import orbitDict
 
 

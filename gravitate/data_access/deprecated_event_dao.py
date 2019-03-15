@@ -1,13 +1,13 @@
 """Author: Zixuan Rao, David Nong
 """
 
-from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot, CollectionReference, Client, \
-    transactional
-from gravitate.models import RideRequest, AirportRideRequest, Event
-import google
 from typing import Type
-import warnings
+
+import google
+from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot
+
 from gravitate import context
+from gravitate.models import Event
 
 CTX = context.Context
 

@@ -7,4 +7,3 @@ Setup context for testing
 
 """
 
-from gravitate import context as context

@@ -3,8 +3,8 @@ Author: Zixuan Rao
 Reference: https://github.com/faif/python-patterns/blob/master/creational/builder.py
 
 """
-from gravitate.models import Location, AirportLocation
 from gravitate.data_access import LocationGenericDao
+from gravitate.models import Location
 
 
 class LocationBuilder(object):

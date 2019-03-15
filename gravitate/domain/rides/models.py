@@ -1,10 +1,9 @@
 """Author: Zixuan Rao, Andrew Kim
 """
-import warnings
 
 from gravitate.data_access.location_dao import LocationGenericDao
-from gravitate.models.target import Target, ToEventTarget, FromEventTarget
 from gravitate.models.firestore_object import FirestoreObject
+from gravitate.models.target import Target
 
 
 class Ride(FirestoreObject):

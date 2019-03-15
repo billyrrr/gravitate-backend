@@ -1,14 +1,12 @@
-import gravitate.domain.group.pairing
-from gravitate.domain.group import remove_from_orbit
-import test.store.model
-from gravitate.domain.group import actions
-from gravitate.domain.group import pairing
-from gravitate.domain.group.utils import _add_to_orbit
-from gravitate.data_access import RideRequestGenericDao, OrbitDao
-from gravitate.models.ride_request import RideRequest
-from gravitate.models.orbit import Orbit
 import unittest
-from test import context
+
+import gravitate.domain.group.pairing
+import test.store.model
+from gravitate.data_access import RideRequestGenericDao
+from gravitate.domain.group.utils import _add_to_orbit
+from gravitate.models.orbit import Orbit
+from gravitate.domain.rides import RideRequest
+from gravitate import context
 
 db = context.Context.db
 

@@ -1,6 +1,5 @@
 import unittest
 
-import gravitate.controllers
 import test.store
 from gravitate.domain import group
 

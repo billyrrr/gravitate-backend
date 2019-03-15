@@ -3,7 +3,6 @@ Author: Andrew Kim
 Reviewer: Zixuan Rao
 """
 
-from google.cloud.firestore import DocumentReference
 from gravitate.domain.event.utils import local_time_from_timestamp
 from .firestore_object import FirestoreObject
 

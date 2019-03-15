@@ -1,7 +1,7 @@
 from flask_restful import Resource
 
-from gravitate.context import Context
 import gravitate.api_server.utils as service_utils
+from gravitate.context import Context
 
 db = Context.db
 

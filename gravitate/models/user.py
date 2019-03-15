@@ -1,4 +1,3 @@
-from google.cloud.firestore import DocumentReference
 from .firestore_object import FirestoreObject
 
 

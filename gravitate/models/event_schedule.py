@@ -2,7 +2,6 @@
 """
 from abc import ABCMeta, abstractmethod
 
-from gravitate.models.firestore_object import FirestoreObject
 from .firestore_object import FirestoreObject
 
 

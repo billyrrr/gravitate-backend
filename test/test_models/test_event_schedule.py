@@ -3,8 +3,8 @@ import unittest
 import test.store.model
 from gravitate.domain.event_schedule import actions as event_schedule_actions
 from gravitate.models import AirportEventSchedule
-from test import store
 from test import scripts
+from test import store
 
 event_schedule_dict = store.eventScheduleDict.copy()
 

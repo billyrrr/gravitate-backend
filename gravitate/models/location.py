@@ -1,5 +1,5 @@
-from .firestore_object import FirestoreObject
 from gravitate.domain.driver_navigation.utils import get_coordinates
+from .firestore_object import FirestoreObject
 
 
 class Location(FirestoreObject):

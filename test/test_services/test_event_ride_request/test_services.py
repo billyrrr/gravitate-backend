@@ -1,11 +1,8 @@
 from unittest import TestCase
 
-from gravitate import main
-
-from gravitate import models
 from gravitate import data_access
-from gravitate.domain.request_ride import builders as ride_request_builders
-
+from gravitate import main
+from gravitate import models
 from test import store
 from test.test_main import getMockAuthHeaders
 
