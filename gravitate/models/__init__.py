@@ -1,8 +1,8 @@
 # Import Model Classes
 from .location import Location, AirportLocation, UcLocation, SocialEventLocation
 from .orbit import Orbit
-from .target import Target, ToEventTarget
+from .target import Target, ToEventTarget, FromEventTarget
 from .event_schedule import AirportEventSchedule
 from .ride_request import RideRequest, AirportRideRequest, SocialEventRideRequest
-from .event import Event, AirportEvent, SocialEvent
+# from .event import Event, AirportEvent, SocialEvent
 from .user import User

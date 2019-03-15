@@ -1,5 +1,6 @@
 # import gravitate.domain.event_schedule.actions
-from gravitate.models import RideRequest, Location, Orbit, Event
+from gravitate.models import RideRequest, Location, Orbit
+from gravitate.domain.event.models import Event
 from gravitate.data_access import UserDao
 from google.cloud.firestore import Transaction
 from gravitate.domain.event_schedule import actions as event_schedule_actions

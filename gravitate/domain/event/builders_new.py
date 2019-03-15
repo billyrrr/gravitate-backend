@@ -1,5 +1,81 @@
+from typing import Type
+
 from gravitate.data_access import LocationGenericDao
+from gravitate.models import Target, ToEventTarget, FromEventTarget
 from gravitate.domain.event.models import Event
+
+
+class EventBaseBuilder:
+
+    event_category = None
+
+    def __init__(self):
+        self._event_dict = dict()
+
+    def export_as_class(self, export_class) -> Type[Event]:
+        return export_class.from_dict(self._event_dict)
+
+    def _build_target(self, to_event, start_timestamp, end_timestamp):
+        """
+        Note that this is an abstract class.
+            self.event_category needs to be defined in subclass.
+        :param to_event:
+        :param start_timestamp:
+        :param end_timestamp:
+        :return:
+        """
+        assert self.event_category is not None
+        if "targets" not in self._event_dict.keys():
+            self._event_dict["targets"] = list()
+        if to_event:
+            self._event_dict["targets"].append(
+                ToEventTarget(event_category=self.event_category,
+                              arrive_at_event_time={
+                                  'earliest': start_timestamp,
+                                  'latest': end_timestamp
+                              }).to_dict()
+            )
+        else:
+            self._event_dict["targets"].append(
+                FromEventTarget(event_category=self.event_category,
+                                leave_event_time={
+                                    'earliest': start_timestamp,
+                                    'latest': end_timestamp
+                                }).to_dict()
+            )
+
+    def _build_local_date_string(self, local_date_string):
+        self._event_dict["localDateString"] = local_date_string
+
+
+class AirportEventBuilder(EventBaseBuilder):
+
+    event_category = "airport"
+
+    def build_basic_info(self):
+        self._event_dict["eventCategory"] = self.event_category
+        self._event_dict["isClosed"] = False
+        self._event_dict["participants"] = []
+        self._event_dict["pricing"] = 123456789
+
+    def build_airport(self, airport_code):
+        self._event_dict["airportCode"] = airport_code
+        self._event_dict["locationRef"] = LocationGenericDao().find_by_airport_code(airport_code).get_firestore_ref()
+
+    def build_parking(self, parking_info = None):
+        if parking_info is None:
+            self._event_dict["parkingInfo"] = {
+                "parkingAvailable": False,
+                "parkingPrice": 0,
+                "parkingLocation": "none"
+            }
+        else:
+            self._event_dict["parking_info"] = parking_info
+
+    def build_descriptions(self, description, name):
+        self._event_dict["description"] = description
+        self._event_dict["name"] = name
+
 
 
 class EventBuilder(Event):
@@ -62,7 +138,6 @@ class SpecifiedRangeEventBuilder(EventBuilder):
     def buildTimeRange(self, start_timestamp, end_timestamp):
         self.start_timestamp = start_timestamp
         self.end_timestamp = end_timestamp
-
 
 class LaxEventBuilder(SpecifiedRangeEventBuilder):
 

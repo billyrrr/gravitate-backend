@@ -3,6 +3,7 @@ from gravitate.data_access import LocationGenericDao
 from google.cloud.firestore import Transaction, transactional
 from gravitate import context
 import test.store.model as model
+from gravitate.models import Location
 from test import scripts as setup_scripts
 
 db = context.Context.db
@@ -44,3 +45,31 @@ class LocationDAOTest(unittest.TestCase):
         self.to_delete.append(ref)
         # transaction.commit()
 
+    def testGet(self):
+        # ref = model.mock1["locationFirestoreRef"]
+        ref = LocationGenericDao().insert_new(model.getLocation())
+        self.to_delete.append(ref)
+        location = LocationGenericDao().get(ref)
+        self.assertIsNotNone(location)
+        print(location.to_dict())
+
+    def testPickupAddress(self):
+        location = Location.from_pickup_address("Tenaya Hall, San Diego, CA 92161")
+        d = location.to_dict()
+        self.assertEqual(d, {
+            'locationCategory': "user",
+            'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
+            'address': 'Tenaya Hall, San Diego, CA 92161',
+        })
+
+    def testGetUserLocation(self):
+        location = Location.from_pickup_address("Tenaya Hall, San Diego, CA 92161")
+        ref = LocationGenericDao().insert_new(location)
+        self.to_delete.append(ref)
+        location = LocationGenericDao().get(ref)
+        d = location.to_dict()
+        self.assertEqual(d, {
+            'locationCategory': "user",
+            'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
+            'address': 'Tenaya Hall, San Diego, CA 92161',
+        })

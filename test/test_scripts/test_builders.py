@@ -33,12 +33,6 @@ class TestBuildLaxEvent(unittest.TestCase):
         self.c.clear_before()
         self.c.generate_test_data()
 
-    def testBuildLaxSampleEvent(self):
-        laxSampleEvent = SampleLaxEventBuilder(1545033600, 1545119999)
-        laxSampleEventDict = laxSampleEvent.to_dict()
-        self.assertDictContainsSubset(sampleLaxEventDict, laxSampleEventDict)
-        self.assertIn('locationRef', laxSampleEventDict.keys(), "Dict contains locationRef as key")
-
     def testGenerateStartDatetime(self):
         startDatetime = generateStartDatetime("2018-12-17T11:00:00.000")
         self.assertEqual(startDatetime.timestamp(), 1545033600.0)
@@ -47,11 +41,12 @@ class TestBuildLaxEvent(unittest.TestCase):
     def testGenerateTimestamps(self):
         startDatetime = generateStartDatetime("2018-12-17T08:00:00.000")
         timestampTupleList = generateTimestamps(startDatetime, 2)
-        expectedValue = [[1545033600.0, 1545119999.0], [1545120000.0, 1545206399.0]]
+        expectedValue = [[1545033600.0, 1545119999.0, "2018-12-17"], [1545120000.0, 1545206399.0, "2018-12-18"]]
         count = 0
-        for startTimestamp, endTimestamp in timestampTupleList:
+        for startTimestamp, endTimestamp, dateStr in timestampTupleList:
             self.assertEqual(startTimestamp, expectedValue[count][0])
             self.assertEqual(endTimestamp, expectedValue[count][1])
+            self.assertEqual(dateStr, expectedValue[count][2])
             count += 1
 
     def tearDown(self):
@@ -69,8 +64,7 @@ class TestGenerateEvent(unittest.TestCase):
         startDatetime = generateStartDatetime("2018-12-01T08:00:00.000")
         timestampTupleList = generateTimestamps(startDatetime, 2)
         eventList = generate_airport_events(timestampTupleList)
-        expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'eventLocation': 'LAX',
-                                 'startTimestamp': 1543737600, 'endTimestamp': 1543823999, 'pricing': 100,
+        expectedDay2EventDict = {'eventCategory': 'airport', 'participants': [], 'airportCode': 'LAX',
                                  'isClosed': False}
         self.assertDictContainsSubset(expectedDay2EventDict, eventList[1].to_dict())
 

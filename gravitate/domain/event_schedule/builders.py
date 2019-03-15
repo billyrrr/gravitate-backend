@@ -3,6 +3,7 @@ from typing import Type
 from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
 from gravitate.models import SocialEventRideRequest, ToEventTarget, AirportRideRequest, SocialEventLocation, \
     AirportLocation, AirportEventSchedule, RideRequest, Location, Orbit
+from gravitate.models.location import UserLocation
 
 
 def _build_social_event_ride_request(event_schedule, event_ride_request: SocialEventRideRequest):
@@ -43,6 +44,8 @@ def _build_airport_location(event_schedule, location: AirportLocation):
     event_schedule.destName = location.airport_code
     event_schedule.locationRef = location.get_firestore_ref()
 
+def _build_user_location(event_schedule, location: UserLocation):
+    event_schedule.pickupAddress = location.address
 
 def _build_pending_orbit(event_schedule):
     event_schedule.memberProfilePhotoUrls = []
@@ -81,6 +84,9 @@ class EventScheduleBuilder():
             _build_social_event_location(self.event_schedule, location)
         else:
             raise NotImplementedError("Unsupported location type: {}".format(type(location)))
+
+    def build_user_location(self, location: UserLocation):
+        _build_user_location(self.event_schedule, location)
 
     def build_orbit(self, pending=True, orbit: Orbit = None):
         if pending:

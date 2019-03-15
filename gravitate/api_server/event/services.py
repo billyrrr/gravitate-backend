@@ -1,7 +1,9 @@
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.data_access import EventDao
+from gravitate.domain.event.dao import EventDao
+from gravitate.domain.event.models import Event, AirportEvent
+from gravitate.models import Target
 import gravitate.api_server.utils as service_utils
 import gravitate.domain.event.actions as event_actions
 from . import parsers as event_parsers
@@ -77,4 +79,33 @@ class EventService(Resource):
 
     def get(self, eventId):
         event = EventDao().get_by_id(event_id=eventId)
-        return event.to_dict_view()
+        event_dict = {
+            'eventCategory': event.event_category,
+            'participants': event.participants,
+            # 'eventLocation': self.event_location,
+            # 'startTimestamp': self.start_timestamp,
+            # 'endTimestamp': self.end_timestamp,
+            # 'targets': event.targets,
+            'pricing': event.pricing,
+            # 'locationRef': event.location_ref,
+            'isClosed': event.is_closed,
+            'locationId': event.location_ref.id,
+            'localDateString': event.local_date_string,
+            'name': event.name,
+            'description': event.description,
+            'parkingInfo': event.parking_info
+        }
+        # print(event.to_dict())
+        # print(event.targets)
+        for target_dict in event.targets:
+            # print(target_dict)
+            target = Target.from_dict(target_dict)
+            if target.to_event:
+                event_dict["earliestArrival"] = target.get_earliest_arrival_view()
+                event_dict["latestArrival"] = target.get_latest_arrival_view()
+            else:
+                event_dict["earliestDeparture"] = target.get_earliest_departure_view()
+                event_dict["latestDeparture"] = target.get_latest_departure_view()
+        if event.event_category == "airport":
+            event_dict["airportCode"] = event.airport_code
+        return event_dict

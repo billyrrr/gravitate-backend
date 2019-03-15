@@ -1,0 +1,39 @@
+==== Query
+  curl -i -X GET \
+   "https://graph.facebook.com/v3.2/137943263736990?access_token=<access token sanitized>"
+==== Access Token Info
+  {
+    "perms": [
+      "user_events",
+      "public_profile"
+    ],
+    "user_id": 2346524335569508,
+    "app_id": 319481038771654
+  }
+==== Parameters
+- Query Parameters
+
+
+  {}
+- POST Parameters
+
+
+  {}
+==== Response
+  {
+    "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+    "end_time": "2019-04-14T23:59:00-0700",
+    "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+    "place": {
+      "name": "Coachella",
+      "location": {
+        "latitude": 33.679974,
+        "longitude": -116.237221
+      },
+      "id": "20281766647"
+    },
+    "start_time": "2019-04-12T12:00:00-0700",
+    "id": "137943263736990"
+  }
+==== Debug Information from Graph API Explorer
+- https://developers.facebook.com/tools/explorer/319481038771654?method=GET&path=137943263736990&version=v3.2

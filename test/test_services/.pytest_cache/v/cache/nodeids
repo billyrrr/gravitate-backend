@@ -1,4 +1,5 @@
 [
-  "test_luggage.py::GetLuggageTest::testGetEmpty",
-  "test_luggage.py::GetLuggageTest::testPutAndGet"
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuild",
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuildFromEvent",
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm"
 ]

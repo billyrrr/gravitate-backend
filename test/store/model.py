@@ -8,7 +8,7 @@ import warnings
 db = context.Context.db
 
 def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocationid1", eventId="testeventid1",
-                userId="testuserid1", orbitId="testorbitid1"):
+                userId="testuserid1", orbitId="testorbitid1", originId="testlocation1", destinationId="testlaxlocation1"):
     keys = {
         "rideRequestId": rideRequestId,
         "rideRequestRef": "/rideRequests/" + rideRequestId,
@@ -16,6 +16,12 @@ def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocat
         "locationId": locationId,
         "locationRef": "/locations/" + locationId,
         "locationFirestoreRef": db.collection("locations").document(locationId),
+        "originId": originId,
+        "originRef": "/locations/" + originId,
+        "originFirestoreRef": db.collection("locations").document(originId),
+        "destinationId": destinationId,
+        "destinationRef": "/locations/" + destinationId,
+        "destinationFirestoreRef": db.collection("locations").document(destinationId),
         "eventId": eventId,
         "eventRef": "/events/" + eventId,
         "eventFirestoreRef": db.collection("events").document(eventId),
@@ -31,7 +37,7 @@ def getMockKeys(rideRequestId="testriderequestid1", locationId="testairportlocat
 mock1 = getMockKeys()
 
 
-def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
+def getMockRideRequestDeprecated(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
                        userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False):
     locationRefStr = mock1["locationRef"]
     locationReference = mock1["locationFirestoreRef"]
@@ -73,6 +79,58 @@ def getMockRideRequest(earliest: int = 1545058800, latest: int = 1545069600, fir
         rideRequest.set_firestore_ref(firestoreRef)
         return rideRequest
 
+def getMockRide(earliest: int = 1545058800, latest: int = 1545069600, firestoreRef=mock1["rideRequestRef"],
+                       userId=mock1["userId"], useDocumentRef=False, returnDict=False, returnSubset=False, driverStatus=False):
+    locationRefStr = mock1["locationRef"]
+    locationReference = mock1["locationFirestoreRef"]
+
+    originRefStr = mock1["originRef"]
+    originReference = mock1["originFirestoreRef"]
+
+    destinationRefStr = mock1["destinationRef"]
+    destinationReference = mock1["destinationFirestoreRef"]
+
+    eventRefStr = mock1["eventRef"]
+    eventReference = mock1["eventFirestoreRef"]
+
+    rideRequestDict = {
+
+        'rideCategory': 'airportRide',
+
+        'driverStatus': driverStatus,
+        'orbitRef': None,
+        'target': {'eventCategory': 'airportRide',
+                   'toEvent': True,
+                   'arriveAtEventTime':
+                       {'earliest': earliest, 'latest': latest}},
+
+        'userId': userId,
+        'hasCheckedIn': False,
+        'pricing': 987654321,
+        "baggages": dict(),
+        "disabilities": dict(),
+        'flightLocalTime': "2018-12-17T12:00:00.000",
+        'flightNumber': "DL89",
+
+        "requestCompletion": False
+
+    }
+
+    if not returnSubset:
+        rideRequestDict["airportLocation"] = locationReference if useDocumentRef else locationRefStr
+        rideRequestDict["eventRef"] = eventReference if useDocumentRef else eventRefStr
+        rideRequestDict['originRef'] =  originReference if useDocumentRef else originRefStr
+        rideRequestDict['destinationRef'] = destinationReference if useDocumentRef else destinationRefStr
+
+    if returnDict:
+        return rideRequestDict
+    else:
+        rideRequest = models.RideRequest.from_dict(rideRequestDict)
+        rideRequest.set_firestore_ref(firestoreRef)
+        return rideRequest
+
+
+getMockRideRequest = getMockRide
 
 """
 Monday, December 17, 2018 12:00:00 AM GMT-08:00 to
@@ -91,42 +149,83 @@ eventDict = {
     "isClosed": False
 }
 
+#
+# def getEventDict(event_category="airport", use_firestore_ref=False):
+#
+#     d = None
+#
+#     if event_category == "airport":
+#         d = {
+#             "eventCategory": "airport",
+#             "participants": [
+#             ],
+#             "eventLocation": "LAX",
+#
+#             "startTimestamp": 1545033600,
+#             "endTimestamp": 1545119999,
+#             "pricing": 100,
+#             "isClosed": False
+#         }
+#     elif event_category == "social":
+#         d = {
+#             "eventCategory": "social",
+#             "participants": [
+#             ],
+#             "eventLocation": "Las Vegas Convention Center",
+#
+#             "startTimestamp": 1545033600,
+#             "endTimestamp": 1545119999,
+#             "pricing": 100,
+#             "isClosed": False
+#         }
+#     else:
+#         raise ValueError("event_category not supported: {}".format(event_category))
+#
+#     d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
+#
+#     return d
 
-def getEventDict(event_category="airport", use_firestore_ref=False):
 
+def getEventDict(event_category="airport", use_firestore_ref=False,
+                 to_earliest=1545066000, to_latest=1545073200,
+                 from_earliest=1545066000, from_latest=1545073200):
     d = None
-
     if event_category == "airport":
         d = {
             "eventCategory": "airport",
             "participants": [
             ],
-            "eventLocation": "LAX",
-
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
-            "pricing": 100,
-            "isClosed": False
-        }
-    elif event_category == "social":
-        d = {
-            "eventCategory": "social",
-            "participants": [
+            "targets": [
+                {
+                    'eventCategory': 'airportRide',
+                    'toEvent': True,
+                    'arriveAtEventTime': {'earliest': to_earliest, 'latest': to_latest}
+                },
+                {
+                    'eventCategory': 'airportRide',
+                    'toEvent': False,
+                    'leaveEventTime': {'earliest': from_earliest, 'latest': from_latest}
+                }
             ],
-            "eventLocation": "Las Vegas Convention Center",
-
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
+            "airportCode": "LAX",
+            "localDateString": "2018-12-17",  # YYYY-MM-DD
             "pricing": 100,
-            "isClosed": False
+            "isClosed": False,
+            "parkingInfo": {
+                "parkingAvailable": False,
+                "parkingPrice": 0,
+                "parkingLocation": "none"
+            },
+            "description": "what the event is",
+            "name": "name of the event",
+            # "locationRef": "/locations/testlocationid1"
         }
     else:
-        raise ValueError("event_category not supported: {}".format(event_category))
+        raise ValueError("unsupported event category: {}".format(event_category))
 
     d["locationRef"] = mock1["locationFirestoreRef"] if use_firestore_ref else mock1["locationRef"]
 
     return d
-
 
 eventScheduleDict = {
     "destName": "LAX",
@@ -215,6 +314,14 @@ def getLocation():
     location = models.Location.from_dict(locationDict)
     location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
+
+
+def getUserLocationDict():
+    return {
+        'locationCategory': "user",
+        'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
+        'address': 'Tenaya Hall, San Diego, CA 92161',
+    }
 
 
 def get_json_file(json_filename):

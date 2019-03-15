@@ -73,6 +73,9 @@ class LocationGenericDao:
         return location
         return locationResult
 
+    def set(self, location, location_ref: DocumentReference):
+        location_ref.set(location.to_dict())
+
     def find_by_airport_code(self, airportCode) -> AirportLocation:
         query: Query = self.locationCollectionRef.where(
             'airportCode', '==', airportCode)
@@ -108,7 +111,6 @@ class LocationGenericDao:
 
         result = airportLocations.pop()
         return result
-
 
     def query(self, airportCode, terminal) -> Location:
         # TODO implement

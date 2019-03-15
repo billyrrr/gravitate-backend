@@ -48,7 +48,8 @@ def generateTimestamps(startDatetime: datetime.datetime, numDays: int) -> [(int,
 
         startTimestamp = int(curStart.timestamp())
         endTimestamp = int(endDatetime.timestamp())
-        tupleList.append((startTimestamp, endTimestamp))
+        dateString = curStart.strftime("%Y-%m-%d")
+        tupleList.append((startTimestamp, endTimestamp, dateString, ))
 
         # Increase counter and curStart
         curNumDays += 1

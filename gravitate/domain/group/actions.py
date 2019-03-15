@@ -1,34 +1,41 @@
-from typing import Type, List, Dict
+from typing import Type, List, Dict, Tuple
 
 from gravitate.domain.group import OrbitGroup
 from gravitate.domain.group.pairing import pair_ride_requests
 from gravitate.models import Orbit, RideRequest
-from gravitate.data_access import RideRequestGenericDao, EventDao, LocationGenericDao, OrbitDao
+from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, OrbitDao
+from gravitate.domain.event.dao import EventDao
 from gravitate import context
 from google.cloud.firestore import transactional, DocumentReference
 
 db = context.Context.db
 
 
-def group_many(ride_request_ids: list):
+def group_many(ride_request_ids: list, strategy="all_riders"):
     """
     This function tries to match rideRequests into groups with grouping algorithms.
     Note that the rideRequests may be in different orbits, and rideRequests may not
         be grouped into any orbit.
 
+    strategies:
+        -   "all_riders": no restriction on the number of drivers in a group
+        -   "one_driver_many_riders": Only group rides such that exactly one driver and >= 1 rider will be in the group.
+
     :param ride_request_ids:
     :return:
     """
-    d = separate_by_event_id(ride_request_ids)
+    d = separate_by_event_id_and_direction(ride_request_ids)
 
-    for event_id in d.keys():
-        ride_requests_all = d[event_id]
-        pair_list = pair_all(ride_requests_all)
+    for (event_id, to_event) in d.keys():
+        ride_requests_all = d[(event_id, to_event)]
+        pair_list = pair_all(ride_requests_all, strategy="all_riders")
         group_all_pairs_of_event(pair_list)
 
 
 def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[RideRequest]]]:
-    """ Returns a dict with event id as key and ride request object as value
+    """ DEPRECATED
+
+    Returns a dict with event id as key and ride request object as value
     :param ride_request_ids: a list of ride requests from any number of events
     """
     d = dict()
@@ -47,7 +54,32 @@ def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[Rid
     return d
 
 
-def pair_all(ride_requests: list) -> list:
+def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tuple, List[Type[RideRequest]]]:
+    """ Returns a dict with event id as key and ride request object as value
+    :param ride_request_ids: a list of ride requests from any number of events
+    """
+    d = dict()
+    event_ids = list()
+    for ride_request_id in ride_request_ids:
+
+        ride_request = RideRequestGenericDao().get_by_id(ride_request_id)
+
+        # Do not add to rideRequests queue if the request is complete
+        if ride_request.request_completion:
+            continue
+
+        event_id = ride_request.event_ref.id
+
+        if event_id not in event_ids:
+            event_ids.append(event_id)
+            d[(event_id, True)] = list()  # event_id = event_id and to_event=True
+            d[(event_id, False)] = list()  # event_id = event_id and to_event=False
+
+        d[(event_id, ride_request.target.to_event)].append(ride_request)
+    return d
+
+
+def pair_all(ride_requests: list, strategy="all_riders") -> list:
     """ Returns a list of list of ride requests.
         Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]
 
@@ -55,7 +87,7 @@ def pair_all(ride_requests: list) -> list:
     :return:
     """
 
-    paired, unpaired = pair_ride_requests(ride_requests)
+    paired, unpaired = pair_ride_requests(ride_requests, strategy=strategy)
     # Since we are adopting list over tuple
     pairs = [list(pair) for pair in paired]
     return pairs
@@ -122,7 +154,6 @@ def run_orbit_group(ride_requests: dict):
     })
     orbit_ref = OrbitDao().create(orbit)
     orbit.set_firestore_ref(orbit_ref)
-
     event = EventDao().get(event_ref)
     location_ref: DocumentReference = event.location_ref
     location = LocationGenericDao().get(location_ref)

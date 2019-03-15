@@ -1,7 +1,9 @@
 from gravitate import scripts
 from gravitate import models
 from gravitate import data_access
+from gravitate.data_access import LocationGenericDao
 from gravitate.domain.group import actions as group_actions
+from gravitate.models import Location
 from test import store
 from typing import Type
 from gravitate import context
@@ -70,6 +72,11 @@ class SetUpTestDatabase:
             start_string=start_string, num_days=num_days, event_category=event_category)
         refs = c.execute()
         self.refs_to_delete.extend(refs)
+        d = store.getUserLocationDict()
+        location = Location.from_dict(d)
+        location_ref = store.getMockKeys()["originFirestoreRef"]
+        LocationGenericDao().set(location, location_ref)
+        self.refs_to_delete.append(location_ref)
 
     def clear_after(self):
         for ref in self.refs_to_delete:
