@@ -227,20 +227,24 @@ def getEventDict(event_category="airport", use_firestore_ref=False,
 
     return d
 
-eventScheduleDict = {
-    "destName": "LAX",
-    "destTime": None,
-    "flightTime": "2018-12-17T12:00:00.000",
-    "memberProfilePhotoUrls": [],
-    "pickupAddress": "Tenaya Hall, San Diego, CA 92161",
-    "pending": True,
-    "rideRequestRef": mock1["rideRequestRef"],
-    "locationRef": mock1["locationRef"],
-    "orbitRef": None
-}
 
+def getEventScheduleDict(toEvent=True):
+    eventScheduleDict = {
+        "destName": "LAX",
+        "destTime": None,
+        "flightTime": "2018-12-17T12:00:00.000",
+        "memberProfilePhotoUrls": [],
+        "pending": True,
+        "rideRequestRef": mock1["rideRequestRef"],
+        "locationRef": mock1["locationRef"],
+        "orbitRef": None
+    }
+    if toEvent:
+        eventScheduleDict["toEvent"] = True
+        eventScheduleDict["pickupAddress"] = "Tenaya Hall, San Diego, CA 92161"
+    else:
+        raise NotImplementedError
 
-def getEventScheduleDict():
     return eventScheduleDict
 
 

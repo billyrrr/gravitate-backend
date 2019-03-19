@@ -10,6 +10,7 @@ from gravitate.models.location import UserLocation
 def _build_social_event_ride_request(event_schedule, event_ride_request: SocialEventRideRequest):
     event_schedule.pickupAddress = event_ride_request.pickup_address
     event_schedule.rideRequestRef = event_ride_request.get_firestore_ref()
+    event_schedule.toEvent = event_ride_request.target.to_event
 
     try:
         # Use destTime for sorting
@@ -24,6 +25,7 @@ def _build_airport_ride_request(event_schedule, airport_ride_request: AirportRid
     event_schedule.pickupAddress = airport_ride_request.pickup_address
     event_schedule.flightTime = airport_ride_request.flight_local_time
     event_schedule.rideRequestRef = airport_ride_request.get_firestore_ref()
+    event_schedule.toEvent = airport_ride_request.target.to_event
 
     try:
         # Use destTime for sorting

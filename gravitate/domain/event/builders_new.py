@@ -3,6 +3,7 @@ from typing import Type
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.models import Event
 from gravitate.models import ToEventTarget, FromEventTarget
+from gravitate.models import SocialEventLocation
 
 
 class EventBaseBuilder:
@@ -47,6 +48,51 @@ class EventBaseBuilder:
     def _build_local_date_string(self, local_date_string):
         self._event_dict["localDateString"] = local_date_string
 
+    def build_descriptions(self, description, name):
+        self._event_dict["description"] = description
+        self._event_dict["name"] = name
+
+
+class FbEventBuilder(EventBaseBuilder):
+
+    event_category = "social"
+
+    def build_with_fb_dict(self, d: dict):
+        """
+        Builds SocialEvent with Facebook event json.
+
+        TODO: finish
+        {
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "end_time": "2019-04-14T23:59:00-0700",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "place": {
+                "name": "Coachella",
+                "location": {
+                    "latitude": 33.679974,
+                    "longitude": -116.237221
+                },
+                "id": "20281766647"
+            },
+            "start_time": "2019-04-12T12:00:00-0700",
+            "id": "137943263736990"
+        }
+
+        :param d:
+        :return:
+        """
+        self.build_descriptions(description=d["description"], name=d["name"])
+        self._build_location(d["place"])
+
+    def _build_location(self, d):
+        """
+        Create location with facebook event - place
+        :param d:
+        :return:
+        """
+        location: SocialEventLocation = SocialEventLocation.from_fb_place(d)
+        self._event_dict["locationRef"] = LocationGenericDao().insert_new(location)
+
 
 class AirportEventBuilder(EventBaseBuilder):
 
@@ -71,11 +117,6 @@ class AirportEventBuilder(EventBaseBuilder):
             }
         else:
             self._event_dict["parking_info"] = parking_info
-
-    def build_descriptions(self, description, name):
-        self._event_dict["description"] = description
-        self._event_dict["name"] = name
-
 
 
 class EventBuilder(Event):

@@ -23,8 +23,14 @@ class TestOrbitGroupHelpers(unittest.TestCase):
     #     self.o = OrbitDao().get_by_id("1mozA22dmuFWBZbLRkdg")
 
     def setUp(self):
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
         self.r = scripts.generate_ride_request()
         self.o = scripts.generate_orbit(self.r.event_ref)
+
+    def tearDown(self):
+        self.c.clear_after()
 
     def test_add(self):
 

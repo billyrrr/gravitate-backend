@@ -74,6 +74,7 @@ class SetUpTestDatabase:
             start_string=start_string, num_days=num_days, event_category=event_category)
         refs = c.execute()
         self.refs_to_delete.extend(refs)
+
         d = store.getUserLocationDict()
         location = Location.from_dict(d)
         location_ref = store.getMockKeys()["originFirestoreRef"]

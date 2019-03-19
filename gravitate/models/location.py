@@ -1,4 +1,4 @@
-from gravitate.domain.driver_navigation.utils import get_coordinates
+from gravitate.domain.driver_navigation.utils import get_coordinates, get_address
 from .firestore_object import FirestoreObject
 
 
@@ -85,10 +85,32 @@ campus_code_table = {
 
 
 class SocialEventLocation(Location):
+
     def __init__(self, coordinates, address, event_name):
         super().__init__(coordinates, address)
         self.location_category = 'social'
         self.event_name = event_name
+
+    @staticmethod
+    def from_fb_place(d):
+        """
+        Create location with facebook event - place
+        Example: {
+                "name": "Coachella",
+                "location": {
+                    "latitude": 33.679974,
+                    "longitude": -116.237221
+                },
+                "id": "20281766647"
+            }
+        :return:
+        """
+        address = get_address(d["location"])
+        return SocialEventLocation(
+            coordinates=d["location"],
+            address=address,
+            event_name=d["name"]
+        )
 
     def to_dict(self):
         return {
