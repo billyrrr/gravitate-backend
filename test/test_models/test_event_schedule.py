@@ -6,7 +6,7 @@ from gravitate.models import AirportEventSchedule
 from test import scripts
 from test import store
 
-event_schedule_dict = store.eventScheduleDict.copy()
+event_schedule_dict = store.getEventScheduleDict()
 
 
 class EventScheduleDaoTest(unittest.TestCase):

@@ -85,6 +85,15 @@ class Ride(FirestoreObject):
         #
         # return "Tenaya Hall, San Diego, CA 92161"
 
+    def _get_dropoff_address(self):
+        dropoff_location_ref = None
+        if not self.target.to_event:
+            dropoff_location_ref = self.destination_ref
+        else:
+            raise ValueError("Pickup address of to_event=True is not supported. ")
+        location = LocationGenericDao().get(dropoff_location_ref)
+        return location.address
+
     def to_dict(self):
         ride_request_dict = {
             'driverStatus': self.driver_status,

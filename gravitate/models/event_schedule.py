@@ -8,7 +8,7 @@ from .firestore_object import FirestoreObject
 # AirportEventSchedule class
 
 class EventSchedule(FirestoreObject, metaclass=ABCMeta):
-    def __init__(self, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
+    def __init__(self, toEvent=None, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
                  pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
         """ Description
         This function initializes the AirportEventSchedule Object
@@ -22,7 +22,7 @@ class EventSchedule(FirestoreObject, metaclass=ABCMeta):
         :param pickupAddress: The pickup address of the user
         :param pending: "True" not matched into orbit, "False" matched into orbit
         """
-
+        self.toEvent = toEvent
         self.destName = destName
         self.destTime = destTime
         self.flightTime = flightTime
@@ -66,6 +66,7 @@ class AirportEventSchedule(EventSchedule):
     
         :param eventScheduleDict:
         """
+        toEvent = eventScheduleDict['toEvent']
         destName = eventScheduleDict['destName']
         destTime = eventScheduleDict['destTime']
         flightTime = eventScheduleDict['flightTime']
@@ -75,7 +76,7 @@ class AirportEventSchedule(EventSchedule):
         rideRequestRef = eventScheduleDict['rideRequestRef']
         orbitRef = eventScheduleDict['orbitRef']
         locationRef = eventScheduleDict['locationRef']
-        return AirportEventSchedule(destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
+        return AirportEventSchedule(toEvent, destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
                                     rideRequestRef, orbitRef, locationRef)
 
     @staticmethod
@@ -86,6 +87,7 @@ class AirportEventSchedule(EventSchedule):
 
     def to_dict(self):
         eventScheduleDict = {
+            'toEvent': self.toEvent,
             'destName': self.destName,
             'destTime': self.destTime,
             'flightTime': self.flightTime,

@@ -89,6 +89,7 @@ class RideRequestBaseBuilder:
 
     def _build_location_by_event(self):
         # print(self.event.to_dict())
+        self._ride_request_dict["locationRef"] = self.event.location_ref
         self._ride_request_dict["destinationRef"] = self.event.location_ref
 
     @staticmethod
@@ -105,6 +106,11 @@ class RideRequestBaseBuilder:
         latest = self.event.end_timestamp
         target = Target.create_social_event_target(self.to_event, earliest, latest)
         self._ride_request_dict["target"] = target.to_dict()
+
+    def _build_target_with_event_target(self):
+        for target in self.event.targets:
+            if target.to_event == self.to_event:
+                self._ride_request_dict["target"] = target.to_dict()
 
     def _build_target_with_flight_local_time(self):
         target = Target.create_with_flight_local_time(self.flight_local_time, self.to_event)
@@ -152,7 +158,6 @@ class RideRequestBaseBuilder:
         origin_ref = LocationGenericDao().insert_new(origin_location)
         self._ride_request_dict["originRef"] = origin_ref
         # self._ride_request_dict["pickupAddress"] = self.pickup_address
-
 
 class AirportRideRequestBuilder(RideRequestBaseBuilder):
 
@@ -219,7 +224,7 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
 
         self._build_event_with_id()
 
-        self._build_target_anytime()
+        self._build_target_with_event_target()
 
         self._build_location_by_event()
 

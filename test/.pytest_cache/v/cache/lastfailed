@@ -3,7 +3,6 @@
   "test_domain/test_event/test_builders.py": true,
   "test_domain/test_events/test_models.py::EventModelTest::testEventView": true,
   "test_domain/test_events/test_models.py::SocialEventModelTest::testEventFactory": true,
-  "test_domain/test_events/test_models/test_event_new.py::SocialEventModelTest::testEventFactory": true,
   "test_group_users.py::TestGroupUsersWithRideRequestRef::testConstructGroup": true,
   "test_group_users.py::TestGroupUsersWithRideRequestRef::testPrimaryGroupingFunc": true,
   "test_group_users.py::TestTempForceGroupUsers::testMatchTwo": true,
@@ -41,8 +40,6 @@
   "test_scripts/test_builders.py::TestBuildLaxEvent::testBuildLaxSampleEvent": true,
   "test_services/test_airport_ride_request.py::CreateRideRequestServiceUtilsTest::testRideRequestDictBuilder": true,
   "test_services/test_event.py::EventDAOTest::testGet": true,
-  "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testBuild": true,
-  "test_services/test_event_ride_request/test_services.py::RequestRideTest::testCreateRideRequestsTemp": true,
   "test_users.py::UserDAOTest::testGetUser": true,
   "test_users.py::UserDAOTest::testGetUserId": true,
   "test_users.py::UserEndPointTest::testCreateUser": true

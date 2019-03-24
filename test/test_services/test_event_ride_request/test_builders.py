@@ -1,6 +1,8 @@
 from unittest import TestCase
 
 from gravitate import models, data_access
+from gravitate.domain.event.dao import EventDao
+from gravitate.domain.event.models import Event
 from gravitate.domain.request_ride.builders import RideRequestBaseBuilder, SocialEventRideRequestBuilder
 from test import store
 from gravitate import context
@@ -56,25 +58,24 @@ class SocialEventDictBuilderTest(TestCase):
     def testBuild(self):
         def setUp(self):
             event_dict = store.getEventDict(event_category="social")
-            event = models.Event.from_dict(event_dict)
-            event_ref = data_access.EventDao().create(event)
+            event = Event.from_dict(event_dict)
+            event_ref = EventDao().create(event)
             self.refs_to_delete.append(event_ref)
             self.event_id = event_ref.id
             d = store.EventRideRequestFormDictFactory().create(event_id=self.event_id)
             self.user_id = 'testuserid1'
             self.builder: SocialEventRideRequestBuilder = \
                 SocialEventRideRequestBuilder().set_with_form_and_user_id(d, user_id=self.user_id)
+
         setUp(self)
         self.builder.build_social_event_ride_request()
         _d_expected = {
             'rideCategory': 'eventRide',
-            'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
+            # 'pickupAddress': "Tenaya Hall, San Diego, CA 92161",
             'driverStatus': False,
             'orbitRef': None,
-            'target': {'eventCategory': 'eventRide',
-                       'toEvent': True,
-                       'arriveAtEventTime':
-                           {'earliest': 1545033600, 'latest': 1545119999}},
+            'target': {'eventCategory': 'social', 'toEvent': True,
+                       'arriveAtEventTime': {'earliest': 1555077600, 'latest': 1555088400}},
             'eventRef': db.document('events', self.event_id),
             'userId': self.user_id,
             'hasCheckedIn': False,
@@ -84,6 +85,8 @@ class SocialEventDictBuilderTest(TestCase):
 
             "requestCompletion": False
         }
+        self.assertIsNotNone(self.builder._ride_request_dict["locationRef"])
+        print(self.builder._ride_request_dict)
         # self.assertTrue(_d_expected.items() <= self.builder._ride_request_dict.items())
         self.assertDictContainsSubset(_d_expected, self.builder._ride_request_dict)
 

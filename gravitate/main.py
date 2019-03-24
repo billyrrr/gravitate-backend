@@ -25,7 +25,7 @@ from flask_restful import reqparse, Api, Resource
 from google.auth.transport import requests
 
 from gravitate.api_server import errors as service_errors
-from gravitate.api_server.event.services import EventService, EventCreation
+from gravitate.api_server.event.services import EventService, EventCreation, UserEventService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
 from gravitate.api_server.ride_request.services import LuggageService
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
@@ -70,6 +70,7 @@ api = Api(app, errors=service_errors.errors)
 
 # User Related Endpoints
 api.add_resource(UserService, '/users/<string:uid>')
+api.add_resource(UserEventService, '/me/events')
 
 # Ride Request Related Endpoints
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')

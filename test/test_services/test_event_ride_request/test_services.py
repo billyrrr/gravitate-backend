@@ -3,6 +3,8 @@ from unittest import TestCase
 from gravitate import data_access
 from gravitate import main
 from gravitate import models
+from gravitate.domain.event.dao import EventDao
+from gravitate.domain.event.models import Event
 from test import store
 from test.test_main import getMockAuthHeaders
 
@@ -24,8 +26,8 @@ class RequestRideTest(TestCase):
 
         event_dict = store.getEventDict(event_category="social")
         event_dict["locationRef"] = location_ref
-        event = models.Event.from_dict(event_dict)
-        event_ref = data_access.EventDao().create(event)
+        event = Event.from_dict(event_dict)
+        event_ref = EventDao().create(event)
         self.refs_to_delete.append(event_ref)
 
         event_id = event_ref.id

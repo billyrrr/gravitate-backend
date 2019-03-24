@@ -1,5 +1,4 @@
 [
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuild",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuildFromEvent",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm"
+  "test_event.py::UserEventServiceTest::test_post",
+  "test_event.py::UserEventServiceTest::test_post_twice"
 ]

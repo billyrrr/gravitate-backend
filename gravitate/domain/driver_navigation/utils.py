@@ -2,6 +2,7 @@
 
 googlemaps python documentation: https://googlemaps.github.io/google-maps-services-python/docs/
 """
+import warnings
 
 import googlemaps
 
@@ -44,6 +45,29 @@ def get_coordinates(address=None):
         'latitude': lat,
         'longitude': lng
     }
+
+
+def get_address(coordinates, result_type="locality"):
+    geocode_result = gmaps.reverse_geocode(
+        coordinates,
+        # location_type="ROOFTOP",
+        result_type=result_type
+    )
+
+    if len(geocode_result) != 0:
+        return geocode_result[0]["formatted_address"]
+    else:
+        warnings.warn("reverse geocode failed for: {}".format(_coordinates_str(coordinates)))
+        return ""
+
+
+def _coordinates_tuple(d: dict):
+    return d["latitude"], d["longitude"],
+
+
+def _coordinates_str(d: dict):
+    return ",".join([str(d["latitude"]), str(d["longitude"])])
+
 #
 # if __name__ == "__main__":
 #

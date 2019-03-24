@@ -9,6 +9,72 @@ from test.store import getEventDict
 from test.test_main import getMockAuthHeaders
 
 
+class UserEventServiceTest(unittest.TestCase):
+
+    maxDiff = None
+
+    def setUp(self):
+        main.app.testing = True
+        self.app = main.app.test_client()
+
+    def test_post(self):
+        fb_dict = {
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "end_time": "2019-04-14T23:59:00-0700",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "place": {
+                "name": "Coachella",
+                "location": {
+                    "latitude": 33.679974,
+                    "longitude": -116.237221
+                },
+                "id": "20281766647"
+            },
+            "start_time": "2019-04-12T12:00:00-0700",
+            "id": "137943263736990"
+        }
+        r = self.app.post(path='/me/events',
+                          headers=getMockAuthHeaders(),
+                          json=fb_dict
+                         )
+        result = r.json
+        print(result)
+
+    def test_post_twice(self):
+        """
+        Test that posting the same event twice returns the same id
+        :return:
+        """
+        fb_dict = {
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "end_time": "2019-04-14T23:59:00-0700",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "place": {
+                "name": "Coachella",
+                "location": {
+                    "latitude": 33.679974,
+                    "longitude": -116.237221
+                },
+                "id": "20281766647"
+            },
+            "start_time": "2019-04-12T12:00:00-0700",
+            "id": "137943263736990"
+        }
+        r = self.app.post(path='/me/events',
+                          headers=getMockAuthHeaders(),
+                          json=fb_dict
+                          )
+        result = r.json
+        id_1 = result["id"]
+        r = self.app.post(path='/me/events',
+                          headers=getMockAuthHeaders(),
+                          json=fb_dict
+                          )
+        result = r.json
+        id_2 = result["id"]
+        self.assertEqual(id_1, id_2)
+
+
 class EventServiceTest(unittest.TestCase):
 
     maxDiff = None

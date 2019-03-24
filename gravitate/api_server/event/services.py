@@ -1,13 +1,42 @@
 from flask_restful import Resource
-
+from flask import request
 import gravitate.api_server.utils as service_utils
 import gravitate.domain.event.actions as event_actions
+import gravitate.domain.event.builders_new as event_builders
+import gravitate.domain.event.models as event_models
 from gravitate.context import Context
 from gravitate.domain.event.dao import EventDao
+from gravitate.data_access.user_dao import UserDao
 from gravitate.models import Target
 from . import parsers as event_parsers
 
 db = Context.db
+
+
+class UserEventService(Resource):
+    """
+    Handles user facebook event upload
+    """
+
+    @service_utils.authenticate
+    def post(self, uid):
+        json_data = request.get_json()
+        b = event_builders.FbEventBuilder()
+        b.build_with_fb_dict(json_data)
+        e = b.export_as_class(event_models.SocialEvent)
+
+        # Note that e.firestore_ref will not be set by create()
+        ref = EventDao().create_fb_event(e)
+        e.set_firestore_ref(ref)
+        dict_view = e.to_dict_view()
+        dict_view["eventId"] = ref.id
+
+        # TODO: add error handling
+        UserDao().add_user_event_dict(uid, dict_view["fbEventId"], dict_view)
+
+        return {
+            "id": e.get_firestore_ref().id
+        }
 
 
 class EventCreation(Resource):
@@ -71,33 +100,5 @@ class EventService(Resource):
 
     def get(self, eventId):
         event = EventDao().get_by_id(event_id=eventId)
-        event_dict = {
-            'eventCategory': event.event_category,
-            'participants': event.participants,
-            # 'eventLocation': self.event_location,
-            # 'startTimestamp': self.start_timestamp,
-            # 'endTimestamp': self.end_timestamp,
-            # 'targets': event.targets,
-            'pricing': event.pricing,
-            # 'locationRef': event.location_ref,
-            'isClosed': event.is_closed,
-            'locationId': event.location_ref.id,
-            'localDateString': event.local_date_string,
-            'name': event.name,
-            'description': event.description,
-            'parkingInfo': event.parking_info
-        }
-        # print(event.to_dict())
-        # print(event.targets)
-        for target_dict in event.targets:
-            # print(target_dict)
-            target = Target.from_dict(target_dict)
-            if target.to_event:
-                event_dict["earliestArrival"] = target.get_earliest_arrival_view()
-                event_dict["latestArrival"] = target.get_latest_arrival_view()
-            else:
-                event_dict["earliestDeparture"] = target.get_earliest_departure_view()
-                event_dict["latestDeparture"] = target.get_latest_departure_view()
-        if event.event_category == "airport":
-            event_dict["airportCode"] = event.airport_code
+        event_dict = event.to_dict_view()
         return event_dict

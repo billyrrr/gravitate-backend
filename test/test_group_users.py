@@ -7,6 +7,7 @@ from gravitate.domain.group.utils import _add_to_orbit
 from gravitate.models.orbit import Orbit
 from gravitate.domain.rides import RideRequest
 from gravitate import context
+from test import scripts
 
 db = context.Context.db
 
@@ -84,7 +85,13 @@ class TestGroupUsers(unittest.TestCase):
 
 class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
+    def tearDown(self):
+        self.c.clear_after()
+
     def setUp(self):
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
         self.maxDiff = None
         self.arr = [[12000000, 12005000, RideRequestGenericDao().rideRequestCollectionRef.document('A')],
                     [12000000, 12005000, RideRequestGenericDao(
@@ -114,6 +121,7 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             rideRequests.append(rideRequest)
 
         self.rideRequests = rideRequests
+
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests
