@@ -36,7 +36,7 @@ def _create_airport_ride_request(args, user_id):
     # Starts database operations to (save rideRequest and update user's eventSchedule)
     transaction = db.transaction()
     # Transactional business logic for adding rideRequest
-    utils.add_ride_request(transaction, ride_request, location, user_id, user_location)
+    utils.add_ride_request(transaction, ride_request, location, user_id)
     # Save write result
     transaction.commit()
     return ride_request

@@ -1,5 +1,6 @@
 import unittest
 
+from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import SocialEvent, AirportEvent
 from gravitate import context
 
@@ -66,28 +67,71 @@ class EventModelTest(unittest.TestCase):
 
 class SocialEventModelTest(unittest.TestCase):
 
+    maxDiff = None
+
     def testEventFactory(self):
         d = {
             "eventCategory": "social",
-            "participants": [
-            ],
-            "eventLocation": "Las Vegas Convention Center",
-            "startTimestamp": 1545033600,
-            "endTimestamp": 1545119999,
-            "pricing": 100,
             "isClosed": False,
-            "parkingInfo": {
-                "parkingAvailable": False, "parkingPrice": 0, "parkingLocation": "none"
-            },
-            "description": "what the event is",
-            "name": "name of the event",
-            "locationRef": "/locations/testlocationid1"
+            "targets": [
+                {'eventCategory': 'social', 'toEvent': True,
+                 'arriveAtEventTime': {'earliest': 1555077600, 'latest': 1555088400}},
+                {'eventCategory': 'social', 'toEvent': False,
+                 'leaveEventTime': {'earliest': 1555318740, 'latest': 1555329540}},
+            ],
+            "localDateString": "2019-04-12",
+            "pricing": 123456789,
+            "parkingInfo": None,
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "fbEventId": "137943263736990",
+            "locationRef": "/locations/testlocationid1",
+            "participants": []
         }
+
         eventDict = d
         event = SocialEvent.from_dict(eventDict)
         # Assert that event converts to the same dict that generated the event
         self.assertDictEqual(event.to_dict(), eventDict)
 
+    def test_to_dict_view(self):
+        eventDict = {
+            "eventCategory": "social",
+            "isClosed": False,
+            "targets": [
+                {'eventCategory': 'social', 'toEvent': True,
+                 'arriveAtEventTime': {'earliest': 1555077600, 'latest': 1555088400}},
+                {'eventCategory': 'social', 'toEvent': False,
+                 'leaveEventTime': {'earliest': 1555318740, 'latest': 1555329540}},
+            ],
+            "localDateString": "2019-04-12",
+            "pricing": 123456789,
+            "parkingInfo": None,
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "fbEventId": "137943263736990",
+            "locationRef": EventDao().get_ref('testlocationid1'),
+            "participants": []
+        }
+        event = SocialEvent.from_dict(eventDict)
+        expected_view = {
+            'eventCategory': "social",
+            'participants': [],
+            # "startLocalTime": "2019-04-12T12:00:00",
+            # "endLocalTime": "2019-04-14T23:59:00",
+            "localDateString": "2019-04-12",
+            'earliestArrival': "2019-04-12T07:00:00",
+            'earliestDeparture': "2019-04-15T01:59:00",
+            'latestArrival': "2019-04-12T10:00:00",
+            'latestDeparture': "2019-04-15T04:59:00",
+            'pricing': 123456789,
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            'locationId': "testlocationid1",
+            'isClosed': False,
+            'parkingInfo': None,
+            'fbEventId': "137943263736990"
+        }
 
-
-
+        # Assert that event converts to the same dict that generated the event
+        self.assertDictEqual(event.to_dict_view(), expected_view)

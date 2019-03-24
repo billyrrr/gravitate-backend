@@ -4,6 +4,7 @@ Reviewer: Zixuan Rao
 """
 
 from gravitate.domain.event.utils import local_time_from_timestamp
+from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
 
 
@@ -47,9 +48,9 @@ class Event(FirestoreObject):
             return AirportEvent(event_category, participants, targets, pricing, location_ref,
                          is_closed, local_date_string, name, description, parking_info, airport_code)
         elif event_category == "social":
-            raise NotImplementedError
-            # return SocialEvent(event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
-            #                    is_closed, parking_info, event_description, event_name, location_ref)
+            fb_event_id = eventDict["fbEventId"]
+            return SocialEvent(event_category, participants, targets, pricing, location_ref,
+                 is_closed, local_date_string, name, description, parking_info, fb_event_id)
         else:
             raise NotImplementedError
 
@@ -60,7 +61,7 @@ class Event(FirestoreObject):
             # 'eventLocation': self.event_location,
             # 'startTimestamp': self.start_timestamp,
             # 'endTimestamp': self.end_timestamp,
-            'targets': self.targets,
+            'targets': [ target.to_dict() for target in self.targets],
             'pricing': self.pricing,
             'locationRef': self.location_ref,
             'isClosed': self.is_closed,
@@ -70,6 +71,29 @@ class Event(FirestoreObject):
             'parkingInfo': self.parking_info
         }
         return eventDict
+
+    def to_dict_view(self):
+        dict_view = {
+            'eventCategory': self.event_category,
+            'participants': self.participants,
+            'pricing': self.pricing,
+            'locationId': self.location_ref.id,
+            'isClosed': self.is_closed,
+            'localDateString': self.local_date_string,  # Start date
+            'name': self.name,
+            'description': self.description,
+            'parkingInfo': self.parking_info
+        }
+        for target in self.targets:
+            # Note that latest arrival means the latest time to arrive at the event
+            #       and earliest departure is the earliest time to leave an event
+            if target.to_event:
+                dict_view['earliestArrival'] = target.get_earliest_arrival_view()
+                dict_view['latestArrival'] = target.get_latest_arrival_view()
+            else:
+                dict_view['earliestDeparture'] = target.get_earliest_departure_view()
+                dict_view['latestDeparture'] = target.get_latest_departure_view()
+        return dict_view
 
     def set_as_active(self):
         """ Definition
@@ -103,7 +127,10 @@ class Event(FirestoreObject):
         """
         self.event_category = event_category
         self.participants = participants
-        self.targets = targets
+        self.targets = list()
+        for target_dict in targets:
+            target = Target.from_dict(target_dict)
+            self.targets.append(target)
         self.pricing = pricing
         self.location_ref = location_ref
         self.is_closed = is_closed
@@ -111,19 +138,6 @@ class Event(FirestoreObject):
         self.name = name
         self.description = description
         self.parking_info = parking_info
-
-    def to_dict_view(self):
-        d_view = {
-            'eventCategory': self.event_category,
-            'participants': self.participants,
-            # 'eventLocation': self.event_location,
-            # 'eventEarliestArrival': local_time_from_timestamp(self.start_timestamp),
-            # 'eventLatestArrival': local_time_from_timestamp(self.end_timestamp),
-            'pricing': self.pricing,
-            'locationId': self.location_ref.id,
-            'isClosed': self.is_closed
-        }
-        return d_view
 
 
 class AirportEvent(Event):
@@ -163,6 +177,11 @@ class AirportEvent(Event):
         eventDict['airportCode'] = self.airport_code
         return eventDict
 
+    def to_dict_view(self):
+        dict_view = super().to_dict_view()
+        dict_view["airportCode"] = self.airport_code
+        return dict_view
+
 
 class SocialEvent(Event):
     """ Description
@@ -178,42 +197,9 @@ class SocialEvent(Event):
         event.set_firestore_ref(eventRef)
         return event
 
-    # @staticmethod
-    # def from_dict(eventDict):
-    #     """ Description
-    #         This function creates an event
-    #
-    #         :param eventDict:
-    #     """
-    #     event_category = eventDict['eventCategory']
-    #     participants = eventDict['participants']
-    #     event_location = eventDict['eventLocation']
-    #     start_timestamp = eventDict['startTimestamp']
-    #     end_timestamp = eventDict['endTimestamp']
-    #     pricing = eventDict['pricing']
-    #     is_closed = eventDict['isClosed']
-    #     parking_info = eventDict['parkingInfo']
-    #     event_description = eventDict['description']
-    #     event_name = eventDict['name']
-    #     location_ref = eventDict['locationRef']
-    #
-    #     return SocialEvent(event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
-    #                        is_closed, parking_info, event_description, event_name, location_ref)
-
     def to_dict(self):
-        eventDict = {
-            'eventCategory': self.event_category,
-            'participants': self.participants,
-            'eventLocation': self.event_location,
-            'startTimestamp': self.start_timestamp,
-            'endTimestamp': self.end_timestamp,
-            'pricing': self.pricing,
-            'isClosed': self.is_closed,
-            'parkingInfo': self.parking_info,
-            'description': self.event_description,
-            'name': self.event_name,
-            'locationRef': self.location_ref
-        }
+        eventDict = super().to_dict()
+        eventDict['fbEventId'] = self.fb_event_id
         return eventDict
 
     def set_as_active(self):
@@ -232,46 +218,15 @@ class SocialEvent(Event):
         """
         self.is_closed = True
 
-    def __init__(self, event_category, participants, event_location, start_timestamp, end_timestamp, pricing,
-                 is_closed, parking_info, event_description, event_name, location_ref):
-        """Description
-           This function initializes an Event objects
-
-           :param self:
-           :param event_category:
-           :param participants:
-           :param event_location:
-           :param start_timestamp:
-           :param end_timestamp:
-           :param pricing:
-           :param location_ref: a list of locationRef that corresponds to this event
-           :param is_closed:
-           :param event_name:
-           :param event_description:
-           :param parking_info:
-        """
-        self.event_category = event_category
-        self.participants = participants
-        self.event_location = event_location
-        self.start_timestamp = start_timestamp
-        self.end_timestamp = end_timestamp
-        self.pricing = pricing
-        self.is_closed = is_closed
-        self.parking_info = parking_info
-        self.event_description = event_description
-        self.event_name = event_name
-        self.location_ref = location_ref
+    def __init__(self, event_category, participants, targets, pricing, location_ref,
+                 is_closed, local_date_string, name, description, parking_info, fb_event_id):
+        super().__init__(event_category, participants, targets, pricing, location_ref,
+                 is_closed, local_date_string, name, description, parking_info)
+        self.fb_event_id = fb_event_id
 
     def to_dict_view(self):
-        d_view = {
-            'eventCategory': self.event_category,
-            'participants': self.participants,
-            'eventLocation': self.event_location,
-            'eventEarliestArrival': local_time_from_timestamp(self.start_timestamp),
-            'eventLatestArrival': local_time_from_timestamp(self.end_timestamp),
-            'pricing': self.pricing,
-            'locationId': self.location_ref.id,
-            'isClosed': self.is_closed
-        }
+        # for target in self.targets:
+        d_view = super().to_dict_view()
+        d_view["fbEventId"] = self.fb_event_id
         return d_view
 

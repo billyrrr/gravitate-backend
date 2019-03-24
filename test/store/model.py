@@ -220,6 +220,24 @@ def getEventDict(event_category="airport", use_firestore_ref=False,
             "name": "name of the event",
             # "locationRef": "/locations/testlocationid1"
         }
+    elif event_category == "social":
+        d = {
+            "eventCategory": "social",
+            "isClosed": False,
+            "targets": [
+                {'eventCategory': 'social', 'toEvent': True,
+                 'arriveAtEventTime': {'earliest': 1555077600, 'latest': 1555088400}},
+                {'eventCategory': 'social', 'toEvent': False,
+                 'leaveEventTime': {'earliest': 1555318740, 'latest': 1555329540}},
+            ],
+            "localDateString": "2019-04-12",
+            "pricing": 123456789,
+            "parkingInfo": None,
+            "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
+            "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
+            "fbEventId": "137943263736990",
+            "participants": []
+        }
     else:
         raise ValueError("unsupported event category: {}".format(event_category))
 

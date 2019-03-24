@@ -4,6 +4,7 @@ from typing import Type
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, transactional
 from firebase_admin import auth
 from gravitate import context
+from gravitate.domain.event.models import Event
 from gravitate.models import User, AirportEventSchedule
 
 # from config import auth
@@ -120,6 +121,22 @@ class UserDao:
         userData = userSnapshot.to_dict()
         fcmToken = userData["fcmToken"]
         return fcmToken
+
+    def add_user_event_dict(self, user_id, fb_event_id, d):
+        """ Add event to /users/user_id/events/
+            DocumentId is the same as Facebook event id.
+            Supports MyEvents Activity
+
+        TODO: add error handling
+        :param user_id:
+        :param event:
+        :return:
+        """
+        user_ref: DocumentReference = self.userCollectionRef.document(user_id)
+        user_event_ref: CollectionReference = user_ref.collection('events')
+        doc_ref: DocumentReference = user_event_ref.document(fb_event_id)
+        doc_ref.set(d)
+        return
 
     @staticmethod
     @transactional

@@ -7,7 +7,7 @@ import google
 from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot
 
 from gravitate import context
-from .models import Event
+from .models import Event, SocialEvent
 
 CTX = context.Context
 
@@ -118,6 +118,28 @@ class EventDao:
     def create(self, event: Event) -> DocumentReference:
         _, eventRef = self.eventCollectionRef.add(event.to_dict())
         return eventRef
+
+    def exists_fb_event(self, fb_event_id: str):
+        """ Returns doc.id if fb_event_id already exists,
+                otherwise return None
+
+        :param fb_event_id:
+        :return:
+        """
+        event_docs = self.eventCollectionRef.where("fbEventId", "==", fb_event_id) \
+            .get()
+        for doc in event_docs:
+            return doc.id
+        return None
+
+    def create_fb_event(self, event: SocialEvent) -> DocumentReference:
+        fb_event_id = event.fb_event_id
+        existing_fb_event_id = self.exists_fb_event(fb_event_id)
+        if existing_fb_event_id is not None:
+            return self.get_ref(existing_fb_event_id)
+        else:
+            ref = self.create(event)
+            return ref
 
     def _locate_event(self, timestamp, category="airport"):
         """ Description
