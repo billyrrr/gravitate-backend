@@ -1,13 +1,12 @@
-import datetime
+import datetime as dt
 from typing import Type
 
 import iso8601
-import datetime as dt
 
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.models import Event
-from gravitate.models import ToEventTarget, FromEventTarget
 from gravitate.models import SocialEventLocation
+from gravitate.models import ToEventTarget, FromEventTarget
 
 
 def create_time_offsets(local_time, later=False, offset_low_abs_sec: int = 7200,

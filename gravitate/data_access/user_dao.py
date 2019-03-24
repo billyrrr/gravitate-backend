@@ -1,10 +1,10 @@
 import string
 from typing import Type
 
-from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, transactional
 from firebase_admin import auth
+from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, transactional
+
 from gravitate import context
-from gravitate.domain.event.models import Event
 from gravitate.models import User, AirportEventSchedule
 
 # from config import auth
