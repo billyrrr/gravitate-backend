@@ -38,6 +38,32 @@ class UserEventService(Resource):
             "id": e.get_firestore_ref().id
         }
 
+    @service_utils.authenticate
+    def put(self, uid):
+        json_data = request.get_json()
+        event_dicts = json_data["data"]
+        ids = list()
+
+        for event_dict in event_dicts:
+            b = event_builders.FbEventBuilder()
+            # print(event_dict)
+            b.build_with_fb_dict(event_dict)
+            e = b.export_as_class(event_models.SocialEvent)
+
+            # Note that e.firestore_ref will not be set by create()
+            ref = EventDao().create_fb_event(e)
+            e.set_firestore_ref(ref)
+            dict_view = e.to_dict_view()
+            dict_view["eventId"] = ref.id
+
+            # TODO: add error handling
+            UserDao().add_user_event_dict(uid, dict_view["fbEventId"], dict_view)
+            ids.append(ref.id)
+
+        return {
+            "ids": ids
+        }
+
 
 class EventCreation(Resource):
     @service_utils.authenticate

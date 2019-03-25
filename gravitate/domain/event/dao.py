@@ -5,6 +5,7 @@ from typing import Type
 
 import google
 from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot
+from google.cloud.firestore_v1beta1 import transactional
 
 from gravitate import context
 from .models import Event, SocialEvent
@@ -133,13 +134,19 @@ class EventDao:
         return None
 
     def create_fb_event(self, event: SocialEvent) -> DocumentReference:
-        fb_event_id = event.fb_event_id
-        existing_fb_event_id = self.exists_fb_event(fb_event_id)
-        if existing_fb_event_id is not None:
-            return self.get_ref(existing_fb_event_id)
-        else:
-            ref = self.create(event)
-            return ref
+        transaction = db.transaction()
+        event_ref = self.eventCollectionRef.document(event.fb_event_id)
+        self._create_fb_event_transactional(transaction, event, event_ref)
+        return event_ref
+
+    @staticmethod
+    @transactional
+    def _create_fb_event_transactional(transaction, event: SocialEvent, event_ref) -> DocumentReference:
+        snapshot: DocumentSnapshot = event_ref.get(
+            transaction=transaction)
+        if not snapshot.exists:
+            transaction.set(event_ref, event.to_dict())
+        return event_ref
 
     def _locate_event(self, timestamp, category="airport"):
         """ Description

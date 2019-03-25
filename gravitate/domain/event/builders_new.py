@@ -147,8 +147,10 @@ class FbEventBuilder(EventBaseBuilder):
         self._build_location(d["place"])
         self._build_basic_info()
         self._build_fb_event_id(d)
-        self._build_start_time(d)
-        self._build_end_time(d)
+        if "start_time" in d:
+            self._build_start_time(d)
+        if "end_time" in d:
+            self._build_end_time(d)
 
     def _build_location(self, d):
         """
