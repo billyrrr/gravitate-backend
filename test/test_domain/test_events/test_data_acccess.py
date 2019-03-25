@@ -25,6 +25,7 @@ class EventDAOTest(unittest.TestCase):
 
         self.pl = setup_scripts.scripts.populate_locations.PopulateLocationCommand()
         self.refs_to_delete.extend(self.pl.execute())
+        self.fb_event = Event.from_dict(getEventDict(event_category="social"))
 
     def testCreate(self):
         eventRef: firestore.DocumentReference = EventDao().create(self.event)
@@ -74,6 +75,16 @@ class EventDAOTest(unittest.TestCase):
         # Monday, December 17, 2018 3:00:00 PM GMT-08:00 = 1545087600
         event: Event = EventDao().find_by_date_str("2018-12-17", category="airport")
         self.assertNotEqual(None, event)
+
+    def test_create_fb_event(self):
+        ref = EventDao().create_fb_event(self.fb_event)
+        print(ref)
+
+        self.assertIsNotNone(ref)
+        ref2 = EventDao().create_fb_event(self.fb_event)
+        self.assertEqual(ref.id, ref2.id, "The document id should be the same"
+                                          "when storing the same facebook event twice")
+
 
     # def testFindByTimestamp(self):
     #

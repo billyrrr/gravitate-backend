@@ -3,7 +3,6 @@ Author: Andrew Kim
 Reviewer: Zixuan Rao
 """
 
-from gravitate.domain.event.utils import local_time_from_timestamp
 from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
 

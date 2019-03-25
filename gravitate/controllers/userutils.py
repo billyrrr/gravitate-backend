@@ -1,4 +1,3 @@
-from google.cloud.firestore import Transaction
 import random
 import string
 

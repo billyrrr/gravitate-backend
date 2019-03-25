@@ -1,13 +1,12 @@
-import datetime
+import datetime as dt
 from typing import Type
 
 import iso8601
-import datetime as dt
 
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.models import Event
-from gravitate.models import ToEventTarget, FromEventTarget
 from gravitate.models import SocialEventLocation
+from gravitate.models import ToEventTarget, FromEventTarget
 
 
 def create_time_offsets(local_time, later=False, offset_low_abs_sec: int = 7200,
@@ -148,8 +147,10 @@ class FbEventBuilder(EventBaseBuilder):
         self._build_location(d["place"])
         self._build_basic_info()
         self._build_fb_event_id(d)
-        self._build_start_time(d)
-        self._build_end_time(d)
+        if "start_time" in d:
+            self._build_start_time(d)
+        if "end_time" in d:
+            self._build_end_time(d)
 
     def _build_location(self, d):
         """

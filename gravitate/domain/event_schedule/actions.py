@@ -1,8 +1,8 @@
 from typing import Type
 
 from gravitate.domain.event_schedule.builders import EventScheduleBuilder
-from gravitate.models import Location, AirportLocation, SocialEventLocation, Orbit
 from gravitate.domain.rides import RideRequest, AirportRideRequest, SocialEventRideRequest
+from gravitate.models import Location, AirportLocation, SocialEventLocation, Orbit
 
 
 def create_event_schedule(ride_request: Type[RideRequest], location: Type[Location]):

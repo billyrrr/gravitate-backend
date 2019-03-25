@@ -5,10 +5,10 @@ from google.cloud.firestore import transactional, DocumentReference
 from gravitate import context
 from gravitate.data_access import RideRequestGenericDao, LocationGenericDao, OrbitDao
 from gravitate.domain.event.dao import EventDao
-from .orbit_group import OrbitGroup
 from gravitate.domain.group.pairing import pair_ride_requests
-from gravitate.models import Orbit
 from gravitate.domain.rides import RideRequest
+from gravitate.models import Orbit
+from .orbit_group import OrbitGroup
 
 db = context.Context.db
 

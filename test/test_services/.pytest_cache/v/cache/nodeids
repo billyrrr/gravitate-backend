@@ -1,4 +1,3 @@
 [
-  "test_event.py::UserEventServiceTest::test_post",
-  "test_event.py::UserEventServiceTest::test_post_twice"
+  "test_event.py::UserEventServiceTest::test_put_many"
 ]
