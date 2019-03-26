@@ -107,6 +107,16 @@ class EventBaseBuilder:
         self._event_dict["description"] = description
         self._event_dict["name"] = name
 
+    def _build_parking(self, parking_info=None, empty=False):
+        if empty and parking_info is None:
+            self._event_dict["parkingInfo"] = {
+                "parkingAvailable": False,
+                "parkingPrice": 0,
+                "parkingLocation": "none"
+            }
+        else:
+            self._event_dict["parkingInfo"] = parking_info
+
 
 class FbEventBuilder(EventBaseBuilder):
 
@@ -117,7 +127,7 @@ class FbEventBuilder(EventBaseBuilder):
         self._event_dict["isClosed"] = False
         self._event_dict["participants"] = []
         self._event_dict["pricing"] = 123456789
-        self._event_dict["parkingInfo"] = None
+        # self._event_dict["parkingInfo"] = None
 
     def build_with_fb_dict(self, d: dict):
         """
@@ -146,6 +156,7 @@ class FbEventBuilder(EventBaseBuilder):
         self.build_descriptions(description=d["description"], name=d["name"])
         self._build_location(d["place"])
         self._build_basic_info()
+        self._build_parking()
         self._build_fb_event_id(d)
         if "start_time" in d:
             self._build_start_time(d)
@@ -199,110 +210,158 @@ class AirportEventBuilder(EventBaseBuilder):
         self._event_dict["airportCode"] = airport_code
         self._event_dict["locationRef"] = LocationGenericDao().find_by_airport_code(airport_code).get_firestore_ref()
 
-    def build_parking(self, parking_info = None):
-        if parking_info is None:
-            self._event_dict["parkingInfo"] = {
-                "parkingAvailable": False,
-                "parkingPrice": 0,
-                "parkingLocation": "none"
-            }
-        else:
-            self._event_dict["parking_info"] = parking_info
+
+class CampusEventBuilder(EventBaseBuilder):
+
+    event_category = "campus"
+
+    def build_basic_info(self):
+        self._event_dict["eventCategory"] = self.event_category
+        self._event_dict["isClosed"] = False
+        self._event_dict["participants"] = []
+        self._event_dict["pricing"] = 123456789
+
+    def build_campus(self, campus_code):
+        self._event_dict["campusCode"] = campus_code
+        self._event_dict["locationRef"] = LocationGenericDao().find_by_campus_code(campus_code).get_firestore_ref()
+
+    def build_start_end(self, start_timestamp=None, end_timestamp=None, local_date_string=None):
+        """ Build event start time and event end time
+            Note that to-event and from-event targets are overlapping
+        :param start_timestamp:
+        :param end_timestamp:
+        :return:
+        """
+        assert local_date_string is not None
+        self._event_dict["localDateString"] = local_date_string
+
+        if start_timestamp is not None:
+            earliest_arrival = start_timestamp
+            latest_arrival = start_timestamp + get_day_offset()
+            self._build_target(to_event=True,
+                               start_timestamp=earliest_arrival, end_timestamp=latest_arrival)
+
+        if end_timestamp is not None:
+            earliest_departure = start_timestamp
+            latest_departure = start_timestamp + get_day_offset()
+            self._build_target(to_event=False,
+                               start_timestamp=earliest_departure, end_timestamp=latest_departure)
 
 
-class EventBuilder(Event):
+def build_ucsb_event(start_timestamp=None, end_timestamp=None, local_date_string=None):
+
+    b = CampusEventBuilder()
+    b.build_basic_info()
+    b.build_campus(campus_code="UCSB")
+    b.build_start_end(start_timestamp=int(start_timestamp), end_timestamp=int(end_timestamp),
+                      local_date_string=local_date_string)
+    b._build_parking(empty=True)
+    campus_description = "UCSB on " + local_date_string
+    b.build_descriptions(description=campus_description, name="UCSB")
+    return b.export_as_class(Event)
+
+
+def get_day_offset():
+    """ Returns the offset of one day minus one second
+
+    :return:
     """
-    This class builds an event.
+    return 24 * 60 * 60 - 1
 
-    """
-
-    def __init__(self):
-        """
-        This method should class the following operations in the order of:
-            1. buildBasicInfo
-            2. buildLists
-            3. buildTimeRange
-            4. buildExtraInfo
-        """
-        self.buildBasicInfo()
-        self.buildLists()
-        self.buildTimeRange()
-        self.buildExtraInfo()
-
-    def buildBasicInfo(self):
-        """
-        This method fills basic information that is specified by subclass of EventBuilder.
-        :return:
-        """
-        raise NotImplementedError
-
-    def buildLists(self):
-        """
-        This method builds an empty list of participants.
-        :return:
-        """
-        # Since we are unsure of how participants and locationRefs will be represented
-        raise NotImplementedError
-
-    def buildTimeRange(self, start_timestamp, end_timestamp):
-        """
-        This method builds the time range of the event
-        :return:
-        """
-        raise NotImplementedError
-
-    def buildExtraInfo(self):
-        """
-        This method builds extra information of the event such as pricing.
-        :return:
-        """
-        raise NotImplementedError
-
-
-class SpecifiedRangeEventBuilder(EventBuilder):
-
-    def __init__(self, start_timestamp, end_timestamp):
-        self.buildBasicInfo()
-        self.buildLists()
-        self.buildTimeRange(start_timestamp, end_timestamp)
-        self.buildExtraInfo()
-
-    def buildTimeRange(self, start_timestamp, end_timestamp):
-        self.start_timestamp = start_timestamp
-        self.end_timestamp = end_timestamp
-
-class LaxEventBuilder(SpecifiedRangeEventBuilder):
-
-    def buildBasicInfo(self):
-        self.event_category = "airport"
-        self.event_location = "LAX"
-        self.is_closed = False
-        self.location_ref = LocationGenericDao().find_by_airport_code('LAX').get_firestore_ref()
-
-    def buildLists(self):
-        self.participants = []
-
-    def buildExtraInfo(self):
-        self.pricing = 100
-
-
-class UcsbEventBuilder(SpecifiedRangeEventBuilder):
-
-    def buildBasicInfo(self):
-        self.event_category = "campus"
-        self.event_location = "UCSB"
-        self.is_closed = False
-        self.location_ref = LocationGenericDao().find_by_campus_code("UCSB").get_firestore_ref()
-
-    def buildLists(self):
-        self.participants = []
-
-    def buildExtraInfo(self):
-        self.pricing = 100
-
-
-class SampleLaxEventBuilder(LaxEventBuilder):
-
-    def buildTimeRange(self, start_timestamp=1545033600, end_timestamp=1545119999):
-        self.start_timestamp = start_timestamp
-        self.end_timestamp = end_timestamp
+#
+# class EventBuilder(Event):
+#     """
+#     This class builds an event.
+#
+#     """
+#
+#     def __init__(self):
+#         """
+#         This method should class the following operations in the order of:
+#             1. buildBasicInfo
+#             2. buildLists
+#             3. buildTimeRange
+#             4. buildExtraInfo
+#         """
+#         self.buildBasicInfo()
+#         self.buildLists()
+#         self.buildTimeRange()
+#         self.buildExtraInfo()
+#
+#     def buildBasicInfo(self):
+#         """
+#         This method fills basic information that is specified by subclass of EventBuilder.
+#         :return:
+#         """
+#         raise NotImplementedError
+#
+#     def buildLists(self):
+#         """
+#         This method builds an empty list of participants.
+#         :return:
+#         """
+#         # Since we are unsure of how participants and locationRefs will be represented
+#         raise NotImplementedError
+#
+#     def buildTimeRange(self, start_timestamp, end_timestamp):
+#         """
+#         This method builds the time range of the event
+#         :return:
+#         """
+#         raise NotImplementedError
+#
+#     def buildExtraInfo(self):
+#         """
+#         This method builds extra information of the event such as pricing.
+#         :return:
+#         """
+#         raise NotImplementedError
+#
+#
+# class SpecifiedRangeEventBuilder(EventBuilder):
+#
+#     def __init__(self, start_timestamp, end_timestamp):
+#         self.buildBasicInfo()
+#         self.buildLists()
+#         self.buildTimeRange(start_timestamp, end_timestamp)
+#         self.buildExtraInfo()
+#
+#     def buildTimeRange(self, start_timestamp, end_timestamp):
+#         self.start_timestamp = start_timestamp
+#         self.end_timestamp = end_timestamp
+#
+# class LaxEventBuilder(SpecifiedRangeEventBuilder):
+#
+#     def buildBasicInfo(self):
+#         self.event_category = "airport"
+#         self.event_location = "LAX"
+#         self.is_closed = False
+#         self.location_ref = LocationGenericDao().find_by_airport_code('LAX').get_firestore_ref()
+#
+#     def buildLists(self):
+#         self.participants = []
+#
+#     def buildExtraInfo(self):
+#         self.pricing = 100
+#
+#
+# class UcsbEventBuilder(SpecifiedRangeEventBuilder):
+#
+#     def buildBasicInfo(self):
+#         self.event_category = "campus"
+#         self.event_location = "UCSB"
+#         self.is_closed = False
+#         self.location_ref = LocationGenericDao().find_by_campus_code("UCSB").get_firestore_ref()
+#
+#     def buildLists(self):
+#         self.participants = []
+#
+#     def buildExtraInfo(self):
+#         self.pricing = 100
+#
+#
+# class SampleLaxEventBuilder(LaxEventBuilder):
+#
+#     def buildTimeRange(self, start_timestamp=1545033600, end_timestamp=1545119999):
+#         self.start_timestamp = start_timestamp
+#         self.end_timestamp = end_timestamp

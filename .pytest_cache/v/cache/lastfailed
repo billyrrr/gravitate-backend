@@ -11,6 +11,7 @@
   "test/test_main.py::TestCreateRideRequestLogics::testCreateRideRequest": true,
   "test/test_main.py::TestCreateRideRequestLogics::testFillRideRequestDictNew": true,
   "test/test_main.py::TestEndpoints::testDeleteRideRequest": true,
+  "test/test_models/test_event_schedule.py": true,
   "test/test_models/test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict2": true,
   "test/test_models/test_ride_request.py::RideRequestTest::testDictView": true,
   "test/test_models/test_ride_request.py::RideRequestTest::testInitWithDict": true,

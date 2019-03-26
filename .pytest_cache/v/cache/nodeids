@@ -1,4 +1,11 @@
 [
+  "test/test_models/test_orbit.py::OrbitTest::test_init_with_dict",
   "test/test_models/test_ride.py::RideRequestTest::testAfterDictEqualsOriginalDict2",
-  "test/test_models/test_ride.py::RideRequestTest::testDriverRide"
+  "test/test_models/test_ride.py::RideRequestTest::testDriverRide",
+  "test/test_models/test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict2",
+  "test/test_models/test_target.py::TestTarget::testCreateAirportTarget",
+  "test/test_models/test_target.py::TestTarget::testCreateWithFlightLocalTime",
+  "test/test_models/test_target.py::TestTarget::testDefaultParams",
+  "test/test_models/test_target.py::TestTarget::testGetArrivalDatetimeView",
+  "test/test_models/test_target.py::TestTarget::testGetDepartureDatetimeView"
 ]
