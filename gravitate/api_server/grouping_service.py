@@ -3,8 +3,8 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain.group import actions
+from gravitate.domain.rides import RideRequestGenericDao
 
 
 class OrbitForceMatchService(Resource):

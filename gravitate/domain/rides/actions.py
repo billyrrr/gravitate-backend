@@ -1,9 +1,9 @@
 from gravitate import context
 from gravitate.api_server import errors as service_errors
 from gravitate.data_access import LocationGenericDao
-from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
-from . import utils
 from . import AirportRideRequest, SocialEventRideRequest
+from . import utils
+from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
 
 db = context.Context.db
 

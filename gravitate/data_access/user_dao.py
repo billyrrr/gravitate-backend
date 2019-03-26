@@ -5,8 +5,8 @@ from firebase_admin import auth
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, CollectionReference, transactional
 
 from gravitate import context
-from gravitate.models import User
 from gravitate.domain.event_schedule import AirportEventSchedule
+from gravitate.models import User
 
 # from config import auth
 
