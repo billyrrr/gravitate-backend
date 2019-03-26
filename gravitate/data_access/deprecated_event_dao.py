@@ -7,7 +7,7 @@ import google
 from google.cloud.firestore import Query, Transaction, DocumentReference, DocumentSnapshot
 
 from gravitate import context
-from gravitate.models import Event
+from gravitate.domain.event import Event
 
 CTX = context.Context
 

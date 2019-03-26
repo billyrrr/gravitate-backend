@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from gravitate.models import Target
+from gravitate.models.target import Target
 from test.store import FormDictFactory
 
 

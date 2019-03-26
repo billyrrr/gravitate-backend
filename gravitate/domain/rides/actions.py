@@ -1,8 +1,9 @@
 from gravitate import context
 from gravitate.api_server import errors as service_errors
 from gravitate.data_access import LocationGenericDao
-from gravitate.domain.request_ride import builders as creation_utils, utils
-from gravitate.domain.rides import AirportRideRequest, SocialEventRideRequest
+from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
+from . import utils
+from . import AirportRideRequest, SocialEventRideRequest
 
 db = context.Context.db
 
@@ -17,7 +18,7 @@ def create(args, user_id, ride_category="airport"):
 
 
 def _create_airport_ride_request(args, user_id):
-    builder = creation_utils.AirportRideRequestBuilder()
+    builder = AirportRideRequestBuilder()
     ride_request: AirportRideRequest = builder \
         .set_with_form_and_user_id(args, user_id) \
         .build_airport_ride_request() \
@@ -43,7 +44,7 @@ def _create_airport_ride_request(args, user_id):
 
 
 def _create_social_event_ride_request(args, user_id):
-    builder = creation_utils.SocialEventRideRequestBuilder()
+    builder = SocialEventRideRequestBuilder()
     ride_request: SocialEventRideRequest = builder \
         .set_with_form_and_user_id(args, user_id) \
         .build_social_event_ride_request() \

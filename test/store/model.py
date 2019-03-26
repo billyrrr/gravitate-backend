@@ -1,6 +1,6 @@
 import json
 
-import gravitate.models as models
+# import gravitate.models as models
 from gravitate import context
 from gravitate.domain.rides import RideRequest
 from gravitate.models import Location

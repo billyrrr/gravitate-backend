@@ -4,6 +4,7 @@
   "test_location.py": true,
   "test_locations.py": true,
   "test_orbit.py": true,
+  "test_ride.py": true,
   "test_ride_request.py": true,
   "test_ride_request.py::RideRequestTest::testAfterDictEqualsOriginalDict": true,
   "test_target.py": true

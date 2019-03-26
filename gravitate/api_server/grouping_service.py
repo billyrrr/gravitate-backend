@@ -3,7 +3,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from gravitate.data_access import RideRequestGenericDao
+from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain.group import actions
 
 

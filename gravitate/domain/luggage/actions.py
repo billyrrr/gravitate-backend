@@ -1,7 +1,7 @@
 from google.cloud.firestore import transactional, Transaction
 
 from gravitate.context import Context
-from gravitate.data_access import RideRequestGenericDao
+from gravitate.domain.rides import RideRequestGenericDao
 from .models import Luggages
 
 db = Context.db

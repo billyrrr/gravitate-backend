@@ -50,6 +50,10 @@ class Event(FirestoreObject):
             fb_event_id = eventDict["fbEventId"]
             return SocialEvent(event_category, participants, targets, pricing, location_ref,
                  is_closed, local_date_string, name, description, parking_info, fb_event_id)
+        elif event_category == "campus":
+            campus_code = eventDict["campusCode"]
+            return CampusEvent(event_category, participants, targets, pricing, location_ref,
+                               is_closed, local_date_string, name, description, parking_info, campus_code)
         else:
             raise NotImplementedError
 
@@ -227,5 +231,47 @@ class SocialEvent(Event):
         # for target in self.targets:
         d_view = super().to_dict_view()
         d_view["fbEventId"] = self.fb_event_id
+        return d_view
+
+
+class CampusEvent(Event):
+
+    @staticmethod
+    def from_dict_and_reference(eventDict, eventRef):
+        event = Event.from_dict(eventDict)
+        event.set_firestore_ref(eventRef)
+        return event
+
+    def to_dict(self):
+        eventDict = super().to_dict()
+        eventDict['campusCode'] = self.campus_code
+        return eventDict
+
+    def set_as_active(self):
+        """ Definition
+            Sets the boolean isClosed to False
+
+            :param self:
+        """
+        self.is_closed = False
+
+    def set_as_passed(self):
+        """ Definition
+            Sets the boolean isClosed to True
+
+            :param self:
+        """
+        self.is_closed = True
+
+    def __init__(self, event_category, participants, targets, pricing, location_ref,
+                 is_closed, local_date_string, name, description, parking_info, campus_code):
+        super().__init__(event_category, participants, targets, pricing, location_ref,
+                         is_closed, local_date_string, name, description, parking_info)
+        self.campus_code = campus_code
+
+    def to_dict_view(self):
+        # for target in self.targets:
+        d_view = super().to_dict_view()
+        d_view["campusCode"] = self.campus_code
         return d_view
 

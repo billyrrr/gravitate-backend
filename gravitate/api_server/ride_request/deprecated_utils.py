@@ -1,7 +1,7 @@
 import warnings
 
-from gravitate.domain.request_ride import utils
-from gravitate.domain.request_ride.builders import AirportRideRequestBuilder
+from gravitate.domain.rides import utils
+from gravitate.domain.rides.builders import AirportRideRequestBuilder
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from gravitate.models import AirportLocation, Target
 

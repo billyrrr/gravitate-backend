@@ -1,7 +1,9 @@
 from unittest import TestCase
 
-from gravitate.domain.event.builders_new import AirportEventBuilder, FbEventBuilder
-from gravitate.domain.event.models import AirportEvent, SocialEvent
+from gravitate.data_access import LocationGenericDao
+from gravitate.domain.event.builders_new import AirportEventBuilder, FbEventBuilder, build_ucsb_event
+from gravitate.domain.event.models import AirportEvent, SocialEvent, CampusEvent
+from gravitate.models import Location
 from test import scripts
 
 
@@ -124,6 +126,66 @@ class EventBuilderMethodTest(TestCase):
         self.assertEqual(b._event_dict["fbEventId"], "137943263736990")
 
 
+class CampusEventBuilderTest(TestCase):
+
+    maxDiff = None
+
+    def setUp(self):
+        self._to_delete = list()
+
+        campusLocation = Location.from_code("UCSB", "campus")
+        ref = LocationGenericDao().insert_new(campusLocation)
+        campusLocation.set_firestore_ref(ref)
+        self._to_delete.append(ref)
+        self.event_dict = {
+            "eventCategory": "campus",
+            "campusCode": "UCSB",
+            "isClosed": False,
+            "targets": [
+                {
+                    'eventCategory': 'campus',
+                    'toEvent': True,
+                    'arriveAtEventTime': {'earliest': 1545033600, 'latest': 1545119999}
+                },
+                {
+                    'eventCategory': 'campus',
+                    'toEvent': False,
+                    'leaveEventTime': {'earliest': 1545033600, 'latest': 1545119999}
+                }
+            ],
+            "localDateString": "2018-12-17",
+            "pricing": 123456789,
+            "parkingInfo": {
+                "parkingAvailable": False,
+                "parkingPrice": 0,
+                "parkingLocation": "none"
+            },
+            "description": "UCSB on 2018-12-17",
+            "name": "UCSB",
+            "locationRef": "/locations/testlocationid1",
+            "participants": []
+        }
+        # self.event = CampusEvent.from_dict(event_dict)
+
+    def tearDown(self):
+        for ref in self._to_delete:
+            ref.delete()
+
+    def test_build_ucsb_event(self):
+
+        args = tuple([1545033600.0, 1545119999.0, "2018-12-17"])
+        start_timestamp, end_timestamp, local_date_string = args
+        e = build_ucsb_event(start_timestamp=start_timestamp,
+                             end_timestamp=end_timestamp,
+                             local_date_string=local_date_string)
+
+        event_to_dict = e.to_dict()
+        self.assertIn("locationRef", event_to_dict)
+        expected_dict = self.event_dict.copy()
+        expected_dict.pop("locationRef")
+        self.assertDictContainsSubset(expected_dict, event_to_dict)
+
+
 class EventNewBuilderTest(TestCase):
     # builder: AirportEventBuilder = None
 
@@ -179,7 +241,7 @@ class EventNewBuilderTest(TestCase):
         b._build_target(to_event=True, start_timestamp=1545033600, end_timestamp=1545119999)
         b._build_target(to_event=False, start_timestamp=1545033600, end_timestamp=1545119999)
         b.build_descriptions("what the event is", "name of the event")
-        b.build_parking()
+        b._build_parking(empty=True)
         b._build_local_date_string("2018-12-17")
 
         expected_d = self.eventDict.copy()
@@ -197,7 +259,7 @@ class EventNewBuilderTest(TestCase):
         b._build_target(to_event=True, start_timestamp=1545033600, end_timestamp=1545119999)
         b._build_target(to_event=False, start_timestamp=1545033600, end_timestamp=1545119999)
         b.build_descriptions("what the event is", "name of the event")
-        b.build_parking()
+        b._build_parking(empty=True)
         b._build_local_date_string("2018-12-17")
         ae = b.export_as_class(AirportEvent)
         self.assertIsNotNone(ae, "AirportEvent should be built")

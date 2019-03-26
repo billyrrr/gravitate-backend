@@ -2,7 +2,7 @@
 """
 from abc import ABCMeta, abstractmethod
 
-from .firestore_object import FirestoreObject
+from gravitate.models.firestore_object import FirestoreObject
 
 
 # AirportEventSchedule class
