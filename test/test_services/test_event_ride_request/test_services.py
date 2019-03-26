@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from gravitate import data_access
+from gravitate.domain.rides import RideRequestGenericDao
 from gravitate import main
 from gravitate import models
 from gravitate.domain.event.dao import EventDao
@@ -45,7 +46,7 @@ class RequestRideTest(TestCase):
             print(r.json)
             self.assertIn("firestoreRef", r.json.keys())
             rid = r.json["id"]
-            ride_request = data_access.RideRequestGenericDao().get_by_id(rid)
+            ride_request = RideRequestGenericDao().get_by_id(rid)
             print(ride_request.to_dict())
             firestore_ref = ride_request.get_firestore_ref()  # Not that it is actually rideRequestId
 

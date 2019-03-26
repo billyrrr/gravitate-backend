@@ -10,8 +10,9 @@ from flask_restful import Resource
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
 from gravitate.context import Context
-from gravitate.data_access import RideRequestGenericDao, UserDao, EventScheduleGenericDao
-from gravitate.domain import request_ride
+from gravitate.data_access import UserDao, EventScheduleGenericDao
+from gravitate.domain.rides import RideRequestGenericDao
+from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
 from gravitate.domain.luggage.models import Luggages
 from . import parsers as ride_request_parsers
@@ -39,7 +40,7 @@ class RideRequestCreation(Resource):
         print(args)
 
         # Create RideRequest Object
-        ride_request = request_ride.create(args, user_id, ride_category=rideCategory)
+        ride_request = rides.create(args, user_id, ride_category=rideCategory)
 
         # rideRequest Response
         response_dict = {

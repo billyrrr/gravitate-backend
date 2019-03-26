@@ -7,8 +7,8 @@ import google
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot
 
 from gravitate import context
-from gravitate.domain.rides import RideRequest
-from . import utils
+from . import RideRequest
+from gravitate.data_access import utils
 
 CTX = context.Context
 

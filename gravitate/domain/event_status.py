@@ -4,7 +4,7 @@ Author: Andrew Kim
 
 import datetime
 
-from gravitate.models import Event
+from gravitate.domain.event.models import Event
 
 
 def refresh_event_status(event: Event):

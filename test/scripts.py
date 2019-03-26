@@ -7,6 +7,7 @@ from gravitate import scripts
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.group import actions as group_actions
 from gravitate.domain.rides import RideRequest
+from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.models import Location
 from test import store
 
@@ -22,8 +23,8 @@ def generate_test_data():
 def generate_ride_request() -> Type[RideRequest]:
     ride_request_dict = store.getMockRideRequest(returnDict=True)
     ride_request = RideRequest.from_dict(ride_request_dict)
-    data_access.RideRequestGenericDao().create(ride_request)
-    data_access.RideRequestGenericDao().set(ride_request)
+    RideRequestGenericDao().create(ride_request)
+    RideRequestGenericDao().set(ride_request)
     # ref = ride_request.get_firestore_ref()
     return ride_request
 
@@ -36,8 +37,8 @@ def generate_orbit(event_ref) -> models.Orbit:
 
 
 def remove_match_tmp(ride_request_id):
-    ride_request_ref = data_access.RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
-    ride_request = data_access.RideRequestGenericDao().get(ride_request_ref)
+    ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
+    ride_request = RideRequestGenericDao().get(ride_request_ref)
     orbit_ref = ride_request.orbit_ref
     orbit = data_access.OrbitDao().get(orbit_ref)
     group_actions.remove_from_orbit(ride_request, orbit)

@@ -1,6 +1,6 @@
 import unittest
 
-import gravitate.domain.request_ride.utils as controller_utils
+import gravitate.domain.rides.utils as controller_utils
 
 
 class UtilsTest(unittest.TestCase):

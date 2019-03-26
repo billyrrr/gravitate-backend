@@ -4,7 +4,7 @@ import gravitate.domain.group.pairing
 import gravitate.domain.group.utils as grouping_utils
 # import gravitate.controllers.grouping.remove
 import test.store.model
-from gravitate.data_access.ride_request_dao import RideRequestGenericDao
+from gravitate.domain.rides.ride_request_dao import RideRequestGenericDao
 from gravitate.domain.group.utils import _add_to_orbit
 from gravitate.models.orbit import Orbit
 from gravitate.domain.rides import RideRequest

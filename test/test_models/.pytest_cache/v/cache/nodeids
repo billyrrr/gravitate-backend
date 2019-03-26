@@ -1,7 +1,1 @@
-[
-  "test_target.py::TestTarget::testCreateAirportTarget",
-  "test_target.py::TestTarget::testCreateWithFlightLocalTime",
-  "test_target.py::TestTarget::testDefaultParams",
-  "test_target.py::TestTarget::testGetArrivalDatetimeView",
-  "test_target.py::TestTarget::testGetDepartureDatetimeView"
-]
+[]

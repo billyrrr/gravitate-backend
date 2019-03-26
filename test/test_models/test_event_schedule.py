@@ -2,7 +2,7 @@ import unittest
 
 import test.store.model
 from gravitate.domain.event_schedule import actions as event_schedule_actions
-from gravitate.models import AirportEventSchedule
+from gravitate.domain.event_schedule import AirportEventSchedule
 from test import scripts
 from test import store
 

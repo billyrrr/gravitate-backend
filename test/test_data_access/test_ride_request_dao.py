@@ -1,7 +1,6 @@
 import unittest
 from gravitate import context
-from gravitate.data_access import RideRequestGenericDao
-from gravitate.domain.rides import RideRequest
+from gravitate.domain.rides import RideRequest, RideRequestGenericDao
 from test import store
 
 db = context.Context.db

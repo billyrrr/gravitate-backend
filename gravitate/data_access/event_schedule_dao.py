@@ -7,7 +7,7 @@ import google
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot
 
 from gravitate import context
-from gravitate.models import AirportEventSchedule
+from gravitate.domain.event_schedule import AirportEventSchedule
 
 CTX = context.Context
 

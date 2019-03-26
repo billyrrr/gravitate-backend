@@ -1,7 +1,7 @@
 import json
 from unittest import TestCase
 
-import gravitate.domain.request_ride.builders as service_utils
+import gravitate.domain.rides.builders as service_utils
 from gravitate import main as main
 from gravitate import context
 from test import scripts
