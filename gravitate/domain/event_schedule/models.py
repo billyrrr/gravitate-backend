@@ -9,7 +9,7 @@ from gravitate.models.firestore_object import FirestoreObject
 
 class EventSchedule(FirestoreObject, metaclass=ABCMeta):
     def __init__(self, toEvent=None, destName=None, destTime=None, flightTime=None, memberProfilePhotoUrls=None, pickupAddress=None,
-                 pending=None, rideRequestRef=None, orbitRef=None, locationRef=None):
+                 pending=None, rideRequestRef=None, orbitRef=None, locationRef=None, fbEventId=None):
         """ Description
         This function initializes the AirportEventSchedule Object
         Note that this function should not be called directly
@@ -32,6 +32,7 @@ class EventSchedule(FirestoreObject, metaclass=ABCMeta):
         self.rideRequestRef = rideRequestRef
         self.orbitRef = orbitRef
         self.locationRef = locationRef
+        self.fbEventId = fbEventId
 
     @staticmethod
     @abstractmethod
@@ -76,8 +77,9 @@ class AirportEventSchedule(EventSchedule):
         rideRequestRef = eventScheduleDict['rideRequestRef']
         orbitRef = eventScheduleDict['orbitRef']
         locationRef = eventScheduleDict['locationRef']
+        fbEventId = eventScheduleDict['fbEventId']
         return AirportEventSchedule(toEvent, destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
-                                    rideRequestRef, orbitRef, locationRef)
+                                    rideRequestRef, orbitRef, locationRef, fbEventId)
 
     @staticmethod
     def from_dict_and_reference(eventScheduleDict, eventScheduleRef):
@@ -96,6 +98,7 @@ class AirportEventSchedule(EventSchedule):
             'pending': self.pending,
             'rideRequestRef': self.rideRequestRef,
             'orbitRef': self.orbitRef,
-            'locationRef': self.locationRef
+            'locationRef': self.locationRef,
+            'fbEventId': self.fbEventId
         }
         return eventScheduleDict

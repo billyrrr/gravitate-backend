@@ -255,7 +255,11 @@ def getEventScheduleDict(toEvent=True):
         "pending": True,
         "rideRequestRef": mock1["rideRequestRef"],
         "locationRef": mock1["locationRef"],
-        "orbitRef": None
+        "orbitRef": None,
+
+        # New fields for multiple event types
+        "fbEventId": None
+
     }
     if toEvent:
         eventScheduleDict["toEvent"] = True
