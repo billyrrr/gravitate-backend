@@ -2,9 +2,9 @@ from typing import Type
 
 from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
-from gravitate.models import Target, Location
-from . import RideRequest
 from . import utils
+from . import RideRequest
+from gravitate.models import Target, Location
 
 
 class RideRequestBaseBuilder:

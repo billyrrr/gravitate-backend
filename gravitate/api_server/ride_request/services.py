@@ -11,10 +11,10 @@ import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
 from gravitate.context import Context
 from gravitate.data_access import UserDao, EventScheduleGenericDao
+from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
 from gravitate.domain.luggage.models import Luggages
-from gravitate.domain.rides import RideRequestGenericDao
 from . import parsers as ride_request_parsers
 
 db = Context.db
