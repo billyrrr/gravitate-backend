@@ -241,7 +241,7 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
 
 
 class CampusEventRideRequestBuilder(RideRequestBaseBuilder):
-
-    def __init__(self):
-        super().__init__()
-
+    """
+    TODO: implement
+    """
+    pass
