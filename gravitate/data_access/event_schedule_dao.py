@@ -37,9 +37,9 @@ class EventScheduleGenericDao:
             :rtype:
         """
 
-        assert (userId != None) or (userRef != None), \
+        assert (userId is not None) or (userRef is not None), \
             "Both userId and userRef are None"
-        assert (userId == None) or (userRef == None), \
+        assert (userId is None) or (userRef is None), \
             "Receiving both userId: {} and userRef: {}".format(userId, userRef)
 
         if userId:

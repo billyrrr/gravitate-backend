@@ -87,7 +87,7 @@ class UserDao:
     def get_user(self, userRef: DocumentReference):
         transaction = db.transaction()
         userResult = self.get_user_with_transaction(transaction, userRef)
-        if (userResult != None):
+        if userResult is not None:
             userResult.set_firestore_ref(userRef)
             transaction.commit()
             return userResult
