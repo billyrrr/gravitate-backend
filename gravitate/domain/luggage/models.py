@@ -13,7 +13,6 @@ class Luggages:
         """
         self._luggage_list.append(luggage)
 
-
     def _get_count(self) -> int:
         """ Returns the count for luggages by counting all luggages in self._luggage_list.
 
@@ -80,6 +79,14 @@ class Luggages:
 
         :return:
         """
-        luggage_storage = luggages._luggage_list
+        luggage_storage = luggages.get_luggage_list()
         for s in luggage_storage:
             self._luggage_list.append(s)
+
+    def get_luggage_list(self):
+        """ Return self._luggage_list so that another instance may add luggages in batch
+                from this instance.
+
+        :return:
+        """
+        return self._luggage_list.copy()
