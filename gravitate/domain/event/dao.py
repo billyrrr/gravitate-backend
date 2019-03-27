@@ -23,15 +23,15 @@ class EventDao:
     def __init__(self):
         self.eventCollectionRef = db.collection('events')
 
-    def get_ref(self, id) -> DocumentReference:
+    def get_ref(self, doc_id) -> DocumentReference:
         """ Description
             This method returns EventRef with EventId provided.
             Example: converts "testeventid1" to "/events/testeventid1" of type DocumentReference
 
-        :param id: eventId
+        :param doc_id: eventId
         :return:
         """
-        eventRef = self.eventCollectionRef.document(id)
+        eventRef = self.eventCollectionRef.document(doc_id)
         return eventRef
 
     @staticmethod
