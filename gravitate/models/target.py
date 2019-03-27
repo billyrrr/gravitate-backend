@@ -90,14 +90,14 @@ class Target(FirestoreObject):
     @staticmethod
     def from_dict(target_dict: dict):
         to_event = target_dict['toEvent']
-        if (to_event):
+        if to_event:
             return ToEventTarget(target_dict['eventCategory'], target_dict['arriveAtEventTime'])
         else:
             return FromEventTarget(target_dict['eventCategory'], target_dict['leaveEventTime'])
 
     @staticmethod
     def create_airport_event_target(to_event: bool, earliest: int, latest: int):
-        if (to_event):
+        if to_event:
             return ToEventTarget('airportRide', {
                 'earliest': earliest,
                 'latest': latest,
@@ -111,7 +111,7 @@ class Target(FirestoreObject):
 
     @staticmethod
     def create_social_event_target(to_event: bool, earliest: int, latest: int):
-        if (to_event):
+        if to_event:
             return ToEventTarget('eventRide', {
                 'earliest': earliest,
                 'latest': latest,

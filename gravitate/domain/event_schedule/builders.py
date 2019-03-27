@@ -69,7 +69,7 @@ def _build_facebook_event_id(event_schedule, event):
     event_schedule.fbEventId = event.fb_event_id
 
 
-class EventScheduleBuilder():
+class EventScheduleBuilder:
 
     def __init__(self, event_schedule: AirportEventSchedule = None):
         if event_schedule is None:

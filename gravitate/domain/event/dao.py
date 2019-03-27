@@ -86,7 +86,7 @@ class EventDao:
         for doc in eventDocs:
 
             eventDict = doc.to_dict()
-            if (eventDict["eventCategory"] != category):
+            if eventDict["eventCategory"] != category:
                 continue  # Do not consider events of a different category
             eventId = doc.id
             eventRef: DocumentReference = self.eventCollectionRef.document(eventId)
@@ -170,7 +170,7 @@ class EventDao:
         for doc in eventDocs:
 
             eventDict = doc.to_dict()
-            if (eventDict["eventCategory"] != category):
+            if eventDict["eventCategory"] != category:
                 continue  # Do not consider events of a different category
 
             event = Event.from_dict(eventDict)

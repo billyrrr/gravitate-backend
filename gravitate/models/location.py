@@ -180,5 +180,5 @@ class AirportLocation(Location):
             :param other: 
         """
         if isinstance(other, AirportLocation):
-            return (self.airport_code == other.airport_code)
+            return self.airport_code == other.airport_code
     

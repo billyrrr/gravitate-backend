@@ -119,7 +119,7 @@ def _pair(arr=None) -> (list, list):
             unpaired.insert(len(unpaired), [sortedArr[i][2]])
             i += 1
         else:
-            if (sortedArr[i][1] >= sortedArr[i + 1][0]):
+            if sortedArr[i][1] >= sortedArr[i + 1][0]:
 
                 paired.insert(len(paired), [sortedArr[i][2], sortedArr[i + 1][2]])
                 i += 1

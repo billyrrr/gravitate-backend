@@ -5,7 +5,7 @@ from wtforms import Form, StringField
 from wtforms.validators import DataRequired
 
 
-class UserCreationForm():
+class UserCreationForm:
     uid = None
     membership = None
     display_name = None

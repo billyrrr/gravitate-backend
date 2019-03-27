@@ -148,7 +148,7 @@ def set_disabilities(form: AirportRideRequestCreationForm, rideRequestDict):
     :param rideRequestDict:
     :return:
     """
-    if ('disabilities' in form):
+    if 'disabilities' in form:
         # If 'disabilities' is defined in the form submitted
         rideRequestDict['disabilities'] = form['disabilities']
     else:
