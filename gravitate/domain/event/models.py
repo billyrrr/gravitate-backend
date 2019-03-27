@@ -114,8 +114,8 @@ class Event(FirestoreObject):
         """
         self.is_closed = True
 
-    def __init__(self, event_category, participants, targets, pricing, location_ref,
-                 is_closed, local_date_string, name, description, parking_info):
+    def __init__(self, event_category, participants, targets, pricing, location_ref, is_closed, local_date_string, name,
+                 description, parking_info):
         """Description
            This function initializes an Event object
 
@@ -128,6 +128,7 @@ class Event(FirestoreObject):
            :param location_ref: a list of locationRef that corresponds to this event
            :param is_closed:
         """
+        super().__init__()
         self.event_category = event_category
         self.participants = participants
         self.targets = list()

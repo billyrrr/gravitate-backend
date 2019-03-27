@@ -31,6 +31,7 @@ class Orbit(FirestoreObject):
         :param status: "1" indicates not ready, "2" indicates ready
         """
 
+        super().__init__()
         self.orbit_category = orbit_category
         self.event_ref = event_ref
         self.user_ticket_pairs = user_ticket_pairs

@@ -10,6 +10,7 @@ class Location(FirestoreObject):
     }
 
     def __init__(self, coordinates, address):
+        super().__init__()
         self.coordinates = coordinates
         self.address = address
 

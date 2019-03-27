@@ -80,6 +80,7 @@ def create_target_with_flight_local_time(flight_local_time, to_event, offset_low
 class Target(FirestoreObject):
 
     def __init__(self, event_category):
+        super().__init__()
         self.event_category = event_category
         self.to_event = None
 

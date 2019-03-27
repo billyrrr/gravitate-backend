@@ -20,6 +20,7 @@ class User(FirestoreObject):
 				:param pickupAddress: String
 			"""
 
+			super().__init__()
 			self.uid = uid
 			self.membership = membership
 			self.display_name = display_name

@@ -129,8 +129,8 @@ class Ride(FirestoreObject):
         }
         return ride_request_dict
 
-    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
-                 request_completion):
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id,
+                 target, pricing, request_completion):
         """ Description
             This function initializes a RideRequest Object.
             Note that this function should not be called directly.
@@ -146,6 +146,7 @@ class Ride(FirestoreObject):
             :param request_completion:
         """
 
+        super().__init__()
         self._transaction = None
 
         self.driver_status = driver_status
