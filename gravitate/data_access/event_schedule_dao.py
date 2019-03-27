@@ -98,9 +98,7 @@ class EventScheduleGenericDao:
 
         :rtype:
         """
-        # TODO fix
-        # TODO fix by changing to .add()
-        _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.to_dict())
+        _, eventScheduleRef = self.eventScheduleCollectionRef.add(eventSchedule.to_dict())
         return eventScheduleRef
 
     def delete(self, singleEventScheduleRef: DocumentReference):
