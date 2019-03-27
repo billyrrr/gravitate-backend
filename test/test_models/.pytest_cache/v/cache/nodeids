@@ -1,1 +1,3 @@
-[]
+[
+  "test_event_schedule.py::EventScheduleDaoTest::test_from_and_to_dict"
+]

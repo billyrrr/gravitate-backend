@@ -1,10 +1,34 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
-from gravitate.domain import driver_navigation
+from gravitate.domain.driver_navigation.builders import DriverNavigationBuilder
 from gravitate.models import Orbit
 from test import store
 
 
+@skip("Not implemented")
+class DriverNavigationModelTest(TestCase):
+
+    def test_from_dict(self):
+        d = {
+            "points": [
+                {
+                    "type": "pickup",
+                    "uid": "testuserid1",
+                    "address": "testpickupaddress1",
+                    "isPickedUp": False
+                },
+                {
+                    "type": "eventDestination",
+                    "uid": "testuserid1",
+                    "address": "testpickupaddress1",
+                    "isPickedUp": False
+                }
+            ],
+        }
+        raise NotImplementedError
+
+
+@skip("Not implemented")
 class DriverNavigationBuilderTest(TestCase):
 
     def setUp(self):
@@ -52,4 +76,4 @@ class DriverNavigationBuilderTest(TestCase):
             ],
         }
         # Note that we are expecting a dict rather than DriverNavigation Object for now
-        self.assertEqual(driver_navigation.build_driver_navigation_from_orbit(self.orbit), dict_expected)
+        self.assertEqual(DriverNavigationBuilder.build_from_orbit(self.orbit), dict_expected)

@@ -34,7 +34,7 @@ def check_duplicate(user_id: str, event_ref: DocumentReference):
 
 
 @transactional
-def add_ride_request(transaction, ride_request, location, user_id):
+def add_ride_request(transaction, ride_request, location, user_id, event=None):
     """ Description
         This method saves rideRequest and update user's eventSchedule.
         The method corresponds to use case "Create Ride Request".
@@ -56,7 +56,7 @@ def add_ride_request(transaction, ride_request, location, user_id):
     user_ref = UserDao().get_ref(user_id)
     # Build the eventSchedule for user
     event_schedule = gravitate.domain.event_schedule.actions.create_event_schedule(
-        ride_request, location)
+        ride_request, location, event)
     UserDao.add_to_event_schedule_with_transaction(
         transaction, user_ref=user_ref, event_ref=ride_request.event_ref, event_schedule=event_schedule)
     # [END] Update the user's eventSchedule

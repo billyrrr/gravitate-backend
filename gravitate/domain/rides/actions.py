@@ -1,6 +1,7 @@
 from gravitate import context
 from gravitate.api_server import errors as service_errors
 from gravitate.data_access import LocationGenericDao
+from gravitate.domain.event.dao import EventDao
 from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
 from . import utils
 from . import AirportRideRequest, SocialEventRideRequest
@@ -51,6 +52,8 @@ def _create_social_event_ride_request(args, user_id):
         .export_as_class(SocialEventRideRequest)
     print(ride_request.location_ref)
     location = LocationGenericDao().get(ride_request.location_ref)
+    event = EventDao().get(ride_request.event_ref)
+
     # Do Validation Tasks before saving rideRequest
     # 1. Check that rideRequest is not submitted by the same user
     #       for the flight on the same day already
@@ -60,7 +63,7 @@ def _create_social_event_ride_request(args, user_id):
     # Starts database operations to (save rideRequest and update user's eventSchedule)
     transaction = db.transaction()
     # Transactional business logic for adding rideRequest
-    utils.add_ride_request(transaction, ride_request, location, user_id)
+    utils.add_ride_request(transaction, ride_request, location, user_id, event)
     # Save write result
     transaction.commit()
     return ride_request

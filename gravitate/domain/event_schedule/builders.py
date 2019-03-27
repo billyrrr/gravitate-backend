@@ -65,6 +65,10 @@ def _build_orbit(event_schedule, orbit):
     event_schedule.orbitRef = orbit.get_firestore_ref()
 
 
+def _build_facebook_event_id(event_schedule, event):
+    event_schedule.fbEventId = event.fb_event_id
+
+
 class EventScheduleBuilder():
 
     def __init__(self, event_schedule: AirportEventSchedule = None):
@@ -80,6 +84,10 @@ class EventScheduleBuilder():
             _build_social_event_ride_request(self.event_schedule, ride_request)
         else:
             raise NotImplementedError("Unsupported ride request type: {}".format(type(ride_request)))
+
+    def build_event(self, event):
+        if event is not None:
+            _build_facebook_event_id(self.event_schedule, event)
 
     def build_location(self, location: Type[Location]):
         if isinstance(location, AirportLocation):
