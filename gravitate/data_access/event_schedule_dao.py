@@ -127,7 +127,7 @@ class EventScheduleGenericDao:
     def set_with_transaction(transaction: Transaction, newEventSchedule: Type[AirportEventSchedule],
                              eventScheduleRef: DocumentReference):
         """ Description
-            Note that a read action must have taken place before anything is set with that transaction. 
+            Note that a read action must have taken place before anything is set with that transaction.
 
         :type self:
         :param self:
@@ -145,4 +145,5 @@ class EventScheduleGenericDao:
 
         :rtype:
         """
+        raise NotImplementedError  # TODO: fix
         return transaction.set(eventScheduleRef, newEventSchedule)
