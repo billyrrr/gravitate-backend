@@ -10,6 +10,7 @@ class Location(FirestoreObject):
     }
 
     def __init__(self, coordinates, address):
+        super().__init__()
         self.coordinates = coordinates
         self.address = address
 
@@ -179,5 +180,5 @@ class AirportLocation(Location):
             :param other: 
         """
         if isinstance(other, AirportLocation):
-            return (self.airport_code == other.airport_code)
+            return self.airport_code == other.airport_code
     

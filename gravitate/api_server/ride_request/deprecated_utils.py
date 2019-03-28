@@ -66,7 +66,7 @@ def fill_ride_request_dict_builder_regression(form: AirportRideRequestCreationFo
     """
     warnings.warn("This method is for testing purposes only. Do not use in production. ")
     f: dict = vars(form)
-    b: AirportRideRequestBuilder = AirportRideRequestBuilder().set_with_form_and_user_id(f, userId)\
+    b: AirportRideRequestBuilder = AirportRideRequestBuilder().set_with_form_and_user_id(f, userId) \
         .build_airport_ride_request()
     return b._ride_request_dict, utils.get_airport_location(form.airportCode)
 

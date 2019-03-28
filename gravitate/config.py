@@ -5,12 +5,10 @@ Reference:
     https://medium.freecodecamp.org/structuring-a-flask-restplus-web-service-for-production-builds-c2ec676de563
 """
 
-
 import os
 
 gravitate_module_path = os.path.dirname(__file__)  # should be equivalent to "../gravitate"
 config_jsons_path = os.path.join(gravitate_module_path, "config_jsons")
-
 
 
 class GravitateConfig:
@@ -39,19 +37,22 @@ class GravitateConfig:
 class DevelopmentGravitateConfig(GravitateConfig):
     DEBUG = True
     TESTING = False
-    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path, "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json")
+    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path,
+                                                  "gravitate-dev-firebase-adminsdk-79k5b-04b4ed676d.json")
     APP_NAME = "gravitate-dev"
 
 
 class TestingGravitateConfig(GravitateConfig):
     DEBUG = True
     TESTING = True
-    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path, "gravitate-testing-firebase-adminsdk-nwyah-83112e15cc.json")
+    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path,
+                                                  "gravitate-testing-firebase-adminsdk-nwyah-83112e15cc.json")
     APP_NAME = "gravitate-testing"
 
 
 class StagingGravitateConfig(GravitateConfig):
-    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path, "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json")
+    FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path,
+                                                  "gravitate-e5d01-firebase-adminsdk-kq5i4-943fb267ce.json")
     APP_NAME = "gravitate-e5d01"
     DEBUG = False
     TESTING = False

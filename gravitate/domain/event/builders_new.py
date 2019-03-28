@@ -10,7 +10,7 @@ from gravitate.models import ToEventTarget, FromEventTarget
 
 
 def create_time_offsets(local_time, later=False, offset_low_abs_sec: int = 7200,
-                                         offset_high_abs_sec: int = 18000):
+                        offset_high_abs_sec: int = 18000):
     """
         This method creates a target with event start_time from Facebook dict.
             The offsets represents how much in advance is user's preferred earliest and latest.
@@ -62,7 +62,6 @@ def create_time_offsets(local_time, later=False, offset_low_abs_sec: int = 7200,
 
 
 class EventBaseBuilder:
-
     event_category = None
 
     def __init__(self):
@@ -119,7 +118,6 @@ class EventBaseBuilder:
 
 
 class FbEventBuilder(EventBaseBuilder):
-
     event_category = "social"
 
     def _build_basic_info(self):
@@ -197,7 +195,6 @@ class FbEventBuilder(EventBaseBuilder):
 
 
 class AirportEventBuilder(EventBaseBuilder):
-
     event_category = "airport"
 
     def build_basic_info(self):
@@ -212,7 +209,6 @@ class AirportEventBuilder(EventBaseBuilder):
 
 
 class CampusEventBuilder(EventBaseBuilder):
-
     event_category = "campus"
 
     def build_basic_info(self):
@@ -249,7 +245,6 @@ class CampusEventBuilder(EventBaseBuilder):
 
 
 def build_ucsb_event(start_timestamp=None, end_timestamp=None, local_date_string=None):
-
     b = CampusEventBuilder()
     b.build_basic_info()
     b.build_campus(campus_code="UCSB")

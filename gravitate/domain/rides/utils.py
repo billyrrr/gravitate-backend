@@ -123,6 +123,7 @@ def find_event(flight_local_time) -> DocumentReference:
 
     return event.get_firestore_ref()
 
+
 def local_time_as_date_str(flight_local_time):
     tz = pytz.timezone("America/Los_Angeles")
     local_datetime = iso8601.parse_date(flight_local_time, default_timezone=None)
@@ -148,7 +149,7 @@ def set_disabilities(form: AirportRideRequestCreationForm, rideRequestDict):
     :param rideRequestDict:
     :return:
     """
-    if ('disabilities' in form):
+    if 'disabilities' in form:
         # If 'disabilities' is defined in the form submitted
         rideRequestDict['disabilities'] = form['disabilities']
     else:

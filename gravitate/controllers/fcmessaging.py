@@ -7,6 +7,7 @@ def sendMessageToUser(userId, data):
     fcmToken = data_access.UserDao().get_fcm_token(userId)
     sendMessage(fcmToken, data)
 
+
 def sendMessage(registration_token, data, dry_run=False):
     """ Description
         This method sends notifications to front-end. 

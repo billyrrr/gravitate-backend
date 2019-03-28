@@ -159,6 +159,7 @@ class RideRequestBaseBuilder:
         self._ride_request_dict["originRef"] = origin_ref
         # self._ride_request_dict["pickupAddress"] = self.pickup_address
 
+
 class AirportRideRequestBuilder(RideRequestBaseBuilder):
 
     def set_with_form_and_user_id(self, d, user_id):
@@ -217,7 +218,6 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
         return self
 
     def build_social_event_ride_request(self):
-
         self._build_ride_category()
 
         self._build_user()
@@ -241,7 +241,7 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
 
 
 class CampusEventRideRequestBuilder(RideRequestBaseBuilder):
-
-    def __init__(self):
-        super().__init__()
-
+    """
+    TODO: implement
+    """
+    pass

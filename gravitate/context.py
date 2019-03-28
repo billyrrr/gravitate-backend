@@ -31,7 +31,7 @@ config = gravitate_config.TestingGravitateConfig
 # TODO improve import
 
 
-class Context():
+class Context:
     firebaseApp: firebase_admin.App = None
     db: firestore.Client = None
     debug = None

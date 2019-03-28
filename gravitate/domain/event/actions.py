@@ -1,7 +1,7 @@
 from gravitate.api_server.event import parsers as event_parser
 
-def create(args, user_id, event_category="social"):
 
+def create(args, user_id, event_category="social"):
     if event_category == "social":
         return _create_social_event(args, user_id)
     else:
@@ -17,4 +17,3 @@ def _create_social_event(event_dict: dict, user_id):
     """
     p = event_parser.social_event_parser.parse_args()
     event_dict = p.values()
-

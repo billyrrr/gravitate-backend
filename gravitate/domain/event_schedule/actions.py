@@ -11,7 +11,6 @@ def create_event_schedule(ride_request: Type[RideRequest], location: Type[Locati
     if isinstance(ride_request, AirportRideRequest):
         assert isinstance(location, AirportLocation)
     elif isinstance(ride_request, SocialEventRideRequest):
-        print(location.to_dict())
         assert isinstance(location, SocialEventLocation)
         assert event is not None
     else:

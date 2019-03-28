@@ -1,6 +1,7 @@
 import random
 import string
 
+
 # Generate a random string
 # with 32 characters.
 # https://www.geeksforgeeks.org/generating-random-ids-python/

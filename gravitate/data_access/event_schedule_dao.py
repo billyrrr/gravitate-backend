@@ -37,9 +37,9 @@ class EventScheduleGenericDao:
             :rtype:
         """
 
-        assert (userId != None) or (userRef != None), \
+        assert (userId is not None) or (userRef is not None), \
             "Both userId and userRef are None"
-        assert (userId == None) or (userRef == None), \
+        assert (userId is None) or (userRef is None), \
             "Receiving both userId: {} and userRef: {}".format(userId, userRef)
 
         if userId:
@@ -98,9 +98,7 @@ class EventScheduleGenericDao:
 
         :rtype:
         """
-        # TODO fix
-        # TODO fix by changing to .add()
-        _, eventScheduleRef = self.eventScheduleCollectionRef.a(eventSchedule.to_dict())
+        _, eventScheduleRef = self.eventScheduleCollectionRef.add(eventSchedule.to_dict())
         return eventScheduleRef
 
     def delete(self, singleEventScheduleRef: DocumentReference):
@@ -129,7 +127,7 @@ class EventScheduleGenericDao:
     def set_with_transaction(transaction: Transaction, newEventSchedule: Type[AirportEventSchedule],
                              eventScheduleRef: DocumentReference):
         """ Description
-            Note that a read action must have taken place before anything is set with that transaction. 
+            Note that a read action must have taken place before anything is set with that transaction.
 
         :type self:
         :param self:
@@ -147,4 +145,5 @@ class EventScheduleGenericDao:
 
         :rtype:
         """
+        raise NotImplementedError  # TODO: fix
         return transaction.set(eventScheduleRef, newEventSchedule)

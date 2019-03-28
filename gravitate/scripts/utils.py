@@ -34,13 +34,13 @@ def generateTimestamps(startDatetime: datetime.datetime, numDays: int) -> [(int,
     curNumDays = 0
     tupleList = list()
 
-    while (curNumDays < numDays):
+    while curNumDays < numDays:
         endDatetime = curStart + \
                       datetime.timedelta(days=1) - datetime.timedelta(seconds=1)
 
         # Handles the case where 1 day after startDatetime and 1 second before is still tomorrow
         # (which is not expected to occur in California)
-        while (endDatetime.day != curStart.day):
+        while endDatetime.day != curStart.day:
             warnings.warn(
                 "1 day after startDatetime and 1 second before is not today. curStart = {}".format(curStart))
             assert startDatetime.timestamp() < endDatetime.timestamp()

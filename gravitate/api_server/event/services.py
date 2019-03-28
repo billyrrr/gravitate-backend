@@ -1,5 +1,6 @@
 from flask import request
 from flask_restful import Resource
+from google.cloud.firestore import DocumentReference
 
 import gravitate.api_server.utils as service_utils
 import gravitate.domain.event.actions as event_actions
@@ -23,10 +24,10 @@ class UserEventService(Resource):
         json_data = request.get_json()
         b = event_builders.FbEventBuilder()
         b.build_with_fb_dict(json_data)
-        e = b.export_as_class(event_models.SocialEvent)
+        e: event_models.SocialEvent = b.export_as_class(event_models.SocialEvent)
 
         # Note that e.firestore_ref will not be set by create()
-        ref = EventDao().create_fb_event(e)
+        ref: DocumentReference = EventDao().create_fb_event(e)
         e.set_firestore_ref(ref)
         dict_view = e.to_dict_view()
         dict_view["eventId"] = ref.id
@@ -48,7 +49,7 @@ class UserEventService(Resource):
             b = event_builders.FbEventBuilder()
             # print(event_dict)
             b.build_with_fb_dict(event_dict)
-            e = b.export_as_class(event_models.SocialEvent)
+            e: event_models.SocialEvent = b.export_as_class(event_models.SocialEvent)
 
             # Note that e.firestore_ref will not be set by create()
             ref = EventDao().create_fb_event(e)

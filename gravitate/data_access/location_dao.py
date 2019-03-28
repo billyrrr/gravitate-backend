@@ -37,8 +37,9 @@ class LocationGenericDao:
     # @transactional
     def get_with_transaction(transaction: Transaction, locationRef: DocumentReference) -> Type[Location]:
         """ Description
-            Note that this cannot take place if transaction already received write operations.
-            "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
+        Note that this cannot take place if transaction already received write operations.
+        "If a transaction is used and it already has write operations added, this method cannot be used
+        (i.e. read-after-write is not allowed)."
 
         :type self:
         :param self:
@@ -148,7 +149,6 @@ class LocationGenericDao:
         """
         return singleLocationRef.delete()
 
-
     @staticmethod
     def _set_with_transaction(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
         return transaction.set(locationRef, newLocation)
@@ -158,10 +158,10 @@ class LocationGenericDao:
         step = partial(LocationGenericDao._set_with_transaction(), newLocation=newLocation, locationRef=locationRef)
         return step(transaction)
 
-
     @staticmethod
     @transactional
-    def set_with_transaction_transactional(transaction: Transaction, newLocation: Type[Location], locationRef: DocumentReference):
+    def set_with_transaction_transactional(transaction: Transaction, newLocation: Type[Location],
+                                           locationRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction.
 

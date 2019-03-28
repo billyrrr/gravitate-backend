@@ -7,6 +7,7 @@ def _execute_all(stragegies: list, transaction):
     for strategy in stragegies:
         strategy(transaction)
 
+
 class TransactionStrategy:
     strategies = None
 
