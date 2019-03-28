@@ -16,15 +16,16 @@ class LocationBuilder(object):
 
     def buildAirportInfo(self):
         raise NotImplementedError
-    
+
     def buildBasicInfo(self):
         raise NotImplementedError
-    
+
     def mergeDict(self, otherDict: dict):
         self.locationDict.update(otherDict)
 
     def exportToLocation(self):
         return Location.from_dict(self.locationDict)
+
 
 class LaxBuilder(LocationBuilder):
     """
@@ -34,10 +35,11 @@ class LaxBuilder(LocationBuilder):
 
         :param LocationBuilder: 
     """
+
     def buildAirportInfo(self):
         self.locationDict['airportCode'] = 'LAX'
         self.locationDict['locationCategory'] = 'airport'
-        
+
     def buildBasicInfo(self):
         self.locationDict['coordinates'] = {
             'latitude': 33.94211345,
@@ -50,6 +52,7 @@ class SanBuilder(LocationBuilder):
     """ Description
     This class builds a SAN (San Diego International Airport) location.
     """
+
     def buildAirportInfo(self):
         self.locationDict['airportCode'] = 'SAN'
         self.locationDict['locationCategory'] = 'airport'
@@ -79,7 +82,6 @@ def doWorkUc(campusCode="UCSB"):
 
 
 def doWorkDeprecated():
-
     terminals = ['1', '2', '3', '4', '5', '6', '7', '8', 'B']
 
     for terminal in terminals:
@@ -88,8 +90,8 @@ def doWorkDeprecated():
         airportLocation.set_firestore_ref(ref)
         print(vars(airportLocation))
 
-def doWork(airportCode='LAX'):
 
+def doWork(airportCode='LAX'):
     airportLocation = None
 
     if airportCode == 'LAX':

@@ -48,14 +48,12 @@ class Ride(FirestoreObject):
             disabilities = d['disabilities']
 
             return AirportRide(driver_status, origin_ref, destination_ref, has_checked_in,
-                                      event_ref, orbit_ref, user_id, target, pricing, request_completion,
-                                      flight_local_time,
-                                      flight_number, airport_location, baggages, disabilities)
+                               event_ref, orbit_ref, user_id, target, pricing, request_completion,
+                               flight_local_time, flight_number, airport_location, baggages, disabilities)
         elif ride_request_type == 'eventRide':
             location_ref = d['locationRef']
-            return SocialEventRide(driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id,
-                                          target,
-                                          pricing, request_completion, location_ref)
+            return SocialEventRide(driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref,
+                                   user_id, target, pricing, request_completion, location_ref)
         else:
             raise Exception(
                 'Not supported rideRequestType: {}'.format(ride_request_type))
@@ -165,7 +163,8 @@ class Ride(FirestoreObject):
 class AirportRide(Ride):
 
     # TODO more arguments
-    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id,
+                 target, pricing,
                  request_completion, flight_local_time, flight_number, airport_location, baggages, disabilities):
         """ Description
             Initializes an AirportRideRequest Object
@@ -234,7 +233,8 @@ class AirportRide(Ride):
 class SocialEventRide(Ride):
 
     # TODO more arguments
-    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id, target, pricing,
+    def __init__(self, driver_status, origin_ref, destination_ref, has_checked_in, event_ref, orbit_ref, user_id,
+                 target, pricing,
                  request_completion, location_ref):
         """ Description
             Initializes a SocialEventRideRequest Object

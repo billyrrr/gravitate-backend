@@ -210,7 +210,8 @@ class OrbitGroup:
                                      orbit=orbit, event=self.event, location=self.location)
 
         print(
-            "About to commit: just joined ids {}; not joined ids {}; just dropped ids: {}; not_dropped_ids: {}; all ids in orbit after operation: {}"
+            "About to commit: just joined ids {}; not joined ids {}; just dropped ids: {}; not_dropped_ids: {}; all "
+            "ids in orbit after operation: {} "
             .format(joined_ids, not_joined_ids, dropped_ids, not_dropped_ids, in_orbit.keys()))
 
         return not_joined_ids

@@ -80,8 +80,8 @@ class AirportEventSchedule(EventSchedule):
         orbitRef = eventScheduleDict['orbitRef']
         locationRef = eventScheduleDict['locationRef']
         fbEventId = eventScheduleDict['fbEventId']
-        return AirportEventSchedule(toEvent, destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress, pending,
-                                    rideRequestRef, orbitRef, locationRef, fbEventId)
+        return AirportEventSchedule(toEvent, destName, destTime, flightTime, memberProfilePhotoUrls, pickupAddress,
+                                    pending, rideRequestRef, orbitRef, locationRef, fbEventId)
 
     @staticmethod
     def from_dict_and_reference(eventScheduleDict, eventScheduleRef):

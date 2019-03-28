@@ -6,6 +6,7 @@ from gravitate.context import Context
 
 db = Context.db
 
+
 def _delete_all(collection_name):
     app_name = Context.firebaseApp.name
     if not app_name.find("testing"):

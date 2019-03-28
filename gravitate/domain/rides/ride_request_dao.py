@@ -77,9 +77,9 @@ class RideRequestGenericDao:
     @staticmethod
     # @transactional
     def get_with_transaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
-        """ Description
-            Note that this cannot take place if transaction already received write operations. 
-            "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
+        """ Description Note that this cannot take place if transaction already received write operations. "If a
+        transaction is used and it already has write operations added, this method cannot be used (i.e.
+        read-after-write is not allowed)."
 
         :type self:
         :param self:
@@ -119,7 +119,6 @@ class RideRequestGenericDao:
         ref = self.ref_from_id(rid)
         ride_request = self.get(ref)
         return ride_request
-
 
     def create(self, rideRequest: Type[RideRequest]) -> Type[RideRequest]:
         """ Description

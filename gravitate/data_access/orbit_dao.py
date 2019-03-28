@@ -9,6 +9,7 @@ from gravitate.models.orbit import Orbit
 
 db = context.Context.db
 
+
 class OrbitDao:
     """ Description	
         Database access object for ride request
@@ -24,9 +25,9 @@ class OrbitDao:
     @staticmethod
     # @transactional
     def get_with_transaction(transaction: Transaction, orbitRef: DocumentReference) -> Orbit:
-        """ Description
-            Note that this cannot take place if transaction already received write operations. 
-            "If a transaction is used and it already has write operations added, this method cannot be used (i.e. read-after-write is not allowed)."
+        """ Description Note that this cannot take place if transaction already received write operations. "If a
+        transaction is used and it already has write operations added, this method cannot be used (i.e.
+        read-after-write is not allowed)."
 
         """
 
@@ -52,7 +53,7 @@ class OrbitDao:
         orbit = self.get(ref)
         return orbit
 
-    def create(self, orbit: Orbit)->DocumentReference:
+    def create(self, orbit: Orbit) -> DocumentReference:
         """ Description
         """
         print(orbit.to_dict())

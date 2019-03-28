@@ -45,11 +45,11 @@ class Event(FirestoreObject):
         if event_category == "airport":
             airport_code = eventDict['airportCode']
             return AirportEvent(event_category, participants, targets, pricing, location_ref,
-                         is_closed, local_date_string, name, description, parking_info, airport_code)
+                                is_closed, local_date_string, name, description, parking_info, airport_code)
         elif event_category == "social":
             fb_event_id = eventDict["fbEventId"]
             return SocialEvent(event_category, participants, targets, pricing, location_ref,
-                 is_closed, local_date_string, name, description, parking_info, fb_event_id)
+                               is_closed, local_date_string, name, description, parking_info, fb_event_id)
         elif event_category == "campus":
             campus_code = eventDict["campusCode"]
             return CampusEvent(event_category, participants, targets, pricing, location_ref,
@@ -64,7 +64,7 @@ class Event(FirestoreObject):
             # 'eventLocation': self.event_location,
             # 'startTimestamp': self.start_timestamp,
             # 'endTimestamp': self.end_timestamp,
-            'targets': [ target.to_dict() for target in self.targets],
+            'targets': [target.to_dict() for target in self.targets],
             'pricing': self.pricing,
             'locationRef': self.location_ref,
             'isClosed': self.is_closed,
@@ -173,7 +173,7 @@ class AirportEvent(Event):
     def __init__(self, event_category, participants, targets, pricing, location_ref,
                  is_closed, local_date_string, name, description, parking_info, airport_code):
         super().__init__(event_category, participants, targets, pricing, location_ref,
-                 is_closed, local_date_string, name, description, parking_info)
+                         is_closed, local_date_string, name, description, parking_info)
         self.airport_code = airport_code
 
     def to_dict(self):
@@ -225,7 +225,7 @@ class SocialEvent(Event):
     def __init__(self, event_category, participants, targets, pricing, location_ref,
                  is_closed, local_date_string, name, description, parking_info, fb_event_id):
         super().__init__(event_category, participants, targets, pricing, location_ref,
-                 is_closed, local_date_string, name, description, parking_info)
+                         is_closed, local_date_string, name, description, parking_info)
         self.fb_event_id = fb_event_id
 
     def to_dict_view(self):
@@ -275,4 +275,3 @@ class CampusEvent(Event):
         d_view = super().to_dict_view()
         d_view["campusCode"] = self.campus_code
         return d_view
-

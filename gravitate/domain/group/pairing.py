@@ -87,8 +87,8 @@ def _pair_with_driver(arr=None) -> (list, list):
         Pair rides only if one of them has driver_status set as True
         TODO: implement
 
-        :param arr:  an array of ride requests
-            [the first is earliest allowable time, second is latest time, third is driver status, fourth is firestore reference]
+        :param arr:  an array of ride requests [the first is earliest allowable time, second is latest time,
+        third is driver status, fourth is firestore reference]
         :param paired:
         :param unpaired:
     """

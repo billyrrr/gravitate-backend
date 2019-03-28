@@ -38,18 +38,18 @@ def _build_airport_ride_request(event_schedule, airport_ride_request: AirportRid
 
 
 def _build_social_event_location(event_schedule, location: SocialEventLocation):
-
     event_schedule.destName = location.event_name  # Note that event name is not address
     event_schedule.locationRef = location.get_firestore_ref()
 
 
 def _build_airport_location(event_schedule, location: AirportLocation):
-
     event_schedule.destName = location.airport_code
     event_schedule.locationRef = location.get_firestore_ref()
 
+
 def _build_user_location(event_schedule, location: UserLocation):
     event_schedule.pickupAddress = location.address
+
 
 def _build_pending_orbit(event_schedule):
     event_schedule.memberProfilePhotoUrls = []

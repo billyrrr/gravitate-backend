@@ -13,13 +13,13 @@ class UserCreationForm:
     photo_url = None
     pickupAddress = None
 
-class UserCreationValidateForm(Form):
 
+class UserCreationValidateForm(Form):
     # Can be filled with Flightstats API
     uid = StringField(u'UID', validators=[
         DataRequired('UID needs to be specified.')])
 
-    phone_number = StringField(u'Phone Number',  validators=[
+    phone_number = StringField(u'Phone Number', validators=[
         DataRequired('Phone Number needs to be specified.')])
 
     membership = StringField(u'Membership', validators=[

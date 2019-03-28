@@ -46,16 +46,14 @@ class Luggages:
         # Use add_from_list
         # return the Luggages object that you created
 
-
         luggagelist = []
-        index=0
+        index = 0
         for a in d['luggages']:
             luggagelist.insert(index, a)
             index += 1
         updated = Luggages()
         updated.add_from_list(luggagelist)
         return updated
-
 
     def to_dict(self) -> dict:
         """ Returns a dict representation of all luggages

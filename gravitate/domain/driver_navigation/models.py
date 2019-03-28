@@ -13,7 +13,7 @@ class DriverNavigation:
         raise NotImplementedError
 
 
-def build_driver_navigation_from_orbit(orbit: Orbit) :
+def build_driver_navigation_from_orbit(orbit: Orbit):
     """ Returns a DriverNavigation that briefs the driver of all pickup addresses and their order.
 
     :param orbit:
