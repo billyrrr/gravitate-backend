@@ -3,7 +3,7 @@
 
 from gravitate.data_access.location_dao import LocationGenericDao
 from gravitate.models.firestore_object import FirestoreObject
-from gravitate.models.target import Target
+from gravitate.models.target import Target, ToEventTarget
 
 
 class Ride(FirestoreObject):
@@ -91,6 +91,23 @@ class Ride(FirestoreObject):
             raise ValueError("Pickup address of to_event=True is not supported. ")
         location = LocationGenericDao().get(dropoff_location_ref)
         return location.address
+
+    # def to_tuple_point(self):
+    #
+    #
+    #
+    #     # Time-related
+    #     to_event_target: ToEventTarget = self.target
+    #     earliest = to_event_target.arrive_at_event_time['earliest']
+    #     latest = to_event_target.arrive_at_event_time['latest']
+    #
+    #     # Tag to identify ride request
+    #     ref = self.get_firestore_ref()
+    #
+    #     # Location-related
+    #     location = self.origin_ref
+
+
 
     def to_dict(self):
         ride_request_dict = {

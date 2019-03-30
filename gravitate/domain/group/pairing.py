@@ -80,6 +80,35 @@ def _construct_tuple_list(ride_requests: list):
     return arr
 
 
+def _construct_tuple_list_new(ride_requests: list):
+    """ Description
+        This function constructs tuple list consisting only variables relevant to the
+            grouping algorithm.
+        Note that this function only supports rideRequests with ToEventTarget as Target.
+
+        :type ride_requests:list:
+        :param ride_requests:list:
+
+        :raises:
+
+        :rtype:
+    """
+    arr = list()
+
+    for ride_request in ride_requests:
+        try:
+            assert ride_request.to_event is True
+            tuple_to_append = ride_request.to_tuple_point()
+
+            # tuple_to_append = [earliest, latest, ref]
+            arr.append(tuple_to_append)
+        except Exception as e:
+            warnings.warn("failed to parse rideRequest: {}".format(ride_request.to_dict()))
+            print("error: {}".format(e))
+
+    return arr
+
+
 def _pair_with_driver(arr=None) -> (list, list):
     """
     Description
