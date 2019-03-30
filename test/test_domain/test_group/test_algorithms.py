@@ -8,21 +8,23 @@ from math import inf
 from gravitate.data_access import LocationGenericDao
 from gravitate.models import Location
 from gravitate.domain.rides import RideRequest
+from gravitate import distance_func
 
 db = context.Context.db
 
 # rideRequestIds = ["7XO1sUmNMzvlTmSpoyflqJwVCjXQJNOU", "5BWnDYuWgqedQi8ULrtD8yH2VOxI4n2k"]
 
 
-def dist_func(p_1, p_2):
-    """
-    Skeleton for distance function
-    :param p_1:
-    :param p_2:
-    :return:
-    """
-    pass
+# def dist_func(p_1, p_2):
+#     """
+#     Skeleton for distance function
+#     :param p_1:
+#     :param p_2:
+#     :return:
+#     """
+#     pass
 
+dist_func = distance_func.distance_func
 
 class TestDistanceFunctions(unittest.TestCase):
 
@@ -34,14 +36,14 @@ class TestDistanceFunctions(unittest.TestCase):
         p_1 = [
             0,
             1,
-            "50.0359",
-            "-5.4253"
+            50.0359,
+            -5.4253
         ]
         p_2 = [
             0,  # Earliest Time
             1,  # Latest Time
-            "58.3838",  # Latitude
-            "-3.0412"  # Longitude
+            58.3838,  # Latitude
+            -3.0412  # Longitude
         ]
         # Distance is 968.9 km > 500 km (Note that this is km)
         dist = dist_func(p_1, p_2)
@@ -51,14 +53,14 @@ class TestDistanceFunctions(unittest.TestCase):
         p_1 = [
             0,
             1,
-            "50.0359",
-            "-5.4253"
+            50.0359,
+            -5.4253
         ]
         p_2 = [
             0,  # Earliest Time
             1,  # Latest Time
-            "54.2144",  # Latitude
-            "-4.3150"  # Longitude
+            54.2144,  # Latitude
+            -4.3150  # Longitude
         ]
         dist = dist_func(p_1, p_2)
         self.assertLess(dist, inf, "distance should be finite, since"
