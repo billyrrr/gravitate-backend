@@ -130,25 +130,23 @@ class TestExportTuplePoints(unittest.TestCase):
 
             # Generate Test Locations
             location = Location.from_dict(location_d)
-            LocationGenericDao().insert_new(location)
-
-            ref = location.get_firestore_ref()
+            ref = LocationGenericDao().insert_new(location)
             ride_request.origin_ref = ref
 
             rideRequests.append(ride_request)
 
         self.ride_requests = rideRequests
 
-    def testConstructTupleList(self):
-        rideRequests: list = self.ride_requests
-        tuple_list = gravitate.domain.group.pairing._construct_tuple_list(rideRequests)
-        # Note that this test may fail when the list in a different order.
-        # The list is allowed to be in a different order.
-        self.assertListEqual(self.arr, tuple_list)
+    # def testConstructTupleList(self):
+    #     rideRequests: list = self.ride_requests
+    #     tuple_list = gravitate.domain.group.pairing._construct_tuple_list(rideRequests)
+    #     # Note that this test may fail when the list in a different order.
+    #     # The list is allowed to be in a different order.
+    #     self.assertListEqual(self.arr, tuple_list)
 
     def test_construct_tuple_list_new(self):
         rideRequests: list = self.ride_requests
-        tuple_list = gravitate.domain.group.pairing._construct_tuple_list(rideRequests)
+        tuple_list = gravitate.domain.group.pairing._construct_tuple_list_new(rideRequests)
         # Note that this test may fail when the list in a different order.
         # The list is allowed to be in a different order.
         self.assertListEqual(self.arr, tuple_list)

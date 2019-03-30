@@ -92,22 +92,37 @@ class Ride(FirestoreObject):
         location = LocationGenericDao().get(dropoff_location_ref)
         return location.address
 
-    # def to_tuple_point(self):
-    #
-    #
-    #
-    #     # Time-related
-    #     to_event_target: ToEventTarget = self.target
-    #     earliest = to_event_target.arrive_at_event_time['earliest']
-    #     latest = to_event_target.arrive_at_event_time['latest']
-    #
-    #     # Tag to identify ride request
-    #     ref = self.get_firestore_ref()
-    #
-    #     # Location-related
-    #     location = self.origin_ref
+    def to_tuple_point(self, to_event = True):
+        """ Returns a tuple (actually a list) representation of the ride request
+            as a point for grouping algorithm.
 
+        :return:
+        """
 
+        assert to_event is True
+
+        # Time-related
+        to_event_target: ToEventTarget = self.target
+        earliest = to_event_target.arrive_at_event_time['earliest']
+        latest = to_event_target.arrive_at_event_time['latest']
+
+        # Tag to identify ride request
+        ref = self.get_firestore_ref()
+
+        # Location-related
+        pickup_location_ref = None
+        if self.target.to_event:
+            pickup_location_ref = self.origin_ref
+        else:
+            raise ValueError("Pickup address of to_event=False is not supported. ")
+        location = LocationGenericDao().get(pickup_location_ref)
+        coordinates = location.coordinates
+        latitude = coordinates["latitude"]
+        longitude = coordinates["longitude"]
+
+        # Form tuple ()
+        t = [earliest, latest, latitude, longitude, ref]
+        return t
 
     def to_dict(self):
         ride_request_dict = {

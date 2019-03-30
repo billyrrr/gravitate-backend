@@ -97,11 +97,12 @@ def _construct_tuple_list_new(ride_requests: list):
 
     for ride_request in ride_requests:
         try:
-            assert ride_request.to_event is True
-            tuple_to_append = ride_request.to_tuple_point()
+
+            tuple_to_append = ride_request.to_tuple_point(to_event=True)
 
             # tuple_to_append = [earliest, latest, ref]
             arr.append(tuple_to_append)
+
         except Exception as e:
             warnings.warn("failed to parse rideRequest: {}".format(ride_request.to_dict()))
             print("error: {}".format(e))
