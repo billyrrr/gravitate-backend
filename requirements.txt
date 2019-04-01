@@ -23,4 +23,5 @@ haversine
 scipy
 sklearn
 
+coverage>=4.4
 python-coveralls
