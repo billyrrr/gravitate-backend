@@ -19,3 +19,6 @@ apscheduler
 
 pytest
 haversine
+
+scipy
+sklearn
