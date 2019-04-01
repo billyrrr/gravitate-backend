@@ -23,5 +23,6 @@ haversine
 scipy
 sklearn
 
+pytest-cov
 coverage>=4.4
 python-coveralls
