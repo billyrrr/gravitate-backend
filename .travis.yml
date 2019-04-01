@@ -9,6 +9,8 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - pytest
+  - pytest --cov=gravitate
+after_success:
+  - coveralls
 notifications:
   email: false

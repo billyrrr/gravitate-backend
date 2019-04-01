@@ -22,3 +22,5 @@ haversine
 
 scipy
 sklearn
+
+python-coveralls
