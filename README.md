@@ -22,7 +22,7 @@ From looking through hundreds of posts in Facebook carpooling groups to spending
 
     - Zixuan Rao
 
-## Gravitate (CSE110 Fall 2018)
+### Fall 2018
 
 - Developed as CSE110 course project 
 
