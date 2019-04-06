@@ -1,5 +1,3 @@
 [
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testBuild",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testSetWithForm",
-  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::test_time_specified"
+  "test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsEarliestLatest"
 ]

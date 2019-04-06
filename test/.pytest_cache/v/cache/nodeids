@@ -114,6 +114,7 @@
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm",
   "test_services/test_airport_ride_request.py::ReturnErrorsTest::testDeleteReturnsRequestAlreadyMatchedError",
   "test_services/test_airport_ride_request.py::ReturnErrorsTest::testRaiseRequestAlreadyExistsError",
+  "test_services/test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsEarliestLatest",
   "test_services/test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsTemp",
   "test_services/test_airport_ride_request.py::DeleteRequestTest::testDelete",
   "test_services/test_airport_ride_request.py::GetRequestTest::testGet",

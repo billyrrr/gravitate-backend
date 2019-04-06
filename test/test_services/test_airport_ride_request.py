@@ -360,6 +360,26 @@ class RequestRideTest(TestCase):
             firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
             self.ride_request_ids_to_delete.append((userId, firestore_ref))
 
+    def testCreateRideRequestsEarliestLatest(self):
+        # Create new rideRequests
+        for userId in self.userIds:
+            form = FormDictFactory().create(returnDict=True, hasEarliestLatest=True, isE5L2=False)
+            form["flightLocalTime"] = "2018-12-20T12:00:00.000"
+            form["testUserId"] = userId
+            r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+                path='/requestRide/airport', json=form, headers=getMockAuthHeaders(userId))
+            print(r)
+            self.assertIn("firestoreRef", r.json.keys())
+            firestore_ref = r.json["firestoreRef"]  # Not that it is actually rideRequestId
+            self.ride_request_ids_to_delete.append((userId, firestore_ref))
+
+            r = self.app.get(path='/rideRequests' + '/' + firestore_ref,
+                             headers=getMockAuthHeaders()
+                             )
+
+            result = dict(r.json)
+            self.assertEqual(result["target"]["arriveAtEventTime"]["earliest"], 1545066000)
+
     def _tear_down(self):
         """
         Deletes all rideRequests created by the test
