@@ -1,3 +1,5 @@
 [
-  "test_event.py::UserEventServiceTest::test_put_many"
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testBuild",
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testSetWithForm",
+  "test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::test_time_specified"
 ]

@@ -106,6 +106,9 @@
   "test_scripts/test_populate_events.py::PopulateEventCommandTest::test_generate_events",
   "test_scripts/test_populate_locations.py::PopulateLocationCommandTest::test_generate_locations",
   "test_services/test_airport_ride_request.py::RideRequestDictBuilderTest::testSetVariables",
+  "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testBuild",
+  "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::testSetWithForm",
+  "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderPlusTest::test_time_specified",
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuild",
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testBuildFromEvent",
   "test_services/test_airport_ride_request.py::AirportRideRequestDictBuilderTest::testSetWithForm",
@@ -124,6 +127,8 @@
   "test_services/test_luggage.py::GetLuggageTest::testGetEmpty",
   "test_services/test_luggage.py::GetLuggageTest::testPutAndGet",
   "test_services/test_event_ride_request/test_builders.py::RideRequestDictBuilderTest::testSetVariables",
+  "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderEarliestLatestTest::testBuild",
+  "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderEarliestLatestTest::testSetWithForm",
   "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testBuild",
   "test_services/test_event_ride_request/test_builders.py::SocialEventDictBuilderTest::testSetWithForm",
   "test_services/test_event_ride_request/test_services.py::RequestRideTest::testCreateRideRequestsTemp"

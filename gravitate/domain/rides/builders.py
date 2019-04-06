@@ -9,6 +9,8 @@ from gravitate.models import Target, Location
 
 class RideRequestBaseBuilder:
 
+    ride_category = None
+
     def __init__(self):
         self._ride_request_dict = dict()
         # _ride_request_dict = None
@@ -70,6 +72,9 @@ class RideRequestBaseBuilder:
 
         return self
 
+    def _build_ride_category(self):
+        self._ride_request_dict["rideCategory"] = self.ride_category
+
     def _build_user(self):
         if self.user_id is not None:
             self._ride_request_dict["userId"] = self.user_id
@@ -98,7 +103,8 @@ class RideRequestBaseBuilder:
         return location.get_firestore_ref()
 
     def _build_target_earliest_latest(self):
-        target = Target.create_airport_event_target(self.to_event, self.earliest, self.latest)
+        # TODO: Change back
+        target = Target.create_with_local_time_str(self.to_event, self.earliest, self.latest, self.ride_category)
         self._ride_request_dict["target"] = target.to_dict()
 
     def _build_target_anytime(self):
@@ -146,21 +152,24 @@ class RideRequestBaseBuilder:
         self._ride_request_dict['hasCheckedIn'] = False
         self._ride_request_dict['pricing'] = 987654321
 
-    def _build_ride_category(self):
-        """
-        To be overridden by subclass
-        :return:
-        """
-        raise NotImplementedError("This is an abstract method. Override it in subclass. ")
-
     def _build_pickup(self):
         origin_location = Location.from_pickup_address(pickup_address=self.pickup_address)
         origin_ref = LocationGenericDao().insert_new(origin_location)
         self._ride_request_dict["originRef"] = origin_ref
         # self._ride_request_dict["pickupAddress"] = self.pickup_address
 
+    def earliest_latest_specified(self):
+        if self.earliest is None and self.latest is None:
+            return False
+        elif self.earliest is not None and self.latest is not None:
+            return True
+        else:
+            raise ValueError
+
 
 class AirportRideRequestBuilder(RideRequestBaseBuilder):
+
+    ride_category = "airportRide"
 
     def set_with_form_and_user_id(self, d, user_id):
         """
@@ -171,23 +180,30 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
         """
         self.user_id = user_id
         self.set_data(
-            user_id=user_id, flight_local_time=d["flightLocalTime"], flight_number=d["flightNumber"],
+            user_id=user_id, flight_local_time=d.get("flightLocalTime", None), flight_number=d["flightNumber"],
             airport_code=d["airportCode"], to_event=d["toEvent"], pickup_address=d["pickupAddress"],
-            driver_status=d["driverStatus"]
+            driver_status=d["driverStatus"], earliest=d.get("earliest", None), latest=d.get("latest", None)
         )
         return self
 
-    def _build_ride_category(self):
-        self._ride_request_dict["rideCategory"] = "airportRide"
+    def flight_local_time_specified(self):
+        return self.flight_local_time is not None
 
     def build_airport_ride_request(self):
-        assert self.flight_local_time is not None
-        assert self.earliest is None and self.latest is None  # They will be overridden by those of flightLocalTime
+
+        if self.earliest_latest_specified():
+            # Use specified earliest and latest by default
+            self._build_target_earliest_latest()
+        elif self.flight_local_time_specified():
+            # Earliest and latest will be overridden by those of flightLocalTime
+            self._build_target_with_flight_local_time()
+        else:
+            # Must have one or the other
+            raise ValueError
 
         self._build_flight()
         self._build_user()
         self._build_location_by_airport_code()  # Use airportCode to infer location
-        self._build_target_with_flight_local_time()  # Use flightLocalTime to build target
         self._build_event_ref_with_flight_local_time()
         self._build_disabilities()
         self._build_baggages()
@@ -199,8 +215,7 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
 
 class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
 
-    def _build_ride_category(self):
-        self._ride_request_dict["rideCategory"] = "eventRide"
+    ride_category = "eventRide"
 
     def set_with_form_and_user_id(self, d, user_id):
         """
@@ -213,7 +228,7 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
         self.set_data(
             user_id=user_id, event_id=d["eventId"],
             to_event=d["toEvent"], pickup_address=d["pickupAddress"],
-            driver_status=d["driverStatus"]
+            driver_status=d["driverStatus"], earliest=d.get("earliest", None), latest=d.get("latest", None)
         )
         return self
 
@@ -224,7 +239,10 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
 
         self._build_event_with_id()
 
-        self._build_target_with_event_target()
+        if self.earliest_latest_specified():
+            self._build_target_earliest_latest()
+        else:
+            self._build_target_with_event_target()
 
         self._build_location_by_event()
 
