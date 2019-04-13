@@ -10,6 +10,13 @@ db = context.Context.db
 
 
 def create(args, user_id, ride_category="airport"):
+    """ Creates a ride request with arguments received by REST API endpoint
+
+    :param args: argument dict returned by .parse_args() from a reqparse object
+    :param user_id: user id
+    :param ride_category: "airport" | "event"
+    :return: RideRequest object
+    """
     if ride_category == "airport":
         return _create_airport_ride_request(args, user_id)
     elif ride_category == "event":
@@ -19,6 +26,12 @@ def create(args, user_id, ride_category="airport"):
 
 
 def _create_airport_ride_request(args, user_id):
+    """ Creates an airport ride request with arguments received by REST API endpoint
+
+    :param args: argument dict returned by .parse_args() from a reqparse object
+    :param user_id: user id
+    :return: RideRequest object
+    """
     builder = AirportRideRequestBuilder()
     ride_request: AirportRideRequest = builder \
         .set_with_form_and_user_id(args, user_id) \
@@ -45,6 +58,12 @@ def _create_airport_ride_request(args, user_id):
 
 
 def _create_social_event_ride_request(args, user_id):
+    """ Creates an social event ride request with arguments received by REST API endpoint
+
+    :param args: argument dict returned by .parse_args() from a reqparse object
+    :param user_id: user id
+    :return: RideRequest object
+    """
     builder = SocialEventRideRequestBuilder()
     ride_request: SocialEventRideRequest = builder \
         .set_with_form_and_user_id(args, user_id) \

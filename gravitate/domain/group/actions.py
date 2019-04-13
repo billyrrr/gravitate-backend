@@ -140,6 +140,11 @@ def group_two(ride_request_ids: list):
 
 
 def run_orbit_group(ride_requests: dict):
+    """ Create an orbit and group ride requests into the orbit.
+
+    :param ride_requests: ride requests to place in the same orbit.
+    :return: ride requests that could not be joined
+    """
     assert len(ride_requests) != 0
     event_ids: set = {r.event_ref.id for rid, r in ride_requests.items()}
     assert len(event_ids) == 1
@@ -169,6 +174,15 @@ def run_orbit_group(ride_requests: dict):
 
 @transactional
 def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location_ref):
+    """ Add ride requests to an orbit
+
+    :param transaction: firestore transaction
+    :param orbit_ref: firestore document reference of the orbit to add ride requests to
+    :param ride_request_refs: firestore document references of the ride requests to add to an orbit
+    :param event_ref: firestore document references of the event associated with the orbit
+    :param location_ref: firestore document references of the location associated with the event / orbit
+    :return:
+    """
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup_with_ref(orbit_ref=orbit_ref,
                                                                            refs_to_add=ride_request_refs,
                                                                            refs_to_drop=list(),
@@ -179,12 +193,28 @@ def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location
 
 
 def drop_group(ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
+    """ Drops ride requests from an orbit.
+    :param ids: ids of ride requests to drop
+    :param orbit_id: id of the orbit to drop a ride request from
+    :param event_id: id of the event associated with the orbit
+    :param location_id: id of the location associated with the event / orbit
+    :return:
+    """
     transaction = db.transaction()
     _drop_group(transaction, ids, orbit_id=orbit_id, event_id=event_id, location_id=location_id)
 
 
 @transactional
 def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
+    """ Drops ride requests from an orbit.
+
+    :param transaction: firestore transaction
+    :param ids: ids of ride requests to drop
+    :param orbit_id: id of the orbit to drop a ride request from
+    :param event_id: id of the event associated with the orbit
+    :param location_id: id of the location associated with the event / orbit
+    :return:
+    """
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup(intended_orbit_id=orbit_id, ids_to_add=set(),
                                                                   ids_to_drop=ids, event_id=event_id,
                                                                   location_id=location_id)
@@ -193,9 +223,14 @@ def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, l
 
 
 def remove_from_orbit(r: RideRequest, o: Orbit):
-    # DEPRECATED
-    # remove userRef from orbitRef's userTicketPairs
-    # search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+    """ Removes userRef from orbitRef's userTicketPairs
+
+    search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+
+    :param r: ride request to remove from orbit
+    :param o: orbit
+    :return:
+    """
     userIds = list(o.user_ticket_pairs.keys())
     for userId in userIds:
         if userId == r.user_id:

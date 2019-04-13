@@ -75,14 +75,10 @@ class RideRequestGenericDao:
         return rideRequests
 
     @staticmethod
-    # @transactional
     def get_with_transaction(transaction: Transaction, rideRequestRef: DocumentReference) -> Type[RideRequest]:
         """ Description Note that this cannot take place if transaction already received write operations. "If a
         transaction is used and it already has write operations added, this method cannot be used (i.e.
         read-after-write is not allowed)."
-
-        :type self:
-        :param self:
 
         :type transaction:Transaction:
         :param transaction:Transaction:
@@ -160,14 +156,10 @@ class RideRequestGenericDao:
         return singleRideRequestRef.delete()
 
     @staticmethod
-    # @transactional
     def set_with_transaction(transaction: Transaction, newRideRequest: Type[RideRequest],
                              rideRequestRef: DocumentReference):
         """ Description
             Note that a read action must have taken place before anything is set with that transaction. 
-
-        :type self:
-        :param self:
 
         :type transaction:Transaction:
         :param transaction:Transaction:
@@ -184,26 +176,3 @@ class RideRequestGenericDao:
         """
         return transaction.set(rideRequestRef, newRideRequest.to_dict())
 
-    # 
-    # @staticmethod
-    # def set_with_transaction(transaction: Transaction, newEvent: Type[Event], eventRef: DocumentReference):
-    #     """ Description
-    #         Note that a read action must have taken place before anything is set with that transaction. 
-
-    #     :type self:
-    #     :param self:
-
-    #     :type transaction:Transaction:
-    #     :param transaction:Transaction:
-
-    #     :type newLocation:Type[Location]:
-    #     :param newLocation:Type[Location]:
-
-    #     :type locationRef:DocumentReference:
-    #     :param locationRef:DocumentReference:
-
-    #     :raises:
-
-    #     :rtype:
-    #     """
-    #     return transaction.set(eventRef, eventLocation)
