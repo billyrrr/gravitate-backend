@@ -13,6 +13,10 @@ ride_request_base_parser.add_argument('toEvent', type=bool, help='whether the ri
 ride_request_base_parser.add_argument('driverStatus', type=bool,
                                       help="whether the user want to be considered as a driver for the event",
                                       location="json")
+ride_request_base_parser.add_argument('earliest', type=str,
+                                      help="earliest time used to create target", required=False)
+ride_request_base_parser.add_argument('latest', type=str,
+                                      help="latest time used to create target", required=False)
 
 # Parse field values from json
 airport_parser = ride_request_base_parser.copy()

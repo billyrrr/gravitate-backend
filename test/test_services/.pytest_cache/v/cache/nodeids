@@ -1,3 +1,3 @@
 [
-  "test_event.py::UserEventServiceTest::test_put_many"
+  "test_airport_ride_request.py::RequestRideTest::testCreateRideRequestsEarliestLatest"
 ]

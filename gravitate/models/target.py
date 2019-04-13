@@ -3,7 +3,7 @@ import datetime as dt
 import iso8601
 import pytz
 
-from gravitate.common import local_time_from_timestamp
+from gravitate.common import local_time_from_timestamp, str_to_local_time
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
 from .firestore_object import FirestoreObject
 
@@ -11,23 +11,51 @@ from .firestore_object import FirestoreObject
 # TODO: refactor to Business Object
 
 
-def create_target_with_form(form: AirportRideRequestCreationForm):
+# def create_target_with_form(form: AirportRideRequestCreationForm):
+#     """
+#     Note that this method won't work if any datetime string represents a time when
+#         daylight saving ends (November 4 1:00AM-2:00AM).
+#         since anytime in between corresponds to more than one possible UTC time.
+#           Time conversion is DEFECTIVE. DO NOT USE until changed according to create_target_with_local_time_str.
+#
+#         :param form:AirportRideRequestCreationForm:
+#     """
+#     tz = pytz.timezone('America/Los_Angeles')
+#
+#     earliest_datetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
+#     latest_datetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
+#
+#     earliest_timestamp = int(earliest_datetime.timestamp())
+#     latest_timestamp = int(latest_datetime.timestamp())
+#     # TODO: retrieve tzinfo from event rather than hard-coding 'America/Los_Angeles'
+#     target = Target.create_airport_event_target(form.toEvent, earliest_timestamp, latest_timestamp)
+#     return target
+
+
+def create_target_with_local_time_str(to_event, earliest_lts, latest_lts, ride_category):
     """
     Note that this method won't work if any datetime string represents a time when
         daylight saving ends (November 4 1:00AM-2:00AM).
         since anytime in between corresponds to more than one possible UTC time.
 
-        :param form:AirportRideRequestCreationForm:
+        :param earliest_lts: earliest local time string
+        :param latest_lts: latest local time string
     """
     tz = pytz.timezone('America/Los_Angeles')
 
-    earliest_datetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)
-    latest_datetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)
+    earliest_datetime = str_to_local_time(earliest_lts)
+    latest_datetime = str_to_local_time(latest_lts)
 
     earliest_timestamp = int(earliest_datetime.timestamp())
     latest_timestamp = int(latest_datetime.timestamp())
+
     # TODO: retrieve tzinfo from event rather than hard-coding 'America/Los_Angeles'
-    target = Target.create_airport_event_target(form.toEvent, earliest_timestamp, latest_timestamp)
+    if ride_category == "airportRide":
+        target = Target.create_airport_event_target(to_event, earliest_timestamp, latest_timestamp)
+    elif ride_category == "eventRide":
+        target = Target.create_social_event_target(to_event, earliest_timestamp, latest_timestamp)
+    else:
+        raise ValueError("Unsupported ride_category: {}".format(ride_category))
     return target
 
 
@@ -85,7 +113,8 @@ class Target(FirestoreObject):
         self.to_event = None
 
     create_with_flight_local_time = create_target_with_flight_local_time
-    create_with_form = create_target_with_form
+    # create_with_form = create_target_with_form
+    create_with_local_time_str = create_target_with_local_time_str
 
     @staticmethod
     def from_dict(target_dict: dict):

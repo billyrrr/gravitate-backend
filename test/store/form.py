@@ -101,11 +101,17 @@ class FormDictFactory:
 
 class EventRideRequestFormDictFactory:
 
-    def create(self, event_id="testformeventid1"):
-        return {
+    def create(self, event_id="testformeventid1", add_earliest_latest=False,
+               earliest="2019-04-12T09:00:00.000", latest="2019-04-12T14:00:00.000" ):
+        d = {
              'userId': 'testuserid1',
              'eventId': event_id,
              'pickupAddress': 'Tenaya Hall, San Diego, CA 92161',
              'driverStatus': False,
              'toEvent': True
         }
+        if add_earliest_latest:
+            d["earliest"] = earliest
+            d["latest"] = latest
+
+        return d
