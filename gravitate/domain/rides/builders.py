@@ -8,6 +8,14 @@ from gravitate.models import Target, Location
 
 
 class RideRequestBaseBuilder:
+    """
+    Builder for RideRequest. This class simplifies the workflow for creating ride request.
+    Usage:
+        1. Instantiate <AirportRideRequestBuilder|SocialEventRideRequestBuilder>
+        2. Call .set_data or .set_with_form_and_user_id if calling from REST API layer
+        3. Call .export_as_class(<AirportRideRequest|SocialEventRideRequest>)
+
+    """
 
     ride_category = None
 
@@ -41,17 +49,25 @@ class RideRequestBaseBuilder:
         """
         return export_class.from_dict(self._ride_request_dict)
 
-    """
-        Note that this class is not following any design pattern at all. It should be thoroughly tested before use.
-            "var if var is not None else self.var"
-                prevents a variable already set from being overridden by None.
-
-            TODO: test and finish implementing
-        """
-
     def set_data(self, user_id=None, flight_local_time=None, flight_number=None, earliest=None, latest=None,
                  to_event: bool = None, location_id=None, airport_code=None, pickup_address=None, pricing=None,
                  driver_status: bool = None, event_id=None):
+        """
+        Sets data that may be used by the builder
+        :param user_id:
+        :param flight_local_time:
+        :param flight_number:
+        :param earliest:
+        :param latest:
+        :param to_event:
+        :param location_id:
+        :param airport_code:
+        :param pickup_address:
+        :param pricing:
+        :param driver_status:
+        :param event_id:
+        :return:
+        """
         self.user_id = user_id
         self.flight_local_time = flight_local_time
         self.flight_number = flight_number
@@ -172,11 +188,11 @@ class AirportRideRequestBuilder(RideRequestBaseBuilder):
     ride_category = "airportRide"
 
     def set_with_form_and_user_id(self, d, user_id):
-        """
-        TODO: parse all fields from form. None if does not exist
-        :param d:
-        :param user_id:
-        :return:
+        """ Save arguments as instance variables in builder
+
+        :param d: argument dict returned by .parse_args() from a reqparse object
+        :param user_id: user id
+        :return: AirportRideRequestBuilder
         """
         self.user_id = user_id
         self.set_data(
@@ -218,11 +234,11 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
     ride_category = "eventRide"
 
     def set_with_form_and_user_id(self, d, user_id):
-        """
-        TODO: parse all fields from form. None if does not exist
+        """ Save arguments as instance variables in builder
+
         :param d:
         :param user_id:
-        :return:
+        :return: SocialEventRideRequestBuilder
         """
         self.user_id = user_id
         self.set_data(
@@ -233,10 +249,11 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
         return self
 
     def build_social_event_ride_request(self):
+        """ Builds SocialEventRideRequest from instance variables
+        :return:
+        """
         self._build_ride_category()
-
         self._build_user()
-
         self._build_event_with_id()
 
         if self.earliest_latest_specified():
@@ -245,14 +262,10 @@ class SocialEventRideRequestBuilder(RideRequestBaseBuilder):
             self._build_target_with_event_target()
 
         self._build_location_by_event()
-
         self._build_event_ref_with_event()
-
         self._build_disabilities()
         self._build_baggages()
-
         self._build_pickup()
-
         self._build_ride_request_default_values()
 
         return self
