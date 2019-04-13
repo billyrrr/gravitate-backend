@@ -58,25 +58,19 @@ class OrbitGroup:
     This class handles operations of grouping ride requests into orbits.
     Compared to Group, this new class has better atomicity.
 
-    (Experimental)
-
-    TODO: test
-
     """
-
-    transaction: Transaction
-
-    # To be set in setup
-    orbit: Orbit = None
-    ride_requests_to_add: dict = None
-    ride_requests_to_drop: dict = None
-    ride_requests_existing: dict = None  # key: ride request document id; value: ride request object
-    location: Type[Location] = None
-    event: Event = None
 
     def __init__(self, transaction):
         # Start a transaction
         self.transaction = transaction
+
+        # To be set in setup
+        self.orbit: Orbit = None
+        self.ride_requests_to_add: dict = None
+        self.ride_requests_to_drop: dict = None
+        self.ride_requests_existing: dict = None  # key: ride request document id; value: ride request object
+        self.location: Type[Location] = None
+        self.event: Event = None
 
     def setup_with_ref(self, orbit_ref=None, refs_to_add: list = None, refs_to_drop: list = None,
                        event_ref=None, location_ref=None):
