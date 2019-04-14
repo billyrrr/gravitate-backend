@@ -4,8 +4,8 @@ Author: Leon Wu, Zixuan Rao
 This module implements the service for creating and managing rideRequests.
 
 """
-
-from flask_restful import Resource
+from flask import request
+from flask_restful import Resource, HTTPException
 
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
@@ -20,27 +20,46 @@ from . import parsers as ride_request_parsers
 db = Context.db
 
 
+class MovedPermanently(HTTPException):
+    code = 301
+    description = "Resource moved permanently. "
+
+
 class RideRequestCreation(Resource):
 
     @service_utils.authenticate
     def post(self, rideCategory, uid):
+
+        raise MovedPermanently("Resource moved permanently. POST to /rideRequests instead. ")
+
+
+class RideRequestPost(Resource):
+
+    @service_utils.authenticate
+    def post(self, uid):
         # Verify Firebase auth.
         user_id = uid
 
+        # Get ride category
+        json_object = request.get_json()
+        ride_category = json_object.get("rideCategory")
+        if ride_category is None:
+            raise Exception("rideCategory not specified. ")
+
         args = None
 
-        if rideCategory == "airport":
+        if ride_category == "airport":
             args = ride_request_parsers.airport_parser.parse_args()
 
-        elif rideCategory == "event":
+        elif ride_category == "event":
             args = ride_request_parsers.social_event_ride_parser.parse_args()
         else:
-            raise Exception("Unsupported rideType: {}".format(rideCategory))
+            raise Exception("Unsupported rideType: {}".format(ride_category))
 
         print(args)
 
         # Create RideRequest Object
-        ride_request = rides.create(args, user_id, ride_category=rideCategory)
+        ride_request = rides.create(args, user_id, ride_category=ride_category)
 
         # rideRequest Response
         response_dict = {

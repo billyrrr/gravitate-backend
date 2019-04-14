@@ -8,7 +8,7 @@ def _create_ride_requests_for_tests(app, userIds, to_tear_down, rideRequestIds):
 
         form = FormDictFactory().create(returnDict=True)
         form["flightLocalTime"] = "2018-12-20T12:00:00.000"
-        r = app.post(path='/requestRide/airport',
+        r = app.post(path='/rideRequests',
                      json=form,
                      headers=getMockAuthHeaders(uid=userId)
                      )

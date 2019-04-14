@@ -27,7 +27,7 @@ from google.auth.transport import requests
 from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
-from gravitate.api_server.ride_request.services import LuggageService
+from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
 from gravitate.api_server.utils import authenticate
@@ -73,7 +73,7 @@ api.add_resource(UserService, '/users/<string:uid>')
 api.add_resource(UserEventService, '/me/events')
 
 # Ride Request Related Endpoints
-api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
+api.add_resource(RideRequestPost, '/rideRequests')
 api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
 api.add_resource(LuggageService, '/rideRequests/<string:rideRequestId>/luggage')
@@ -89,6 +89,7 @@ api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(EndpointTestService, '/endpointTest')
 
 # No longer used
+api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 # api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 # api.add_resource(DeleteMatchService, '/deleteMatch')
 
