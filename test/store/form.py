@@ -1,8 +1,7 @@
 class MockFl3Form(object):
 
     def __init__(self):
-        self.earliest = None
-        self.latest = None
+        self.rideCategory = "airport"
         self.toEvent = None
 
         self.driverStatus = None
@@ -19,6 +18,7 @@ class MockFl3Form(object):
 class MockFl3FormBuilder(MockFl3Form):
 
     def __init__(self):
+        super().__init__()
         self.buildAirportInfo()
         self.buildUserTravelOptions()
         self.buildFlight()
@@ -52,6 +52,8 @@ class BMockFormBuilder(AMockFormBuilder):
 
     def __init__(self):
         super().__init__()
+        self.earliest = None
+        self.latest = None
         self.buildEarliestLatest()
 
     def buildEarliestLatest(self):
@@ -63,6 +65,8 @@ class CMockFormBuilder(AMockFormBuilder):
 
     def __init__(self):
         super().__init__()
+        self.earliest = None
+        self.latest = None
         self.buildEarliestLatest()
 
     def buildEarliestLatest(self):
@@ -104,6 +108,7 @@ class EventRideRequestFormDictFactory:
     def create(self, event_id="testformeventid1", add_earliest_latest=False,
                earliest="2019-04-12T09:00:00.000", latest="2019-04-12T14:00:00.000" ):
         d = {
+             'rideCategory': "event",
              'userId': 'testuserid1',
              'eventId': event_id,
              'pickupAddress': 'Tenaya Hall, San Diego, CA 92161',

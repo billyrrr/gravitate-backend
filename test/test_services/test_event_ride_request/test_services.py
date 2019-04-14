@@ -42,7 +42,7 @@ class RequestRideTest(TestCase):
             form = self.d
             form["testUserId"] = userId
             r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
-                path='/requestRide/event', json=form, headers=getMockAuthHeaders(userId))
+                path='/rideRequests', json=form, headers=getMockAuthHeaders(userId))
             print(r.json)
             self.assertIn("firestoreRef", r.json.keys())
             rid = r.json["id"]
@@ -51,6 +51,20 @@ class RequestRideTest(TestCase):
             firestore_ref = ride_request.get_firestore_ref()  # Not that it is actually rideRequestId
 
             self.ride_request_ids_to_delete.append((userId, firestore_ref.id))
+
+    def testPostDeprecatedEndpoint(self):
+        userId = "testuid1a"
+        r = self.app.post(  # TODO: change everywhere to json=form (used to be json=json.dumps(form))
+            path='/requestRide/event', json={"rideCategory": "airport"}, headers=getMockAuthHeaders(userId))
+
+        error_return_expected = {
+            "message": "Resource moved permanently. POST to /rideRequests instead. ",
+            "status": 301
+        }
+        error_message_expected = error_return_expected["message"]
+        error_status_code_expected = error_return_expected["status"]
+        self.assertEqual(r.json["message"], error_message_expected)
+        self.assertEqual(r.status_code, error_status_code_expected)
 
     def tearDown(self):
         """
