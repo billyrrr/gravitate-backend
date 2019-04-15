@@ -1,8 +1,10 @@
 import unittest
 
+from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import SocialEvent, AirportEvent
 from gravitate import context
+from gravitate.models import SocialEventLocation
 
 db = context.Context.db
 
@@ -68,6 +70,25 @@ class EventModelTest(unittest.TestCase):
 class SocialEventModelTest(unittest.TestCase):
 
     maxDiff = None
+    refs_to_delete = list()
+
+    def setUp(self):
+        fb_d = {
+            "name": "Coachella",
+            "location": {
+                "latitude": 33.679974,
+                "longitude": -116.237221
+            },
+            "id": "20281766647"
+        }
+        location = SocialEventLocation.from_fb_place(fb_d)
+        self.location_ref = LocationGenericDao().insert_new(location)
+
+        self.refs_to_delete.append(self.location_ref)
+
+    def tearDown(self):
+        for ref in self.refs_to_delete:
+            ref.delete()
 
     def testEventFactory(self):
         d = {
@@ -110,7 +131,7 @@ class SocialEventModelTest(unittest.TestCase):
             "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
             "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
             "fbEventId": "137943263736990",
-            "locationRef": EventDao().get_ref('testlocationid1'),
+            "locationRef": self.location_ref,
             "participants": []
         }
         event = SocialEvent.from_dict(eventDict)
@@ -127,7 +148,9 @@ class SocialEventModelTest(unittest.TestCase):
             'pricing': 123456789,
             "description": "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com",
             "name": "Coachella Valley Music and Arts Festival 2019 - Weekend 1",
-            'locationId': "testlocationid1",
+            'locationId': self.location_ref.id,
+            'address': 'Indio, CA, USA',
+            'latitude': 33.679974, 'longitude': -116.237221,
             'isClosed': False,
             'parkingInfo': None,
             'fbEventId': "137943263736990"

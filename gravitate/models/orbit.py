@@ -65,4 +65,3 @@ class Orbit(FirestoreObject):
         }
         return orbit_dict
 
-

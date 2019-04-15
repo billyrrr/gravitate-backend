@@ -2,7 +2,9 @@
 Author: Andrew Kim
 Reviewer: Zixuan Rao
 """
+import warnings
 
+from gravitate.data_access import LocationGenericDao
 from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
 
@@ -87,6 +89,19 @@ class Event(FirestoreObject):
             'description': self.description,
             'parkingInfo': self.parking_info
         }
+
+        try:
+            coordinates = self.location.coordinates
+            dict_view['latitude'] = coordinates['latitude']
+            dict_view['longitude'] = coordinates['longitude']
+            dict_view['address'] = self.location.address
+        except Exception as e:
+            dict_view['latitude'] = None
+            dict_view['longitude'] = None
+            dict_view['address'] = None
+            warnings.warn("location parsing failed, locationId: {}".format(self.location_ref.id))
+            warnings.warn(e)
+
         for target in self.targets:
             # Note that latest arrival means the latest time to arrive at the event
             #       and earliest departure is the earliest time to leave an event
@@ -113,6 +128,17 @@ class Event(FirestoreObject):
             :param self:
         """
         self.is_closed = True
+
+    @property
+    def location(self):
+        """
+            Note that this method is non-transactional. We are assuming that
+                    Location objects are immutable and ready before the transaction.
+            :return:
+        """
+        location_ref = self.location_ref
+        location = LocationGenericDao().get(location_ref)
+        return location
 
     def __init__(self, event_category, participants, targets, pricing, location_ref, is_closed, local_date_string, name,
                  description, parking_info):
