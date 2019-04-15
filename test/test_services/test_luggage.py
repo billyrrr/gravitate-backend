@@ -2,6 +2,7 @@ import json
 from unittest import TestCase
 
 from gravitate import main as main
+from test import scripts
 from test.test_main import getMockAuthHeaders
 from test.test_services.utils import _create_ride_requests_for_tests
 
@@ -17,6 +18,12 @@ class GetLuggageTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userId = "testuid1"
+
+        # Populate database with events and locations
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
         rideRequestIds = list()
         _create_ride_requests_for_tests(self.app, [self.userId], list(), rideRequestIds)
         self.rideRequestId = rideRequestIds[0]
@@ -105,4 +112,5 @@ class GetLuggageTest(TestCase):
 
     def tearDown(self):
         self._tear_down()
+        self.c.clear_after()
         super().tearDown()

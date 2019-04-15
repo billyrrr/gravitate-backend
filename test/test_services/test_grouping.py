@@ -2,6 +2,7 @@ import json
 from unittest import TestCase
 
 from gravitate import main as main
+from test import scripts
 from test.test_main import getMockAuthHeaders
 from test.test_services.utils import _create_ride_requests_for_tests
 
@@ -14,6 +15,9 @@ class DeleteMatchTest(TestCase):
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
         self.rideRequestIds = list()
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
         _create_ride_requests_for_tests(self.app, self.userIds, self.ride_request_ids_to_delete, self.rideRequestIds)
         r = self.app.post(path='/devForceMatch',
                           json=json.dumps({"rideRequestIds": self.rideRequestIds,
@@ -47,6 +51,7 @@ class DeleteMatchTest(TestCase):
 
     def tearDown(self):
         self._tear_down()
+        self.c.clear_after()
         super().tearDown()
 
 
@@ -58,6 +63,9 @@ class GroupRequestsTest(TestCase):
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
         self.rideRequestIds = list()
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
         _create_ride_requests_for_tests(self.app, self.userIds, self.ride_request_ids_to_delete, self.rideRequestIds)
 
     def testGroupRideRequestsTemp(self):
@@ -102,4 +110,5 @@ class GroupRequestsTest(TestCase):
 
     def tearDown(self):
         self._tear_down()
+        self.c.clear_after()
         super().tearDown()

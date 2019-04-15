@@ -5,6 +5,7 @@ from google.cloud import firestore
 from gravitate import main as main
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
+from test import scripts
 from test.store import getEventDict
 from test.test_main import getMockAuthHeaders
 
@@ -250,6 +251,10 @@ class EventServiceTest(unittest.TestCase):
         self.app = main.app.test_client()
         self.userId = "testuid1"
 
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
         event_ref: firestore.DocumentReference = EventDao().create(self.event)
         self.event.set_firestore_ref(event_ref)
         self.refs_to_delete.append(event_ref)
@@ -287,3 +292,4 @@ class EventServiceTest(unittest.TestCase):
         for ref in self.refs_to_delete:
             ref.delete()
         self.refs_to_delete.clear()
+        self.c.clear_after()
