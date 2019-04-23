@@ -250,13 +250,6 @@ class EventServiceTest(unittest.TestCase):
                                   from_earliest=1545033600,
                                   from_latest=1545119999)
 
-        # Populate location
-        location_ref = event_dict["locationRef"]
-        location_d = getLocationDict(location_category="social")
-        location = Location.from_dict(location_d)
-        LocationGenericDao().set(location, location_ref)
-        self.refs_to_delete.append(location_ref)
-
         self.event = Event.from_dict(event_dict)
 
         main.app.testing = True
@@ -266,6 +259,13 @@ class EventServiceTest(unittest.TestCase):
         self.c = scripts.SetUpTestDatabase()
         self.c.clear_before()
         self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
+        # Populate location
+        location_ref = event_dict["locationRef"]
+        location_d = getLocationDict(location_category="social")
+        location = Location.from_dict(location_d)
+        LocationGenericDao().set(location, location_ref)
+        self.refs_to_delete.append(location_ref)
 
         event_ref: firestore.DocumentReference = EventDao().create(self.event)
         self.event.set_firestore_ref(event_ref)
