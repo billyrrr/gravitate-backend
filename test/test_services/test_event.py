@@ -3,10 +3,12 @@ import unittest
 from google.cloud import firestore
 
 from gravitate import main as main
+from gravitate.data_access import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
+from gravitate.models import Location
 from test import scripts
-from test.store import getEventDict
+from test.store import getEventDict, getLocationDict
 from test.test_main import getMockAuthHeaders
 
 
@@ -239,13 +241,23 @@ class EventServiceTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
+
+        self.refs_to_delete = list()
+
         event_dict = getEventDict(use_firestore_ref=True,
                                   to_earliest=1545033600,
                                   to_latest=1545119999,
                                   from_earliest=1545033600,
                                   from_latest=1545119999)
+
+        # Populate location
+        location_ref = event_dict["locationRef"]
+        location_d = getLocationDict(location_category="social")
+        location = Location.from_dict(location_d)
+        LocationGenericDao().set(location, location_ref)
+        self.refs_to_delete.append(location_ref)
+
         self.event = Event.from_dict(event_dict)
-        self.refs_to_delete = list()
 
         main.app.testing = True
         self.app = main.app.test_client()
