@@ -6,6 +6,7 @@ from gravitate import main
 from gravitate import models
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
+from gravitate.domain.location import Location, LocationGenericDao
 from test import store
 from test.test_main import getMockAuthHeaders
 
@@ -21,8 +22,8 @@ class RequestRideTest(TestCase):
         self.refs_to_delete = list()
 
         location_dict = store.getLocationDict(location_category="social")
-        location = models.Location.from_dict(location_dict)
-        location_ref = data_access.LocationGenericDao().insert_new(location)
+        location = Location.from_dict(location_dict)
+        location_ref = LocationGenericDao().insert_new(location)
         self.refs_to_delete.append(location_ref)
 
         event_dict = store.getEventDict(event_category="social")

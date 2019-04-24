@@ -1,7 +1,7 @@
 from unittest import TestCase, skip
 
 from gravitate.domain.driver_navigation.builders import DriverNavigationBuilder
-from gravitate.models import Orbit
+from gravitate.domain.orbit import Orbit
 from test import store
 
 

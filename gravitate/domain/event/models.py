@@ -4,7 +4,7 @@ Reviewer: Zixuan Rao
 """
 import warnings
 
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao
 from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
 

@@ -1,6 +1,6 @@
 from gravitate import context
 from gravitate.api_server import errors as service_errors
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
 from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
 from . import utils

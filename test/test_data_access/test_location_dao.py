@@ -2,8 +2,7 @@ import unittest
 
 import test.store.model as model
 from gravitate import context
-from gravitate.data_access import LocationGenericDao
-from gravitate.models import Location
+from gravitate.domain.location import Location, LocationGenericDao
 from test import scripts as setup_scripts
 
 db = context.Context.db

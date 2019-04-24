@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import Mock
 
-from gravitate import data_access
-from gravitate.models import Orbit
+# from gravitate import data_access
+from gravitate.domain.orbit import Orbit, OrbitDao
 from gravitate import context
 from test.store import orbitDict
 
@@ -15,7 +15,7 @@ class OrbitDaoTest(unittest.TestCase):
 
     def testCreateOrbit(self):
         newOrbit = Orbit.from_dict(orbitDict)
-        orbitRef = data_access.OrbitDao().create(newOrbit)
+        orbitRef = OrbitDao().create(newOrbit)
         self.to_delete.append(orbitRef)
         self.assertIsNotNone(orbitRef)
 

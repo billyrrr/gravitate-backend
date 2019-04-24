@@ -1,14 +1,12 @@
 from typing import Type
 
 from gravitate import context
-from gravitate import data_access
-from gravitate import models
 from gravitate import scripts
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.group import actions as group_actions
 from gravitate.domain.rides import RideRequest
 from gravitate.domain.rides import RideRequestGenericDao
-from gravitate.models import Location
+from gravitate.domain.orbit import OrbitDao, Orbit
 from test import store
 
 CTX = context.Context
@@ -29,10 +27,10 @@ def generate_ride_request() -> Type[RideRequest]:
     return ride_request
 
 
-def generate_orbit(event_ref) -> models.Orbit:
+def generate_orbit(event_ref) -> Orbit:
     orbit_dict = store.get_orbit_dict_empty(event_ref)
-    orbit = models.Orbit.from_dict(orbit_dict)
-    data_access.OrbitDao().create(orbit)
+    orbit = Orbit.from_dict(orbit_dict)
+    OrbitDao().create(orbit)
     return orbit
 
 
@@ -40,7 +38,7 @@ def remove_match_tmp(ride_request_id):
     ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
     ride_request = RideRequestGenericDao().get(ride_request_ref)
     orbit_ref = ride_request.orbit_ref
-    orbit = data_access.OrbitDao().get(orbit_ref)
+    orbit = OrbitDao().get(orbit_ref)
     group_actions.remove_from_orbit(ride_request, orbit)
 
 

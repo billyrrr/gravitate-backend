@@ -5,12 +5,13 @@ import pytz
 from google.cloud.firestore import DocumentReference, transactional
 
 import gravitate.domain.event_schedule.actions
-from gravitate.data_access import LocationGenericDao, UserDao
+from gravitate.data_access import UserDao
+from gravitate.domain.location import LocationGenericDao, AirportLocation
 from gravitate.domain.event.dao import EventDao
 from .models import Ride as RideRequest
-from .ride_request_dao import RideRequestGenericDao
+from .dao import RideRequestGenericDao
 from gravitate.forms.ride_request_creation_form import AirportRideRequestCreationForm
-from gravitate.models import AirportLocation, User
+from gravitate.models import User
 
 
 def check_duplicate(user_id: str, event_ref: DocumentReference):

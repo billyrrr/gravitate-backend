@@ -3,7 +3,7 @@ import json
 # import gravitate.models as models
 from gravitate import context
 from gravitate.domain.rides import RideRequest
-from gravitate.models import Location
+from gravitate.domain.location import Location
 
 db = context.Context.db
 

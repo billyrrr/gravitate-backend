@@ -3,9 +3,8 @@ from typing import Type
 
 import iso8601
 
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, SocialEventLocation
 from gravitate.domain.event.models import Event
-from gravitate.models import SocialEventLocation
 from gravitate.models import ToEventTarget, FromEventTarget
 
 

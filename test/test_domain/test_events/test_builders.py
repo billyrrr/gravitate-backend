@@ -1,9 +1,8 @@
 from unittest import TestCase
 
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.event.builders_new import AirportEventBuilder, FbEventBuilder, build_ucsb_event
 from gravitate.domain.event.models import AirportEvent, SocialEvent, CampusEvent
-from gravitate.models import Location
 from test import scripts
 
 

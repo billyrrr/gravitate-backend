@@ -3,10 +3,9 @@ import unittest
 from google.cloud import firestore
 
 from gravitate import main as main
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
-from gravitate.models import Location
 from test import scripts
 from test.store import getEventDict, getLocationDict
 from test.test_main import getMockAuthHeaders
