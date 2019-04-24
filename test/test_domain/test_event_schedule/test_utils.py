@@ -3,7 +3,7 @@ import unittest
 from google.cloud.firestore import DocumentReference, DocumentSnapshot
 
 from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
-from gravitate.models.orbit import Orbit
+from gravitate.domain.orbit.models import Orbit
 from gravitate import context
 # from firebase_admin import auth
 

@@ -1,4 +1,4 @@
-from gravitate.models import Orbit
+from gravitate.domain.orbit import Orbit
 
 
 class DriverNavigation:

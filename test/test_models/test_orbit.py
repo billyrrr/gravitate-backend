@@ -1,6 +1,6 @@
 import unittest
 
-from gravitate.models import Orbit
+from gravitate.domain.orbit import Orbit
 from test.store import orbitDict
 
 

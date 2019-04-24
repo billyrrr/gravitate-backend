@@ -3,7 +3,8 @@ from typing import Type
 from gravitate.domain.event_schedule.utils import getMemberProfilePhotoUrls
 from gravitate.domain.rides import SocialEventRideRequest, AirportRideRequest, RideRequest
 from gravitate.domain.location import SocialEventLocation, AirportLocation, Location
-from gravitate.models import ToEventTarget, Orbit
+from gravitate.models import ToEventTarget
+from gravitate.domain.orbit import Orbit
 from gravitate.domain.event_schedule import AirportEventSchedule
 from gravitate.domain.location.models import UserLocation
 

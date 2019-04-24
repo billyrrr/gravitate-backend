@@ -9,7 +9,7 @@ from gravitate.domain.event.models import Event
 from gravitate.domain.event_schedule import actions as event_schedule_actions
 from gravitate.domain.rides import RideRequest
 from gravitate.domain.location import Location
-from gravitate.models import Orbit
+from gravitate.domain.orbit import Orbit
 
 db = context.Context.db
 

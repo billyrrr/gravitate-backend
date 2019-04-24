@@ -5,7 +5,7 @@ import google
 from google.cloud.firestore import Transaction, DocumentReference, CollectionReference, DocumentSnapshot
 
 from gravitate import context
-from gravitate.models.orbit import Orbit
+from gravitate.domain.orbit.models import Orbit
 
 db = context.Context.db
 

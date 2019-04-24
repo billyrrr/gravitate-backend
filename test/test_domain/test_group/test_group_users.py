@@ -4,7 +4,7 @@ import gravitate.domain.group.pairing
 import test.store.model
 from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain.group.utils import _add_to_orbit
-from gravitate.models.orbit import Orbit
+from gravitate.domain.orbit.models import Orbit
 from gravitate.domain.rides import RideRequest
 from gravitate import context
 from test import scripts
