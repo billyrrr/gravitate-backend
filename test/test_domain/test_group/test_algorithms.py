@@ -5,8 +5,7 @@ import test.store.model
 from gravitate import context
 from math import inf
 
-from gravitate.data_access import LocationGenericDao
-from gravitate.models import Location
+from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.rides import RideRequest
 from gravitate import distance_func
 

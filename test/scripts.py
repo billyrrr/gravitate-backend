@@ -4,11 +4,10 @@ from gravitate import context
 from gravitate import data_access
 from gravitate import models
 from gravitate import scripts
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.group import actions as group_actions
 from gravitate.domain.rides import RideRequest
 from gravitate.domain.rides import RideRequestGenericDao
-from gravitate.models import Location
 from test import store
 
 CTX = context.Context

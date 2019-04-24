@@ -3,7 +3,8 @@ from typing import Type, List, Dict, Tuple
 from google.cloud.firestore import transactional, DocumentReference
 
 from gravitate import context
-from gravitate.data_access import LocationGenericDao, OrbitDao
+from gravitate.domain.location import LocationGenericDao
+from gravitate.data_access import OrbitDao
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.group.pairing import pair_ride_requests
 from gravitate.domain.rides import RideRequest, RideRequestGenericDao

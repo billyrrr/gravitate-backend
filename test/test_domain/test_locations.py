@@ -1,7 +1,6 @@
 from unittest import TestCase
 
-from gravitate.models import SocialEventLocation
-from gravitate.models.location import Location
+from gravitate.domain.location import Location, SocialEventLocation
 
 
 class LocationModelTest(TestCase):

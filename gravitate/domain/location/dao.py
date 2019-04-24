@@ -9,7 +9,7 @@ import google
 from google.cloud.firestore import Transaction, DocumentReference, DocumentSnapshot, transactional, Query
 
 from gravitate import context
-from gravitate.models import Location, AirportLocation, UcLocation
+from gravitate.domain.location import Location, AirportLocation, UcLocation
 
 CTX = context.Context
 

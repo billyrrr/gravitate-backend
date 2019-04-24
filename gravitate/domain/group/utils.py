@@ -8,7 +8,8 @@ from gravitate.data_access import UserDao
 from gravitate.domain.event.models import Event
 from gravitate.domain.event_schedule import actions as event_schedule_actions
 from gravitate.domain.rides import RideRequest
-from gravitate.models import Location, Orbit
+from gravitate.domain.location import Location
+from gravitate.models import Orbit
 
 db = context.Context.db
 

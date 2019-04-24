@@ -1,10 +1,9 @@
 import unittest
 
-from gravitate.data_access import LocationGenericDao
+from gravitate.domain.location import LocationGenericDao, SocialEventLocation
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import SocialEvent, AirportEvent
 from gravitate import context
-from gravitate.models import SocialEventLocation
 
 db = context.Context.db
 

@@ -1,7 +1,7 @@
 """Author: Zixuan Rao, Andrew Kim
 """
 
-from gravitate.data_access.location_dao import LocationGenericDao
+from gravitate.domain.location.dao import LocationGenericDao
 from gravitate.models.firestore_object import FirestoreObject
 from gravitate.models.target import Target, ToEventTarget
 
