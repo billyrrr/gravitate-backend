@@ -9,7 +9,7 @@ import googlemaps
 """
 Initialize google maps with key from project "gravitate-testing"
 """
-gmaps = googlemaps.Client(key="AIzaSyARsDkedg2Q8dQdO4qGzgU9M9_jLFEjM5s")
+gmaps = googlemaps.Client(key="AIzaSyAdehA_c3snLKJPQ31KRxcMDzxdMGm43eA")
 
 
 # Test case
