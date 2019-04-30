@@ -12,7 +12,12 @@ errors = {
     'EventNotFoundError': {
         "message": "invalid airport code and datetime combination or error finding airport location in backend",
         "status": 400
+    },
+    'RequestNotMatchedError': {
+        "message": "Trying to un-match a ride request that is not matched to an orbit yet. ",
+        "status": 400
     }
+
 }
 
 
@@ -21,4 +26,8 @@ class RequestAlreadyMatchedError(HTTPException):
 
 
 class RequestAlreadyExistsError(HTTPException):
+    pass
+
+
+class RequestNotMatchedError(HTTPException):
     pass
