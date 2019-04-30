@@ -1,10 +1,12 @@
 import json
+import warnings
 
 from flask import request
 from flask_restful import Resource
 
 from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain.group import actions
+from gravitate.api_server.errors import RequestNotMatchedError
 
 
 class OrbitForceMatchService(Resource):
@@ -76,6 +78,12 @@ class DeleteMatchServiceNew(Resource):
 
         ride_request_ref = RideRequestGenericDao().rideRequestCollectionRef.document(ride_request_id)
         r = RideRequestGenericDao().get(ride_request_ref)
+
+        if not r.request_completion:
+            """ Returns 400 when ride request is not already matched into an orbit 
+            """
+            raise RequestNotMatchedError
+
         location_ref = r.airport_location
         actions.drop_group({ride_request_id},
                            orbit_id=r.orbit_ref.id,
