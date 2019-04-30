@@ -11,6 +11,7 @@ class GroupRequestsTest(TestCase):
     ride_request_ids_to_delete = list()
 
     def setUp(self):
+        self.ride_request_ids_to_delete = list()
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
