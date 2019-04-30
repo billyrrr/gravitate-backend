@@ -45,6 +45,7 @@ class ReturnErrorsTest(TestCase):
         self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
 
     def tearDown(self):
+        self._tear_down()
         self.c.clear_after()
 
     def testRaiseRequestAlreadyExistsError(self):
@@ -139,10 +140,6 @@ class ReturnErrorsTest(TestCase):
         self.ride_request_ids_to_unmatch.clear()
         self.ride_request_ids_to_delete.clear()
 
-    def tearDown(self):
-        self._tear_down()
-        super().tearDown()
-
 
 class RequestRideTest(TestCase):
     ride_request_ids_to_delete = list()
@@ -151,6 +148,9 @@ class RequestRideTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
 
     def testCreateRideRequestsTemp(self):
         # Create new rideRequests
@@ -199,7 +199,7 @@ class RequestRideTest(TestCase):
 
     def tearDown(self):
         self._tear_down()
-        super().tearDown()
+        self.c.clear_after()
 
 
 class DeleteRequestTest(TestCase):
@@ -209,9 +209,18 @@ class DeleteRequestTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userId = "testuid1"
+
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
         rideRequestIds = list()
         _create_ride_requests_for_tests(self.app, [self.userId], list(), rideRequestIds)
         self.rideRequestId = rideRequestIds.pop()
+
+    def tearDown(self):
+        self.c.clear_after()
+        self.c.clear_after()
 
     def testDelete(self):
         r = self.app.delete(path='/rideRequests' + '/' + self.rideRequestId,
@@ -232,6 +241,11 @@ class GetRequestTest(TestCase):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userId = "testuid1"
+
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
         rideRequestIds = list()
         _create_ride_requests_for_tests(self.app, [self.userId], list(), rideRequestIds)
         self.rideRequestId = rideRequestIds[0]
@@ -288,6 +302,6 @@ class GetRequestTest(TestCase):
 
     def tearDown(self):
         self._tear_down()
-        super().tearDown()
+        self.c.clear_after()
 
 
