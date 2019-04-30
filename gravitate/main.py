@@ -30,6 +30,7 @@ from gravitate.api_server.grouping_service import OrbitForceMatchService, refres
 from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
+from gravitate.api_server.group_task import GroupTasksService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 
@@ -84,6 +85,7 @@ api.add_resource(EventService, '/events/<string:eventId>')
 
 # Grouping Related Endpoints
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
+api.add_resource(GroupTasksService, '/groupTasks')
 
 # Endpoint for Testing Purposes
 api.add_resource(EndpointTestService, '/endpointTest')
