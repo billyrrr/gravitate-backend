@@ -26,7 +26,9 @@ from google.auth.transport import requests
 
 from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService
+from gravitate.api_server.group_task.services import GroupCronTasksService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
+from gravitate.api_server.group_task import GroupTasksService
 from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
@@ -83,6 +85,8 @@ api.add_resource(EventCreation, '/events')
 api.add_resource(EventService, '/events/<string:eventId>')
 
 # Grouping Related Endpoints
+api.add_resource(GroupTasksService, '/groupTasks')
+api.add_resource(GroupCronTasksService, '/groupAll')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 
 # Endpoint for Testing Purposes

@@ -1,4 +1,5 @@
 import json
+import warnings
 from unittest import TestCase
 
 from gravitate import main as main
@@ -20,23 +21,24 @@ class GroupRequestsTest(TestCase):
         self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
         _create_ride_requests_for_tests(self.app, self.userIds, self.ride_request_ids_to_delete, self.rideRequestIds)
 
-    def testGroupRideRequestsTemp(self):
+    def testGroupRideRequestsNonCron(self):
         """
-        TODO move
+        Test that calling the resource from places other than cron returns a 401 unauthorized.
         :return:
         """
-        r = self.app.post(path='/groupTasks',
-                          json=json.dumps({"operationMode": "all"})
-                          )
+        r = self.app.get(path='/groupAll')
         print(r.data)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 401)
 
-    def testForceMatchRideRequests(self):
-        r = self.app.post(path='/groupTasks',
-                          json=json.dumps({"rideRequestIds": self.rideRequestIds,
-                                           "operationMode": "two"
-                                           }
-                                          ))
+    def testGroupRideRequestsAll(self):
+        """
+        Test that the all ride requests are queued to be grouped.
+        :return:
+        """
+        r = self.app.get(path='/groupAll',
+                         headers={
+                              "X-Appengine-Cron": True
+                         })
         print(r.data)
         self.assertEqual(r.status_code, 200)
 
@@ -50,7 +52,8 @@ class GroupRequestsTest(TestCase):
             r = self.app.post(path='/rideRequests/'+rid+'/'+'unmatch',
                               headers=getMockAuthHeaders(uid=uid)
                               )
-            assert r.status_code == 200
+            if r.status_code != 200:
+                warnings.warn("ride request rid: {} not unmatched".format(rid))
 
         for uid, rid in self.ride_request_ids_to_delete:
             r = self.app.delete(path='/rideRequests' + '/' + rid,
