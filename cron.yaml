@@ -1,0 +1,4 @@
+cron:
+- description: "match all ride requests"
+  url: /groupAll
+  schedule: every 2 mins
