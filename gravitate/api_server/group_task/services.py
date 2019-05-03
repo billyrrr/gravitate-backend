@@ -33,8 +33,7 @@ def validate_cron(func):
 
 class GroupCronTasksService(Resource):
     """
-    This class provides RESTful Resource for matching rideRequests. The service will match rideRequests
-        in ways specified in the json that is posted to /groupTasks endpoint.
+
     This service further decouples cron task from instance, and allow tasks to be queued for better
         performance during peak.
     """
@@ -48,6 +47,10 @@ class GroupCronTasksService(Resource):
 
 
 class GroupTasksService(Resource):
+    """
+    This class provides RESTful Resource for matching rideRequests.
+    The service will match rideRequests in ways specified in the json that is posted to /groupTasks endpoint.
+    """
 
     def post(self):
         request_json = request.get_json()
