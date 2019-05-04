@@ -9,9 +9,8 @@ from test.test_services.utils import _create_ride_requests_for_tests
 
 class DeleteMatchErrorTest(TestCase):
 
-    ride_request_ids_to_delete = list()
-
     def setUp(self):
+        self.ride_request_ids_to_delete = list()
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
@@ -151,7 +150,6 @@ class GroupRequestsTest(TestCase):
             r = self.app.post(path='/rideRequests/'+rid+'/'+'unmatch',
                               headers=getMockAuthHeaders(uid=uid)
                               )
-            print(r.json)
             assert r.status_code == 200
 
         for uid, rid in self.ride_request_ids_to_delete:

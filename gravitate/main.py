@@ -19,14 +19,17 @@ import logging
 
 # APScheduler for automatic grouping per interval
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
-from apscheduler.schedulers.background import BackgroundScheduler
+# Deprecated
+# from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request
 from flask_restful import reqparse, Api, Resource
 from google.auth.transport import requests
 
 from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService
-from gravitate.api_server.grouping_service import OrbitForceMatchService, refreshGroupAll, DeleteMatchServiceNew
+from gravitate.api_server.group_task.services import GroupCronTasksService
+from gravitate.api_server.grouping_service import OrbitForceMatchService, DeleteMatchServiceNew
+from gravitate.api_server.group_task import GroupTasksService
 from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService
@@ -35,10 +38,10 @@ from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 
 # Firebase Admin SDK
-
-sched = BackgroundScheduler(daemon=True)
-sched.add_job(refreshGroupAll, 'interval', minutes=1)
-sched.start()
+# Deprecated: Moved to be invoked by app engine cron on '/groupAll'
+# sched = BackgroundScheduler(daemon=True)
+# sched.add_job(refreshGroupAll, 'interval', minutes=1)
+# sched.start()
 
 # Initialize Flask
 firebase_request_adapter = requests.Request()
@@ -84,6 +87,8 @@ api.add_resource(EventCreation, '/events')
 api.add_resource(EventService, '/events/<string:eventId>')
 
 # Grouping Related Endpoints
+api.add_resource(GroupTasksService, '/groupTasks')
+api.add_resource(GroupCronTasksService, '/groupAll')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
 api.add_resource(GroupTasksService, '/groupTasks')
 

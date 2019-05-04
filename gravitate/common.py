@@ -3,6 +3,18 @@ import datetime
 import pytz
 from iso8601 import iso8601
 
+import random
+import string
+
+
+def random_id():
+    """
+        Generate a random string with 32 characters.
+        https://www.geeksforgeeks.org/generating-random-ids-python/
+    """
+    randomIdStr = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
+    return randomIdStr
+
 
 def local_time_from_timestamp(timestamp) -> str:
     """
