@@ -17,6 +17,34 @@ from gravitate.models import User
 db = Context.db
 
 
+class UserNotificationService(Resource):
+
+    def update(self, uid):
+        """ Description
+            Handles client FCM Token refresh
+                https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
+            Note that FCM refresh shall not override the user's settings for enabling notification
+                (if specified in requirement).
+
+        :type self:
+        :param self:
+
+        :type uid:
+        :param uid:
+
+        :raises:
+
+        :rtype:
+        """
+        raise NotImplementedError
+
+    def delete(self, uid):
+        """ Description
+            Delete all FCM tokens associated with the uid so that no notification will be sent to any of the tokens.
+        """
+        raise NotImplementedError
+
+
 class UserService(Resource):
 
     def get(self, uid):

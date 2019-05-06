@@ -31,7 +31,7 @@ from gravitate.api_server.group_task.services import GroupCronTasksService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, DeleteMatchServiceNew
 from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
-from gravitate.api_server.user_service import UserService
+from gravitate.api_server.user_service import UserService, UserNotificationService
 from gravitate.api_server.group_task import GroupTasksService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
@@ -73,6 +73,7 @@ api = Api(app, errors=service_errors.errors)
 
 # User Related Endpoints
 api.add_resource(UserService, '/users/<string:uid>')
+api.add_resource(UserNotificationService, '/users/<string:uid>/messagingTokens')
 api.add_resource(UserEventService, '/me/events')
 
 # Ride Request Related Endpoints
