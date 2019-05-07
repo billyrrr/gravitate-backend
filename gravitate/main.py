@@ -21,8 +21,9 @@ import logging
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 # Deprecated
 # from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restful import reqparse, Api, Resource
+from flasgger import Swagger
 from google.auth.transport import requests
 
 from gravitate.api_server import errors as service_errors
@@ -133,6 +134,8 @@ def server_error(e):
 
 
 if __name__ == '__main__':
+    # flasgger for hosting REST API docs
+    swagger = Swagger(app)
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)

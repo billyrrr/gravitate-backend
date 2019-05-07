@@ -37,6 +37,56 @@ class RideRequestPost(Resource):
 
     @service_utils.authenticate
     def post(self, uid):
+        """
+        Create a new ride request
+
+        ---
+        tags:
+          - rideRequests
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: RideRequest
+              required:
+                - rideCategory
+                - toEvent
+                - pickupAddress
+              properties:
+                rideCategory:
+                  type: string
+                  enum:
+                    - event
+                    - airport
+                userId:
+                  type: string
+                toEvent:
+                  type: boolean
+
+                pickupAddress:
+                  type: string
+                  example: "Tenaya Hall, San Diego, CA 92161"
+                eventId:
+                  type: string
+                flightLocalTime:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-20T12:00:00"
+                driverStatus:
+                  type: boolean
+                earliest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T07:00:00"
+                latest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T10:00:00"
+
+        responses:
+          200:
+            description: Ride Request created
+        """
         # Verify Firebase auth.
         user_id = uid
 
@@ -67,22 +117,32 @@ class RideRequestPost(Resource):
             "firestoreRef": ride_request.get_firestore_ref().id  # Legacy support
         }
 
-        return response_dict, 200
+        return response_dict, 200  # TODO: change to 201
 
 
 class RideRequestService(Resource):
-    """ Description
-        Deletes a ride request.
-
-    """
 
     @service_utils.authenticate
     def get(self, rideRequestId, uid):
         """
-        Get the JSON for ride request
-        :param rideRequestId:
-        :param uid:
-        :return:
+        Returns a ride request based on a single ID
+
+        ---
+        tags:
+          - rideRequests
+        # operationId: find ride request by id
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request to fetch
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: ride request response
+          default:
+            description: unexpected error
         """
         user_id = uid
 
@@ -102,10 +162,30 @@ class RideRequestService(Resource):
     @service_utils.authenticate
     def delete(self, rideRequestId, uid):
         """
-        Replaces POST "/deleteRideRequest"
-        :param rideRequestId:
-        :param uid:
-        :return:
+        Deletes a ride request.
+
+        ---
+        tags:
+          - rideRequests
+
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request to delete
+            required: true
+            schema:
+              type: string
+
+        responses:
+          '200':
+            description: ride request deleted
+          default:
+            description: unexpected error
+            # content:
+            #   application/json:
+            #     schema:
+            #       $ref: '#/components/schemas/Error'
+
         """
 
         user_id = uid
@@ -136,7 +216,7 @@ class RideRequestService(Resource):
             print(response_dict)
             return response_dict, 500
 
-        return response_dict, 200
+        return response_dict, 200  # TODO: change to 204
 
     @service_utils.authenticate
     def patch(self, uid):
@@ -175,7 +255,7 @@ class LuggageService(Resource):
     @service_utils.authenticate
     def get(self, rideRequestId, uid):
         """
-        Get the JSON for the luggage associatedd with ride request
+        Get the luggage JSON associated with the ride request
         :param rideRequestId:
         :param uid:
         :return:
