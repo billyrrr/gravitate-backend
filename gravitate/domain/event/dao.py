@@ -64,6 +64,8 @@ class EventDao:
         """ Description
             This method finds an airportEvent that "overlaps" with the timestamp provided.
 
+            DEPRECATED
+
         :param timestamp: the point-in-time that the eventSchedule has to include.
         :return:
         """
@@ -79,7 +81,8 @@ class EventDao:
         :param category:
         :return:
         """
-        eventDocs = self.eventCollectionRef.where("localDateString", "==", date).get()
+        eventDocs = self.eventCollectionRef.where("eventCategory", "==", category)\
+            .where("localDateString", "==", date).get()
         events = dict()
 
         # Loop through each rideRequest
@@ -155,14 +158,20 @@ class EventDao:
             Note that no more than event should be found with the timestamp, see preconditions.
             Please check that Firestore has only events of category airport and only one airport event per day.
 
+            TODO: to create composite index: check stack trace and use the link provided
+
         :param timestamp:
         :param category:
+
+        :raises: google.api_core.exceptions.FailedPrecondition: 400 The query requires an index.
+
         :return: the first eventId that matches the category and timestamp, or None
         """
         # Grab all of the events in the db
         # Queries for the valid range of events
         # Pre-condition: There is only one airport event, and no social events on the same day
-        eventDocs = self.eventCollectionRef.where("startTimestamp", "<", timestamp)\
+        eventDocs = self.eventCollectionRef.where("eventCategory", "==", category)\
+            .where("startTimestamp", "<", timestamp)\
             .order_by("startTimestamp", direction=Query.DESCENDING)\
             .get()
 
