@@ -73,6 +73,29 @@ class DeleteMatchService(Resource):
 class DeleteMatchServiceNew(Resource):
 
     def post(self, rideRequestId):
+        """
+        Unmatches a ride request from an orbit.
+
+        ---
+        tags:
+          - rideRequests
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request to un-match
+            required: true
+            schema:
+              type: string
+
+        responses:
+          200:
+            description: Ride Request unmatched from the orbit
+          400:
+            description: Ride Request is not matched into an orbit yet
+
+        :param rideRequestId:
+        :return:
+        """
 
         ride_request_id = rideRequestId
 
