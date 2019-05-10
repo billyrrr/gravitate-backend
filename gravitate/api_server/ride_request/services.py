@@ -10,7 +10,8 @@ from flask_restful import Resource, HTTPException
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
 from gravitate.context import Context
-from gravitate.data_access import UserDao, EventScheduleGenericDao
+from gravitate.data_access import UserDao
+from gravitate.domain.event_schedule import EventScheduleGenericDao
 from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
