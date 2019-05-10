@@ -1,5 +1,5 @@
 # from gravitate.domain.event.builders import UcsbEventBuilder
-from gravitate.domain.event.builders_new import AirportEventBuilder, build_ucsb_event
+from gravitate.domain.event.builders_new import AirportEventBuilder, build_ucsb_event, build_airport_event
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import AirportEvent
 from gravitate.scripts.utils import generateStartDatetime, generateTimestamps
@@ -10,15 +10,9 @@ def generate_airport_events(timestamp_tuple_list: list):
 
     for startTimestamp, endTimestamp, dateStr in timestamp_tuple_list:
         # new_event = LaxEventBuilder(startTimestamp, endTimestamp)
-        b = AirportEventBuilder()
-        b.build_airport("LAX")
-        b.build_basic_info()
-        b._build_target(to_event=True, start_timestamp=startTimestamp, end_timestamp=endTimestamp)
-        b._build_target(to_event=False, start_timestamp=startTimestamp, end_timestamp=endTimestamp)
-        b.build_descriptions("what the event is", "name of the event")
-        b._build_parking()
-        b._build_local_date_string(dateStr)
-        new_event = b.export_as_class(AirportEvent)
+        new_event = build_airport_event(start_timestamp=startTimestamp,
+                                        end_timestamp=endTimestamp,
+                                        local_date_string=dateStr)
         event_list.append(new_event)
 
     return event_list

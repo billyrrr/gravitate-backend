@@ -3,6 +3,7 @@ from typing import Type
 
 import iso8601
 
+from gravitate.domain.event import AirportEvent
 from gravitate.domain.location import LocationGenericDao, SocialEventLocation
 from gravitate.domain.event.models import Event
 from gravitate.models import ToEventTarget, FromEventTarget
@@ -359,3 +360,16 @@ def get_day_offset():
 #     def buildTimeRange(self, start_timestamp=1545033600, end_timestamp=1545119999):
 #         self.start_timestamp = start_timestamp
 #         self.end_timestamp = end_timestamp
+
+
+def build_airport_event(start_timestamp=None, end_timestamp=None, local_date_string=None) -> AirportEvent:
+    b = AirportEventBuilder()
+    b.build_airport("LAX")
+    b.build_basic_info()
+    b._build_target(to_event=True, start_timestamp=start_timestamp, end_timestamp=end_timestamp)
+    b._build_target(to_event=False, start_timestamp=start_timestamp, end_timestamp=end_timestamp)
+    b.build_descriptions("what the event is", "name of the event")
+    b._build_parking()
+    b._build_local_date_string(local_date_string)
+    new_event = b.export_as_class(AirportEvent)
+    return new_event
