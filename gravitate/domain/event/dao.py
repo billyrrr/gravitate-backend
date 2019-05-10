@@ -35,7 +35,6 @@ class EventDao:
         return eventRef
 
     @staticmethod
-    # @transactional
     def get_with_transaction(transaction: Transaction, eventRef: DocumentReference) -> Type[Event]:
         """ Description
             Note that this cannot take place if transaction already received write operations.
@@ -43,9 +42,9 @@ class EventDao:
             (i.e. read-after-write is not allowed)."
 
         :type transaction:Transaction:
-        :param transaction:Transaction:
+        :param transaction:Transaction: firestore transaction
         :type eventRef:DocumentReference:
-        :param eventRef:DocumentReference:
+        :param eventRef:DocumentReference: firestore document reference of the event to get
         :raises:
         :rtype:
         """
@@ -76,10 +75,14 @@ class EventDao:
 
     def find_by_date_str(self, date: str, category):
         """
-        Find airportEvent that has the matching "localDateString".
-        :param date:
-        :param category:
-        :return:
+        Find airportEvent that has the matching "localDateString". Note that this finds
+            only one event that fits the condition. If there are more in firestore,
+            ValueError will be raised
+
+        :param date: local date string eg. "2019-01-01"
+        :param category: "airport"
+        :raises: ValueError: only exactly 1 event can fit the condition in the database
+        :return: one event that fits the condition
         """
         eventDocs = self.eventCollectionRef.where("eventCategory", "==", category)\
             .where("localDateString", "==", date).get()
@@ -110,6 +113,7 @@ class EventDao:
     def delete(self, eventRef: DocumentReference):
         """ Description
             This function deletes a ride request from the database
+
         :type self:
         :param self:
         :type eventRef:DocumentReference:
@@ -195,6 +199,11 @@ class EventDao:
         return self.get(event_ref)
 
     def get(self, eventRef: DocumentReference):
+        """ Gets an event from database
+
+        :param eventRef: firestore document reference of the event
+        :return: event object
+        """
         if isinstance(eventRef, str):
             eventRef = str_to_ref(eventRef)
         snapshot: DocumentSnapshot = eventRef.get()
