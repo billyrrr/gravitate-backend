@@ -141,6 +141,11 @@ class EventDao:
         return None
 
     def create_fb_event(self, event: SocialEvent) -> DocumentReference:
+        """ Creates facebook event in database.
+
+        :param event: event object
+        :return: reference to the event just created
+        """
         transaction = db.transaction()
         event_ref = self.eventCollectionRef.document(event.fb_event_id)
         self._create_fb_event_transactional(transaction, event, event_ref)
@@ -149,6 +154,15 @@ class EventDao:
     @staticmethod
     @transactional
     def _create_fb_event_transactional(transaction, event: SocialEvent, event_ref) -> DocumentReference:
+        """ Creates facebook event in database with transaction.
+
+        TODO: remove event_ref from return
+
+        :param transaction: firestore transaction
+        :param event: event object
+        :param event_ref: document reference for identifying where to save the event to
+        :return: reference to the event just created
+        """
         snapshot: DocumentSnapshot = event_ref.get(
             transaction=transaction)
         if not snapshot.exists:
@@ -195,6 +209,11 @@ class EventDao:
         return None
 
     def get_by_id(self, event_id: str):
+        """ Gets an event from database by event id
+
+        :param event_id: id of the event
+        :return: event object
+        """
         event_ref = self.get_ref(event_id)
         return self.get(event_ref)
 
