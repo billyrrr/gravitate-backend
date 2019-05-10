@@ -11,7 +11,6 @@ def generate_airport_events(timestamp_tuple_list: list):
     for startTimestamp, endTimestamp, dateStr in timestamp_tuple_list:
         # new_event = LaxEventBuilder(startTimestamp, endTimestamp)
         b = AirportEventBuilder()
-        b = AirportEventBuilder()
         b.build_airport("LAX")
         b.build_basic_info()
         b._build_target(to_event=True, start_timestamp=startTimestamp, end_timestamp=endTimestamp)
