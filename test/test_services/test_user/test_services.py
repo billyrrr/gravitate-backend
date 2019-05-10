@@ -6,8 +6,7 @@ from flask.testing import FlaskClient
 from google.cloud import firestore
 
 from gravitate import main as main
-from gravitate.domain.user import UserDao
-from gravitate.models import User
+from gravitate.domain.user import UserDao, User
 from gravitate import context
 
 

@@ -38,4 +38,5 @@ def editUser(user, transaction: Transaction = None):
 
 
 def getUser(uid: string):
+    # TODO: fix 
     UserDao().get_user_by_id(uid)
