@@ -5,7 +5,7 @@ import pytz
 from google.cloud.firestore import DocumentReference, transactional
 
 import gravitate.domain.event_schedule.actions
-from gravitate.data_access import UserDao
+from gravitate.domain.user import UserDao
 from gravitate.domain.location import LocationGenericDao, AirportLocation
 from gravitate.domain.event.dao import EventDao
 from .models import Ride as RideRequest
