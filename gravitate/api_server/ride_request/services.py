@@ -38,7 +38,7 @@ class RideRequestPost(Resource):
     @service_utils.authenticate
     def post(self, uid):
         """
-        Create a new ride request
+        Creates a new ride request.
 
         ---
         tags:
@@ -125,7 +125,7 @@ class RideRequestService(Resource):
     @service_utils.authenticate
     def get(self, rideRequestId, uid):
         """
-        Returns a ride request based on a single ID
+        Returns a ride request based on a single ID.
 
         ---
         tags:
