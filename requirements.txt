@@ -28,3 +28,5 @@ coverage>=4.4
 python-coveralls
 
 networkx
+
+flasgger

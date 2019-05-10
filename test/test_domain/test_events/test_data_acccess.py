@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 from gravitate import context
 from gravitate.domain.event.dao import EventDao
-from gravitate.domain.event.models import Event
+from gravitate.domain.event.models import Event, AirportEvent
 from test import scripts as setup_scripts
 from test.store import getEventDict
 
@@ -26,6 +26,7 @@ class EventDAOTest(unittest.TestCase):
         self.pl = setup_scripts.scripts.populate_locations.PopulateLocationCommand()
         self.refs_to_delete.extend(self.pl.execute())
         self.fb_event = Event.from_dict(getEventDict(event_category="social"))
+        self.event_id = None
 
     def testCreate(self):
         eventRef: firestore.DocumentReference = EventDao().create(self.event)
@@ -85,18 +86,27 @@ class EventDAOTest(unittest.TestCase):
         self.assertEqual(ref.id, ref2.id, "The document id should be the same"
                                           "when storing the same facebook event twice")
 
+    @unittest.skip("deprecated")
+    def testFindByTimestamp(self):
+        """
+        Deprecated (event model has changed)
+        :return:
+        """
 
-    # def testFindByTimestamp(self):
-    #
-    #     def setUp(self):
-    #         eventRef: firestore.DocumentReference = EventDao().create(self.event)
-    #         self.event.set_firestore_ref(eventRef)
-    #         self.refs_to_delete.append(eventRef)
-    #     setUp(self)
-    #
-    #     # Monday, December 17, 2018 3:00:00 PM GMT-08:00 = 1545087600
-    #     event: Event = EventDao().find_by_timestamp(1545087600, category="airport")
-    #     self.assertNotEqual(None, event)
+        def setUp(self):
+            eventRef: firestore.DocumentReference = EventDao().create(self.event)
+            self.event.set_firestore_ref(eventRef)
+            self.refs_to_delete.append(eventRef)
+            self.event_id = eventRef.id
+        setUp(self)
+
+        # Monday, December 17, 2018 3:00:00 PM GMT-08:00 = 1545087600
+        event: Event = EventDao().find_by_timestamp(1545087600, category="airport")
+        self.assertNotEqual(None, event)
 
         # self.assertEquals(event.startTimestamp, 1546502400)
-        # self.assertEquals("BxPBnrl6kItoNc6x0NqO", event.get_firestore_ref().id)
+        assert isinstance(event, AirportEvent)
+        self.assertEqual(event.local_date_string, "2018-12-17")
+        self.assertEqual(event.event_category, "airport")
+        self.assertEqual(event.airport_code, "LAX")
+        self.assertEquals(self.event_id, event.get_firestore_ref().id)
