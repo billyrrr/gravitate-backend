@@ -4,7 +4,7 @@ import string
 from google.cloud.firestore import Transaction
 
 from gravitate.controllers import fireauthutils
-from gravitate.data_access import UserDao
+from .dao import UserDao
 
 
 # Generate a random string 
@@ -38,4 +38,5 @@ def editUser(user, transaction: Transaction = None):
 
 
 def getUser(uid: string):
+    # TODO: fix 
     UserDao().get_user_by_id(uid)

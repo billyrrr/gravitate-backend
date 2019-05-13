@@ -4,7 +4,7 @@ from typing import Type
 from google.cloud.firestore import Transaction
 
 from gravitate import context
-from gravitate.data_access import UserDao
+from gravitate.domain.user import UserDao
 from gravitate.domain.event.models import Event
 from gravitate.domain.event_schedule import actions as event_schedule_actions
 from gravitate.domain.rides import RideRequest

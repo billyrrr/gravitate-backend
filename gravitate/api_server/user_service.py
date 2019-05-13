@@ -9,10 +9,9 @@ from flask import request
 from flask_restful import Resource
 
 from gravitate.context import Context
-from gravitate.controllers import userutils
-from gravitate.data_access import UserDao
+from gravitate.domain.user import UserDao, editUser, saveUser, getUser
 from gravitate.forms.user_creation_form import UserCreationValidateForm, UserCreationForm
-from gravitate.models import User
+from gravitate.domain.user import User
 
 db = Context.db
 
@@ -107,7 +106,7 @@ class UserService(Resource):
             transaction = db.transaction()
 
             # Saves User Object to Firestore
-            userutils.saveUser(newUser, transaction=transaction)
+            saveUser(newUser, transaction=transaction)
             userRef = UserDao().userCollectionRef.document(userId)
             transaction.commit()
 

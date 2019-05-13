@@ -1,6 +1,6 @@
 import warnings
 
-from gravitate.data_access import UserDao
+from gravitate.domain.user import UserDao
 from gravitate.domain.orbit import Orbit
 from . import CTX
 

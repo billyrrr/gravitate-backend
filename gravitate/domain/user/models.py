@@ -1,4 +1,4 @@
-from .firestore_object import FirestoreObject
+from gravitate.models.firestore_object import FirestoreObject
 
 
 # user class

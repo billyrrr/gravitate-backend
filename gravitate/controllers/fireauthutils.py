@@ -1,7 +1,7 @@
 from firebase_admin import auth
 
 import gravitate.context as config
-from gravitate.models import User
+from gravitate.domain.user.models import User
 
 
 # auth = config.auth

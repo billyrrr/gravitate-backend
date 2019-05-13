@@ -4,6 +4,8 @@ Reviewer: Zixuan Rao
 """
 import warnings
 
+from google.cloud.firestore_v1beta1 import DocumentReference
+
 from gravitate.domain.location import LocationGenericDao
 from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
@@ -19,17 +21,23 @@ class Event(FirestoreObject):
     """
 
     @staticmethod
-    def from_dict_and_reference(eventDict, eventRef):
+    def from_dict_and_reference(eventDict: dict, eventRef: DocumentReference):
+        """ Returns event object from dict and document reference.
+
+        :param eventDict: event dictionary
+        :param eventRef: firestore_ref of the event will be set to this value
+        :return: event object with firestore_ref set
+        """
         event = Event.from_dict(eventDict)
         event.set_firestore_ref(eventRef)
         return event
 
     @staticmethod
-    def from_dict(eventDict):
-        """ Description
-            This function creates an event
+    def from_dict(eventDict: dict):
+        """ Returns event object from dict.
 
-            :param eventDict:
+        :param eventDict: event dictionary
+        :return:
         """
         event_category = eventDict['eventCategory']
         participants = eventDict['participants']
@@ -60,6 +68,9 @@ class Event(FirestoreObject):
             raise NotImplementedError
 
     def to_dict(self):
+        """ Returns the dictionary representation of the event object for saving to database.
+        :return:
+        """
         eventDict = {
             'eventCategory': self.event_category,
             'participants': self.participants,
@@ -142,17 +153,18 @@ class Event(FirestoreObject):
 
     def __init__(self, event_category, participants, targets, pricing, location_ref, is_closed, local_date_string, name,
                  description, parking_info):
-        """Description
-           This function initializes an Event object
+        """ Initializes an Event object.
 
-           :param self:
-           :param event_category:
-           :param participants:
-           :param start_timestamp:
-           :param end_timestamp:
-           :param pricing:
-           :param location_ref: a list of locationRef that corresponds to this event
-           :param is_closed:
+        :param event_category:
+        :param participants:
+        :param targets:
+        :param pricing:
+        :param location_ref:
+        :param is_closed:
+        :param local_date_string:
+        :param name:
+        :param description:
+        :param parking_info:
         """
         super().__init__()
         self.event_category = event_category
