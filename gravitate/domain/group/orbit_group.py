@@ -12,15 +12,15 @@ from . import utils
 
 def _refresh_event_schedules_all(transaction: Transaction, in_orbit: dict, not_in_orbit: dict, orbit: Orbit, event,
                                  location):
-    """ This function refreshes event schedules of each rideRequests
+    """ Refreshes event schedules for each rideRequest.
 
-    :param transaction:
-    :param in_orbit:
-    :param not_in_orbit:
-    :param orbit:
-    :param event:
-    :param location:
-    :return:
+    :param transaction: firestore transaction
+    :param in_orbit: all ride requests that are currently in the orbit
+    :param not_in_orbit: all ride requests that are no longer in the orbit
+    :param orbit: orbit object
+    :param event: event object
+    :param location: location object representing event location
+    :return: None
     """
     for rid, ride_request in in_orbit.items():
         # (from legacy code:) Note that profile photos may not be populated even after the change is committed
@@ -32,15 +32,15 @@ def _refresh_event_schedules_all(transaction: Transaction, in_orbit: dict, not_i
 
 def _refresh_ride_requests_all(transaction: Transaction, in_orbit: dict, not_in_orbit: dict, orbit: Orbit, event,
                                location):
-    """ This function refreshes each rideRequests
+    """ Refreshes each rideRequest.
 
-    :param transaction:
-    :param in_orbit:
-    :param not_in_orbit:
-    :param orbit:
-    :param event:
-    :param location:
-    :return:
+    :param transaction: firestore transaction
+    :param in_orbit: all ride requests that are currently in the orbit
+    :param not_in_orbit: all ride requests that are no longer in the orbit
+    :param orbit: orbit object
+    :param event: event object
+    :param location: location object representing event location
+    :return: None
     """
     for rid, ride_request in in_orbit.items():
         RideRequestGenericDao.set_with_transaction(transaction, ride_request, ride_request.get_firestore_ref())
@@ -50,6 +50,11 @@ def _refresh_ride_requests_all(transaction: Transaction, in_orbit: dict, not_in_
 
 
 def id_set_from_dict(d: dict) -> set:
+    """ Returns a set with all keys in the dict provided
+
+    :param d: dict with ids as keys
+    :return: a set of ids
+    """
     return {k for k, v in d.items()}
 
 
@@ -61,6 +66,10 @@ class OrbitGroup:
     """
 
     def __init__(self, transaction):
+        """ Initializes an OrbitGroup object to be executed in a transaction.
+
+        :param transaction: firestore transaction
+        """
         # Start a transaction
         self.transaction = transaction
 
@@ -74,6 +83,15 @@ class OrbitGroup:
 
     def setup_with_ref(self, orbit_ref=None, refs_to_add: list = None, refs_to_drop: list = None,
                        event_ref=None, location_ref=None):
+        """ Set up the OrbitGroup command object with firestore references
+
+        :param orbit_ref: the firestore reference to the orbit
+        :param refs_to_add: the firestore references of ride requests to add to the orbit
+        :param refs_to_drop: the firestore references of ride requests to drop from the orbit
+        :param event_ref: the firestore reference of the event that the orbit is associated with
+        :param location_ref: the firestore reference of the event location that the orbit is associated with
+        :return: self (OrbitGroup)
+        """
         return self.setup(orbit_ref.id, ids_to_add={ref.id for ref in refs_to_add},
                           ids_to_drop={ref.id for ref in refs_to_drop},
                           event_id=event_ref.id,
@@ -81,6 +99,15 @@ class OrbitGroup:
 
     def setup(self, intended_orbit_id=None, ids_to_add: set = None, ids_to_drop: set = None, event_id=None,
               location_id=None):
+        """ Set up the OrbitGroup command object with ids
+
+        :param intended_orbit_id: id of the orbit
+        :param ids_to_add: ids of ride requests to add to the orbit
+        :param ids_to_drop: ids of ride requests to drop from the orbit
+        :param event_id: ids of the event that the orbit is associated with
+        :param location_id: ids of the event location that the orbit is associated with
+        :return: self (OrbitGroup)
+        """
         self.orbit = OrbitGroup._get_orbit(transaction=self.transaction, orbit_id=intended_orbit_id)
         self.ride_requests_existing = \
             OrbitGroup._get_existing_ride_requests(transaction=self.transaction, orbit=self.orbit)
@@ -161,9 +188,11 @@ class OrbitGroup:
 
     def execute(self) -> set:
         """
-                This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
-                :return: a list of rideRequests that are not joined
-                """
+        This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
+        Note that ids of ride requests not dropped from the orbit is not returned.
+
+        :return: a list of rideRequests that are not joined
+        """
         transaction = self.transaction
         orbit = self.orbit
 
@@ -212,10 +241,11 @@ class OrbitGroup:
 
     @staticmethod
     def _add(to_add, orbit) -> (List[str], List[str]):
-        """ Add ride request to orbit
+        """ Add ride requests to an orbit
 
-        :param to_add:
-        :return: (joined, not_j)
+        :param to_add: dict with key as ride request id and value as ride request
+        :param orbit: orbit object to add the ride requests to
+        :return: (joined_ids, not_joined_ids)
         """
         joined_ids = set()
         not_joined_ids = set()
@@ -236,6 +266,12 @@ class OrbitGroup:
 
     @staticmethod
     def _drop(to_drop, orbit) -> (List[str], List[str]):
+        """ Drop ride requests from an orbit
+
+        :param to_drop: dict with key as ride request id and value as ride request
+        :param orbit: orbit object to drop the ride requests from
+        :return: (dropped_ids, not_dropped_ids)
+        """
         dropped_ids = set()
         not_dropped_ids = set()
 

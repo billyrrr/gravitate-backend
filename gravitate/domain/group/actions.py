@@ -24,7 +24,7 @@ def group_many(ride_request_ids: list, strategy="all_riders"):
         -   "one_driver_many_riders": Only group rides such that exactly one driver and >= 1 rider will be in the group.
 
     :param ride_request_ids:
-    :return:
+    :return: None
     """
     d = separate_by_event_id_and_direction(ride_request_ids)
 
@@ -38,7 +38,9 @@ def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[Rid
     """ DEPRECATED
 
     Returns a dict with event id as key and ride request object as value
+
     :param ride_request_ids: a list of ride requests from any number of events
+    :return: dict with key of event id and value of list of ride requests with that event id K
     """
     d = dict()
     for ride_request_id in ride_request_ids:
@@ -58,6 +60,7 @@ def separate_by_event_id(ride_request_ids: List[str]) -> Dict[str, List[Type[Rid
 
 def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tuple, List[Type[RideRequest]]]:
     """ Returns a dict with event id as key and ride request object as value
+
     :param ride_request_ids: a list of ride requests from any number of events
     """
     d = dict()
@@ -86,7 +89,7 @@ def pair_all(ride_requests: list, strategy="all_riders") -> list:
         Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]
 
     :param ride_requests:
-    :return:
+    :return: a list of tuples/lists, with each representing all ride requests to be grouped into a single orbit
     """
 
     paired, unpaired = pair_ride_requests(ride_requests, strategy=strategy)
@@ -122,7 +125,7 @@ def group_two(ride_request_ids: list):
     """ Force matches two rideRequests into an orbit.
 
     :param ride_request_ids: Two rideRequest Ids
-    :return:
+    :return: response: {"notJoined": <ids of ride requests not joined>}
     """
     ride_requests = [RideRequestGenericDao().get_by_id(rid) for rid in ride_request_ids]
 
@@ -181,7 +184,7 @@ def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location
     :param ride_request_refs: firestore document references of the ride requests to add to an orbit
     :param event_ref: firestore document references of the event associated with the orbit
     :param location_ref: firestore document references of the location associated with the event / orbit
-    :return:
+    :return: a list of ride request ids not joined
     """
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup_with_ref(orbit_ref=orbit_ref,
                                                                            refs_to_add=ride_request_refs,
@@ -194,11 +197,12 @@ def _add_to_group(transaction, orbit_ref, ride_request_refs, event_ref, location
 
 def drop_group(ids: set, orbit_id: str=None, event_id: str=None, location_id: str=None):
     """ Drops ride requests from an orbit.
+
     :param ids: ids of ride requests to drop
     :param orbit_id: id of the orbit to drop a ride request from
     :param event_id: id of the event associated with the orbit
     :param location_id: id of the location associated with the event / orbit
-    :return:
+    :return: None
     """
     transaction = db.transaction()
     _drop_group(transaction, ids, orbit_id=orbit_id, event_id=event_id, location_id=location_id)
@@ -213,7 +217,7 @@ def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, l
     :param orbit_id: id of the orbit to drop a ride request from
     :param event_id: id of the event associated with the orbit
     :param location_id: id of the location associated with the event / orbit
-    :return:
+    :return: a list of ride request ids not dropped from the orbit
     """
     group: OrbitGroup = OrbitGroup(transaction=transaction).setup(intended_orbit_id=orbit_id, ids_to_add=set(),
                                                                   ids_to_drop=ids, event_id=event_id,
@@ -225,11 +229,11 @@ def _drop_group(transaction, ids: set, orbit_id: str=None, event_id: str=None, l
 def remove_from_orbit(r: RideRequest, o: Orbit):
     """ Removes userRef from orbitRef's userTicketPairs
 
-    search userTicketPairs for userRef, remove userRef and corresponding ticket once done
+    (search userTicketPairs for userRef, remove userRef and corresponding ticket once done)
 
     :param r: ride request to remove from orbit
     :param o: orbit
-    :return:
+    :return: None
     """
     userIds = list(o.user_ticket_pairs.keys())
     for userId in userIds:
