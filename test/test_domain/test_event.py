@@ -1,7 +1,5 @@
 import unittest
-
 import gravitate.common
-from gravitate.domain.event import utils as event_utils
 
 
 class EventUtilsTest(unittest.TestCase):
