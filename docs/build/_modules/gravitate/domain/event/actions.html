@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.event.actions &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.event.actions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">gravitate.api_server.event</span> <span class="k">import</span> <span class="n">parsers</span> <span class="k">as</span> <span class="n">event_parser</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event</span> <span class="k">import</span> <span class="n">builders_new</span> <span class="k">as</span> <span class="n">event_builders</span><span class="p">,</span> <span class="n">SocialEvent</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event.dao</span> <span class="k">import</span> <span class="n">EventDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.user</span> <span class="k">import</span> <span class="n">UserDao</span>
+
+
+<div class="viewcode-block" id="create"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.actions.create">[docs]</a><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">event_category</span><span class="o">=</span><span class="s2">&quot;social&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Creates event in the database.</span>
+
+<span class="sd">    :param args:</span>
+<span class="sd">    :param user_id:</span>
+<span class="sd">    :param event_category:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">event_category</span> <span class="o">==</span> <span class="s2">&quot;social&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_create_social_event</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;event_category not supported: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event_category</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_create_social_event</span><span class="p">(</span><span class="n">event_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SocialEvent</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TODO: implement</span>
+<span class="sd">    :param args:</span>
+<span class="sd">    :param user_id:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">event_parser</span><span class="o">.</span><span class="n">social_event_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">event_dict</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="create_fb_event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.actions.create_fb_event">[docs]</a><span class="k">def</span> <span class="nf">create_fb_event</span><span class="p">(</span><span class="n">event_dict</span><span class="p">,</span> <span class="n">uid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Creates event from a facebook event.</span>
+
+<span class="sd">    :param event_dict: event json returned by Facebook graph api</span>
+<span class="sd">    :param uid: user id</span>
+<span class="sd">    :return: id of the event just created</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">event_builders</span><span class="o">.</span><span class="n">FbEventBuilder</span><span class="p">()</span>
+    <span class="c1"># print(event_dict)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_with_fb_dict</span><span class="p">(</span><span class="n">event_dict</span><span class="p">)</span>
+    <span class="n">e</span><span class="p">:</span> <span class="n">SocialEvent</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">export_as_class</span><span class="p">(</span><span class="n">SocialEvent</span><span class="p">)</span>
+    <span class="c1"># Note that e.firestore_ref will not be set by create()</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">create_fb_event</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+    <span class="n">dict_view</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">to_dict_view</span><span class="p">()</span>
+    <span class="n">dict_view</span><span class="p">[</span><span class="s2">&quot;eventId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">id</span>
+    <span class="c1"># TODO: add error handling</span>
+    <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">add_user_event_dict</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">dict_view</span><span class="p">[</span><span class="s2">&quot;fbEventId&quot;</span><span class="p">],</span> <span class="n">dict_view</span><span class="p">)</span>
+    <span class="n">event_id</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">id</span>
+    <span class="k">return</span> <span class="n">event_id</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

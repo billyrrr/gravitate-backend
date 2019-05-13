@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.rides.dao &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.rides.dao</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Author: Zixuan Rao</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">google</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">DocumentReference</span><span class="p">,</span> <span class="n">DocumentSnapshot</span>
+
+<span class="kn">from</span> <span class="nn">gravitate</span> <span class="k">import</span> <span class="n">context</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">RideRequest</span>
+<span class="kn">from</span> <span class="nn">gravitate.data_access</span> <span class="k">import</span> <span class="n">utils</span>
+
+<span class="n">CTX</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">CTX</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="RideRequestGenericDao"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao">[docs]</a><span class="k">class</span> <span class="nc">RideRequestGenericDao</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description	</span>
+<span class="sd">        Database access object for ride request</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;rideRequests&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RideRequestGenericDao.get_ids"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incomplete</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Get the ids of RideRequests</span>
+<span class="sd">        </span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+<span class="sd">    </span>
+<span class="sd">        :type incomplete: bool</span>
+<span class="sd">        :param incomplete: If set to true, only RideRequests with requestCompletion=False will be returned. </span>
+<span class="sd">    </span>
+<span class="sd">        :raises:</span>
+<span class="sd">    </span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">docIds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">incomplete</span><span class="p">:</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;requestCompletion&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">docId</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">docIds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">docId</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">docIds</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.get_by_user"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_user">[docs]</a>    <span class="k">def</span> <span class="nf">get_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userId</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Returns a list of rideRequests by a user</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+<span class="sd">    </span>
+<span class="sd">        :type userId:</span>
+<span class="sd">        :param userId:</span>
+<span class="sd">    </span>
+<span class="sd">        :raises:</span>
+<span class="sd">    </span>
+<span class="sd">        :rtype: a list of ride requests</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;userId&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="n">userId</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">rideRequests</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">rideRequestDict</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">rideRequest</span> <span class="o">=</span> <span class="n">RideRequest</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">rideRequestDict</span><span class="p">)</span>
+            <span class="n">rideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">reference</span>
+            <span class="n">rideRequest</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">)</span>
+            <span class="n">rideRequests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rideRequest</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rideRequests</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.get_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">rideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Description Note that this cannot take place if transaction already received write operations. &quot;If a</span>
+<span class="sd">        transaction is used and it already has write operations added, this method cannot be used (i.e.</span>
+<span class="sd">        read-after-write is not allowed).&quot;</span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction:</span>
+
+<span class="sd">        :type rideRequestRef:DocumentReference:</span>
+<span class="sd">        :param rideRequestRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">rideRequestRef</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">rideRequest</span> <span class="o">=</span> <span class="n">RideRequest</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+            <span class="n">rideRequest</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rideRequest</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No such document! &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="o">.</span><span class="n">id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.get"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">rideRequestRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">rideRequest</span> <span class="o">=</span> <span class="n">RideRequest</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+        <span class="n">rideRequest</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rideRequest</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.ref_from_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.ref_from_id">[docs]</a>    <span class="k">def</span> <span class="nf">ref_from_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">rid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.get_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_from_id</span><span class="p">(</span><span class="n">rid</span><span class="p">)</span>
+        <span class="n">ride_request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ride_request</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.create"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rideRequest</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This method sets the firestoreRef of the rideRequest.</span>
+<span class="sd">            Note that rideRequest is not saved to database with this method.</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :type rideRequest:Type[RideRequest]:</span>
+<span class="sd">        :param rideRequest:Type[RideRequest]:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rideRequestId</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">random_id</span><span class="p">()</span>
+        <span class="n">rideRequestRef</span> <span class="o">=</span> <span class="n">RideRequestGenericDao</span><span class="p">(</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">rideRequestCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_id</span><span class="o">=</span><span class="n">rideRequestId</span><span class="p">)</span>
+        <span class="n">rideRequest</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rideRequest</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.set"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rideRequest</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="n">rideRequest</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rideRequest</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.delete"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singleRideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function deletes a ride request from the database</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type singleRideRequestRef:DocumentReference:</span>
+<span class="sd">        :param singleRideRequestRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">singleRideRequestRef</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RideRequestGenericDao.set_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.set_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newRideRequest</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">],</span>
+                             <span class="n">rideRequestRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Note that a read action must have taken place before anything is set with that transaction. </span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction:</span>
+
+<span class="sd">        :type newRideRequest:Type[RideRequest]:</span>
+<span class="sd">        :param newRideRequest:Type[RideRequest]:</span>
+
+<span class="sd">        :type rideRequestRef:DocumentReference:</span>
+<span class="sd">        :param rideRequestRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rideRequestRef</span><span class="p">,</span> <span class="n">newRideRequest</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

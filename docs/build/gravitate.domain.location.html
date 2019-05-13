@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.location package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-location-package">
+<h1>gravitate.domain.location package<a class="headerlink" href="#gravitate-domain-location-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.location.dao">
+<span id="gravitate-domain-location-dao-module"></span><h2>gravitate.domain.location.dao module<a class="headerlink" href="#module-gravitate.domain.location.dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, David Nong</p>
+<dl class="class">
+<dt id="gravitate.domain.location.dao.LocationGenericDao">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.dao.</code><code class="descname">LocationGenericDao</code><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleLocationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This function deletes a ride request from the database</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type singleLocationRef:DocumentReference:
+:param singleLocationRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.find_by_airport_code">
+<code class="descname">find_by_airport_code</code><span class="sig-paren">(</span><em>airportCode</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.location.models.AirportLocation<a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.find_by_airport_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.find_by_airport_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.find_by_campus_code">
+<code class="descname">find_by_campus_code</code><span class="sig-paren">(</span><em>campusCode</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.location.models.UcLocation<a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.find_by_campus_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.find_by_campus_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.get_ref_by_id">
+<code class="descname">get_ref_by_id</code><span class="sig-paren">(</span><em>location_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.get_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.get_ref_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns location_ref by location_id.
+:param location_id:
+:return:</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.location.models.Location]<a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+Note that this cannot take place if transaction already received write operations.
+“If a transaction is used and it already has write operations added, this method cannot be used
+(i.e. read-after-write is not allowed).”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type locationRef:DocumentReference:
+:param locationRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.insert_new">
+<code class="descname">insert_new</code><span class="sig-paren">(</span><em>location: Type[gravitate.domain.location.models.Location]</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.insert_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.insert_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+:type self:
+:param self:</p>
+<p>:type location:Type[Location]:
+:param location:Type[Location]:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>airportCode</em>, <em>terminal</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.location.models.Location<a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>location</em>, <em>location_ref: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newLocation: Type[gravitate.domain.location.models.Location], locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>Note that a read action must have taken place before anything is set with that transaction.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type newLocation:Type[Location]:
+:param newLocation:Type[Location]:</p>
+<p>:type locationRef:DocumentReference:
+:param locationRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_new">
+<em class="property">static </em><code class="descname">set_with_transaction_new</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newLocation: Type[gravitate.domain.location.models.Location], locationRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#LocationGenericDao.set_with_transaction_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_transactional">
+<code class="descname">set_with_transaction_transactional</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_transactional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.location.dao.str_to_ref">
+<code class="descclassname">gravitate.domain.location.dao.</code><code class="descname">str_to_ref</code><span class="sig-paren">(</span><em>ref_str: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/dao.html#str_to_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.dao.str_to_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.location.models">
+<span id="gravitate-domain-location-models-module"></span><h2>gravitate.domain.location.models module<a class="headerlink" href="#module-gravitate.domain.location.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.location.models.AirportLocation">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.models.</code><code class="descname">AirportLocation</code><span class="sig-paren">(</span><em>coordinates</em>, <em>address</em>, <em>airport_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#AirportLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.AirportLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.location.models.Location" title="gravitate.domain.location.models.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.location.models.Location</span></code></a></p>
+<dl>
+<dt>Description</dt><dd><p>This class represents an airport location.
+Two airport locations are considered the same if</p>
+<blockquote>
+<div><p>their airportCode (ie. “LAX”) 
+are identical.</p>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="method">
+<dt id="gravitate.domain.location.models.AirportLocation.is_lax">
+<code class="descname">is_lax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#AirportLocation.is_lax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.AirportLocation.is_lax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.models.AirportLocation.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#AirportLocation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.AirportLocation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.location.models.Location">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.models.</code><code class="descname">Location</code><span class="sig-paren">(</span><em>coordinates</em>, <em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#Location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.Location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject" title="gravitate.models.firestore_object.FirestoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.models.firestore_object.FirestoreObject</span></code></a></p>
+<dl class="attribute">
+<dt id="gravitate.domain.location.models.Location.coordinates">
+<code class="descname">coordinates</code><em class="property"> = {'latitude': None, 'longitude': None}</em><a class="headerlink" href="#gravitate.domain.location.models.Location.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.models.Location.from_code">
+<em class="property">static </em><code class="descname">from_code</code><span class="sig-paren">(</span><em>code</em>, <em>location_category='campus'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#Location.from_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.Location.from_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.models.Location.from_dict">
+<em class="property">static </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>location_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#Location.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.Location.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.models.Location.from_pickup_address">
+<em class="property">static </em><code class="descname">from_pickup_address</code><span class="sig-paren">(</span><em>pickup_address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#Location.from_pickup_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.Location.from_pickup_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.models.Location.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/gravitate/domain/location/models.html#Location.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.Location.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.location.models.SocialEventLocation">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.models.</code><code class="descname">SocialEventLocation</code><span class="sig-paren">(</span><em>coordinates</em>, <em>address</em>, <em>event_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#SocialEventLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.SocialEventLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.location.models.Location" title="gravitate.domain.location.models.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.location.models.Location</span></code></a></p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.location.models.SocialEventLocation.from_fb_place">
+<em class="property">static </em><code class="descname">from_fb_place</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#SocialEventLocation.from_fb_place"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.SocialEventLocation.from_fb_place" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create location with facebook event - place
+Example: {</p>
+<blockquote>
+<div><blockquote>
+<div><p>“name”: “Coachella”,
+“location”: {</p>
+<blockquote>
+<div><p>“latitude”: 33.679974,
+“longitude”: -116.237221</p>
+</div></blockquote>
+<p>},
+“id”: “20281766647”</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.location.models.SocialEventLocation.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#SocialEventLocation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.SocialEventLocation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.location.models.UcLocation">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.models.</code><code class="descname">UcLocation</code><span class="sig-paren">(</span><em>coordinates</em>, <em>address</em>, <em>campus_name</em>, <em>campus_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#UcLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.UcLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.location.models.Location" title="gravitate.domain.location.models.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.location.models.Location</span></code></a></p>
+<p>Description
+This class represents a UC campus in another city.</p>
+<dl class="method">
+<dt id="gravitate.domain.location.models.UcLocation.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#UcLocation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.UcLocation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.location.models.UserLocation">
+<em class="property">class </em><code class="descclassname">gravitate.domain.location.models.</code><code class="descname">UserLocation</code><span class="sig-paren">(</span><em>coordinates</em>, <em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#UserLocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.UserLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.location.models.Location" title="gravitate.domain.location.models.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.location.models.Location</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.location.models.UserLocation.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/location/models.html#UserLocation.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.location.models.UserLocation.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.location">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.location" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.location.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

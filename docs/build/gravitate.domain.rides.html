@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.rides package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-rides-package">
+<h1>gravitate.domain.rides package<a class="headerlink" href="#gravitate-domain-rides-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.rides.actions">
+<span id="gravitate-domain-rides-actions-module"></span><h2>gravitate.domain.rides.actions module<a class="headerlink" href="#module-gravitate.domain.rides.actions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.domain.rides.actions.create">
+<code class="descclassname">gravitate.domain.rides.actions.</code><code class="descname">create</code><span class="sig-paren">(</span><em>args</em>, <em>user_id</em>, <em>ride_category='airport'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/actions.html#create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.actions.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a ride request with arguments received by REST API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – argument dict returned by .parse_args() from a reqparse object</p></li>
+<li><p><strong>user_id</strong> – user id</p></li>
+<li><p><strong>ride_category</strong> – “airport” | “event”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>RideRequest object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.rides.builders">
+<span id="gravitate-domain-rides-builders-module"></span><h2>gravitate.domain.rides.builders module<a class="headerlink" href="#module-gravitate.domain.rides.builders" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.rides.builders.AirportRideRequestBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.builders.</code><code class="descname">AirportRideRequestBuilder</code><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#AirportRideRequestBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.AirportRideRequestBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder" title="gravitate.domain.rides.builders.RideRequestBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.rides.builders.RideRequestBaseBuilder</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.AirportRideRequestBuilder.build_airport_ride_request">
+<code class="descname">build_airport_ride_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#AirportRideRequestBuilder.build_airport_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.AirportRideRequestBuilder.build_airport_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.AirportRideRequestBuilder.flight_local_time_specified">
+<code class="descname">flight_local_time_specified</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#AirportRideRequestBuilder.flight_local_time_specified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.AirportRideRequestBuilder.flight_local_time_specified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.rides.builders.AirportRideRequestBuilder.ride_category">
+<code class="descname">ride_category</code><em class="property"> = 'airportRide'</em><a class="headerlink" href="#gravitate.domain.rides.builders.AirportRideRequestBuilder.ride_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.AirportRideRequestBuilder.set_with_form_and_user_id">
+<code class="descname">set_with_form_and_user_id</code><span class="sig-paren">(</span><em>d</em>, <em>user_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#AirportRideRequestBuilder.set_with_form_and_user_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.AirportRideRequestBuilder.set_with_form_and_user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save arguments as instance variables in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> – argument dict returned by .parse_args() from a reqparse object</p></li>
+<li><p><strong>user_id</strong> – user id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AirportRideRequestBuilder</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.rides.builders.CampusEventRideRequestBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.builders.</code><code class="descname">CampusEventRideRequestBuilder</code><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#CampusEventRideRequestBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.CampusEventRideRequestBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder" title="gravitate.domain.rides.builders.RideRequestBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.rides.builders.RideRequestBaseBuilder</span></code></a></p>
+<p>TODO: implement</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.rides.builders.RideRequestBaseBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.builders.</code><code class="descname">RideRequestBaseBuilder</code><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#RideRequestBaseBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Builder for RideRequest. This class simplifies the workflow for creating ride request.
+Usage:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Instantiate &lt;AirportRideRequestBuilder|SocialEventRideRequestBuilder&gt;</p></li>
+<li><p>Call .set_data or .set_with_form_and_user_id if calling from REST API layer</p></li>
+<li><p>Call .export_as_class(&lt;AirportRideRequest|SocialEventRideRequest&gt;)</p></li>
+</ol>
+</div></blockquote>
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.RideRequestBaseBuilder.earliest_latest_specified">
+<code class="descname">earliest_latest_specified</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#RideRequestBaseBuilder.earliest_latest_specified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder.earliest_latest_specified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.RideRequestBaseBuilder.export_as_class">
+<code class="descname">export_as_class</code><span class="sig-paren">(</span><em>export_class</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.rides.models.Ride]<a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#RideRequestBaseBuilder.export_as_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder.export_as_class" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>export_class: the class to call .from_dict with</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Note that export_class=AirportRideRequest and export_class=RideRequest yield the same result,</dt><dd><p>since AirportRideRequest.from_dict is the same as RideRequest.from_dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.rides.builders.RideRequestBaseBuilder.ride_category">
+<code class="descname">ride_category</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder.ride_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.RideRequestBaseBuilder.set_data">
+<code class="descname">set_data</code><span class="sig-paren">(</span><em>user_id=None</em>, <em>flight_local_time=None</em>, <em>flight_number=None</em>, <em>earliest=None</em>, <em>latest=None</em>, <em>to_event: bool = None</em>, <em>location_id=None</em>, <em>airport_code=None</em>, <em>pickup_address=None</em>, <em>pricing=None</em>, <em>driver_status: bool = None</em>, <em>event_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#RideRequestBaseBuilder.set_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder.set_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets data that may be used by the builder
+:param user_id:
+:param flight_local_time:
+:param flight_number:
+:param earliest:
+:param latest:
+:param to_event:
+:param location_id:
+:param airport_code:
+:param pickup_address:
+:param pricing:
+:param driver_status:
+:param event_id:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.rides.builders.SocialEventRideRequestBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.builders.</code><code class="descname">SocialEventRideRequestBuilder</code><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#SocialEventRideRequestBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.SocialEventRideRequestBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.rides.builders.RideRequestBaseBuilder" title="gravitate.domain.rides.builders.RideRequestBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.rides.builders.RideRequestBaseBuilder</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.SocialEventRideRequestBuilder.build_social_event_ride_request">
+<code class="descname">build_social_event_ride_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#SocialEventRideRequestBuilder.build_social_event_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.build_social_event_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds SocialEventRideRequest from instance variables
+:return:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.rides.builders.SocialEventRideRequestBuilder.ride_category">
+<code class="descname">ride_category</code><em class="property"> = 'eventRide'</em><a class="headerlink" href="#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.ride_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.builders.SocialEventRideRequestBuilder.set_with_form_and_user_id">
+<code class="descname">set_with_form_and_user_id</code><span class="sig-paren">(</span><em>d</em>, <em>user_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/builders.html#SocialEventRideRequestBuilder.set_with_form_and_user_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.set_with_form_and_user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save arguments as instance variables in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> – </p></li>
+<li><p><strong>user_id</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SocialEventRideRequestBuilder</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.rides.dao">
+<span id="gravitate-domain-rides-dao-module"></span><h2>gravitate.domain.rides.dao module<a class="headerlink" href="#module-gravitate.domain.rides.dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao</p>
+<dl class="class">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.dao.</code><code class="descname">RideRequestGenericDao</code><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description    
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>rideRequest: Type[gravitate.domain.rides.models.Ride]</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.rides.models.Ride]<a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This method sets the firestoreRef of the rideRequest.
+Note that rideRequest is not saved to database with this method.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type rideRequest:Type[RideRequest]:
+:param rideRequest:Type[RideRequest]:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleRideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This function deletes a ride request from the database</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type singleRideRequestRef:DocumentReference:
+:param singleRideRequestRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.get_by_user">
+<code class="descname">get_by_user</code><span class="sig-paren">(</span><em>userId</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.get_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>Returns a list of rideRequests by a user</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – </p></li>
+<li><p><strong>userId</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>a list of ride requests</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.get_ids">
+<code class="descname">get_ids</code><span class="sig-paren">(</span><em>incomplete=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.get_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.get_ids" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>Get the ids of RideRequests</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – </p></li>
+<li><p><strong>incomplete</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If set to true, only RideRequests with requestCompletion=False will be returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.rides.models.Ride]<a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description Note that this cannot take place if transaction already received write operations. “If a
+transaction is used and it already has write operations added, this method cannot be used (i.e.
+read-after-write is not allowed).”</p>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type rideRequestRef:DocumentReference:
+:param rideRequestRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.ref_from_id">
+<code class="descname">ref_from_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.ref_from_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.ref_from_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>rideRequest: Type[gravitate.domain.rides.models.Ride]</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.rides.dao.RideRequestGenericDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction, newRideRequest: Type[gravitate.domain.rides.models.Ride], rideRequestRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/dao.html#RideRequestGenericDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.dao.RideRequestGenericDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>Note that a read action must have taken place before anything is set with that transaction.</p>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:</p>
+<p>:type newRideRequest:Type[RideRequest]:
+:param newRideRequest:Type[RideRequest]:</p>
+<p>:type rideRequestRef:DocumentReference:
+:param rideRequestRef:DocumentReference:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.rides.models">
+<span id="gravitate-domain-rides-models-module"></span><h2>gravitate.domain.rides.models module<a class="headerlink" href="#module-gravitate.domain.rides.models" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, Andrew Kim</p>
+<dl class="class">
+<dt id="gravitate.domain.rides.models.AirportRide">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.models.</code><code class="descname">AirportRide</code><span class="sig-paren">(</span><em>driver_status</em>, <em>origin_ref</em>, <em>destination_ref</em>, <em>has_checked_in</em>, <em>event_ref</em>, <em>orbit_ref</em>, <em>user_id</em>, <em>target</em>, <em>pricing</em>, <em>request_completion</em>, <em>flight_local_time</em>, <em>flight_number</em>, <em>airport_location</em>, <em>baggages</em>, <em>disabilities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#AirportRide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.AirportRide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.rides.models.Ride" title="gravitate.domain.rides.models.Ride"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.rides.models.Ride</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.rides.models.AirportRide.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#AirportRide.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.AirportRide.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><dl class="simple">
+<dt>This function returns the dictionary representation of a RideRequest object</dt><dd><p>so that it can be stored in the database.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.models.AirportRide.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#AirportRide.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.AirportRide.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict for external presentation / returns for endpoint get
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.rides.models.Ride">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.models.</code><code class="descname">Ride</code><span class="sig-paren">(</span><em>driver_status</em>, <em>origin_ref</em>, <em>destination_ref</em>, <em>has_checked_in</em>, <em>event_ref</em>, <em>orbit_ref</em>, <em>user_id</em>, <em>target</em>, <em>pricing</em>, <em>request_completion</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject" title="gravitate.models.firestore_object.FirestoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.models.firestore_object.FirestoreObject</span></code></a></p>
+<p>Description
+This class represents a RideRequest object</p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.rides.models.Ride.from_dict">
+<em class="property">static </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function creates AirportRideRequest or SocialEventRideRequest.</p>
+<blockquote>
+<div><p>(RideRequest Factory)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.rides.models.Ride.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>ride_request_dict</em>, <em>ride_request_ref</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.rides.models.Ride.pickup_address">
+<code class="descname">pickup_address</code><a class="headerlink" href="#gravitate.domain.rides.models.Ride.pickup_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.models.Ride.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.models.Ride.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict for external presentation / returns for endpoint get
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.models.Ride.to_tuple_point">
+<code class="descname">to_tuple_point</code><span class="sig-paren">(</span><em>to_event=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#Ride.to_tuple_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.Ride.to_tuple_point" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns a tuple (actually a list) representation of the ride request</dt><dd><p>as a point for grouping algorithm.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.rides.models.SocialEventRide">
+<em class="property">class </em><code class="descclassname">gravitate.domain.rides.models.</code><code class="descname">SocialEventRide</code><span class="sig-paren">(</span><em>driver_status</em>, <em>origin_ref</em>, <em>destination_ref</em>, <em>has_checked_in</em>, <em>event_ref</em>, <em>orbit_ref</em>, <em>user_id</em>, <em>target</em>, <em>pricing</em>, <em>request_completion</em>, <em>location_ref</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#SocialEventRide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.SocialEventRide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.rides.models.Ride" title="gravitate.domain.rides.models.Ride"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.rides.models.Ride</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.rides.models.SocialEventRide.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#SocialEventRide.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.SocialEventRide.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.rides.models.SocialEventRide.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/models.html#SocialEventRide.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.models.SocialEventRide.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict for external presentation / returns for endpoint get
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.rides.utils">
+<span id="gravitate-domain-rides-utils-module"></span><h2>gravitate.domain.rides.utils module<a class="headerlink" href="#module-gravitate.domain.rides.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.check_duplicate">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">check_duplicate</code><span class="sig-paren">(</span><em>user_id: str</em>, <em>event_ref: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#check_duplicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.check_duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description Returns a boolean whether the user is trying to make a duplicate ride request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – </p></li>
+<li><p><strong>event_ref</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True: it is a duplicate, False: it is not a duplicate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.find_event">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">find_event</code><span class="sig-paren">(</span><em>flight_local_time</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#find_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.find_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+1. Find event reference by querying events with flightLocalTime
+2. Return the reference of such event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flight_local_time</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.get_airport_location">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">get_airport_location</code><span class="sig-paren">(</span><em>airport_code</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.location.models.AirportLocation<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#get_airport_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.get_airport_location" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This method returns an airportLocation with airportCode.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>airport_code</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.get_event_ref_by_id">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">get_event_ref_by_id</code><span class="sig-paren">(</span><em>event_id: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#get_event_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.get_event_ref_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the event_ref by event_id.
+:param event_id:
+:return: DocumentReference of the event.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.get_location_ref_by_id">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">get_location_ref_by_id</code><span class="sig-paren">(</span><em>location_id: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#get_location_ref_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.get_location_ref_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method return the location_ref by location_id.
+:param location_id:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.get_pickup_address">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">get_pickup_address</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#get_pickup_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.get_pickup_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the default pickup address of a user.
+:param user_id:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.get_ride_request">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">get_ride_request</code><span class="sig-paren">(</span><em>d: dict</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.rides.models.Ride]<a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#get_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.get_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.local_time_as_date_str">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">local_time_as_date_str</code><span class="sig-paren">(</span><em>flight_local_time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#local_time_as_date_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.local_time_as_date_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.local_time_as_timestamp">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">local_time_as_timestamp</code><span class="sig-paren">(</span><em>flight_local_time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#local_time_as_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.local_time_as_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.rides.utils.set_disabilities">
+<code class="descclassname">gravitate.domain.rides.utils.</code><code class="descname">set_disabilities</code><span class="sig-paren">(</span><em>form: gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm</em>, <em>rideRequestDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/rides/utils.html#set_disabilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.rides.utils.set_disabilities" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method sets the accommodation options in rideRequest dict.
+Note that the method needs refactoring to pass values with parameters rather than structures.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>form</strong> – </p></li>
+<li><p><strong>rideRequestDict</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.rides">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.rides" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.rides.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

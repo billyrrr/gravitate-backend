@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.user package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-user-package">
+<h1>gravitate.domain.user package<a class="headerlink" href="#gravitate-domain-user-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.user.actions">
+<span id="gravitate-domain-user-actions-module"></span><h2>gravitate.domain.user.actions module<a class="headerlink" href="#module-gravitate.domain.user.actions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.domain.user.actions.editUser">
+<code class="descclassname">gravitate.domain.user.actions.</code><code class="descname">editUser</code><span class="sig-paren">(</span><em>user</em>, <em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/actions.html#editUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.actions.editUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.user.actions.getUser">
+<code class="descclassname">gravitate.domain.user.actions.</code><code class="descname">getUser</code><span class="sig-paren">(</span><em>uid: &lt;module 'string' from '/usr/local/Cellar/python/3.7.1/Frameworks/Python.framework/Versions/3.7/lib/python3.7/string.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/actions.html#getUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.actions.getUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.user.actions.randomId">
+<code class="descclassname">gravitate.domain.user.actions.</code><code class="descname">randomId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/actions.html#randomId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.actions.randomId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.user.actions.saveUser">
+<code class="descclassname">gravitate.domain.user.actions.</code><code class="descname">saveUser</code><span class="sig-paren">(</span><em>user</em>, <em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/actions.html#saveUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.actions.saveUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.user.dao">
+<span id="gravitate-domain-user-dao-module"></span><h2>gravitate.domain.user.dao module<a class="headerlink" href="#module-gravitate.domain.user.dao" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.user.dao.UserDao">
+<em class="property">class </em><code class="descclassname">gravitate.domain.user.dao.</code><code class="descname">UserDao</code><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for user</p>
+<blockquote>
+<div><p># TODO delete object.set_firestore_ref()</p>
+</div></blockquote>
+<dl class="staticmethod">
+<dt id="gravitate.domain.user.dao.UserDao.add_to_event_schedule_with_transaction">
+<em class="property">static </em><code class="descname">add_to_event_schedule_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>user_ref: str = None</em>, <em>event_ref: google.cloud.firestore_v1beta1.document.DocumentReference = None</em>, <em>event_schedule: gravitate.domain.event_schedule.models.AirportEventSchedule = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.add_to_event_schedule_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.add_to_event_schedule_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><dl class="simple">
+<dt>Add a event schedule to users/&lt;userId&gt;/eventSchedule</dt><dd><p>Note that the toEventRideRequestRef will be overwritten without warning if already set.
+(Same for fromEventRideRequestRef.)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction:
+:type user_ref:str:
+:param user_ref:str:
+:type event_ref:str:
+:param event_ref:str:
+:type event_schedule:dict:
+:param event_schedule:dict:
+:raises:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.add_user_event_dict">
+<code class="descname">add_user_event_dict</code><span class="sig-paren">(</span><em>user_id</em>, <em>fb_event_id</em>, <em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.add_user_event_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.add_user_event_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Add event to /users/user_id/events/</dt><dd><p>DocumentId is the same as Facebook event id.
+Supports MyEvents Activity</p>
+</dd>
+</dl>
+<p>TODO: add error handling
+:param user_id:
+:param event:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.create_user">
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>user: gravitate.domain.user.models.User</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.create_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.get_by_id_with_transaction">
+<code class="descname">get_by_id_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>userId: str</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.user.models.User<a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.get_by_id_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_by_id_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.get_fcm_token">
+<code class="descname">get_fcm_token</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.get_fcm_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_fcm_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.get_ref">
+<code class="descname">get_ref</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.get_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.get_user">
+<code class="descname">get_user</code><span class="sig-paren">(</span><em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.get_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.get_user_by_id">
+<code class="descname">get_user_by_id</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.get_user_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_user_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.user.dao.UserDao.get_user_with_transaction">
+<code class="descname">get_user_with_transaction</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.get_user_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.user.dao.UserDao.remove_event_schedule_with_transaction">
+<em class="property">static </em><code class="descname">remove_event_schedule_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference = None</em>, <em>orbitId: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.remove_event_schedule_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.remove_event_schedule_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.user.dao.UserDao.set_user_with_transaction">
+<code class="descname">set_user_with_transaction</code><em class="property"> = &lt;google.cloud.firestore_v1beta1.transaction._Transactional object&gt;</em><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.set_user_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.set_with_transaction">
+<code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>new_user: gravitate.domain.user.models.User</em>, <em>user_ref: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.update_fcm_token">
+<code class="descname">update_fcm_token</code><span class="sig-paren">(</span><em>userId: str</em>, <em>token</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.update_fcm_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.update_fcm_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.user.dao.UserDao.user_exists">
+<em class="property">static </em><code class="descname">user_exists</code><span class="sig-paren">(</span><em>userRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.user_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.user_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.dao.UserDao.user_id_exists">
+<code class="descname">user_id_exists</code><span class="sig-paren">(</span><em>userId: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/dao.html#UserDao.user_id_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.dao.UserDao.user_id_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.user.models">
+<span id="gravitate-domain-user-models-module"></span><h2>gravitate.domain.user.models module<a class="headerlink" href="#module-gravitate.domain.user.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.user.models.User">
+<em class="property">class </em><code class="descclassname">gravitate.domain.user.models.</code><code class="descname">User</code><span class="sig-paren">(</span><em>uid</em>, <em>membership</em>, <em>phone_number</em>, <em>display_name</em>, <em>photo_url</em>, <em>pickupAddress</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/models.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.models.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject" title="gravitate.models.firestore_object.FirestoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.models.firestore_object.FirestoreObject</span></code></a></p>
+<p>Description
+this class represents the user object</p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.user.models.User.from_dict">
+<em class="property">static </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>userDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/models.html#User.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.models.User.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function creates User.</p>
+<blockquote>
+<div><p>(User Factory)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rideRequestDict</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.models.User.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/models.html#User.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.models.User.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.user.models.User.to_firestore_dict">
+<code class="descname">to_firestore_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/user/models.html#User.to_firestore_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.user.models.User.to_firestore_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.user">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.user" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.user.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

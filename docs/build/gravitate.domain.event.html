@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.event package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-event-package">
+<h1>gravitate.domain.event package<a class="headerlink" href="#gravitate-domain-event-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.event.actions">
+<span id="gravitate-domain-event-actions-module"></span><h2>gravitate.domain.event.actions module<a class="headerlink" href="#module-gravitate.domain.event.actions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="gravitate.domain.event.actions.create">
+<code class="descclassname">gravitate.domain.event.actions.</code><code class="descname">create</code><span class="sig-paren">(</span><em>args</em>, <em>user_id</em>, <em>event_category='social'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/actions.html#create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.actions.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates event in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – </p></li>
+<li><p><strong>user_id</strong> – </p></li>
+<li><p><strong>event_category</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.actions.create_fb_event">
+<code class="descclassname">gravitate.domain.event.actions.</code><code class="descname">create_fb_event</code><span class="sig-paren">(</span><em>event_dict</em>, <em>uid</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/gravitate/domain/event/actions.html#create_fb_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.actions.create_fb_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates event from a facebook event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event_dict</strong> – event json returned by Facebook graph api</p></li>
+<li><p><strong>uid</strong> – user id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>id of the event just created</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.event.builders_new">
+<span id="gravitate-domain-event-builders-new-module"></span><h2>gravitate.domain.event.builders_new module<a class="headerlink" href="#module-gravitate.domain.event.builders_new" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gravitate.domain.event.builders_new.AirportEventBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">AirportEventBuilder</code><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#AirportEventBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.AirportEventBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.builders_new.EventBaseBuilder" title="gravitate.domain.event.builders_new.EventBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.builders_new.EventBaseBuilder</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.AirportEventBuilder.build_airport">
+<code class="descname">build_airport</code><span class="sig-paren">(</span><em>airport_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#AirportEventBuilder.build_airport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.AirportEventBuilder.build_airport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.AirportEventBuilder.build_basic_info">
+<code class="descname">build_basic_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#AirportEventBuilder.build_basic_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.AirportEventBuilder.build_basic_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.event.builders_new.AirportEventBuilder.event_category">
+<code class="descname">event_category</code><em class="property"> = 'airport'</em><a class="headerlink" href="#gravitate.domain.event.builders_new.AirportEventBuilder.event_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.builders_new.CampusEventBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">CampusEventBuilder</code><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#CampusEventBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.CampusEventBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.builders_new.EventBaseBuilder" title="gravitate.domain.event.builders_new.EventBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.builders_new.EventBaseBuilder</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.CampusEventBuilder.build_basic_info">
+<code class="descname">build_basic_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#CampusEventBuilder.build_basic_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.CampusEventBuilder.build_basic_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.CampusEventBuilder.build_campus">
+<code class="descname">build_campus</code><span class="sig-paren">(</span><em>campus_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#CampusEventBuilder.build_campus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.CampusEventBuilder.build_campus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.CampusEventBuilder.build_start_end">
+<code class="descname">build_start_end</code><span class="sig-paren">(</span><em>start_timestamp=None</em>, <em>end_timestamp=None</em>, <em>local_date_string=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#CampusEventBuilder.build_start_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.CampusEventBuilder.build_start_end" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Build event start time and event end time</dt><dd><p>Note that to-event and from-event targets are overlapping</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_timestamp</strong> – </p></li>
+<li><p><strong>end_timestamp</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.event.builders_new.CampusEventBuilder.event_category">
+<code class="descname">event_category</code><em class="property"> = 'campus'</em><a class="headerlink" href="#gravitate.domain.event.builders_new.CampusEventBuilder.event_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.builders_new.EventBaseBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">EventBaseBuilder</code><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#EventBaseBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.EventBaseBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.EventBaseBuilder.build_descriptions">
+<code class="descname">build_descriptions</code><span class="sig-paren">(</span><em>description</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#EventBaseBuilder.build_descriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.EventBaseBuilder.build_descriptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.event.builders_new.EventBaseBuilder.event_category">
+<code class="descname">event_category</code><em class="property"> = None</em><a class="headerlink" href="#gravitate.domain.event.builders_new.EventBaseBuilder.event_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.EventBaseBuilder.export_as_class">
+<code class="descname">export_as_class</code><span class="sig-paren">(</span><em>export_class</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.event.models.Event]<a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#EventBaseBuilder.export_as_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.EventBaseBuilder.export_as_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.builders_new.FbEventBuilder">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">FbEventBuilder</code><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#FbEventBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.FbEventBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.builders_new.EventBaseBuilder" title="gravitate.domain.event.builders_new.EventBaseBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.builders_new.EventBaseBuilder</span></code></a></p>
+<dl class="method">
+<dt id="gravitate.domain.event.builders_new.FbEventBuilder.build_with_fb_dict">
+<code class="descname">build_with_fb_dict</code><span class="sig-paren">(</span><em>d: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#FbEventBuilder.build_with_fb_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.FbEventBuilder.build_with_fb_dict" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Builds SocialEvent with Facebook event json.</p>
+<p>TODO: finish
+{</p>
+<blockquote>
+<div><p>“description”: “Advance Sale begins Friday, 6/1 at 11AM PDT</p>
+</div></blockquote>
+</div></blockquote>
+<dl>
+<dt>www.coachella.com”,</dt><dd><blockquote>
+<div><p>“end_time”: “2019-04-14T23:59:00-0700”,
+“name”: “Coachella Valley Music and Arts Festival 2019 - Weekend 1”,
+“place”: {</p>
+<blockquote>
+<div><p>“name”: “Coachella”,
+“location”: {</p>
+<blockquote>
+<div><p>“latitude”: 33.679974,
+“longitude”: -116.237221</p>
+</div></blockquote>
+<p>},
+“id”: “20281766647”</p>
+</div></blockquote>
+<p>},
+“start_time”: “2019-04-12T12:00:00-0700”,
+“id”: “137943263736990”</p>
+</div></blockquote>
+<p>}</p>
+<dl class="field-list simple">
+<dt class="field-odd">param d</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">return</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.event.builders_new.FbEventBuilder.event_category">
+<code class="descname">event_category</code><em class="property"> = 'social'</em><a class="headerlink" href="#gravitate.domain.event.builders_new.FbEventBuilder.event_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.builders_new.build_airport_event">
+<code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">build_airport_event</code><span class="sig-paren">(</span><em>start_timestamp=None</em>, <em>end_timestamp=None</em>, <em>local_date_string=None</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.event.models.AirportEvent<a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#build_airport_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.build_airport_event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.builders_new.build_ucsb_event">
+<code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">build_ucsb_event</code><span class="sig-paren">(</span><em>start_timestamp=None</em>, <em>end_timestamp=None</em>, <em>local_date_string=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#build_ucsb_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.build_ucsb_event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.builders_new.create_time_offsets">
+<code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">create_time_offsets</code><span class="sig-paren">(</span><em>local_time</em>, <em>later=False</em>, <em>offset_low_abs_sec: int = 7200</em>, <em>offset_high_abs_sec: int = 18000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#create_time_offsets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.create_time_offsets" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><dl class="simple">
+<dt>This method creates a target with event start_time from Facebook dict.</dt><dd><p>The offsets represents how much in advance is user’s preferred earliest and latest.</p>
+</dd>
+<dt>Limitations:</dt><dd><dl class="simple">
+<dt>this method won’t work if any datetime string represents a time when</dt><dd><p>daylight saving ends (November 4 1:00AM-2:00AM).
+since anytime in between corresponds to more than one possible UTC time.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_time</strong> – </p></li>
+<li><p><strong>offset_low_abs_sec</strong> – The offset with lower absolute value.</p></li>
+<li><p><strong>offset_high_abs_sec</strong> – The offset with higher absolute value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.builders_new.get_day_offset">
+<code class="descclassname">gravitate.domain.event.builders_new.</code><code class="descname">get_day_offset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/builders_new.html#get_day_offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.builders_new.get_day_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the offset of one day minus one second</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.event.dao">
+<span id="gravitate-domain-event-dao-module"></span><h2>gravitate.domain.event.dao module<a class="headerlink" href="#module-gravitate.domain.event.dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, David Nong</p>
+<dl class="class">
+<dt id="gravitate.domain.event.dao.EventDao">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.dao.</code><code class="descname">EventDao</code><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description
+Database access object for events</p>
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>event: gravitate.domain.event.models.Event</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.create_fb_event">
+<code class="descname">create_fb_event</code><span class="sig-paren">(</span><em>event: gravitate.domain.event.models.SocialEvent</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.create_fb_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.create_fb_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates facebook event in database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> – event object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reference to the event just created</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This function deletes a ride request from the database</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+<p>:type eventRef:DocumentReference:
+:param eventRef:DocumentReference:
+:raises:
+:rtype:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.exists_fb_event">
+<code class="descname">exists_fb_event</code><span class="sig-paren">(</span><em>fb_event_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.exists_fb_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.exists_fb_event" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns doc.id if fb_event_id already exists,</dt><dd><p>otherwise return None</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fb_event_id</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.find_by_date_str">
+<code class="descname">find_by_date_str</code><span class="sig-paren">(</span><em>date: str</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.find_by_date_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.find_by_date_str" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Find airportEvent that has the matching “localDateString”. Note that this finds</dt><dd><p>only one event that fits the condition. If there are more in firestore,
+ValueError will be raised</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – local date string eg. “2019-01-01”</p></li>
+<li><p><strong>category</strong> – “airport”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError: only exactly 1 event can fit the condition in the database</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>one event that fits the condition</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.find_by_timestamp">
+<code class="descname">find_by_timestamp</code><span class="sig-paren">(</span><em>timestamp</em>, <em>category</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.find_by_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.find_by_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Description</dt><dd><p>This method finds an airportEvent that “overlaps” with the timestamp provided.</p>
+<p>DEPRECATED</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timestamp</strong> – the point-in-time that the eventSchedule has to include.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an event from database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eventRef</strong> – firestore document reference of the event</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>event_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an event from database by event id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event_id</strong> – id of the event</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.dao.EventDao.get_ref">
+<code class="descname">get_ref</code><span class="sig-paren">(</span><em>doc_id</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.get_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.get_ref" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>This method returns EventRef with EventId provided.
+Example: converts “testeventid1” to “/events/testeventid1” of type DocumentReference</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc_id</strong> – eventId</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.dao.EventDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; Type[gravitate.domain.event.models.Event]<a class="reference internal" href="_modules/gravitate/domain/event/dao.html#EventDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.EventDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>Note that this cannot take place if transaction already received write operations.
+“If a transaction is used and it already has write operations added, this method cannot be used
+(i.e. read-after-write is not allowed).”</p>
+</dd>
+</dl>
+<p>:type transaction:Transaction:
+:param transaction:Transaction: firestore transaction
+:type eventRef:DocumentReference:
+:param eventRef:DocumentReference: firestore document reference of the event to get
+:raises:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravitate.domain.event.dao.str_to_ref">
+<code class="descclassname">gravitate.domain.event.dao.</code><code class="descname">str_to_ref</code><span class="sig-paren">(</span><em>ref_str: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/dao.html#str_to_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.dao.str_to_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.event.models">
+<span id="gravitate-domain-event-models-module"></span><h2>gravitate.domain.event.models module<a class="headerlink" href="#module-gravitate.domain.event.models" title="Permalink to this headline">¶</a></h2>
+<p>Author: Andrew Kim
+Reviewer: Zixuan Rao</p>
+<dl class="class">
+<dt id="gravitate.domain.event.models.AirportEvent">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.models.</code><code class="descname">AirportEvent</code><span class="sig-paren">(</span><em>event_category</em>, <em>participants</em>, <em>targets</em>, <em>pricing</em>, <em>location_ref</em>, <em>is_closed</em>, <em>local_date_string</em>, <em>name</em>, <em>description</em>, <em>parking_info</em>, <em>airport_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#AirportEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.AirportEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.models.Event" title="gravitate.domain.event.models.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.models.Event</span></code></a></p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.models.AirportEvent.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>eventDict</em>, <em>eventRef</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#AirportEvent.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.AirportEvent.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns event object from dict and document reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventDict</strong> – event dictionary</p></li>
+<li><p><strong>eventRef</strong> – firestore_ref of the event will be set to this value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object with firestore_ref set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.AirportEvent.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#AirportEvent.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.AirportEvent.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary representation of the event object for saving to database.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.AirportEvent.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#AirportEvent.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.AirportEvent.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.models.CampusEvent">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.models.</code><code class="descname">CampusEvent</code><span class="sig-paren">(</span><em>event_category</em>, <em>participants</em>, <em>targets</em>, <em>pricing</em>, <em>location_ref</em>, <em>is_closed</em>, <em>local_date_string</em>, <em>name</em>, <em>description</em>, <em>parking_info</em>, <em>campus_code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.models.Event" title="gravitate.domain.event.models.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.models.Event</span></code></a></p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.models.CampusEvent.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>eventDict</em>, <em>eventRef</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns event object from dict and document reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventDict</strong> – event dictionary</p></li>
+<li><p><strong>eventRef</strong> – firestore_ref of the event will be set to this value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object with firestore_ref set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.CampusEvent.set_as_active">
+<code class="descname">set_as_active</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent.set_as_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent.set_as_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.CampusEvent.set_as_passed">
+<code class="descname">set_as_passed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent.set_as_passed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent.set_as_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.CampusEvent.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary representation of the event object for saving to database.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.CampusEvent.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#CampusEvent.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.CampusEvent.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.models.Event">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.models.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>event_category</em>, <em>participants</em>, <em>targets</em>, <em>pricing</em>, <em>location_ref</em>, <em>is_closed</em>, <em>local_date_string</em>, <em>name</em>, <em>description</em>, <em>parking_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject" title="gravitate.models.firestore_object.FirestoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.models.firestore_object.FirestoreObject</span></code></a></p>
+<p>Description
+this class represents the event object</p>
+<blockquote>
+<div><p>Note that reference to the object eventRef is deprecated.
+Get and set firestoreRef instead.</p>
+</div></blockquote>
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.models.Event.from_dict">
+<em class="property">static </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>eventDict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns event object from dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eventDict</strong> – event dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.models.Event.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>eventDict: dict</em>, <em>eventRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns event object from dict and document reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventDict</strong> – event dictionary</p></li>
+<li><p><strong>eventRef</strong> – firestore_ref of the event will be set to this value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object with firestore_ref set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gravitate.domain.event.models.Event.location">
+<code class="descname">location</code><a class="headerlink" href="#gravitate.domain.event.models.Event.location" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Note that this method is non-transactional. We are assuming that</dt><dd><p>Location objects are immutable and ready before the transaction.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.Event.set_as_active">
+<code class="descname">set_as_active</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.set_as_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.set_as_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.Event.set_as_passed">
+<code class="descname">set_as_passed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.set_as_passed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.set_as_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.Event.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary representation of the event object for saving to database.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.Event.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#Event.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.Event.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gravitate.domain.event.models.SocialEvent">
+<em class="property">class </em><code class="descclassname">gravitate.domain.event.models.</code><code class="descname">SocialEvent</code><span class="sig-paren">(</span><em>event_category</em>, <em>participants</em>, <em>targets</em>, <em>pricing</em>, <em>location_ref</em>, <em>is_closed</em>, <em>local_date_string</em>, <em>name</em>, <em>description</em>, <em>parking_info</em>, <em>fb_event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravitate.domain.event.models.Event" title="gravitate.domain.event.models.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.domain.event.models.Event</span></code></a></p>
+<p>Description
+this class represents the event object</p>
+<blockquote>
+<div><p>Note that reference to the object eventRef is deprecated.
+Get and set firestoreRef instead.</p>
+</div></blockquote>
+<dl class="staticmethod">
+<dt id="gravitate.domain.event.models.SocialEvent.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>eventDict</em>, <em>eventRef</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns event object from dict and document reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventDict</strong> – event dictionary</p></li>
+<li><p><strong>eventRef</strong> – firestore_ref of the event will be set to this value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event object with firestore_ref set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.SocialEvent.set_as_active">
+<code class="descname">set_as_active</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent.set_as_active"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent.set_as_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.SocialEvent.set_as_passed">
+<code class="descname">set_as_passed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent.set_as_passed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent.set_as_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition
+Sets the boolean isClosed to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>self</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.SocialEvent.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dictionary representation of the event object for saving to database.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event.models.SocialEvent.to_dict_view">
+<code class="descname">to_dict_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event/models.html#SocialEvent.to_dict_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event.models.SocialEvent.to_dict_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.event">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.event" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.event.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.orbit.dao &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.orbit.dao</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Author: Zixuan Rao</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">google</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">DocumentReference</span><span class="p">,</span> <span class="n">CollectionReference</span><span class="p">,</span> <span class="n">DocumentSnapshot</span>
+
+<span class="kn">from</span> <span class="nn">gravitate</span> <span class="k">import</span> <span class="n">context</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.orbit.models</span> <span class="k">import</span> <span class="n">Orbit</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="OrbitDao"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao">[docs]</a><span class="k">class</span> <span class="nc">OrbitDao</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description	</span>
+<span class="sd">        Database access object for ride request</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orbitCollectionRef</span><span class="p">:</span> <span class="n">CollectionReference</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;orbits&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OrbitDao.ref_from_id"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.ref_from_id">[docs]</a>    <span class="k">def</span> <span class="nf">ref_from_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbit_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbitCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">orbit_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrbitDao.get_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="c1"># @transactional</span>
+    <span class="k">def</span> <span class="nf">get_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">orbitRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Orbit</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Description Note that this cannot take place if transaction already received write operations. &quot;If a</span>
+<span class="sd">        transaction is used and it already has write operations added, this method cannot be used (i.e.</span>
+<span class="sd">        read-after-write is not allowed).&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">orbitRef</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">orbit</span> <span class="o">=</span> <span class="n">Orbit</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+            <span class="n">orbit</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">orbitRef</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">orbit</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No such document! &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">orbitRef</span><span class="o">.</span><span class="n">id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="OrbitDao.get"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">orbitRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">snapshot_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">Orbit</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshot_dict</span><span class="p">)</span>
+        <span class="n">orbit</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">orbitRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">orbit</span></div>
+
+<div class="viewcode-block" id="OrbitDao.get_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_from_id</span><span class="p">(</span><span class="n">rid</span><span class="p">)</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">orbit</span></div>
+
+<div class="viewcode-block" id="OrbitDao.create"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Orbit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">orbit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">orbitRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbitCollectionRef</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">orbit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">orbit</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">orbitRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">orbitRef</span></div>
+
+<div class="viewcode-block" id="OrbitDao.delete"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singleOrbitRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function deletes an orbit from the database</span>
+<span class="sd">            Note that this function should not be called directly from any logics, </span>
+<span class="sd">                since you have to delete all references to it from RideRequest, Event, etc. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">singleOrbitRef</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="OrbitDao.set_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.set_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="c1"># @transactional</span>
+    <span class="k">def</span> <span class="nf">set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newOrbit</span><span class="p">:</span> <span class="n">Orbit</span><span class="p">,</span> <span class="n">orbitRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Note that a read action must have taken place before anything is set with that transaction. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">orbitRef</span><span class="p">,</span> <span class="n">newOrbit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

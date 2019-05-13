@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.event.builders_new &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.event.builders_new</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">iso8601</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.domain.event</span> <span class="k">import</span> <span class="n">AirportEvent</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">LocationGenericDao</span><span class="p">,</span> <span class="n">SocialEventLocation</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event.models</span> <span class="k">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">ToEventTarget</span><span class="p">,</span> <span class="n">FromEventTarget</span>
+
+
+<div class="viewcode-block" id="create_time_offsets"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.create_time_offsets">[docs]</a><span class="k">def</span> <span class="nf">create_time_offsets</span><span class="p">(</span><span class="n">local_time</span><span class="p">,</span> <span class="n">later</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">offset_low_abs_sec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7200</span><span class="p">,</span>
+                        <span class="n">offset_high_abs_sec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">18000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method creates a target with event start_time from Facebook dict.</span>
+<span class="sd">            The offsets represents how much in advance is user&#39;s preferred earliest and latest.</span>
+
+<span class="sd">        Limitations:</span>
+<span class="sd">            this method won&#39;t work if any datetime string represents a time when</span>
+<span class="sd">                daylight saving ends (November 4 1:00AM-2:00AM).</span>
+<span class="sd">                since anytime in between corresponds to more than one possible UTC time.</span>
+
+<span class="sd">    :param local_time:</span>
+<span class="sd">    :param offset_low_abs_sec: The offset with lower absolute value.</span>
+<span class="sd">    :param offset_high_abs_sec: The offset with higher absolute value.</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">offset_low_abs_sec</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">offset_high_abs_sec</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="c1"># Check that offsetLow represents a greater than or equal to interval than offsetHigh</span>
+    <span class="k">assert</span> <span class="n">offset_low_abs_sec</span> <span class="o">&lt;=</span> <span class="n">offset_high_abs_sec</span>
+    <span class="c1"># Check that there earliest and latest represents a range of time</span>
+    <span class="k">assert</span> <span class="n">offset_low_abs_sec</span> <span class="o">!=</span> <span class="n">offset_high_abs_sec</span>
+
+    <span class="c1"># tz = pytz.timezone(&#39;America/Los_Angeles&#39;)</span>
+    <span class="c1"># local_time = tz.localize(iso8601.parse_date(flight_local_time))</span>
+
+    <span class="n">earliest</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">latest</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Get earliest and latest datetime</span>
+    <span class="k">if</span> <span class="n">later</span><span class="p">:</span>
+        <span class="c1"># Get timedelta object with seconds</span>
+        <span class="n">offset_earlier_abs</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">offset_low_abs_sec</span><span class="p">)</span>
+        <span class="n">offset_later_abs</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">offset_high_abs_sec</span><span class="p">)</span>
+        <span class="n">earliest</span> <span class="o">=</span> <span class="n">local_time</span> <span class="o">+</span> <span class="n">offset_earlier_abs</span>
+        <span class="n">latest</span> <span class="o">=</span> <span class="n">local_time</span> <span class="o">+</span> <span class="n">offset_later_abs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get timedelta object with seconds</span>
+        <span class="n">offset_earlier_abs</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">offset_high_abs_sec</span><span class="p">)</span>
+        <span class="n">offset_later_abs</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">offset_low_abs_sec</span><span class="p">)</span>
+        <span class="n">earliest</span> <span class="o">=</span> <span class="n">local_time</span> <span class="o">-</span> <span class="n">offset_earlier_abs</span>
+        <span class="n">latest</span> <span class="o">=</span> <span class="n">local_time</span> <span class="o">-</span> <span class="n">offset_later_abs</span>
+
+    <span class="n">earliest_timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">earliest</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+    <span class="n">latest_timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">latest</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+
+    <span class="k">assert</span> <span class="n">earliest_timestamp</span> <span class="o">&lt;=</span> <span class="n">latest_timestamp</span>  <span class="c1"># Check that &quot;earliest&quot; occurs earlier than &quot;latest&quot;</span>
+    <span class="k">assert</span> <span class="n">earliest_timestamp</span> <span class="o">!=</span> <span class="n">latest_timestamp</span>  <span class="c1"># Check that &quot;earliest&quot; is not the same as latest</span>
+
+    <span class="k">return</span> <span class="n">earliest_timestamp</span><span class="p">,</span> <span class="n">latest_timestamp</span></div>
+
+
+<div class="viewcode-block" id="EventBaseBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder">[docs]</a><span class="k">class</span> <span class="nc">EventBaseBuilder</span><span class="p">:</span>
+    <span class="n">event_category</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<div class="viewcode-block" id="EventBaseBuilder.export_as_class"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder.export_as_class">[docs]</a>    <span class="k">def</span> <span class="nf">export_as_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_class</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Event</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">export_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_event</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Note that this is an abstract class.</span>
+<span class="sd">            self.event_category needs to be defined in subclass.</span>
+<span class="sd">        :param to_event:</span>
+<span class="sd">        :param start_timestamp:</span>
+<span class="sd">        :param end_timestamp:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;targets&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">to_event</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">ToEventTarget</span><span class="p">(</span><span class="n">event_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_category</span><span class="p">,</span>
+                              <span class="n">arrive_at_event_time</span><span class="o">=</span><span class="p">{</span>
+                                  <span class="s1">&#39;earliest&#39;</span><span class="p">:</span> <span class="n">start_timestamp</span><span class="p">,</span>
+                                  <span class="s1">&#39;latest&#39;</span><span class="p">:</span> <span class="n">end_timestamp</span>
+                              <span class="p">})</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;targets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">FromEventTarget</span><span class="p">(</span><span class="n">event_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_category</span><span class="p">,</span>
+                                <span class="n">leave_event_time</span><span class="o">=</span><span class="p">{</span>
+                                    <span class="s1">&#39;earliest&#39;</span><span class="p">:</span> <span class="n">start_timestamp</span><span class="p">,</span>
+                                    <span class="s1">&#39;latest&#39;</span><span class="p">:</span> <span class="n">end_timestamp</span>
+                                <span class="p">})</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_local_date_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;localDateString&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_date_string</span>
+
+<div class="viewcode-block" id="EventBaseBuilder.build_descriptions"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder.build_descriptions">[docs]</a>    <span class="k">def</span> <span class="nf">build_descriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_parking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parking_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">empty</span> <span class="ow">and</span> <span class="n">parking_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;parkingInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;parkingAvailable&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;parkingPrice&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;parkingLocation&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;parkingInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parking_info</span></div>
+
+
+<div class="viewcode-block" id="FbEventBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.FbEventBuilder">[docs]</a><span class="k">class</span> <span class="nc">FbEventBuilder</span><span class="p">(</span><span class="n">EventBaseBuilder</span><span class="p">):</span>
+    <span class="n">event_category</span> <span class="o">=</span> <span class="s2">&quot;social&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_build_basic_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;isClosed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;participants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;pricing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">123456789</span>
+        <span class="c1"># self._event_dict[&quot;parkingInfo&quot;] = None</span>
+
+<div class="viewcode-block" id="FbEventBuilder.build_with_fb_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.FbEventBuilder.build_with_fb_dict">[docs]</a>    <span class="k">def</span> <span class="nf">build_with_fb_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds SocialEvent with Facebook event json.</span>
+
+<span class="sd">        TODO: finish</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;description&quot;: &quot;Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com&quot;,</span>
+<span class="sd">            &quot;end_time&quot;: &quot;2019-04-14T23:59:00-0700&quot;,</span>
+<span class="sd">            &quot;name&quot;: &quot;Coachella Valley Music and Arts Festival 2019 - Weekend 1&quot;,</span>
+<span class="sd">            &quot;place&quot;: {</span>
+<span class="sd">                &quot;name&quot;: &quot;Coachella&quot;,</span>
+<span class="sd">                &quot;location&quot;: {</span>
+<span class="sd">                    &quot;latitude&quot;: 33.679974,</span>
+<span class="sd">                    &quot;longitude&quot;: -116.237221</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;id&quot;: &quot;20281766647&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;start_time&quot;: &quot;2019-04-12T12:00:00-0700&quot;,</span>
+<span class="sd">            &quot;id&quot;: &quot;137943263736990&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">        :param d:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_descriptions</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_location</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_basic_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_parking</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_fb_event_id</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;start_time&quot;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_start_time</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;end_time&quot;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_end_time</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create location with facebook event - place</span>
+<span class="sd">        :param d:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">SocialEventLocation</span> <span class="o">=</span> <span class="n">SocialEventLocation</span><span class="o">.</span><span class="n">from_fb_place</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;locationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">insert_new</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_fb_event_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set self._event_dict[&quot;fbEventId&quot;] with d[&quot;id]</span>
+<span class="sd">            Note that type of id is str</span>
+
+<span class="sd">        :param d:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;fbEventId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_build_start_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="c1"># raise NotImplementedError</span>
+        <span class="n">start_time_str</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">]</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">start_time_str</span><span class="p">)</span>
+        <span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span> <span class="o">=</span> <span class="n">create_time_offsets</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">later</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">end_timestamp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;localDateString&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_end_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">end_time_str</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">end_time_str</span><span class="p">)</span>
+        <span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span> <span class="o">=</span> <span class="n">create_time_offsets</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">later</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">end_timestamp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AirportEventBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder">[docs]</a><span class="k">class</span> <span class="nc">AirportEventBuilder</span><span class="p">(</span><span class="n">EventBaseBuilder</span><span class="p">):</span>
+    <span class="n">event_category</span> <span class="o">=</span> <span class="s2">&quot;airport&quot;</span>
+
+<div class="viewcode-block" id="AirportEventBuilder.build_basic_info"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder.build_basic_info">[docs]</a>    <span class="k">def</span> <span class="nf">build_basic_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;isClosed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;participants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;pricing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">123456789</span></div>
+
+<div class="viewcode-block" id="AirportEventBuilder.build_airport"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder.build_airport">[docs]</a>    <span class="k">def</span> <span class="nf">build_airport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">airport_code</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;airportCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">airport_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;locationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">find_by_airport_code</span><span class="p">(</span><span class="n">airport_code</span><span class="p">)</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="CampusEventBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder">[docs]</a><span class="k">class</span> <span class="nc">CampusEventBuilder</span><span class="p">(</span><span class="n">EventBaseBuilder</span><span class="p">):</span>
+    <span class="n">event_category</span> <span class="o">=</span> <span class="s2">&quot;campus&quot;</span>
+
+<div class="viewcode-block" id="CampusEventBuilder.build_basic_info"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_basic_info">[docs]</a>    <span class="k">def</span> <span class="nf">build_basic_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;isClosed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;participants&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;pricing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">123456789</span></div>
+
+<div class="viewcode-block" id="CampusEventBuilder.build_campus"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_campus">[docs]</a>    <span class="k">def</span> <span class="nf">build_campus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">campus_code</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;campusCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">campus_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;locationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">find_by_campus_code</span><span class="p">(</span><span class="n">campus_code</span><span class="p">)</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CampusEventBuilder.build_start_end"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_start_end">[docs]</a>    <span class="k">def</span> <span class="nf">build_start_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_date_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Build event start time and event end time</span>
+<span class="sd">            Note that to-event and from-event targets are overlapping</span>
+<span class="sd">        :param start_timestamp:</span>
+<span class="sd">        :param end_timestamp:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">local_date_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_dict</span><span class="p">[</span><span class="s2">&quot;localDateString&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_date_string</span>
+
+        <span class="k">if</span> <span class="n">start_timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">earliest_arrival</span> <span class="o">=</span> <span class="n">start_timestamp</span>
+            <span class="n">latest_arrival</span> <span class="o">=</span> <span class="n">start_timestamp</span> <span class="o">+</span> <span class="n">get_day_offset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                               <span class="n">start_timestamp</span><span class="o">=</span><span class="n">earliest_arrival</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">latest_arrival</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">end_timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">earliest_departure</span> <span class="o">=</span> <span class="n">start_timestamp</span>
+            <span class="n">latest_departure</span> <span class="o">=</span> <span class="n">start_timestamp</span> <span class="o">+</span> <span class="n">get_day_offset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">start_timestamp</span><span class="o">=</span><span class="n">earliest_departure</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">latest_departure</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="build_ucsb_event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.build_ucsb_event">[docs]</a><span class="k">def</span> <span class="nf">build_ucsb_event</span><span class="p">(</span><span class="n">start_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_date_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">CampusEventBuilder</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_basic_info</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_campus</span><span class="p">(</span><span class="n">campus_code</span><span class="o">=</span><span class="s2">&quot;UCSB&quot;</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_start_end</span><span class="p">(</span><span class="n">start_timestamp</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">start_timestamp</span><span class="p">),</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">end_timestamp</span><span class="p">),</span>
+                      <span class="n">local_date_string</span><span class="o">=</span><span class="n">local_date_string</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">_build_parking</span><span class="p">(</span><span class="n">empty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">campus_description</span> <span class="o">=</span> <span class="s2">&quot;UCSB on &quot;</span> <span class="o">+</span> <span class="n">local_date_string</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_descriptions</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">campus_description</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;UCSB&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">export_as_class</span><span class="p">(</span><span class="n">Event</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_day_offset"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.get_day_offset">[docs]</a><span class="k">def</span> <span class="nf">get_day_offset</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Returns the offset of one day minus one second</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">-</span> <span class="mi">1</span></div>
+
+<span class="c1">#</span>
+<span class="c1"># class EventBuilder(Event):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     This class builds an event.</span>
+<span class="c1">#</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         This method should class the following operations in the order of:</span>
+<span class="c1">#             1. buildBasicInfo</span>
+<span class="c1">#             2. buildLists</span>
+<span class="c1">#             3. buildTimeRange</span>
+<span class="c1">#             4. buildExtraInfo</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.buildBasicInfo()</span>
+<span class="c1">#         self.buildLists()</span>
+<span class="c1">#         self.buildTimeRange()</span>
+<span class="c1">#         self.buildExtraInfo()</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildBasicInfo(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         This method fills basic information that is specified by subclass of EventBuilder.</span>
+<span class="c1">#         :return:</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         raise NotImplementedError</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildLists(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         This method builds an empty list of participants.</span>
+<span class="c1">#         :return:</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         # Since we are unsure of how participants and locationRefs will be represented</span>
+<span class="c1">#         raise NotImplementedError</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildTimeRange(self, start_timestamp, end_timestamp):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         This method builds the time range of the event</span>
+<span class="c1">#         :return:</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         raise NotImplementedError</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildExtraInfo(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         This method builds extra information of the event such as pricing.</span>
+<span class="c1">#         :return:</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         raise NotImplementedError</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># class SpecifiedRangeEventBuilder(EventBuilder):</span>
+<span class="c1">#</span>
+<span class="c1">#     def __init__(self, start_timestamp, end_timestamp):</span>
+<span class="c1">#         self.buildBasicInfo()</span>
+<span class="c1">#         self.buildLists()</span>
+<span class="c1">#         self.buildTimeRange(start_timestamp, end_timestamp)</span>
+<span class="c1">#         self.buildExtraInfo()</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildTimeRange(self, start_timestamp, end_timestamp):</span>
+<span class="c1">#         self.start_timestamp = start_timestamp</span>
+<span class="c1">#         self.end_timestamp = end_timestamp</span>
+<span class="c1">#</span>
+<span class="c1"># class LaxEventBuilder(SpecifiedRangeEventBuilder):</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildBasicInfo(self):</span>
+<span class="c1">#         self.event_category = &quot;airport&quot;</span>
+<span class="c1">#         self.event_location = &quot;LAX&quot;</span>
+<span class="c1">#         self.is_closed = False</span>
+<span class="c1">#         self.location_ref = LocationGenericDao().find_by_airport_code(&#39;LAX&#39;).get_firestore_ref()</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildLists(self):</span>
+<span class="c1">#         self.participants = []</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildExtraInfo(self):</span>
+<span class="c1">#         self.pricing = 100</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># class UcsbEventBuilder(SpecifiedRangeEventBuilder):</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildBasicInfo(self):</span>
+<span class="c1">#         self.event_category = &quot;campus&quot;</span>
+<span class="c1">#         self.event_location = &quot;UCSB&quot;</span>
+<span class="c1">#         self.is_closed = False</span>
+<span class="c1">#         self.location_ref = LocationGenericDao().find_by_campus_code(&quot;UCSB&quot;).get_firestore_ref()</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildLists(self):</span>
+<span class="c1">#         self.participants = []</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildExtraInfo(self):</span>
+<span class="c1">#         self.pricing = 100</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># class SampleLaxEventBuilder(LaxEventBuilder):</span>
+<span class="c1">#</span>
+<span class="c1">#     def buildTimeRange(self, start_timestamp=1545033600, end_timestamp=1545119999):</span>
+<span class="c1">#         self.start_timestamp = start_timestamp</span>
+<span class="c1">#         self.end_timestamp = end_timestamp</span>
+
+
+<div class="viewcode-block" id="build_airport_event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.builders_new.build_airport_event">[docs]</a><span class="k">def</span> <span class="nf">build_airport_event</span><span class="p">(</span><span class="n">start_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_date_string</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AirportEvent</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">AirportEventBuilder</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_airport</span><span class="p">(</span><span class="s2">&quot;LAX&quot;</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_basic_info</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">end_timestamp</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">_build_target</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="n">start_timestamp</span><span class="p">,</span> <span class="n">end_timestamp</span><span class="o">=</span><span class="n">end_timestamp</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">build_descriptions</span><span class="p">(</span><span class="s2">&quot;what the event is&quot;</span><span class="p">,</span> <span class="s2">&quot;name of the event&quot;</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">_build_parking</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">_build_local_date_string</span><span class="p">(</span><span class="n">local_date_string</span><span class="p">)</span>
+    <span class="n">new_event</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">export_as_class</span><span class="p">(</span><span class="n">AirportEvent</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_event</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

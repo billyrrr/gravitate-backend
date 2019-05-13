@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.rides.builders &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.rides.builders</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">LocationGenericDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event.dao</span> <span class="k">import</span> <span class="n">EventDao</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">RideRequest</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location.models</span> <span class="k">import</span> <span class="n">Location</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">Target</span>
+
+
+<div class="viewcode-block" id="RideRequestBaseBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder">[docs]</a><span class="k">class</span> <span class="nc">RideRequestBaseBuilder</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builder for RideRequest. This class simplifies the workflow for creating ride request.</span>
+<span class="sd">    Usage:</span>
+<span class="sd">        1. Instantiate &lt;AirportRideRequestBuilder|SocialEventRideRequestBuilder&gt;</span>
+<span class="sd">        2. Call .set_data or .set_with_form_and_user_id if calling from REST API layer</span>
+<span class="sd">        3. Call .export_as_class(&lt;AirportRideRequest|SocialEventRideRequest&gt;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ride_category</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c1"># _ride_request_dict = None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">earliest</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_number</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eventRef</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickup_address</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver_status</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Helper data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="RideRequestBaseBuilder.export_as_class"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.export_as_class">[docs]</a>    <span class="k">def</span> <span class="nf">export_as_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_class</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param: export_class: the class to call .from_dict with</span>
+<span class="sd">        Note that export_class=AirportRideRequest and export_class=RideRequest yield the same result,</span>
+<span class="sd">            since AirportRideRequest.from_dict is the same as RideRequest.from_dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">export_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RideRequestBaseBuilder.set_data"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.set_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">flight_local_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">flight_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">earliest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">latest</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">to_event</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">airport_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pickup_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pricing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">driver_status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets data that may be used by the builder</span>
+<span class="sd">        :param user_id:</span>
+<span class="sd">        :param flight_local_time:</span>
+<span class="sd">        :param flight_number:</span>
+<span class="sd">        :param earliest:</span>
+<span class="sd">        :param latest:</span>
+<span class="sd">        :param to_event:</span>
+<span class="sd">        :param location_id:</span>
+<span class="sd">        :param airport_code:</span>
+<span class="sd">        :param pickup_address:</span>
+<span class="sd">        :param pricing:</span>
+<span class="sd">        :param driver_status:</span>
+<span class="sd">        :param event_id:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span> <span class="o">=</span> <span class="n">flight_local_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flight_number</span> <span class="o">=</span> <span class="n">flight_number</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">earliest</span> <span class="o">=</span> <span class="n">earliest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latest</span> <span class="o">=</span> <span class="n">latest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="n">to_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_id</span> <span class="o">=</span> <span class="n">location_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span> <span class="o">=</span> <span class="n">airport_code</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickup_address</span> <span class="o">=</span> <span class="n">pickup_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span> <span class="o">=</span> <span class="n">pricing</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="n">to_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver_status</span> <span class="o">=</span> <span class="n">driver_status</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="n">event_id</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_ride_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;rideCategory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ride_category</span>
+
+    <span class="k">def</span> <span class="nf">_build_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;userId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;user_id is not set &quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_flight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;flightLocalTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;flightNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_number</span>
+
+    <span class="k">def</span> <span class="nf">_build_location_by_airport_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;airportLocation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_location_ref</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;destinationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_location_ref</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_location_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;destinationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_location_ref_by_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_location_by_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># print(self.event.to_dict())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;locationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">location_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;destinationRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">location_ref</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_location_ref</span><span class="p">(</span><span class="n">airport_code</span><span class="p">):</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_airport_location</span><span class="p">(</span><span class="n">airport_code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">location</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_target_earliest_latest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: Change back</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_with_local_time_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ride_category</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_target_anytime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">earliest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">start_timestamp</span>
+        <span class="n">latest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">end_timestamp</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_social_event_target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_event</span><span class="p">,</span> <span class="n">earliest</span><span class="p">,</span> <span class="n">latest</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_target_with_event_target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">to_event</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_target_with_flight_local_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_with_flight_local_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_event_ref_with_flight_local_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;eventRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">find_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">find_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_build_event_with_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO: change to event id</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">event</span> <span class="o">=</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>
+
+    <span class="k">def</span> <span class="nf">_build_event_ref_with_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;eventRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_disabilities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;disabilities&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_baggages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;baggages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build_ride_request_default_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;requestCompletion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;orbitRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;driverStatus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s1">&#39;hasCheckedIn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s1">&#39;pricing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">987654321</span>
+
+    <span class="k">def</span> <span class="nf">_build_pickup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">origin_location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_pickup_address</span><span class="p">(</span><span class="n">pickup_address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pickup_address</span><span class="p">)</span>
+        <span class="n">origin_ref</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">insert_new</span><span class="p">(</span><span class="n">origin_location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ride_request_dict</span><span class="p">[</span><span class="s2">&quot;originRef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin_ref</span>
+        <span class="c1"># self._ride_request_dict[&quot;pickupAddress&quot;] = self.pickup_address</span>
+
+<div class="viewcode-block" id="RideRequestBaseBuilder.earliest_latest_specified"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.earliest_latest_specified">[docs]</a>    <span class="k">def</span> <span class="nf">earliest_latest_specified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div></div>
+
+
+<div class="viewcode-block" id="AirportRideRequestBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder">[docs]</a><span class="k">class</span> <span class="nc">AirportRideRequestBuilder</span><span class="p">(</span><span class="n">RideRequestBaseBuilder</span><span class="p">):</span>
+
+    <span class="n">ride_category</span> <span class="o">=</span> <span class="s2">&quot;airportRide&quot;</span>
+
+<div class="viewcode-block" id="AirportRideRequestBuilder.set_with_form_and_user_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.set_with_form_and_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_with_form_and_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save arguments as instance variables in builder</span>
+
+<span class="sd">        :param d: argument dict returned by .parse_args() from a reqparse object</span>
+<span class="sd">        :param user_id: user id</span>
+<span class="sd">        :return: AirportRideRequestBuilder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">flight_local_time</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flightLocalTime&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">flight_number</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;flightNumber&quot;</span><span class="p">],</span>
+            <span class="n">airport_code</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;airportCode&quot;</span><span class="p">],</span> <span class="n">to_event</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;toEvent&quot;</span><span class="p">],</span> <span class="n">pickup_address</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;pickupAddress&quot;</span><span class="p">],</span>
+            <span class="n">driver_status</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;driverStatus&quot;</span><span class="p">],</span> <span class="n">earliest</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;earliest&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">latest</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="AirportRideRequestBuilder.flight_local_time_specified"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.flight_local_time_specified">[docs]</a>    <span class="k">def</span> <span class="nf">flight_local_time_specified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="AirportRideRequestBuilder.build_airport_ride_request"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.build_airport_ride_request">[docs]</a>    <span class="k">def</span> <span class="nf">build_airport_ride_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest_latest_specified</span><span class="p">():</span>
+            <span class="c1"># Use specified earliest and latest by default</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target_earliest_latest</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">flight_local_time_specified</span><span class="p">():</span>
+            <span class="c1"># Earliest and latest will be overridden by those of flightLocalTime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target_with_flight_local_time</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Must have one or the other</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_flight</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_user</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_location_by_airport_code</span><span class="p">()</span>  <span class="c1"># Use airportCode to infer location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_event_ref_with_flight_local_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_disabilities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_baggages</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_ride_request_default_values</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_ride_category</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_pickup</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="SocialEventRideRequestBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder">[docs]</a><span class="k">class</span> <span class="nc">SocialEventRideRequestBuilder</span><span class="p">(</span><span class="n">RideRequestBaseBuilder</span><span class="p">):</span>
+
+    <span class="n">ride_category</span> <span class="o">=</span> <span class="s2">&quot;eventRide&quot;</span>
+
+<div class="viewcode-block" id="SocialEventRideRequestBuilder.set_with_form_and_user_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.set_with_form_and_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_with_form_and_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save arguments as instance variables in builder</span>
+
+<span class="sd">        :param d:</span>
+<span class="sd">        :param user_id:</span>
+<span class="sd">        :return: SocialEventRideRequestBuilder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;eventId&quot;</span><span class="p">],</span>
+            <span class="n">to_event</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;toEvent&quot;</span><span class="p">],</span> <span class="n">pickup_address</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;pickupAddress&quot;</span><span class="p">],</span>
+            <span class="n">driver_status</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;driverStatus&quot;</span><span class="p">],</span> <span class="n">earliest</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;earliest&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">latest</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;latest&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="SocialEventRideRequestBuilder.build_social_event_ride_request"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.build_social_event_ride_request">[docs]</a>    <span class="k">def</span> <span class="nf">build_social_event_ride_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Builds SocialEventRideRequest from instance variables</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_ride_category</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_user</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_event_with_id</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest_latest_specified</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target_earliest_latest</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_target_with_event_target</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_location_by_event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_event_ref_with_event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_disabilities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_baggages</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_pickup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_ride_request_default_values</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="CampusEventRideRequestBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.builders.CampusEventRideRequestBuilder">[docs]</a><span class="k">class</span> <span class="nc">CampusEventRideRequestBuilder</span><span class="p">(</span><span class="n">RideRequestBaseBuilder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TODO: implement</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

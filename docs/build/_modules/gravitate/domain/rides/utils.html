@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.rides.utils &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.rides.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">iso8601</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">DocumentReference</span><span class="p">,</span> <span class="n">transactional</span>
+
+<span class="kn">import</span> <span class="nn">gravitate.domain.event_schedule.actions</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.user</span> <span class="k">import</span> <span class="n">UserDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">LocationGenericDao</span><span class="p">,</span> <span class="n">AirportLocation</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event.dao</span> <span class="k">import</span> <span class="n">EventDao</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">Ride</span> <span class="k">as</span> <span class="n">RideRequest</span>
+<span class="kn">from</span> <span class="nn">.dao</span> <span class="k">import</span> <span class="n">RideRequestGenericDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.forms.ride_request_creation_form</span> <span class="k">import</span> <span class="n">AirportRideRequestCreationForm</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.user</span> <span class="k">import</span> <span class="n">User</span>
+
+
+<div class="viewcode-block" id="check_duplicate"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.check_duplicate">[docs]</a><span class="k">def</span> <span class="nf">check_duplicate</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description Returns a boolean whether the user is trying to make a duplicate ride request</span>
+
+<span class="sd">    :param user_id:</span>
+<span class="sd">    :param event_ref:</span>
+<span class="sd">    :return: True: it is a duplicate, False: it is not a duplicate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ride_requests</span> <span class="o">=</span> <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">event_doc_id</span> <span class="o">=</span> <span class="n">event_ref</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="c1"># Loop through each rideRequest</span>
+    <span class="k">for</span> <span class="n">rideRequest</span> <span class="ow">in</span> <span class="n">ride_requests</span><span class="p">:</span>
+        <span class="n">current_event_doc_id</span> <span class="o">=</span> <span class="n">rideRequest</span><span class="o">.</span><span class="n">event_ref</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">if</span> <span class="n">current_event_doc_id</span> <span class="o">==</span> <span class="n">event_doc_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># No rideRequest has the same eventRef as the rideRequest that is about to be added</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="nd">@transactional</span>
+<span class="k">def</span> <span class="nf">add_ride_request</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ride_request</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This method saves rideRequest and update user&#39;s eventSchedule.</span>
+<span class="sd">        The method corresponds to use case &quot;Create Ride Request&quot;.</span>
+<span class="sd">        Note that transaction.commit() is not required after this method is called if this method is decorated</span>
+<span class="sd">            by @transactional.</span>
+
+<span class="sd">    :param transaction:</span>
+<span class="sd">    :param ride_request:</span>
+<span class="sd">    :param location:</span>
+<span class="sd">    :param user_id:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set the firestoreRef of the rideRequest</span>
+    <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ride_request</span><span class="p">)</span>
+    <span class="c1"># Saves RideRequest Object to Firestore</span>
+    <span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ride_request</span><span class="p">,</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">())</span>
+    <span class="c1"># [START] Update the user&#39;s eventSchedule</span>
+    <span class="n">user_ref</span> <span class="o">=</span> <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ref</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="c1"># Build the eventSchedule for user</span>
+    <span class="n">event_schedule</span> <span class="o">=</span> <span class="n">gravitate</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">event_schedule</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">create_event_schedule</span><span class="p">(</span>
+        <span class="n">ride_request</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+    <span class="n">UserDao</span><span class="o">.</span><span class="n">add_to_event_schedule_with_transaction</span><span class="p">(</span>
+        <span class="n">transaction</span><span class="p">,</span> <span class="n">user_ref</span><span class="o">=</span><span class="n">user_ref</span><span class="p">,</span> <span class="n">event_ref</span><span class="o">=</span><span class="n">ride_request</span><span class="o">.</span><span class="n">event_ref</span><span class="p">,</span> <span class="n">event_schedule</span><span class="o">=</span><span class="n">event_schedule</span><span class="p">)</span>
+    <span class="c1"># [END] Update the user&#39;s eventSchedule</span>
+
+
+<div class="viewcode-block" id="get_pickup_address"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.get_pickup_address">[docs]</a><span class="k">def</span> <span class="nf">get_pickup_address</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method returns the default pickup address of a user.</span>
+<span class="sd">    :param user_id:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">UserDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_user_by_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">pickup_address</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">pickupAddress</span>
+    <span class="k">return</span> <span class="n">pickup_address</span></div>
+
+
+<div class="viewcode-block" id="get_event_ref_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.get_event_ref_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_event_ref_by_id</span><span class="p">(</span><span class="n">event_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method returns the event_ref by event_id.</span>
+<span class="sd">    :param event_id:</span>
+<span class="sd">    :return: DocumentReference of the event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ref</span><span class="p">(</span><span class="n">event_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_location_ref_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.get_location_ref_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_location_ref_by_id</span><span class="p">(</span><span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method return the location_ref by location_id.</span>
+<span class="sd">    :param location_id:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_ref_by_id</span><span class="p">(</span><span class="n">location_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_ride_request"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.get_ride_request">[docs]</a><span class="k">def</span> <span class="nf">get_ride_request</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]:</span>
+    <span class="n">ride_request</span> <span class="o">=</span> <span class="n">RideRequest</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ride_request</span></div>
+
+
+<div class="viewcode-block" id="get_airport_location"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.get_airport_location">[docs]</a><span class="k">def</span> <span class="nf">get_airport_location</span><span class="p">(</span><span class="n">airport_code</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AirportLocation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This method returns an airportLocation with airportCode.</span>
+
+<span class="sd">    :param airport_code:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">find_by_airport_code</span><span class="p">(</span><span class="n">airport_code</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_event"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.find_event">[docs]</a><span class="k">def</span> <span class="nf">find_event</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">    1. Find event reference by querying events with flightLocalTime</span>
+<span class="sd">    2. Return the reference of such event</span>
+
+<span class="sd">    :param flight_local_time:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Parse the flightLocalTime of the ride request form, then query database </span>
+    <span class="c1"># event_time = local_time_as_timestamp(flight_local_time)</span>
+    <span class="n">event_date_str</span> <span class="o">=</span> <span class="n">local_time_as_date_str</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">)</span>
+    <span class="c1"># eventReference = EventDao().locateAirportEvent(eventTime)</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">EventDao</span><span class="p">()</span><span class="o">.</span><span class="n">find_by_date_str</span><span class="p">(</span><span class="n">event_date_str</span><span class="p">,</span> <span class="s2">&quot;airport&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="local_time_as_date_str"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.local_time_as_date_str">[docs]</a><span class="k">def</span> <span class="nf">local_time_as_date_str</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">):</span>
+    <span class="n">tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;America/Los_Angeles&quot;</span><span class="p">)</span>
+    <span class="n">local_datetime</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># utc_datetime = tz.localize(local_datetime)  # TODO: test DST</span>
+    <span class="c1"># utc_datetime = iso8601.parse_date(flight_local_time, default_timezone=None).astimezone(tz)</span>
+    <span class="k">return</span> <span class="n">local_datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="local_time_as_timestamp"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.local_time_as_timestamp">[docs]</a><span class="k">def</span> <span class="nf">local_time_as_timestamp</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">):</span>
+    <span class="n">tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;America/Los_Angeles&quot;</span><span class="p">)</span>
+    <span class="n">local_datetime</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">flight_local_time</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">utc_datetime</span> <span class="o">=</span> <span class="n">tz</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">local_datetime</span><span class="p">)</span>  <span class="c1"># TODO: test DST</span>
+    <span class="c1"># utc_datetime = iso8601.parse_date(flight_local_time, default_timezone=None).astimezone(tz)</span>
+    <span class="k">return</span> <span class="n">utc_datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="set_disabilities"><a class="viewcode-back" href="../../../../gravitate.domain.rides.html#gravitate.domain.rides.utils.set_disabilities">[docs]</a><span class="k">def</span> <span class="nf">set_disabilities</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">AirportRideRequestCreationForm</span><span class="p">,</span> <span class="n">rideRequestDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method sets the accommodation options in rideRequest dict.</span>
+<span class="sd">        Note that the method needs refactoring to pass values with parameters rather than structures.</span>
+
+<span class="sd">    :param form:</span>
+<span class="sd">    :param rideRequestDict:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;disabilities&#39;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+        <span class="c1"># If &#39;disabilities&#39; is defined in the form submitted</span>
+        <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If &#39;disabilities&#39; not defined, set an empty dict as value</span>
+        <span class="n">rideRequestDict</span><span class="p">[</span><span class="s1">&#39;disabilities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

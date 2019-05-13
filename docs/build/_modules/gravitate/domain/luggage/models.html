@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.luggage.models &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.luggage.models</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Luggages"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages">[docs]</a><span></span><span class="k">class</span> <span class="nc">Luggages</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Keeps track of luggage amount</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Luggages.add"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">luggage</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Append a piece of luggage to self._luggage_list</span>
+
+<span class="sd">        :param luggage:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">luggage</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the count for luggages by counting all luggages in self._luggage_list.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the weight for luggages by accumulating all luggages in self._luggage_list.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;weight_in_lbs&quot;</span><span class="p">:</span>
+                    <span class="n">weight</span> <span class="o">+=</span> <span class="n">v</span>
+
+        <span class="k">return</span> <span class="n">weight</span>
+
+<div class="viewcode-block" id="Luggages.from_dict"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.from_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Creates a Luggages class with a dict presentation of luggages.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Obtain the list from dictionary</span>
+        <span class="c1"># Create Luggages object</span>
+        <span class="c1"># Use add_from_list</span>
+        <span class="c1"># return the Luggages object that you created</span>
+
+        <span class="n">luggagelist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;luggages&#39;</span><span class="p">]:</span>
+            <span class="n">luggagelist</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">updated</span> <span class="o">=</span> <span class="n">Luggages</span><span class="p">()</span>
+        <span class="n">updated</span><span class="o">.</span><span class="n">add_from_list</span><span class="p">(</span><span class="n">luggagelist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">updated</span></div>
+
+<div class="viewcode-block" id="Luggages.to_dict"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a dict representation of all luggages</span>
+<span class="sd">        Get value for &quot;total_weight&quot; by self._get_weight() and value for &quot;total_count&quot; by self._get_count().</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;luggages&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="p">,</span> <span class="s2">&quot;total_weight&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_weight</span><span class="p">(),</span> <span class="s2">&quot;total_count&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_count</span><span class="p">()}</span></div>
+
+<div class="viewcode-block" id="Luggages.add_from_list"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.add_from_list">[docs]</a>    <span class="k">def</span> <span class="nf">add_from_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add luggages from a list of luggages</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_luggages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">luggages</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add luggages from another luggages object</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">luggage_storage</span> <span class="o">=</span> <span class="n">luggages</span><span class="o">.</span><span class="n">get_luggage_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">luggage_storage</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Luggages.get_luggage_list"><a class="viewcode-back" href="../../../../gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.get_luggage_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_luggage_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return self._luggage_list so that another instance may add luggages in batch</span>
+<span class="sd">                from this instance.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_luggage_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

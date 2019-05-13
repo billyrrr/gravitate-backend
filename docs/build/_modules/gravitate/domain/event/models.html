@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.event.models &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.event.models</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Author: Andrew Kim</span>
+<span class="sd">Reviewer: Zixuan Rao</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">DocumentReference</span>
+
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">LocationGenericDao</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">gravitate.models.firestore_object</span> <span class="k">import</span> <span class="n">FirestoreObject</span>
+
+
+<span class="c1"># event class</span>
+<div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event">[docs]</a><span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="n">FirestoreObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">    this class represents the event object</span>
+<span class="sd">        Note that reference to the object eventRef is deprecated.</span>
+<span class="sd">        Get and set firestoreRef instead.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Event.from_dict_and_reference"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.from_dict_and_reference">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict_and_reference</span><span class="p">(</span><span class="n">eventDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns event object from dict and document reference.</span>
+
+<span class="sd">        :param eventDict: event dictionary</span>
+<span class="sd">        :param eventRef: firestore_ref of the event will be set to this value</span>
+<span class="sd">        :return: event object with firestore_ref set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">eventDict</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event</span></div>
+
+<div class="viewcode-block" id="Event.from_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.from_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">eventDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns event object from dict.</span>
+
+<span class="sd">        :param eventDict: event dictionary</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_category</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;eventCategory&#39;</span><span class="p">]</span>
+        <span class="n">participants</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;participants&#39;</span><span class="p">]</span>
+        <span class="c1"># event_location = eventDict[&#39;eventLocation&#39;]</span>
+        <span class="c1"># start_timestamp = eventDict[&#39;startTimestamp&#39;]</span>
+        <span class="c1"># end_timestamp = eventDict[&#39;endTimestamp&#39;]</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;targets&#39;</span><span class="p">]</span>
+        <span class="n">pricing</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;pricing&#39;</span><span class="p">]</span>
+        <span class="n">location_ref</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;locationRef&#39;</span><span class="p">]</span>
+        <span class="n">is_closed</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;isClosed&#39;</span><span class="p">]</span>
+        <span class="n">local_date_string</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;localDateString&#39;</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+        <span class="n">parking_info</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;parkingInfo&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event_category</span> <span class="o">==</span> <span class="s2">&quot;airport&quot;</span><span class="p">:</span>
+            <span class="n">airport_code</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;airportCode&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">AirportEvent</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                                <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">airport_code</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event_category</span> <span class="o">==</span> <span class="s2">&quot;social&quot;</span><span class="p">:</span>
+            <span class="n">fb_event_id</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s2">&quot;fbEventId&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">SocialEvent</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                               <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">fb_event_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event_category</span> <span class="o">==</span> <span class="s2">&quot;campus&quot;</span><span class="p">:</span>
+            <span class="n">campus_code</span> <span class="o">=</span> <span class="n">eventDict</span><span class="p">[</span><span class="s2">&quot;campusCode&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">CampusEvent</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                               <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">campus_code</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Event.to_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the dictionary representation of the event object for saving to database.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eventDict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;eventCategory&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span><span class="p">,</span>
+            <span class="s1">&#39;participants&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">,</span>
+            <span class="c1"># &#39;eventLocation&#39;: self.event_location,</span>
+            <span class="c1"># &#39;startTimestamp&#39;: self.start_timestamp,</span>
+            <span class="c1"># &#39;endTimestamp&#39;: self.end_timestamp,</span>
+            <span class="s1">&#39;targets&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">],</span>
+            <span class="s1">&#39;pricing&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span><span class="p">,</span>
+            <span class="s1">&#39;locationRef&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span><span class="p">,</span>
+            <span class="s1">&#39;isClosed&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">,</span>
+            <span class="s1">&#39;localDateString&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_date_string</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s1">&#39;parkingInfo&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parking_info</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">eventDict</span></div>
+
+<div class="viewcode-block" id="Event.to_dict_view"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.to_dict_view">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dict_view</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;eventCategory&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span><span class="p">,</span>
+            <span class="s1">&#39;participants&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">,</span>
+            <span class="s1">&#39;pricing&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span><span class="p">,</span>
+            <span class="s1">&#39;locationId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;isClosed&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">,</span>
+            <span class="s1">&#39;localDateString&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_date_string</span><span class="p">,</span>  <span class="c1"># Start date</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s1">&#39;parkingInfo&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parking_info</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">coordinates</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">address</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;location parsing failed, locationId: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="c1"># Note that latest arrival means the latest time to arrive at the event</span>
+            <span class="c1">#       and earliest departure is the earliest time to leave an event</span>
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">to_event</span><span class="p">:</span>
+                <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;earliestArrival&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_earliest_arrival_view</span><span class="p">()</span>
+                <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;latestArrival&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_latest_arrival_view</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;earliestDeparture&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_earliest_departure_view</span><span class="p">()</span>
+                <span class="n">dict_view</span><span class="p">[</span><span class="s1">&#39;latestDeparture&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_latest_departure_view</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">dict_view</span></div>
+
+<div class="viewcode-block" id="Event.set_as_active"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.set_as_active">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to False</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Event.set_as_passed"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.Event.set_as_passed">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_passed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to True</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Note that this method is non-transactional. We are assuming that</span>
+<span class="sd">                    Location objects are immutable and ready before the transaction.</span>
+<span class="sd">            :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">location_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">LocationGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">location_ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">location</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span> <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                 <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initializes an Event object.</span>
+
+<span class="sd">        :param event_category:</span>
+<span class="sd">        :param participants:</span>
+<span class="sd">        :param targets:</span>
+<span class="sd">        :param pricing:</span>
+<span class="sd">        :param location_ref:</span>
+<span class="sd">        :param is_closed:</span>
+<span class="sd">        :param local_date_string:</span>
+<span class="sd">        :param name:</span>
+<span class="sd">        :param description:</span>
+<span class="sd">        :param parking_info:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span> <span class="o">=</span> <span class="n">event_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">participants</span> <span class="o">=</span> <span class="n">participants</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">target_dict</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">target_dict</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pricing</span> <span class="o">=</span> <span class="n">pricing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location_ref</span> <span class="o">=</span> <span class="n">location_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="n">is_closed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_date_string</span> <span class="o">=</span> <span class="n">local_date_string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parking_info</span> <span class="o">=</span> <span class="n">parking_info</span></div>
+
+
+<div class="viewcode-block" id="AirportEvent"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent">[docs]</a><span class="k">class</span> <span class="nc">AirportEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AirportEvent.from_dict_and_reference"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.from_dict_and_reference">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict_and_reference</span><span class="p">(</span><span class="n">eventDict</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def from_dict(eventDict):</span>
+    <span class="c1">#     event_category = eventDict[&#39;eventCategory&#39;]</span>
+    <span class="c1">#     participants = eventDict[&#39;participants&#39;]</span>
+    <span class="c1">#     # event_location = eventDict[&#39;eventLocation&#39;]</span>
+    <span class="c1">#     # start_timestamp = eventDict[&#39;startTimestamp&#39;]</span>
+    <span class="c1">#     # end_timestamp = eventDict[&#39;endTimestamp&#39;]</span>
+    <span class="c1">#     targets = eventDict[&#39;targets&#39;]</span>
+    <span class="c1">#     pricing = eventDict[&#39;pricing&#39;]</span>
+    <span class="c1">#     location_ref = eventDict[&#39;locationRef&#39;]</span>
+    <span class="c1">#     is_closed = eventDict[&#39;isClosed&#39;]</span>
+    <span class="c1">#     local_date_string = eventDict[&#39;localDateString&#39;]</span>
+    <span class="c1">#     name = eventDict[&#39;name&#39;]</span>
+    <span class="c1">#     description = eventDict[&#39;description&#39;]</span>
+    <span class="c1">#     airport_code = eventDict[&#39;airportCode&#39;]</span>
+    <span class="c1">#     parking_info = eventDict[&#39;parkingInfo&#39;]</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return AirportEvent(event_category, participants, targets, pricing, location_ref,</span>
+    <span class="c1">#                  is_closed, local_date_string, name, description, parking_info, airport_code)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                 <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">airport_code</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                         <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span> <span class="o">=</span> <span class="n">airport_code</span>
+
+<div class="viewcode-block" id="AirportEvent.to_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">eventDict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;airportCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span>
+        <span class="k">return</span> <span class="n">eventDict</span></div>
+
+<div class="viewcode-block" id="AirportEvent.to_dict_view"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.to_dict_view">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dict_view</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict_view</span><span class="p">()</span>
+        <span class="n">dict_view</span><span class="p">[</span><span class="s2">&quot;airportCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">airport_code</span>
+        <span class="k">return</span> <span class="n">dict_view</span></div></div>
+
+
+<div class="viewcode-block" id="SocialEvent"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent">[docs]</a><span class="k">class</span> <span class="nc">SocialEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        this class represents the event object</span>
+<span class="sd">            Note that reference to the object eventRef is deprecated.</span>
+<span class="sd">            Get and set firestoreRef instead.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SocialEvent.from_dict_and_reference"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.from_dict_and_reference">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict_and_reference</span><span class="p">(</span><span class="n">eventDict</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">):</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">eventDict</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event</span></div>
+
+<div class="viewcode-block" id="SocialEvent.to_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">eventDict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;fbEventId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fb_event_id</span>
+        <span class="k">return</span> <span class="n">eventDict</span></div>
+
+<div class="viewcode-block" id="SocialEvent.set_as_active"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.set_as_active">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to False</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="SocialEvent.set_as_passed"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.set_as_passed">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_passed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to True</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                 <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">fb_event_id</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                         <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fb_event_id</span> <span class="o">=</span> <span class="n">fb_event_id</span>
+
+<div class="viewcode-block" id="SocialEvent.to_dict_view"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.to_dict_view">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># for target in self.targets:</span>
+        <span class="n">d_view</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict_view</span><span class="p">()</span>
+        <span class="n">d_view</span><span class="p">[</span><span class="s2">&quot;fbEventId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fb_event_id</span>
+        <span class="k">return</span> <span class="n">d_view</span></div></div>
+
+
+<div class="viewcode-block" id="CampusEvent"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent">[docs]</a><span class="k">class</span> <span class="nc">CampusEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CampusEvent.from_dict_and_reference"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.from_dict_and_reference">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict_and_reference</span><span class="p">(</span><span class="n">eventDict</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">):</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">eventDict</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event</span></div>
+
+<div class="viewcode-block" id="CampusEvent.to_dict"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">eventDict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">eventDict</span><span class="p">[</span><span class="s1">&#39;campusCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">campus_code</span>
+        <span class="k">return</span> <span class="n">eventDict</span></div>
+
+<div class="viewcode-block" id="CampusEvent.set_as_active"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.set_as_active">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to False</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CampusEvent.set_as_passed"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.set_as_passed">[docs]</a>    <span class="k">def</span> <span class="nf">set_as_passed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Definition</span>
+<span class="sd">            Sets the boolean isClosed to True</span>
+
+<span class="sd">            :param self:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                 <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">,</span> <span class="n">campus_code</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">event_category</span><span class="p">,</span> <span class="n">participants</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">pricing</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">,</span>
+                         <span class="n">is_closed</span><span class="p">,</span> <span class="n">local_date_string</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">parking_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">campus_code</span> <span class="o">=</span> <span class="n">campus_code</span>
+
+<div class="viewcode-block" id="CampusEvent.to_dict_view"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.to_dict_view">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># for target in self.targets:</span>
+        <span class="n">d_view</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict_view</span><span class="p">()</span>
+        <span class="n">d_view</span><span class="p">[</span><span class="s2">&quot;campusCode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">campus_code</span>
+        <span class="k">return</span> <span class="n">d_view</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

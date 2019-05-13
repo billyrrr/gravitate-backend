@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.orbit package &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="gravitate-domain-orbit-package">
+<h1>gravitate.domain.orbit package<a class="headerlink" href="#gravitate-domain-orbit-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gravitate.domain.orbit.dao">
+<span id="gravitate-domain-orbit-dao-module"></span><h2>gravitate.domain.orbit.dao module<a class="headerlink" href="#module-gravitate.domain.orbit.dao" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao</p>
+<dl class="class">
+<dt id="gravitate.domain.orbit.dao.OrbitDao">
+<em class="property">class </em><code class="descclassname">gravitate.domain.orbit.dao.</code><code class="descname">OrbitDao</code><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Description    
+Database access object for ride request</p>
+<dl class="method">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>orbit: gravitate.domain.orbit.models.Orbit</em><span class="sig-paren">)</span> &#x2192; google.cloud.firestore_v1beta1.document.DocumentReference<a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>singleOrbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function deletes an orbit from the database
+Note that this function should not be called directly from any logics,</p>
+<blockquote>
+<div><p>since you have to delete all references to it from RideRequest, Event, etc.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.get_by_id">
+<code class="descname">get_by_id</code><span class="sig-paren">(</span><em>rid: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.get_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.get_with_transaction">
+<em class="property">static </em><code class="descname">get_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span> &#x2192; gravitate.domain.orbit.models.Orbit<a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.get_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.get_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description Note that this cannot take place if transaction already received write operations. “If a
+transaction is used and it already has write operations added, this method cannot be used (i.e.
+read-after-write is not allowed).”</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.ref_from_id">
+<code class="descname">ref_from_id</code><span class="sig-paren">(</span><em>orbit_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.ref_from_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.ref_from_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.orbit.dao.OrbitDao.set_with_transaction">
+<em class="property">static </em><code class="descname">set_with_transaction</code><span class="sig-paren">(</span><em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction</em>, <em>newOrbit: gravitate.domain.orbit.models.Orbit</em>, <em>orbitRef: google.cloud.firestore_v1beta1.document.DocumentReference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/dao.html#OrbitDao.set_with_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.dao.OrbitDao.set_with_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+Note that a read action must have taken place before anything is set with that transaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.orbit.models">
+<span id="gravitate-domain-orbit-models-module"></span><h2>gravitate.domain.orbit.models module<a class="headerlink" href="#module-gravitate.domain.orbit.models" title="Permalink to this headline">¶</a></h2>
+<p>Author: Zixuan Rao, Andrew Kim</p>
+<dl class="class">
+<dt id="gravitate.domain.orbit.models.Orbit">
+<em class="property">class </em><code class="descclassname">gravitate.domain.orbit.models.</code><code class="descname">Orbit</code><span class="sig-paren">(</span><em>orbit_category</em>, <em>event_ref</em>, <em>user_ticket_pairs</em>, <em>chatroom_ref</em>, <em>cost_estimate</em>, <em>status</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/models.html#Orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.models.Orbit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject" title="gravitate.models.firestore_object.FirestoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravitate.models.firestore_object.FirestoreObject</span></code></a></p>
+<p>Description    
+This class represents a Orbit object</p>
+<dl class="staticmethod">
+<dt id="gravitate.domain.orbit.models.Orbit.from_dict">
+<em class="property">static </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>orbitDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/models.html#Orbit.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.models.Orbit.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description
+This function creates an Orbit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>orbitDict</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gravitate.domain.orbit.models.Orbit.from_dict_and_reference">
+<em class="property">static </em><code class="descname">from_dict_and_reference</code><span class="sig-paren">(</span><em>orbit_dict</em>, <em>orbit_ref</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/models.html#Orbit.from_dict_and_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.models.Orbit.from_dict_and_reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.orbit.models.Orbit.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/orbit/models.html#Orbit.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.orbit.models.Orbit.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gravitate.domain.orbit">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain.orbit" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/gravitate.domain.orbit.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

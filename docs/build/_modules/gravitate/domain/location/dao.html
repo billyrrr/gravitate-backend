@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.location.dao &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.location.dao</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Author: Zixuan Rao, David Nong</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">google</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">DocumentReference</span><span class="p">,</span> <span class="n">DocumentSnapshot</span><span class="p">,</span> <span class="n">transactional</span><span class="p">,</span> <span class="n">Query</span>
+
+<span class="kn">from</span> <span class="nn">gravitate</span> <span class="k">import</span> <span class="n">context</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">Location</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">UcLocation</span>
+
+<span class="n">CTX</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">CTX</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="LocationGenericDao"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao">[docs]</a><span class="k">class</span> <span class="nc">LocationGenericDao</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        Database access object for ride request</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locationCollectionRef</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;locations&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LocationGenericDao.get_ref_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get_ref_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_ref_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns location_ref by location_id.</span>
+<span class="sd">        :param location_id:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">locationCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">location_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.get_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="c1"># @transactional</span>
+    <span class="k">def</span> <span class="nf">get_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        Note that this cannot take place if transaction already received write operations.</span>
+<span class="sd">        &quot;If a transaction is used and it already has write operations added, this method cannot be used</span>
+<span class="sd">        (i.e. read-after-write is not allowed).&quot;</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction:</span>
+
+<span class="sd">        :type locationRef:DocumentReference:</span>
+<span class="sd">        :param locationRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">locationRef</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+            <span class="n">location</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">locationRef</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">location</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No such document! &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">locationRef</span><span class="o">.</span><span class="n">id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.get"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locationRef</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">locationRef</span> <span class="o">=</span> <span class="n">str_to_ref</span><span class="p">(</span><span class="n">locationRef</span><span class="p">)</span>
+        <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">locationRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">Location</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+        <span class="n">location</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">locationRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">location</span>
+        <span class="k">return</span> <span class="n">locationResult</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.set"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">location_ref</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="n">location_ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.find_by_airport_code"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.find_by_airport_code">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_airport_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">airportCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AirportLocation</span><span class="p">:</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locationCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="s1">&#39;airportCode&#39;</span><span class="p">,</span> <span class="s1">&#39;==&#39;</span><span class="p">,</span> <span class="n">airportCode</span><span class="p">)</span>
+        <span class="n">airportLocations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">airportLocationDict</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">airportLocation</span> <span class="o">=</span> <span class="n">AirportLocation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">airportLocationDict</span><span class="p">)</span>
+            <span class="n">airportLocation</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="n">airportLocations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">airportLocation</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">airportLocations</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Airport Location that has the airport code is not unique or does not exist: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">airportLocations</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">airportLocations</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.find_by_campus_code"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.find_by_campus_code">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_campus_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">campusCode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UcLocation</span><span class="p">:</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locationCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="s1">&#39;campusCode&#39;</span><span class="p">,</span> <span class="s1">&#39;==&#39;</span><span class="p">,</span> <span class="n">campusCode</span><span class="p">)</span>
+        <span class="n">airportLocations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">airportLocationDict</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">airportLocation</span> <span class="o">=</span> <span class="n">AirportLocation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">airportLocationDict</span><span class="p">)</span>
+            <span class="n">airportLocation</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="n">airportLocations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">airportLocation</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">airportLocations</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Airport Location that has the airport code is not unique or does not exist: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">airportLocations</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">airportLocations</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.query"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">airportCode</span><span class="p">,</span> <span class="n">terminal</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Location</span><span class="p">:</span>
+        <span class="c1"># TODO implement</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.insert_new"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.insert_new">[docs]</a>    <span class="k">def</span> <span class="nf">insert_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type location:Type[Location]:</span>
+<span class="sd">        :param location:Type[Location]:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">locationRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locationCollectionRef</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">locationRef</span></div>
+
+<div class="viewcode-block" id="LocationGenericDao.delete"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">singleLocationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function deletes a ride request from the database</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type singleLocationRef:DocumentReference:</span>
+<span class="sd">        :param singleLocationRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">singleLocationRef</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newLocation</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">],</span> <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">locationRef</span><span class="p">,</span> <span class="n">newLocation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LocationGenericDao.set_with_transaction_new"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_new">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_with_transaction_new</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newLocation</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">],</span> <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">LocationGenericDao</span><span class="o">.</span><span class="n">_set_with_transaction</span><span class="p">(),</span> <span class="n">newLocation</span><span class="o">=</span><span class="n">newLocation</span><span class="p">,</span> <span class="n">locationRef</span><span class="o">=</span><span class="n">locationRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">step</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@transactional</span>
+    <span class="k">def</span> <span class="nf">set_with_transaction_transactional</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newLocation</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">],</span>
+                                           <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Note that a read action must have taken place before anything is set with that transaction.</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction:</span>
+
+<span class="sd">        :type newLocation:Type[Location]:</span>
+<span class="sd">        :param newLocation:Type[Location]:</span>
+
+<span class="sd">        :type locationRef:DocumentReference:</span>
+<span class="sd">        :param locationRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">locationDict</span> <span class="o">=</span> <span class="n">newLocation</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">locationRef</span><span class="p">,</span> <span class="n">locationDict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LocationGenericDao.set_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">newLocation</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">],</span> <span class="n">locationRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Note that a read action must have taken place before anything is set with that transaction.</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction:</span>
+
+<span class="sd">        :type newLocation:Type[Location]:</span>
+<span class="sd">        :param newLocation:Type[Location]:</span>
+
+<span class="sd">        :type locationRef:DocumentReference:</span>
+<span class="sd">        :param locationRef:DocumentReference:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">locationDict</span> <span class="o">=</span> <span class="n">newLocation</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">locationRef</span><span class="p">,</span> <span class="n">locationDict</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="str_to_ref"><a class="viewcode-back" href="../../../../gravitate.domain.location.html#gravitate.domain.location.dao.str_to_ref">[docs]</a><span class="k">def</span> <span class="nf">str_to_ref</span><span class="p">(</span><span class="n">ref_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">ref_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

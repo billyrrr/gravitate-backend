@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>gravitate.domain.event.dao &#8212; gravitate-backend 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gravitate.domain.event.dao</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Author: Zixuan Rao, David Nong</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">google</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore</span> <span class="k">import</span> <span class="n">Query</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">DocumentReference</span><span class="p">,</span> <span class="n">DocumentSnapshot</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">transactional</span>
+
+<span class="kn">from</span> <span class="nn">gravitate</span> <span class="k">import</span> <span class="n">context</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="k">import</span> <span class="n">Event</span><span class="p">,</span> <span class="n">SocialEvent</span>
+
+<span class="n">CTX</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">CTX</span><span class="o">.</span><span class="n">db</span>
+
+
+<div class="viewcode-block" id="EventDao"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao">[docs]</a><span class="k">class</span> <span class="nc">EventDao</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        Database access object for events</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EventDao.get_ref"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_ref">[docs]</a>    <span class="k">def</span> <span class="nf">get_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This method returns EventRef with EventId provided.</span>
+<span class="sd">            Example: converts &quot;testeventid1&quot; to &quot;/events/testeventid1&quot; of type DocumentReference</span>
+
+<span class="sd">        :param doc_id: eventId</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eventRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eventRef</span></div>
+
+<div class="viewcode-block" id="EventDao.get_with_transaction"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_with_transaction">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">Event</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Note that this cannot take place if transaction already received write operations.</span>
+<span class="sd">            &quot;If a transaction is used and it already has write operations added, this method cannot be used</span>
+<span class="sd">            (i.e. read-after-write is not allowed).&quot;</span>
+
+<span class="sd">        :type transaction:Transaction:</span>
+<span class="sd">        :param transaction:Transaction: firestore transaction</span>
+<span class="sd">        :type eventRef:DocumentReference:</span>
+<span class="sd">        :param eventRef:DocumentReference: firestore document reference of the event to get</span>
+<span class="sd">        :raises:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">eventRef</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">event</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No such document! &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">eventRef</span><span class="o">.</span><span class="n">id</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="EventDao.find_by_timestamp"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.find_by_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This method finds an airportEvent that &quot;overlaps&quot; with the timestamp provided.</span>
+
+<span class="sd">            DEPRECATED</span>
+
+<span class="sd">        :param timestamp: the point-in-time that the eventSchedule has to include.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eventId</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locate_event</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+        <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">eventId</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict_and_reference</span><span class="p">(</span><span class="n">eventRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">eventRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event</span></div>
+
+<div class="viewcode-block" id="EventDao.find_by_date_str"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.find_by_date_str">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_date_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find airportEvent that has the matching &quot;localDateString&quot;. Note that this finds</span>
+<span class="sd">            only one event that fits the condition. If there are more in firestore,</span>
+<span class="sd">            ValueError will be raised</span>
+
+<span class="sd">        :param date: local date string eg. &quot;2019-01-01&quot;</span>
+<span class="sd">        :param category: &quot;airport&quot;</span>
+<span class="sd">        :raises: ValueError: only exactly 1 event can fit the condition in the database</span>
+<span class="sd">        :return: one event that fits the condition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eventDocs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;localDateString&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="c1"># Loop through each rideRequest</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">eventDocs</span><span class="p">:</span>
+
+            <span class="n">eventDict</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">eventDict</span><span class="p">[</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">category</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># Do not consider events of a different category</span>
+            <span class="n">eventId</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">eventId</span><span class="p">)</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict_and_reference</span><span class="p">(</span><span class="n">eventDict</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">)</span>
+
+            <span class="c1"># Check if the event is in a valid time frame</span>
+            <span class="n">events</span><span class="p">[</span><span class="n">eventId</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;More than 1 event fits the condition. &quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No event fits the condition. &quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="EventDao.delete"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            This function deletes a ride request from the database</span>
+
+<span class="sd">        :type self:</span>
+<span class="sd">        :param self:</span>
+<span class="sd">        :type eventRef:DocumentReference:</span>
+<span class="sd">        :param eventRef:DocumentReference:</span>
+<span class="sd">        :raises:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">eventRef</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="EventDao.create"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">eventRef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">eventRef</span></div>
+
+<div class="viewcode-block" id="EventDao.exists_fb_event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.exists_fb_event">[docs]</a>    <span class="k">def</span> <span class="nf">exists_fb_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fb_event_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns doc.id if fb_event_id already exists,</span>
+<span class="sd">                otherwise return None</span>
+
+<span class="sd">        :param fb_event_id:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;fbEventId&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="n">fb_event_id</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">event_docs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="EventDao.create_fb_event"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.create_fb_event">[docs]</a>    <span class="k">def</span> <span class="nf">create_fb_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">SocialEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates facebook event in database.</span>
+
+<span class="sd">        :param event: event object</span>
+<span class="sd">        :return: reference to the event just created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+        <span class="n">event_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">fb_event_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_fb_event_transactional</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event_ref</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@transactional</span>
+    <span class="k">def</span> <span class="nf">_create_fb_event_transactional</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">SocialEvent</span><span class="p">,</span> <span class="n">event_ref</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentReference</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates facebook event in database with transaction.</span>
+
+<span class="sd">        TODO: remove event_ref from return</span>
+
+<span class="sd">        :param transaction: firestore transaction</span>
+<span class="sd">        :param event: event object</span>
+<span class="sd">        :param event_ref: document reference for identifying where to save the event to</span>
+<span class="sd">        :return: reference to the event just created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">event_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">exists</span><span class="p">:</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">event_ref</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">event_ref</span>
+
+    <span class="k">def</span> <span class="nf">_locate_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;airport&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">            Uses the timestamp of an event to find the event reference</span>
+
+<span class="sd">            Note that no more than event should be found with the timestamp, see preconditions.</span>
+<span class="sd">            Please check that Firestore has only events of category airport and only one airport event per day.</span>
+
+<span class="sd">            TODO: to create composite index: check stack trace and use the link provided</span>
+
+<span class="sd">        :param timestamp:</span>
+<span class="sd">        :param category:</span>
+
+<span class="sd">        :raises: google.api_core.exceptions.FailedPrecondition: 400 The query requires an index.</span>
+
+<span class="sd">        :return: the first eventId that matches the category and timestamp, or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Grab all of the events in the db</span>
+        <span class="c1"># Queries for the valid range of events</span>
+        <span class="c1"># Pre-condition: There is only one airport event, and no social events on the same day</span>
+        <span class="n">eventDocs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventCollectionRef</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;startTimestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;startTimestamp&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">Query</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="c1"># Loop through each rideRequest</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">eventDocs</span><span class="p">:</span>
+
+            <span class="n">eventDict</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">eventDict</span><span class="p">[</span><span class="s2">&quot;eventCategory&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">category</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># Do not consider events of a different category</span>
+
+            <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">eventDict</span><span class="p">)</span>
+            <span class="n">eventId</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
+            <span class="c1"># Check if the event is in a valid time frame</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">start_timestamp</span> <span class="o">&lt;</span> <span class="n">timestamp</span> <span class="o">&lt;</span> <span class="n">event</span><span class="o">.</span><span class="n">end_timestamp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">eventId</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="EventDao.get_by_id"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets an event from database by event id</span>
+
+<span class="sd">        :param event_id: id of the event</span>
+<span class="sd">        :return: event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ref</span><span class="p">(</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event_ref</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventDao.get"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventRef</span><span class="p">:</span> <span class="n">DocumentReference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets an event from database</span>
+
+<span class="sd">        :param eventRef: firestore document reference of the event</span>
+<span class="sd">        :return: event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eventRef</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">eventRef</span> <span class="o">=</span> <span class="n">str_to_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+        <span class="n">snapshot</span><span class="p">:</span> <span class="n">DocumentSnapshot</span> <span class="o">=</span> <span class="n">eventRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">snapshotDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">snapshotDict</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">set_firestore_ref</span><span class="p">(</span><span class="n">eventRef</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">event</span></div></div>
+
+
+<div class="viewcode-block" id="str_to_ref"><a class="viewcode-back" href="../../../../gravitate.domain.event.html#gravitate.domain.event.dao.str_to_ref">[docs]</a><span class="k">def</span> <span class="nf">str_to_ref</span><span class="p">(</span><span class="n">ref_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">ref_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">gravitate-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
