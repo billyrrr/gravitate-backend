@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.main &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -52,28 +50,31 @@
 <span class="c1"># [START gae_flex_quickstart]</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
-<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">reqparse</span><span class="p">,</span> <span class="n">Api</span><span class="p">,</span> <span class="n">Resource</span>
-
-<span class="kn">from</span> <span class="nn">google.auth.transport</span> <span class="k">import</span> <span class="n">requests</span>
-
-<span class="c1"># Firebase Admin SDK</span>
-
-<span class="kn">from</span> <span class="nn">gravitate.context</span> <span class="k">import</span> <span class="n">Context</span>
-
 <span class="c1"># APScheduler for automatic grouping per interval</span>
 <span class="c1"># Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429</span>
-<span class="kn">from</span> <span class="nn">apscheduler.schedulers.background</span> <span class="k">import</span> <span class="n">BackgroundScheduler</span>
+<span class="c1"># Deprecated</span>
+<span class="c1"># from apscheduler.schedulers.background import BackgroundScheduler</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">flask_restful</span> <span class="k">import</span> <span class="n">reqparse</span><span class="p">,</span> <span class="n">Api</span><span class="p">,</span> <span class="n">Resource</span>
+<span class="kn">from</span> <span class="nn">flasgger</span> <span class="k">import</span> <span class="n">Swagger</span>
+<span class="kn">from</span> <span class="nn">google.auth.transport</span> <span class="k">import</span> <span class="n">requests</span>
 
-<span class="kn">from</span> <span class="nn">gravitate.api_server.grouping_service</span> <span class="k">import</span> <span class="n">OrbitForceMatchService</span><span class="p">,</span> <span class="n">refreshGroupAll</span><span class="p">,</span> <span class="n">DeleteMatchService</span>
-<span class="kn">from</span> <span class="nn">gravitate.api_server.ride_request.services</span> <span class="k">import</span> <span class="n">AirportRideRequestCreationService</span><span class="p">,</span> <span class="n">RideRequestService</span><span class="p">,</span> <span class="n">RideRequestCreation</span>
-<span class="kn">from</span> <span class="nn">gravitate.api_server.user_service</span> <span class="k">import</span> <span class="n">UserService</span>
-<span class="kn">from</span> <span class="nn">gravitate.api_server.utils</span> <span class="k">import</span> <span class="n">authenticate</span>
 <span class="kn">from</span> <span class="nn">gravitate.api_server</span> <span class="k">import</span> <span class="n">errors</span> <span class="k">as</span> <span class="n">service_errors</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.event.services</span> <span class="k">import</span> <span class="n">EventService</span><span class="p">,</span> <span class="n">EventCreation</span><span class="p">,</span> <span class="n">UserEventService</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.group_task.services</span> <span class="k">import</span> <span class="n">GroupCronTasksService</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.grouping_service</span> <span class="k">import</span> <span class="n">OrbitForceMatchService</span><span class="p">,</span> <span class="n">DeleteMatchServiceNew</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.ride_request.services</span> <span class="k">import</span> <span class="n">LuggageService</span><span class="p">,</span> <span class="n">RideRequestPost</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.ride_request.services</span> <span class="k">import</span> <span class="n">RideRequestService</span><span class="p">,</span> <span class="n">RideRequestCreation</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.user_service</span> <span class="k">import</span> <span class="n">UserService</span><span class="p">,</span> <span class="n">UserNotificationService</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.group_task</span> <span class="k">import</span> <span class="n">GroupTasksService</span>
+<span class="kn">from</span> <span class="nn">gravitate.api_server.utils</span> <span class="k">import</span> <span class="n">authenticate</span>
+<span class="kn">from</span> <span class="nn">gravitate.context</span> <span class="k">import</span> <span class="n">Context</span>
 
-<span class="n">sched</span> <span class="o">=</span> <span class="n">BackgroundScheduler</span><span class="p">(</span><span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">sched</span><span class="o">.</span><span class="n">add_job</span><span class="p">(</span><span class="n">refreshGroupAll</span><span class="p">,</span> <span class="s1">&#39;interval&#39;</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">sched</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="c1"># Firebase Admin SDK</span>
+<span class="c1"># Deprecated: Moved to be invoked by app engine cron on &#39;/groupAll&#39;</span>
+<span class="c1"># sched = BackgroundScheduler(daemon=True)</span>
+<span class="c1"># sched.add_job(refreshGroupAll, &#39;interval&#39;, minutes=1)</span>
+<span class="c1"># sched.start()</span>
 
 <span class="c1"># Initialize Flask</span>
 <span class="n">firebase_request_adapter</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">()</span>
@@ -106,20 +107,31 @@
 
 <span class="c1"># User Related Endpoints</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">UserService</span><span class="p">,</span> <span class="s1">&#39;/users/&lt;string:uid&gt;&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">UserNotificationService</span><span class="p">,</span> <span class="s1">&#39;/users/&lt;string:uid&gt;/messagingTokens&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">UserEventService</span><span class="p">,</span> <span class="s1">&#39;/me/events&#39;</span><span class="p">)</span>
 
 <span class="c1"># Ride Request Related Endpoints</span>
-<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">RideRequestCreation</span><span class="p">,</span> <span class="s1">&#39;/requestRide/&lt;string:rideCategory&gt;&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">RideRequestPost</span><span class="p">,</span> <span class="s1">&#39;/rideRequests&#39;</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">RideRequestService</span><span class="p">,</span> <span class="s1">&#39;/rideRequests/&lt;string:rideRequestId&gt;&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">DeleteMatchServiceNew</span><span class="p">,</span> <span class="s1">&#39;/rideRequests/&lt;string:rideRequestId&gt;/unmatch&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">LuggageService</span><span class="p">,</span> <span class="s1">&#39;/rideRequests/&lt;string:rideRequestId&gt;/luggage&#39;</span><span class="p">)</span>
+
+<span class="c1"># Event Related Endpoints</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">EventCreation</span><span class="p">,</span> <span class="s1">&#39;/events&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">EventService</span><span class="p">,</span> <span class="s1">&#39;/events/&lt;string:eventId&gt;&#39;</span><span class="p">)</span>
 
 <span class="c1"># Grouping Related Endpoints</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">GroupTasksService</span><span class="p">,</span> <span class="s1">&#39;/groupTasks&#39;</span><span class="p">)</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">GroupCronTasksService</span><span class="p">,</span> <span class="s1">&#39;/groupAll&#39;</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">OrbitForceMatchService</span><span class="p">,</span> <span class="s1">&#39;/devForceMatch&#39;</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">DeleteMatchService</span><span class="p">,</span> <span class="s1">&#39;/deleteMatch&#39;</span><span class="p">)</span>
 
 <span class="c1"># Endpoint for Testing Purposes</span>
 <span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">EndpointTestService</span><span class="p">,</span> <span class="s1">&#39;/endpointTest&#39;</span><span class="p">)</span>
 
-<span class="c1"># Deprecated</span>
-<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">AirportRideRequestCreationService</span><span class="p">,</span> <span class="s1">&#39;/airportRideRequests&#39;</span><span class="p">)</span>
+<span class="c1"># No longer used</span>
+<span class="n">api</span><span class="o">.</span><span class="n">add_resource</span><span class="p">(</span><span class="n">RideRequestCreation</span><span class="p">,</span> <span class="s1">&#39;/requestRide/&lt;string:rideCategory&gt;&#39;</span><span class="p">)</span>
+<span class="c1"># api.add_resource(AirportRideRequestCreationService, &#39;/airportRideRequests&#39;)</span>
+<span class="c1"># api.add_resource(DeleteMatchService, &#39;/deleteMatch&#39;)</span>
 
 
 <div class="viewcode-block" id="add_noauth_test_data"><a class="viewcode-back" href="../../gravitate.html#gravitate.main.add_noauth_test_data">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/contextTest&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
@@ -155,6 +167,8 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># flasgger for hosting REST API docs</span>
+    <span class="n">swagger</span> <span class="o">=</span> <span class="n">Swagger</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="c1"># This is used when running locally. Gunicorn is used to run the</span>
     <span class="c1"># application on Google App Engine. See entrypoint in app.yaml.</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -192,8 +206,6 @@
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -214,7 +226,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

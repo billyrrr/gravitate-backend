@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.models.target &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -34,34 +32,63 @@
             
   <h1>Source code for gravitate.models.target</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
 
 <span class="kn">import</span> <span class="nn">iso8601</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
 
+<span class="kn">from</span> <span class="nn">gravitate.common</span> <span class="k">import</span> <span class="n">local_time_from_timestamp</span><span class="p">,</span> <span class="n">str_to_local_time</span>
 <span class="kn">from</span> <span class="nn">gravitate.forms.ride_request_creation_form</span> <span class="k">import</span> <span class="n">AirportRideRequestCreationForm</span>
 <span class="kn">from</span> <span class="nn">.firestore_object</span> <span class="k">import</span> <span class="n">FirestoreObject</span>
+
 
 <span class="c1"># TODO: refactor to Business Object</span>
 
 
-<div class="viewcode-block" id="create_target_with_form"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.create_target_with_form">[docs]</a><span class="k">def</span> <span class="nf">create_target_with_form</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">AirportRideRequestCreationForm</span><span class="p">):</span>
+<span class="c1"># def create_target_with_form(form: AirportRideRequestCreationForm):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Note that this method won&#39;t work if any datetime string represents a time when</span>
+<span class="c1">#         daylight saving ends (November 4 1:00AM-2:00AM).</span>
+<span class="c1">#         since anytime in between corresponds to more than one possible UTC time.</span>
+<span class="c1">#           Time conversion is DEFECTIVE. DO NOT USE until changed according to create_target_with_local_time_str.</span>
+<span class="c1">#</span>
+<span class="c1">#         :param form:AirportRideRequestCreationForm:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     tz = pytz.timezone(&#39;America/Los_Angeles&#39;)</span>
+<span class="c1">#</span>
+<span class="c1">#     earliest_datetime = iso8601.parse_date(form.earliest, default_timezone=None).astimezone(tz)</span>
+<span class="c1">#     latest_datetime = iso8601.parse_date(form.latest, default_timezone=None).astimezone(tz)</span>
+<span class="c1">#</span>
+<span class="c1">#     earliest_timestamp = int(earliest_datetime.timestamp())</span>
+<span class="c1">#     latest_timestamp = int(latest_datetime.timestamp())</span>
+<span class="c1">#     # TODO: retrieve tzinfo from event rather than hard-coding &#39;America/Los_Angeles&#39;</span>
+<span class="c1">#     target = Target.create_airport_event_target(form.toEvent, earliest_timestamp, latest_timestamp)</span>
+<span class="c1">#     return target</span>
+
+
+<div class="viewcode-block" id="create_target_with_local_time_str"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.create_target_with_local_time_str">[docs]</a><span class="k">def</span> <span class="nf">create_target_with_local_time_str</span><span class="p">(</span><span class="n">to_event</span><span class="p">,</span> <span class="n">earliest_lts</span><span class="p">,</span> <span class="n">latest_lts</span><span class="p">,</span> <span class="n">ride_category</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Note that this method won&#39;t work if any datetime string represents a time when</span>
 <span class="sd">        daylight saving ends (November 4 1:00AM-2:00AM).</span>
 <span class="sd">        since anytime in between corresponds to more than one possible UTC time.</span>
 
-<span class="sd">        :param form:AirportRideRequestCreationForm:</span>
+<span class="sd">        :param earliest_lts: earliest local time string</span>
+<span class="sd">        :param latest_lts: latest local time string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;America/Los_Angeles&#39;</span><span class="p">)</span>
 
-    <span class="n">earliest_datetime</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">earliest</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
-    <span class="n">latest_datetime</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">latest</span><span class="p">,</span> <span class="n">default_timezone</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
+    <span class="n">earliest_datetime</span> <span class="o">=</span> <span class="n">str_to_local_time</span><span class="p">(</span><span class="n">earliest_lts</span><span class="p">)</span>
+    <span class="n">latest_datetime</span> <span class="o">=</span> <span class="n">str_to_local_time</span><span class="p">(</span><span class="n">latest_lts</span><span class="p">)</span>
 
     <span class="n">earliest_timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">earliest_datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
     <span class="n">latest_timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">latest_datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+
     <span class="c1"># TODO: retrieve tzinfo from event rather than hard-coding &#39;America/Los_Angeles&#39;</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_airport_event_target</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">toEvent</span><span class="p">,</span> <span class="n">earliest_timestamp</span><span class="p">,</span> <span class="n">latest_timestamp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ride_category</span> <span class="o">==</span> <span class="s2">&quot;airportRide&quot;</span><span class="p">:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_airport_event_target</span><span class="p">(</span><span class="n">to_event</span><span class="p">,</span> <span class="n">earliest_timestamp</span><span class="p">,</span> <span class="n">latest_timestamp</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ride_category</span> <span class="o">==</span> <span class="s2">&quot;eventRide&quot;</span><span class="p">:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">Target</span><span class="o">.</span><span class="n">create_social_event_target</span><span class="p">(</span><span class="n">to_event</span><span class="p">,</span> <span class="n">earliest_timestamp</span><span class="p">,</span> <span class="n">latest_timestamp</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported ride_category: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ride_category</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">target</span></div>
 
 
@@ -114,22 +141,25 @@
 <div class="viewcode-block" id="Target"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.Target">[docs]</a><span class="k">class</span> <span class="nc">Target</span><span class="p">(</span><span class="n">FirestoreObject</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event_category</span> <span class="o">=</span> <span class="n">event_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">create_with_flight_local_time</span> <span class="o">=</span> <span class="n">create_target_with_flight_local_time</span>
-    <span class="n">create_with_form</span> <span class="o">=</span> <span class="n">create_target_with_form</span>
+    <span class="c1"># create_with_form = create_target_with_form</span>
+    <span class="n">create_with_local_time_str</span> <span class="o">=</span> <span class="n">create_target_with_local_time_str</span>
 
 <div class="viewcode-block" id="Target.from_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.Target.from_dict">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">target_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">to_event</span> <span class="o">=</span> <span class="n">target_dict</span><span class="p">[</span><span class="s1">&#39;toEvent&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">to_event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">to_event</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ToEventTarget</span><span class="p">(</span><span class="n">target_dict</span><span class="p">[</span><span class="s1">&#39;eventCategory&#39;</span><span class="p">],</span> <span class="n">target_dict</span><span class="p">[</span><span class="s1">&#39;arriveAtEventTime&#39;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">FromEventTarget</span><span class="p">(</span><span class="n">target_dict</span><span class="p">[</span><span class="s1">&#39;eventCategory&#39;</span><span class="p">],</span> <span class="n">target_dict</span><span class="p">[</span><span class="s1">&#39;leaveEventTime&#39;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Target.create_airport_event_target"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.Target.create_airport_event_target">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_airport_event_target</span><span class="p">(</span><span class="n">to_event</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">earliest</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">latest</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">to_event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">to_event</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ToEventTarget</span><span class="p">(</span><span class="s1">&#39;airportRide&#39;</span><span class="p">,</span> <span class="p">{</span>
                 <span class="s1">&#39;earliest&#39;</span><span class="p">:</span> <span class="n">earliest</span><span class="p">,</span>
                 <span class="s1">&#39;latest&#39;</span><span class="p">:</span> <span class="n">latest</span><span class="p">,</span>
@@ -143,7 +173,7 @@
 
 <div class="viewcode-block" id="Target.create_social_event_target"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.Target.create_social_event_target">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_social_event_target</span><span class="p">(</span><span class="n">to_event</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">earliest</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">latest</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">to_event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">to_event</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ToEventTarget</span><span class="p">(</span><span class="s1">&#39;eventRide&#39;</span><span class="p">,</span> <span class="p">{</span>
                 <span class="s1">&#39;earliest&#39;</span><span class="p">:</span> <span class="n">earliest</span><span class="p">,</span>
                 <span class="s1">&#39;latest&#39;</span><span class="p">:</span> <span class="n">latest</span><span class="p">,</span>
@@ -176,27 +206,44 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">arrive_at_event_time</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">event_category</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arrive_at_event_time</span> <span class="o">=</span> <span class="n">arrive_at_event_time</span>
 
 <div class="viewcode-block" id="ToEventTarget.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.ToEventTarget.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">target_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="n">target_dict</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;toEvent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">target_dict</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;arriveAtEventTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrive_at_event_time</span>
-        <span class="k">return</span> <span class="n">target_dict</span></div></div>
+        <span class="k">return</span> <span class="n">target_dict</span></div>
+
+<div class="viewcode-block" id="ToEventTarget.get_earliest_arrival_view"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.ToEventTarget.get_earliest_arrival_view">[docs]</a>    <span class="k">def</span> <span class="nf">get_earliest_arrival_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrive_at_event_time</span><span class="p">[</span><span class="s2">&quot;earliest&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">local_time_from_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ToEventTarget.get_latest_arrival_view"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.ToEventTarget.get_latest_arrival_view">[docs]</a>    <span class="k">def</span> <span class="nf">get_latest_arrival_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrive_at_event_time</span><span class="p">[</span><span class="s2">&quot;latest&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">local_time_from_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="FromEventTarget"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.FromEventTarget">[docs]</a><span class="k">class</span> <span class="nc">FromEventTarget</span><span class="p">(</span><span class="n">Target</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_category</span><span class="p">,</span> <span class="n">leave_event_time</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">event_category</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_event</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">leave_event_time</span> <span class="o">=</span> <span class="n">leave_event_time</span>
 
 <div class="viewcode-block" id="FromEventTarget.to_dict"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.FromEventTarget.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">target_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="n">target_dict</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;toEvent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">target_dict</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;leaveEventTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_event_time</span>
-        <span class="k">return</span> <span class="n">target_dict</span></div></div>
+        <span class="k">return</span> <span class="n">target_dict</span></div>
 
+<div class="viewcode-block" id="FromEventTarget.get_earliest_departure_view"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.FromEventTarget.get_earliest_departure_view">[docs]</a>    <span class="k">def</span> <span class="nf">get_earliest_departure_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_event_time</span><span class="p">[</span><span class="s2">&quot;earliest&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">local_time_from_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FromEventTarget.get_latest_departure_view"><a class="viewcode-back" href="../../../gravitate.models.html#gravitate.models.target.FromEventTarget.get_latest_departure_view">[docs]</a>    <span class="k">def</span> <span class="nf">get_latest_departure_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_event_time</span><span class="p">[</span><span class="s2">&quot;latest&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">local_time_from_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -231,8 +278,6 @@
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -253,7 +298,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.domain.event_schedule.actions &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -35,27 +33,30 @@
   <h1>Source code for gravitate.domain.event_schedule.actions</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">CTX</span>
 <span class="kn">from</span> <span class="nn">gravitate.domain.event_schedule.builders</span> <span class="k">import</span> <span class="n">EventScheduleBuilder</span>
-<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">RideRequest</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">AirportRideRequest</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">SocialEventRideRequest</span><span class="p">,</span> \
-    <span class="n">SocialEventLocation</span><span class="p">,</span> <span class="n">Orbit</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.rides</span> <span class="k">import</span> <span class="n">RideRequest</span><span class="p">,</span> <span class="n">AirportRideRequest</span><span class="p">,</span> <span class="n">SocialEventRideRequest</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location.models</span> <span class="k">import</span> <span class="n">Location</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">SocialEventLocation</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.orbit</span> <span class="k">import</span> <span class="n">Orbit</span>
 
 
-<div class="viewcode-block" id="create_event_schedule"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.actions.create_event_schedule">[docs]</a><span class="k">def</span> <span class="nf">create_event_schedule</span><span class="p">(</span><span class="n">ride_request</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">],</span> <span class="n">location</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">]):</span>
+<div class="viewcode-block" id="create_event_schedule"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.actions.create_event_schedule">[docs]</a><span class="k">def</span> <span class="nf">create_event_schedule</span><span class="p">(</span><span class="n">ride_request</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">],</span> <span class="n">location</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">],</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="c1"># Validate that type of location and type of ride request match</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ride_request</span><span class="p">,</span> <span class="n">AirportRideRequest</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ride_request</span><span class="p">,</span> <span class="n">SocialEventRideRequest</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">SocialEventLocation</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unsupported ride request type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ride_request</span><span class="p">)))</span>
 
     <span class="n">event_schedule_builder</span> <span class="o">=</span> <span class="n">EventScheduleBuilder</span><span class="p">()</span>
     <span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">build_ride_request</span><span class="p">(</span><span class="n">ride_request</span><span class="p">)</span>
+    <span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">build_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
     <span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">build_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>  <span class="c1"># Note that location=None defaults to LAX as destName</span>
+    <span class="c1"># event_schedule_builder.build_user_location(user_location)</span>
     <span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">build_orbit</span><span class="p">(</span><span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">event_schedule</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">event_schedule_builder</span><span class="o">.</span><span class="n">export</span><span class="p">()</span></div>
 
 
@@ -99,8 +100,6 @@
     <form class="search" action="../../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -121,7 +120,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

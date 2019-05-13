@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.domain.event_schedule package &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -41,12 +39,12 @@
 <span id="gravitate-domain-event-schedule-actions-module"></span><h2>gravitate.domain.event_schedule.actions module<a class="headerlink" href="#module-gravitate.domain.event_schedule.actions" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="gravitate.domain.event_schedule.actions.create_event_schedule">
-<code class="descclassname">gravitate.domain.event_schedule.actions.</code><code class="descname">create_event_schedule</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], location: Type[gravitate.models.location.Location]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/actions.html#create_event_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.actions.create_event_schedule" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravitate.domain.event_schedule.actions.</code><code class="descname">create_event_schedule</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.domain.rides.models.Ride], location: Type[gravitate.domain.location.models.Location], event=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/actions.html#create_event_schedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.actions.create_event_schedule" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="gravitate.domain.event_schedule.actions.create_event_schedule_orbit">
-<code class="descclassname">gravitate.domain.event_schedule.actions.</code><code class="descname">create_event_schedule_orbit</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest], location: Type[gravitate.models.location.Location], orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/actions.html#create_event_schedule_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.actions.create_event_schedule_orbit" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravitate.domain.event_schedule.actions.</code><code class="descname">create_event_schedule_orbit</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.domain.rides.models.Ride], location: Type[gravitate.domain.location.models.Location], orbit: gravitate.domain.orbit.models.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/actions.html#create_event_schedule_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.actions.create_event_schedule_orbit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -54,26 +52,36 @@
 <span id="gravitate-domain-event-schedule-builders-module"></span><h2>gravitate.domain.event_schedule.builders module<a class="headerlink" href="#module-gravitate.domain.event_schedule.builders" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder">
-<em class="property">class </em><code class="descclassname">gravitate.domain.event_schedule.builders.</code><code class="descname">EventScheduleBuilder</code><span class="sig-paren">(</span><em>event_schedule: gravitate.models.event_schedule.AirportEventSchedule = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gravitate.domain.event_schedule.builders.</code><code class="descname">EventScheduleBuilder</code><span class="sig-paren">(</span><em>event_schedule: gravitate.domain.event_schedule.models.AirportEventSchedule = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
+<dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_event">
+<code class="descname">build_event</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_location">
-<code class="descname">build_location</code><span class="sig-paren">(</span><em>location: Type[gravitate.models.location.Location]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_location" title="Permalink to this definition">¶</a></dt>
+<code class="descname">build_location</code><span class="sig-paren">(</span><em>location: Type[gravitate.domain.location.models.Location]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_location" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_orbit">
-<code class="descname">build_orbit</code><span class="sig-paren">(</span><em>pending=True</em>, <em>orbit: gravitate.models.orbit.Orbit = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_orbit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">build_orbit</code><span class="sig-paren">(</span><em>pending=True</em>, <em>orbit: gravitate.domain.orbit.models.Orbit = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_orbit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_ride_request">
-<code class="descname">build_ride_request</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.models.ride_request.RideRequest]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_ride_request" title="Permalink to this definition">¶</a></dt>
+<code class="descname">build_ride_request</code><span class="sig-paren">(</span><em>ride_request: Type[gravitate.domain.rides.models.Ride]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_ride_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_ride_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_user_location">
+<code class="descname">build_user_location</code><span class="sig-paren">(</span><em>location: gravitate.domain.location.models.UserLocation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.build_user_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_user_location" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.event_schedule.builders.EventScheduleBuilder.export">
-<code class="descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; gravitate.models.event_schedule.AirportEventSchedule<a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.export" title="Permalink to this definition">¶</a></dt>
+<code class="descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; gravitate.domain.event_schedule.models.AirportEventSchedule<a class="reference internal" href="_modules/gravitate/domain/event_schedule/builders.html#EventScheduleBuilder.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.builders.EventScheduleBuilder.export" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -83,23 +91,20 @@
 <span id="gravitate-domain-event-schedule-utils-module"></span><h2>gravitate.domain.event_schedule.utils module<a class="headerlink" href="#module-gravitate.domain.event_schedule.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="gravitate.domain.event_schedule.utils.getMemberProfilePhotoUrls">
-<code class="descclassname">gravitate.domain.event_schedule.utils.</code><code class="descname">getMemberProfilePhotoUrls</code><span class="sig-paren">(</span><em>orbit: gravitate.models.orbit.Orbit</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/gravitate/domain/event_schedule/utils.html#getMemberProfilePhotoUrls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.utils.getMemberProfilePhotoUrls" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd>[Assigned to Leon]
+<code class="descclassname">gravitate.domain.event_schedule.utils.</code><code class="descname">getMemberProfilePhotoUrls</code><span class="sig-paren">(</span><em>orbit: gravitate.domain.orbit.models.Orbit</em><span class="sig-paren">)</span> &#x2192; [&lt;class 'str'&gt;]<a class="reference internal" href="_modules/gravitate/domain/event_schedule/utils.html#getMemberProfilePhotoUrls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.event_schedule.utils.getMemberProfilePhotoUrls" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Description</dt><dd><p>[Assigned to Leon]
 Don’t have to follow the method signature, but the signature is required to get other code working.
-Orbits can be obtained through any other ways, and buildEventSchedule can be called from elsewhere.</dd>
+Orbits can be obtained through any other ways, and buildEventSchedule can be called from elsewhere.</p>
+</dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -139,8 +144,6 @@ Orbits can be obtained through any other ways, and buildEventSchedule can be cal
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -161,7 +164,7 @@ Orbits can be obtained through any other ways, and buildEventSchedule can be cal
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

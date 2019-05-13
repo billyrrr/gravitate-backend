@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Overview: module code &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -38,7 +36,8 @@
 <li><a href="google/cloud/firestore_v1beta1/client.html">google.cloud.firestore_v1beta1.client</a></li>
 <li><a href="google/cloud/firestore_v1beta1/transaction.html">google.cloud.firestore_v1beta1.transaction</a></li>
 <li><a href="gravitate/api_server/errors.html">gravitate.api_server.errors</a></li>
-<li><a href="gravitate/api_server/event_service.html">gravitate.api_server.event_service</a></li>
+<li><a href="gravitate/api_server/event/services.html">gravitate.api_server.event.services</a></li>
+<li><a href="gravitate/api_server/group_task/services.html">gravitate.api_server.group_task.services</a></li>
 <li><a href="gravitate/api_server/grouping_service.html">gravitate.api_server.grouping_service</a></li>
 <li><a href="gravitate/api_server/location_service.html">gravitate.api_server.location_service</a></li>
 <li><a href="gravitate/api_server/ride_request/deprecated_utils.html">gravitate.api_server.ride_request.deprecated_utils</a></li>
@@ -47,63 +46,45 @@
 <li><a href="gravitate/api_server/utils.html">gravitate.api_server.utils</a></li>
 <li><a href="gravitate/config.html">gravitate.config</a></li>
 <li><a href="gravitate/context.html">gravitate.context</a></li>
-<li><a href="gravitate/controllers/event_status.html">gravitate.controllers.event_status</a></li>
-<li><a href="gravitate/controllers/eventscheduleutils.html">gravitate.controllers.eventscheduleutils</a></li>
 <li><a href="gravitate/controllers/fcmessaging.html">gravitate.controllers.fcmessaging</a></li>
 <li><a href="gravitate/controllers/fireauthutils.html">gravitate.controllers.fireauthutils</a></li>
-<li><a href="gravitate/controllers/grouping/grouping.html">gravitate.controllers.grouping.grouping</a></li>
-<li><a href="gravitate/controllers/grouping/orbit_group.html">gravitate.controllers.grouping.orbit_group</a></li>
-<li><a href="gravitate/controllers/grouping/pairing.html">gravitate.controllers.grouping.pairing</a></li>
-<li><a href="gravitate/controllers/grouping/utils.html">gravitate.controllers.grouping.utils</a></li>
-<li><a href="gravitate/controllers/userutils.html">gravitate.controllers.userutils</a></li>
-<li><a href="gravitate/controllers/utils.html">gravitate.controllers.utils</a></li>
-<li><a href="gravitate/data_access/event_dao.html">gravitate.data_access.event_dao</a></li>
-<li><a href="gravitate/data_access/event_schedule_dao.html">gravitate.data_access.event_schedule_dao</a></li>
-<li><a href="gravitate/data_access/location_dao.html">gravitate.data_access.location_dao</a></li>
-<li><a href="gravitate/data_access/orbit_dao.html">gravitate.data_access.orbit_dao</a></li>
-<li><a href="gravitate/data_access/ride_request_dao.html">gravitate.data_access.ride_request_dao</a></li>
 <li><a href="gravitate/data_access/strategy.html">gravitate.data_access.strategy</a></li>
-<li><a href="gravitate/data_access/user_dao.html">gravitate.data_access.user_dao</a></li>
 <li><a href="gravitate/data_access/utils.html">gravitate.data_access.utils</a></li>
-<li><a href="gravitate/domain/driver_navigation.html">gravitate.domain.driver_navigation</a></li>
-<ul><li><a href="gravitate/domain/driver_navigation/models.html">gravitate.domain.driver_navigation.models</a></li>
+<li><a href="gravitate/domain/driver_navigation/models.html">gravitate.domain.driver_navigation.models</a></li>
 <li><a href="gravitate/domain/driver_navigation/utils.html">gravitate.domain.driver_navigation.utils</a></li>
-</ul><li><a href="gravitate/domain/event_schedule/actions.html">gravitate.domain.event_schedule.actions</a></li>
+<li><a href="gravitate/domain/event/actions.html">gravitate.domain.event.actions</a></li>
+<li><a href="gravitate/domain/event/builders_new.html">gravitate.domain.event.builders_new</a></li>
+<li><a href="gravitate/domain/event/dao.html">gravitate.domain.event.dao</a></li>
+<li><a href="gravitate/domain/event/models.html">gravitate.domain.event.models</a></li>
+<li><a href="gravitate/domain/event_schedule/actions.html">gravitate.domain.event_schedule.actions</a></li>
 <li><a href="gravitate/domain/event_schedule/builders.html">gravitate.domain.event_schedule.builders</a></li>
 <li><a href="gravitate/domain/event_schedule/utils.html">gravitate.domain.event_schedule.utils</a></li>
 <li><a href="gravitate/domain/group/actions.html">gravitate.domain.group.actions</a></li>
 <li><a href="gravitate/domain/group/orbit_group.html">gravitate.domain.group.orbit_group</a></li>
 <li><a href="gravitate/domain/group/pairing.html">gravitate.domain.group.pairing</a></li>
 <li><a href="gravitate/domain/group/utils.html">gravitate.domain.group.utils</a></li>
-<li><a href="gravitate/domain/luggages.html">gravitate.domain.luggages</a></li>
-<li><a href="gravitate/domain/request_ride/actions.html">gravitate.domain.request_ride.actions</a></li>
-<li><a href="gravitate/domain/request_ride/builders.html">gravitate.domain.request_ride.builders</a></li>
-<li><a href="gravitate/domain/request_ride/utils.html">gravitate.domain.request_ride.utils</a></li>
+<li><a href="gravitate/domain/location/dao.html">gravitate.domain.location.dao</a></li>
+<li><a href="gravitate/domain/location/models.html">gravitate.domain.location.models</a></li>
+<li><a href="gravitate/domain/luggage/actions.html">gravitate.domain.luggage.actions</a></li>
+<li><a href="gravitate/domain/luggage/models.html">gravitate.domain.luggage.models</a></li>
+<li><a href="gravitate/domain/orbit/dao.html">gravitate.domain.orbit.dao</a></li>
+<li><a href="gravitate/domain/orbit/models.html">gravitate.domain.orbit.models</a></li>
+<li><a href="gravitate/domain/rides/actions.html">gravitate.domain.rides.actions</a></li>
+<li><a href="gravitate/domain/rides/builders.html">gravitate.domain.rides.builders</a></li>
+<li><a href="gravitate/domain/rides/dao.html">gravitate.domain.rides.dao</a></li>
+<li><a href="gravitate/domain/rides/models.html">gravitate.domain.rides.models</a></li>
+<li><a href="gravitate/domain/rides/utils.html">gravitate.domain.rides.utils</a></li>
+<li><a href="gravitate/domain/user/actions.html">gravitate.domain.user.actions</a></li>
+<li><a href="gravitate/domain/user/dao.html">gravitate.domain.user.dao</a></li>
+<li><a href="gravitate/domain/user/models.html">gravitate.domain.user.models</a></li>
 <li><a href="gravitate/forms/ride_request_creation_form.html">gravitate.forms.ride_request_creation_form</a></li>
 <li><a href="gravitate/forms/user_creation_form.html">gravitate.forms.user_creation_form</a></li>
 <li><a href="gravitate/main.html">gravitate.main</a></li>
-<li><a href="gravitate/models/event.html">gravitate.models.event</a></li>
-<li><a href="gravitate/models/event_schedule.html">gravitate.models.event_schedule</a></li>
 <li><a href="gravitate/models/firestore_object.html">gravitate.models.firestore_object</a></li>
-<li><a href="gravitate/models/location.html">gravitate.models.location</a></li>
-<li><a href="gravitate/models/orbit.html">gravitate.models.orbit</a></li>
-<li><a href="gravitate/models/ride_request.html">gravitate.models.ride_request</a></li>
 <li><a href="gravitate/models/target.html">gravitate.models.target</a></li>
-<li><a href="gravitate/models/user.html">gravitate.models.user</a></li>
-<li><a href="gravitate/scripts/event/event_builders.html">gravitate.scripts.event.event_builders</a></li>
 <li><a href="gravitate/scripts/event/populate_airport_events.html">gravitate.scripts.event.populate_airport_events</a></li>
 <li><a href="gravitate/scripts/location/populate_locations.html">gravitate.scripts.location.populate_locations</a></li>
 <li><a href="gravitate/scripts/utils.html">gravitate.scripts.utils</a></li>
-<li><a href="gravitate/services/errors.html">gravitate.services.errors</a></li>
-<li><a href="gravitate/services/event_service.html">gravitate.services.event_service</a></li>
-<li><a href="gravitate/services/grouping_service.html">gravitate.services.grouping_service</a></li>
-<li><a href="gravitate/services/location_service.html">gravitate.services.location_service</a></li>
-<li><a href="gravitate/services/ride_request/deprecated_utils.html">gravitate.services.ride_request.deprecated_utils</a></li>
-<li><a href="gravitate/services/ride_request/services.html">gravitate.services.ride_request.services</a></li>
-<li><a href="gravitate/services/ride_request/social_event.html">gravitate.services.ride_request.social_event</a></li>
-<li><a href="gravitate/services/ride_request/utils.html">gravitate.services.ride_request.utils</a></li>
-<li><a href="gravitate/services/user_service.html">gravitate.services.user_service</a></li>
-<li><a href="gravitate/services/utils.html">gravitate.services.utils</a></li>
 <li><a href="wtforms/fields/core.html">wtforms.fields.core</a></li>
 </ul>
 
@@ -137,8 +118,6 @@
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -159,7 +138,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
