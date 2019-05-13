@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.controllers package &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -64,37 +62,31 @@
 <dl class="function">
 <dt id="gravitate.controllers.fcmessaging.sendMessage">
 <code class="descclassname">gravitate.controllers.fcmessaging.</code><code class="descname">sendMessage</code><span class="sig-paren">(</span><em>registration_token</em>, <em>data</em>, <em>dry_run=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/fcmessaging.html#sendMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.fcmessaging.sendMessage" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Description</dt>
-<dd><dl class="first docutils">
-<dt>This method sends notifications to front-end. </dt>
-<dd><dl class="first last docutils">
-<dt>Note that registration_token may not always be refreshed and </dt>
-<dd>the operation may fail if client FCM token has changed.</dd>
+<dd><dl>
+<dt>Description</dt><dd><dl class="simple">
+<dt>This method sends notifications to front-end. </dt><dd><dl class="simple">
+<dt>Note that registration_token may not always be refreshed and </dt><dd><p>the operation may fail if client FCM token has changed.</p>
+</dd>
 </dl>
 </dd>
 </dl>
-<p class="last">Reference: <a class="reference external" href="https://firebase.google.com/docs/cloud-messaging/admin/send-messages">https://firebase.google.com/docs/cloud-messaging/admin/send-messages</a></p>
+<p>Reference: <a class="reference external" href="https://firebase.google.com/docs/cloud-messaging/admin/send-messages">https://firebase.google.com/docs/cloud-messaging/admin/send-messages</a></p>
 </dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>registration_token</strong> – FCM token represesenting a single client device</li>
-<li><strong>data</strong> – data to send as notification</li>
-<li><strong>dry_run</strong> – set to True to emulate in unittests</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>registration_token</strong> – FCM token represesenting a single client device</p></li>
+<li><p><strong>data</strong> – data to send as notification</p></li>
+<li><p><strong>dry_run</strong> – set to True to emulate in unittests</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -107,32 +99,12 @@
 <span id="gravitate-controllers-fireauthutils-module"></span><h2>gravitate.controllers.fireauthutils module<a class="headerlink" href="#module-gravitate.controllers.fireauthutils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="gravitate.controllers.fireauthutils.update_user">
-<code class="descclassname">gravitate.controllers.fireauthutils.</code><code class="descname">update_user</code><span class="sig-paren">(</span><em>user: gravitate.models.user.User</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/fireauthutils.html#update_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.fireauthutils.update_user" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravitate.controllers.fireauthutils.</code><code class="descname">update_user</code><span class="sig-paren">(</span><em>user: gravitate.domain.user.models.User</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/fireauthutils.html#update_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.fireauthutils.update_user" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-gravitate.controllers.userutils">
-<span id="gravitate-controllers-userutils-module"></span><h2>gravitate.controllers.userutils module<a class="headerlink" href="#module-gravitate.controllers.userutils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="gravitate.controllers.userutils.editUser">
-<code class="descclassname">gravitate.controllers.userutils.</code><code class="descname">editUser</code><span class="sig-paren">(</span><em>user</em>, <em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/userutils.html#editUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.userutils.editUser" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.userutils.getUser">
-<code class="descclassname">gravitate.controllers.userutils.</code><code class="descname">getUser</code><span class="sig-paren">(</span><em>uid: &lt;module 'string' from '/usr/local/Cellar/python/3.7.1/Frameworks/Python.framework/Versions/3.7/lib/python3.7/string.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/userutils.html#getUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.userutils.getUser" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.userutils.randomId">
-<code class="descclassname">gravitate.controllers.userutils.</code><code class="descname">randomId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/userutils.html#randomId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.userutils.randomId" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravitate.controllers.userutils.saveUser">
-<code class="descclassname">gravitate.controllers.userutils.</code><code class="descname">saveUser</code><span class="sig-paren">(</span><em>user</em>, <em>transaction: google.cloud.firestore_v1beta1.transaction.Transaction = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/controllers/userutils.html#saveUser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.controllers.userutils.saveUser" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="gravitate-controllers-userutils-module">
+<h2>gravitate.controllers.userutils module<a class="headerlink" href="#gravitate-controllers-userutils-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="gravitate-controllers-utils-module">
 <h2>gravitate.controllers.utils module<a class="headerlink" href="#gravitate-controllers-utils-module" title="Permalink to this headline">¶</a></h2>
@@ -173,8 +145,6 @@
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -195,7 +165,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

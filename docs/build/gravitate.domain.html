@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.domain package &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -40,60 +38,8 @@
 <div class="section" id="module-gravitate.domain.driver_navigation">
 <span id="gravitate-domain-driver-navigation-module"></span><h2>gravitate.domain.driver_navigation module<a class="headerlink" href="#module-gravitate.domain.driver_navigation" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-gravitate.domain.luggages">
-<span id="gravitate-domain-luggages-module"></span><h2>gravitate.domain.luggages module<a class="headerlink" href="#module-gravitate.domain.luggages" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="gravitate.domain.luggages.Luggages">
-<em class="property">class </em><code class="descclassname">gravitate.domain.luggages.</code><code class="descname">Luggages</code><a class="reference internal" href="_modules/gravitate/domain/luggages.html#Luggages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.luggages.Luggages" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Keeps track of luggage amount</p>
-<dl class="method">
-<dt id="gravitate.domain.luggages.Luggages.add">
-<code class="descname">add</code><span class="sig-paren">(</span><em>luggage: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/luggages.html#Luggages.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.luggages.Luggages.add" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append a piece of luggage to self._luggage_list</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>luggage</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gravitate.domain.luggages.Luggages.from_dict">
-<code class="descname">from_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/luggages.html#Luggages.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.luggages.Luggages.from_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a Luggages class with a dict presentation of luggages.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gravitate.domain.luggages.Luggages.to_dict">
-<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/gravitate/domain/luggages.html#Luggages.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.luggages.Luggages.to_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a dict representation of all luggages
-Get value for “total_weight” by self._get_weight() and value for “total_count” by self._get_count().</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="gravitate-domain-luggages-module">
+<h2>gravitate.domain.luggages module<a class="headerlink" href="#gravitate-domain-luggages-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-gravitate.domain">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gravitate.domain" title="Permalink to this headline">¶</a></h2>
@@ -131,8 +77,6 @@ Get value for “total_weight” by self._get_weight() and value for “total_co
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -153,7 +97,7 @@ Get value for “total_weight” by self._get_weight() and value for “total_co
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

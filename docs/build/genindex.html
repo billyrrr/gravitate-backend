@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Index &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -60,7 +58,11 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.html#gravitate.domain.luggages.Luggages.add">add() (gravitate.domain.luggages.Luggages method)</a>
+      <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.add">add() (gravitate.domain.luggage.models.Luggages method)</a>
+</li>
+      <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.add_from_list">add_from_list() (gravitate.domain.luggage.models.Luggages method)</a>
+</li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.add_luggage_nontransactional">add_luggage_nontransactional() (in module gravitate.api_server.ride_request.services)</a>
 </li>
       <li><a href="gravitate.html#gravitate.main.add_noauth_test_data">add_noauth_test_data() (in module gravitate.main)</a>
 </li>
@@ -68,9 +70,9 @@
 </li>
       <li><a href="gravitate.data_access.html#gravitate.data_access.strategy.TransactionStrategy.add_step">add_step() (gravitate.data_access.strategy.TransactionStrategy method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.add_to_event_schedule_with_transaction">add_to_event_schedule_with_transaction() (gravitate.data_access.user_dao.UserDao static method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.add_to_event_schedule_with_transaction">add_to_event_schedule_with_transaction() (gravitate.domain.user.dao.UserDao static method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.airport_code">airport_code (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.add_user_event_dict">add_user_event_dict() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm.airportCode">airportCode (gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm attribute)</a>
 
@@ -78,26 +80,24 @@
         <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.RideRequestCreationValidateForm.airportCode">(gravitate.forms.ride_request_creation_form.RideRequestCreationValidateForm attribute)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.models.html#gravitate.models.event_schedule.AirportEventSchedule">AirportEventSchedule (class in gravitate.models.event_schedule)</a>
-</li>
-      <li><a href="gravitate.models.html#gravitate.models.location.AirportLocation">AirportLocation (class in gravitate.models.location)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.models.html#gravitate.models.ride_request.AirportRideRequest">AirportRideRequest (class in gravitate.models.ride_request)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent">AirportEvent (class in gravitate.domain.event.models)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.AirportRideRequestBuilder">AirportRideRequestBuilder (class in gravitate.domain.request_ride.builders)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder">AirportEventBuilder (class in gravitate.domain.event.builders_new)</a>
+</li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.AirportLocation">AirportLocation (class in gravitate.domain.location.models)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.AirportRide">AirportRide (class in gravitate.domain.rides.models)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder">AirportRideRequestBuilder (class in gravitate.domain.rides.builders)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm">AirportRideRequestCreationForm (class in gravitate.forms.ride_request_creation_form)</a>
-</li>
-      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.AirportRideRequestCreationService">AirportRideRequestCreationService (class in gravitate.api_server.ride_request.services)</a>
 </li>
       <li><a href="gravitate.html#gravitate.config.DevelopmentGravitateConfig.APP_NAME">APP_NAME (gravitate.config.DevelopmentGravitateConfig attribute)</a>
 
       <ul>
         <li><a href="gravitate.html#gravitate.config.GravitateConfig.APP_NAME">(gravitate.config.GravitateConfig attribute)</a>
-</li>
-        <li><a href="gravitate.html#gravitate.config.StagingGravitateConfig.APP_NAME">(gravitate.config.StagingGravitateConfig attribute)</a>
 </li>
         <li><a href="gravitate.html#gravitate.config.TestingGravitateConfig.APP_NAME">(gravitate.config.TestingGravitateConfig attribute)</a>
 </li>
@@ -112,9 +112,25 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.AirportRideRequestBuilder.build_airport_ride_request">build_airport_ride_request() (gravitate.domain.request_ride.builders.AirportRideRequestBuilder method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder.build_airport">build_airport() (gravitate.domain.event.builders_new.AirportEventBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.build_airport_event">build_airport_event() (in module gravitate.domain.event.builders_new)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.build_airport_ride_request">build_airport_ride_request() (gravitate.domain.rides.builders.AirportRideRequestBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder.build_basic_info">build_basic_info() (gravitate.domain.event.builders_new.AirportEventBuilder method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_basic_info">(gravitate.domain.event.builders_new.CampusEventBuilder method)</a>
+</li>
+      </ul></li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_campus">build_campus() (gravitate.domain.event.builders_new.CampusEventBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder.build_descriptions">build_descriptions() (gravitate.domain.event.builders_new.EventBaseBuilder method)</a>
 </li>
       <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.models.build_driver_navigation_from_orbit">build_driver_navigation_from_orbit() (in module gravitate.domain.driver_navigation.models)</a>
+</li>
+      <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_event">build_event() (gravitate.domain.event_schedule.builders.EventScheduleBuilder method)</a>
 </li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_location">build_location() (gravitate.domain.event_schedule.builders.EventScheduleBuilder method)</a>
 </li>
@@ -122,7 +138,17 @@
 </li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_ride_request">build_ride_request() (gravitate.domain.event_schedule.builders.EventScheduleBuilder method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.SocialEventRideRequestBuilder.build_social_event_ride_request">build_social_event_ride_request() (gravitate.domain.request_ride.builders.SocialEventRideRequestBuilder method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.build_social_event_ride_request">build_social_event_ride_request() (gravitate.domain.rides.builders.SocialEventRideRequestBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.build_start_end">build_start_end() (gravitate.domain.event.builders_new.CampusEventBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.build_ucsb_event">build_ucsb_event() (in module gravitate.domain.event.builders_new)</a>
+</li>
+      <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_user_location">build_user_location() (gravitate.domain.event_schedule.builders.EventScheduleBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.FbEventBuilder.build_with_fb_dict">build_with_fb_dict() (gravitate.domain.event.builders_new.FbEventBuilder method)</a>
 </li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LaxBuilder.buildAirportInfo">buildAirportInfo() (gravitate.scripts.location.populate_locations.LaxBuilder method)</a>
 
@@ -132,76 +158,48 @@
         <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.SanBuilder.buildAirportInfo">(gravitate.scripts.location.populate_locations.SanBuilder method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.EventBuilder.buildBasicInfo">buildBasicInfo() (gravitate.scripts.event.event_builders.EventBuilder method)</a>
+      <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LaxBuilder.buildBasicInfo">buildBasicInfo() (gravitate.scripts.location.populate_locations.LaxBuilder method)</a>
 
       <ul>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.LaxEventBuilder.buildBasicInfo">(gravitate.scripts.event.event_builders.LaxEventBuilder method)</a>
-</li>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.UcsbEventBuilder.buildBasicInfo">(gravitate.scripts.event.event_builders.UcsbEventBuilder method)</a>
-</li>
-        <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LaxBuilder.buildBasicInfo">(gravitate.scripts.location.populate_locations.LaxBuilder method)</a>
-</li>
         <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LocationBuilder.buildBasicInfo">(gravitate.scripts.location.populate_locations.LocationBuilder method)</a>
 </li>
         <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.SanBuilder.buildBasicInfo">(gravitate.scripts.location.populate_locations.SanBuilder method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.EventBuilder.buildExtraInfo">buildExtraInfo() (gravitate.scripts.event.event_builders.EventBuilder method)</a>
-
-      <ul>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.LaxEventBuilder.buildExtraInfo">(gravitate.scripts.event.event_builders.LaxEventBuilder method)</a>
-</li>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.UcsbEventBuilder.buildExtraInfo">(gravitate.scripts.event.event_builders.UcsbEventBuilder method)</a>
-</li>
-      </ul></li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.buildLaxTerminal">buildLaxTerminal() (in module gravitate.scripts.location.populate_locations)</a>
 </li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.EventBuilder.buildLists">buildLists() (gravitate.scripts.event.event_builders.EventBuilder method)</a>
-
-      <ul>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.LaxEventBuilder.buildLists">(gravitate.scripts.event.event_builders.LaxEventBuilder method)</a>
-</li>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.UcsbEventBuilder.buildLists">(gravitate.scripts.event.event_builders.UcsbEventBuilder method)</a>
-</li>
-      </ul></li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.EventBuilder.buildTimeRange">buildTimeRange() (gravitate.scripts.event.event_builders.EventBuilder method)</a>
-
-      <ul>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.SampleLaxEventBuilder.buildTimeRange">(gravitate.scripts.event.event_builders.SampleLaxEventBuilder method)</a>
-</li>
-        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.SpecifiedRangeEventBuilder.buildTimeRange">(gravitate.scripts.event.event_builders.SpecifiedRangeEventBuilder method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.CampusEventRideRequestBuilder">CampusEventRideRequestBuilder (class in gravitate.domain.request_ride.builders)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent">CampusEvent (class in gravitate.domain.event.models)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.check_duplicate">check_duplicate() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder">CampusEventBuilder (class in gravitate.domain.event.builders_new)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.CampusEventRideRequestBuilder">CampusEventRideRequestBuilder (class in gravitate.domain.rides.builders)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.check_duplicate">check_duplicate() (in module gravitate.domain.rides.utils)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.CityRideRequestCreationForm">CityRideRequestCreationForm (class in gravitate.forms.ride_request_creation_form)</a>
 </li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.MovedPermanently.code">code (gravitate.api_server.ride_request.services.MovedPermanently attribute)</a>
+</li>
       <li><a href="gravitate.html#gravitate.context.Context">Context (class in gravitate.context)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.location.Location.coordinates">coordinates (gravitate.models.location.Location attribute)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location.coordinates">coordinates (gravitate.domain.location.models.Location attribute)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.create">create() (gravitate.data_access.event_dao.EventDao method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.create">create() (gravitate.domain.event.dao.EventDao method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.create">(gravitate.data_access.event_schedule_dao.EventScheduleGenericDao method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.create">(gravitate.domain.orbit.dao.OrbitDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.create">(gravitate.data_access.location_dao.LocationGenericDao method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.create">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.create">(gravitate.data_access.orbit_dao.OrbitDao method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.actions.create">(in module gravitate.domain.event.actions)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.create">(gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
-</li>
-        <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.actions.create">(in module gravitate.domain.request_ride.actions)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.actions.create">(in module gravitate.domain.rides.actions)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -212,17 +210,25 @@
 </li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.actions.create_event_schedule_orbit">create_event_schedule_orbit() (in module gravitate.domain.event_schedule.actions)</a>
 </li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.create_fb_event">create_fb_event() (gravitate.domain.event.dao.EventDao method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.actions.create_fb_event">(in module gravitate.domain.event.actions)</a>
+</li>
+      </ul></li>
       <li><a href="gravitate.models.html#gravitate.models.target.Target.create_social_event_target">create_social_event_target() (gravitate.models.target.Target static method)</a>
 </li>
       <li><a href="gravitate.models.html#gravitate.models.target.create_target_with_flight_local_time">create_target_with_flight_local_time() (in module gravitate.models.target)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.target.create_target_with_form">create_target_with_form() (in module gravitate.models.target)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.create_target_with_local_time_str">create_target_with_local_time_str() (in module gravitate.models.target)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.create_user">create_user() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.create_time_offsets">create_time_offsets() (in module gravitate.domain.event.builders_new)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.create_user">create_user() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
       <li><a href="gravitate.models.html#gravitate.models.target.Target.create_with_flight_local_time">create_with_flight_local_time() (gravitate.models.target.Target method)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.target.Target.create_with_form">create_with_form() (gravitate.models.target.Target method)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.Target.create_with_local_time_str">create_with_local_time_str() (gravitate.models.target.Target method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -237,8 +243,6 @@
       <ul>
         <li><a href="gravitate.html#gravitate.config.GravitateConfig.DEBUG">(gravitate.config.GravitateConfig attribute)</a>
 </li>
-        <li><a href="gravitate.html#gravitate.config.StagingGravitateConfig.DEBUG">(gravitate.config.StagingGravitateConfig attribute)</a>
-</li>
         <li><a href="gravitate.html#gravitate.config.TestingGravitateConfig.DEBUG">(gravitate.config.TestingGravitateConfig attribute)</a>
 </li>
       </ul></li>
@@ -249,22 +253,24 @@
       <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService.delete">delete() (gravitate.api_server.ride_request.services.RideRequestService method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.delete">(gravitate.data_access.event_dao.EventDao method)</a>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService.delete">(gravitate.api_server.user_service.UserNotificationService method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete">(gravitate.data_access.event_schedule_dao.EventScheduleGenericDao method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.delete">(gravitate.domain.event.dao.EventDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.delete">(gravitate.data_access.location_dao.LocationGenericDao method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.delete">(gravitate.domain.location.dao.LocationGenericDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.delete">(gravitate.data_access.orbit_dao.OrbitDao method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.delete">(gravitate.domain.orbit.dao.OrbitDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.delete">(gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.delete">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.delete_event_by_id">delete_event_by_id() (gravitate.data_access.event_schedule_dao.EventScheduleGenericDao method)</a>
+      <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService">DeleteMatchService (class in gravitate.api_server.grouping_service)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService">DeleteMatchService (class in gravitate.api_server.grouping_service)</a>
+      <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchServiceNew">DeleteMatchServiceNew (class in gravitate.api_server.grouping_service)</a>
+</li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.MovedPermanently.description">description (gravitate.api_server.ride_request.services.MovedPermanently attribute)</a>
 </li>
       <li><a href="gravitate.html#gravitate.config.DevelopmentGravitateConfig">DevelopmentGravitateConfig (class in gravitate.config)</a>
 </li>
@@ -279,8 +285,6 @@
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.doWorkDeprecated">doWorkDeprecated() (in module gravitate.scripts.location.populate_locations)</a>
 </li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.doWorkUc">doWorkUc() (in module gravitate.scripts.location.populate_locations)</a>
-</li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.driver_status">driver_status (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
 </li>
       <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.models.DriverNavigation">DriverNavigation (class in gravitate.domain.driver_navigation.models)</a>
 </li>
@@ -302,20 +306,34 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.earliest">earliest (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.earliest_latest_specified">earliest_latest_specified() (gravitate.domain.rides.builders.RideRequestBaseBuilder method)</a>
 </li>
-      <li><a href="gravitate.controllers.html#gravitate.controllers.userutils.editUser">editUser() (in module gravitate.controllers.userutils)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.actions.editUser">editUser() (in module gravitate.domain.user.actions)</a>
 </li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService.endpoint">endpoint (gravitate.api_server.grouping_service.DeleteMatchService attribute)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventCreation.endpoint">endpoint (gravitate.api_server.event.services.EventCreation attribute)</a>
 
       <ul>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventService.endpoint">(gravitate.api_server.event.services.EventService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService.endpoint">(gravitate.api_server.event.services.UserEventService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupCronTasksService.endpoint">(gravitate.api_server.group_task.services.GroupCronTasksService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupTasksService.endpoint">(gravitate.api_server.group_task.services.GroupTasksService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchServiceNew.endpoint">(gravitate.api_server.grouping_service.DeleteMatchServiceNew attribute)</a>
+</li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.OrbitForceMatchService.endpoint">(gravitate.api_server.grouping_service.OrbitForceMatchService attribute)</a>
 </li>
-        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.endpoint">(gravitate.api_server.ride_request.services.AirportRideRequestCreationService attribute)</a>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService.endpoint">(gravitate.api_server.ride_request.services.LuggageService attribute)</a>
 </li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestCreation.endpoint">(gravitate.api_server.ride_request.services.RideRequestCreation attribute)</a>
 </li>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestPost.endpoint">(gravitate.api_server.ride_request.services.RideRequestPost attribute)</a>
+</li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService.endpoint">(gravitate.api_server.ride_request.services.RideRequestService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService.endpoint">(gravitate.api_server.user_service.UserNotificationService attribute)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.endpoint">(gravitate.api_server.user_service.UserService attribute)</a>
 </li>
@@ -324,19 +342,21 @@
       </ul></li>
       <li><a href="gravitate.html#gravitate.main.EndpointTestService">EndpointTestService (class in gravitate.main)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.event.Event">Event (class in gravitate.models.event)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event">Event (class in gravitate.domain.event.models)</a>
 </li>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.event">event (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.AirportEventBuilder.event_category">event_category (gravitate.domain.event.builders_new.AirportEventBuilder attribute)</a>
 
       <ul>
-        <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.event">(gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.CampusEventBuilder.event_category">(gravitate.domain.event.builders_new.CampusEventBuilder attribute)</a>
+</li>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder.event_category">(gravitate.domain.event.builders_new.EventBaseBuilder attribute)</a>
+</li>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.FbEventBuilder.event_category">(gravitate.domain.event.builders_new.FbEventBuilder attribute)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.event_id">event_id (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.EventBuilder">EventBuilder (class in gravitate.scripts.event.event_builders)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder">EventBaseBuilder (class in gravitate.domain.event.builders_new)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.CityRideRequestCreationForm.eventCategory">eventCategory (gravitate.forms.ride_request_creation_form.CityRideRequestCreationForm attribute)</a>
 
@@ -344,28 +364,36 @@
         <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.RideRequestBaseCreationForm.eventCategory">(gravitate.forms.ride_request_creation_form.RideRequestBaseCreationForm attribute)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao">EventDao (class in gravitate.data_access.event_dao)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventCreation">EventCreation (class in gravitate.api_server.event.services)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao">EventDao (class in gravitate.domain.event.dao)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.CityRideRequestCreationForm.eventId">eventId (gravitate.forms.ride_request_creation_form.CityRideRequestCreationForm attribute)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.eventRef">eventRef (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
-      <li><a href="gravitate.models.html#gravitate.models.event_schedule.EventSchedule">EventSchedule (class in gravitate.models.event_schedule)</a>
-</li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder">EventScheduleBuilder (class in gravitate.domain.event_schedule.builders)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao">EventScheduleGenericDao (class in gravitate.data_access.event_schedule_dao)</a>
-</li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.event_service.EventService">EventService (class in gravitate.api_server.event_service)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventService">EventService (class in gravitate.api_server.event.services)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.execute">execute() (gravitate.domain.group.orbit_group.OrbitGroup method)</a>
+
+      <ul>
+        <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.populate_airport_events.PopulateEventCommand.execute">(gravitate.scripts.event.populate_airport_events.PopulateEventCommand method)</a>
 </li>
+        <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.PopulateLocationCommand.execute">(gravitate.scripts.location.populate_locations.PopulateLocationCommand method)</a>
+</li>
+      </ul></li>
       <li><a href="gravitate.data_access.html#gravitate.data_access.strategy.TransactionStrategy.execute_all">execute_all() (gravitate.data_access.strategy.TransactionStrategy method)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.exists_fb_event">exists_fb_event() (gravitate.domain.event.dao.EventDao method)</a>
 </li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.export">export() (gravitate.domain.event_schedule.builders.EventScheduleBuilder method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.export_as_class">export_as_class() (gravitate.domain.request_ride.builders.RideRequestBaseBuilder method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.EventBaseBuilder.export_as_class">export_as_class() (gravitate.domain.event.builders_new.EventBaseBuilder method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.export_as_class">(gravitate.domain.rides.builders.RideRequestBaseBuilder method)</a>
 </li>
+      </ul></li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LocationBuilder.exportToLocation">exportToLocation() (gravitate.scripts.location.populate_locations.LocationBuilder method)</a>
 </li>
   </ul></td>
@@ -374,26 +402,28 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.FbEventBuilder">FbEventBuilder (class in gravitate.domain.event.builders_new)</a>
+</li>
       <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_builder_regression">fill_ride_request_dict_builder_regression() (in module gravitate.api_server.ride_request.deprecated_utils)</a>
 </li>
       <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.deprecated_utils.fill_ride_request_dict_with_form">fill_ride_request_dict_with_form() (in module gravitate.api_server.ride_request.deprecated_utils)</a>
 </li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.fillUserDictWithForm">fillUserDictWithForm() (in module gravitate.api_server.user_service)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.find_by_airport_code">find_by_airport_code() (gravitate.data_access.location_dao.LocationGenericDao method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.find_by_airport_code">find_by_airport_code() (gravitate.domain.location.dao.LocationGenericDao method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.find_by_campus_code">find_by_campus_code() (gravitate.data_access.location_dao.LocationGenericDao method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.find_by_campus_code">find_by_campus_code() (gravitate.domain.location.dao.LocationGenericDao method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.find_by_timestamp">find_by_timestamp() (gravitate.data_access.event_dao.EventDao method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.find_by_date_str">find_by_date_str() (gravitate.domain.event.dao.EventDao method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.find_event">find_event() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.find_by_timestamp">find_by_timestamp() (gravitate.domain.event.dao.EventDao method)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.find_event">find_event() (in module gravitate.domain.rides.utils)</a>
 </li>
       <li><a href="gravitate.html#gravitate.config.DevelopmentGravitateConfig.FIREBASE_CERTIFICATE_JSON_PATH">FIREBASE_CERTIFICATE_JSON_PATH (gravitate.config.DevelopmentGravitateConfig attribute)</a>
 
       <ul>
         <li><a href="gravitate.html#gravitate.config.GravitateConfig.FIREBASE_CERTIFICATE_JSON_PATH">(gravitate.config.GravitateConfig attribute)</a>
-</li>
-        <li><a href="gravitate.html#gravitate.config.StagingGravitateConfig.FIREBASE_CERTIFICATE_JSON_PATH">(gravitate.config.StagingGravitateConfig attribute)</a>
 </li>
         <li><a href="gravitate.html#gravitate.config.TestingGravitateConfig.FIREBASE_CERTIFICATE_JSON_PATH">(gravitate.config.TestingGravitateConfig attribute)</a>
 </li>
@@ -402,9 +432,7 @@
 </li>
       <li><a href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject">FirestoreObject (class in gravitate.models.firestore_object)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.flight_local_time">flight_local_time (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.flight_number">flight_number (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.flight_local_time_specified">flight_local_time_specified() (gravitate.domain.rides.builders.AirportRideRequestBuilder method)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm.flightLocalTime">flightLocalTime (gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm attribute)</a>
 
@@ -420,44 +448,46 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.models.html#gravitate.models.location.Location.from_code">from_code() (gravitate.models.location.Location static method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location.from_code">from_code() (gravitate.domain.location.models.Location static method)</a>
 </li>
       <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.models.DriverNavigation.from_dict">from_dict() (gravitate.domain.driver_navigation.models.DriverNavigation method)</a>
 
       <ul>
-        <li><a href="gravitate.domain.html#gravitate.domain.luggages.Luggages.from_dict">(gravitate.domain.luggages.Luggages method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.from_dict">(gravitate.domain.event.models.Event static method)</a>
+</li>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location.from_dict">(gravitate.domain.location.models.Location static method)</a>
+</li>
+        <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.from_dict">(gravitate.domain.luggage.models.Luggages static method)</a>
+</li>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.models.Orbit.from_dict">(gravitate.domain.orbit.models.Orbit static method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.from_dict">(gravitate.domain.rides.models.Ride static method)</a>
+</li>
+        <li><a href="gravitate.domain.user.html#gravitate.domain.user.models.User.from_dict">(gravitate.domain.user.models.User static method)</a>
 </li>
         <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm.from_dict">(gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm static method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.event.Event.from_dict">(gravitate.models.event.Event static method)</a>
-</li>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.AirportEventSchedule.from_dict">(gravitate.models.event_schedule.AirportEventSchedule static method)</a>
-</li>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.EventSchedule.from_dict">(gravitate.models.event_schedule.EventSchedule static method)</a>
-</li>
-        <li><a href="gravitate.models.html#gravitate.models.location.Location.from_dict">(gravitate.models.location.Location static method)</a>
-</li>
-        <li><a href="gravitate.models.html#gravitate.models.orbit.Orbit.from_dict">(gravitate.models.orbit.Orbit static method)</a>
-</li>
-        <li><a href="gravitate.models.html#gravitate.models.ride_request.RideRequest.from_dict">(gravitate.models.ride_request.RideRequest static method)</a>
-</li>
         <li><a href="gravitate.models.html#gravitate.models.target.Target.from_dict">(gravitate.models.target.Target static method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.user.User.from_dict">(gravitate.models.user.User static method)</a>
-</li>
       </ul></li>
-      <li><a href="gravitate.models.html#gravitate.models.event.Event.from_dict_and_reference">from_dict_and_reference() (gravitate.models.event.Event static method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.from_dict_and_reference">from_dict_and_reference() (gravitate.domain.event.models.AirportEvent static method)</a>
 
       <ul>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.AirportEventSchedule.from_dict_and_reference">(gravitate.models.event_schedule.AirportEventSchedule static method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.from_dict_and_reference">(gravitate.domain.event.models.CampusEvent static method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.EventSchedule.from_dict_and_reference">(gravitate.models.event_schedule.EventSchedule static method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.from_dict_and_reference">(gravitate.domain.event.models.Event static method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.orbit.Orbit.from_dict_and_reference">(gravitate.models.orbit.Orbit static method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.from_dict_and_reference">(gravitate.domain.event.models.SocialEvent static method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.ride_request.RideRequest.from_dict_and_reference">(gravitate.models.ride_request.RideRequest static method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.models.Orbit.from_dict_and_reference">(gravitate.domain.orbit.models.Orbit static method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.from_dict_and_reference">(gravitate.domain.rides.models.Ride static method)</a>
 </li>
       </ul></li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.SocialEventLocation.from_fb_place">from_fb_place() (gravitate.domain.location.models.SocialEventLocation static method)</a>
+</li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location.from_pickup_address">from_pickup_address() (gravitate.domain.location.models.Location static method)</a>
+</li>
       <li><a href="gravitate.models.html#gravitate.models.target.FromEventTarget">FromEventTarget (class in gravitate.models.target)</a>
 </li>
   </ul></td>
@@ -474,79 +504,99 @@
 </li>
       <li><a href="gravitate.scripts.html#gravitate.scripts.utils.generateTimestamps">generateTimestamps() (in module gravitate.scripts.utils)</a>
 </li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.get">get() (gravitate.api_server.user_service.UserService method)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventService.get">get() (gravitate.api_server.event.services.EventService method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.get">(gravitate.data_access.event_dao.EventDao method)</a>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupCronTasksService.get">(gravitate.api_server.group_task.services.GroupCronTasksService method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get">(gravitate.data_access.event_schedule_dao.EventScheduleGenericDao method)</a>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService.get">(gravitate.api_server.ride_request.services.LuggageService method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.get">(gravitate.data_access.location_dao.LocationGenericDao method)</a>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService.get">(gravitate.api_server.ride_request.services.RideRequestService method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.get">(gravitate.data_access.orbit_dao.OrbitDao method)</a>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.get">(gravitate.api_server.user_service.UserService method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get">(gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get">(gravitate.domain.event.dao.EventDao method)</a>
+</li>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get">(gravitate.domain.location.dao.LocationGenericDao method)</a>
+</li>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get">(gravitate.domain.orbit.dao.OrbitDao method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.get_airport_location">get_airport_location() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.utils.get_address">get_address() (in module gravitate.domain.driver_navigation.utils)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.get_by_id">get_by_id() (gravitate.data_access.event_dao.EventDao method)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.get_airport_location">get_airport_location() (in module gravitate.domain.rides.utils)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_by_id">get_by_id() (gravitate.domain.event.dao.EventDao method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.get_by_id">(gravitate.data_access.orbit_dao.OrbitDao method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get_by_id">(gravitate.domain.orbit.dao.OrbitDao method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_id">(gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_id">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_by_id_with_transaction">get_by_id_with_transaction() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_by_id_with_transaction">get_by_id_with_transaction() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_by_user">get_by_user() (gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_by_user">get_by_user() (gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
+</li>
+      <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.utils.get_coordinates">get_coordinates() (in module gravitate.domain.driver_navigation.utils)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.builders_new.get_day_offset">get_day_offset() (in module gravitate.domain.event.builders_new)</a>
 </li>
       <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.utils.get_distance_and_duration">get_distance_and_duration() (in module gravitate.domain.driver_navigation.utils)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.get_event_ref_by_id">get_event_ref_by_id() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.ToEventTarget.get_earliest_arrival_view">get_earliest_arrival_view() (gravitate.models.target.ToEventTarget method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_fcm_token">get_fcm_token() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.FromEventTarget.get_earliest_departure_view">get_earliest_departure_view() (gravitate.models.target.FromEventTarget method)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.get_event_ref_by_id">get_event_ref_by_id() (in module gravitate.domain.rides.utils)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_fcm_token">get_fcm_token() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
       <li><a href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject.get_firestore_ref">get_firestore_ref() (gravitate.models.firestore_object.FirestoreObject method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_ids">get_ids() (gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_ids">get_ids() (gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.get_location_ref_by_id">get_location_ref_by_id() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.ToEventTarget.get_latest_arrival_view">get_latest_arrival_view() (gravitate.models.target.ToEventTarget method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.get_pickup_address">get_pickup_address() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.models.html#gravitate.models.target.FromEventTarget.get_latest_departure_view">get_latest_departure_view() (gravitate.models.target.FromEventTarget method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.get_ref">get_ref() (gravitate.data_access.event_dao.EventDao method)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.get_location_ref_by_id">get_location_ref_by_id() (in module gravitate.domain.rides.utils)</a>
+</li>
+      <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.get_luggage_list">get_luggage_list() (gravitate.domain.luggage.models.Luggages method)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.get_pickup_address">get_pickup_address() (in module gravitate.domain.rides.utils)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_ref">get_ref() (gravitate.domain.event.dao.EventDao method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_ref">(gravitate.data_access.user_dao.UserDao method)</a>
+        <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_ref">(gravitate.domain.user.dao.UserDao method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.get_ref_by_id">get_ref_by_id() (gravitate.data_access.location_dao.LocationGenericDao method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get_ref_by_id">get_ref_by_id() (gravitate.domain.location.dao.LocationGenericDao method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.get_ride_request">get_ride_request() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.get_ride_request">get_ride_request() (in module gravitate.domain.rides.utils)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_user">get_user() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_user">get_user() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_user_by_id">get_user_by_id() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_user_by_id">get_user_by_id() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.get_user_with_transaction">get_user_with_transaction (gravitate.data_access.user_dao.UserDao attribute)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.get_user_with_transaction">get_user_with_transaction (gravitate.domain.user.dao.UserDao attribute)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.EventDao.get_with_transaction">get_with_transaction() (gravitate.data_access.event_dao.EventDao static method)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.EventDao.get_with_transaction">get_with_transaction() (gravitate.domain.event.dao.EventDao static method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.get_with_transaction">(gravitate.data_access.event_schedule_dao.EventScheduleGenericDao method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.get_with_transaction">(gravitate.domain.location.dao.LocationGenericDao static method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.get_with_transaction">(gravitate.data_access.location_dao.LocationGenericDao static method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.get_with_transaction">(gravitate.domain.orbit.dao.OrbitDao static method)</a>
 </li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.get_with_transaction">(gravitate.data_access.orbit_dao.OrbitDao static method)</a>
-</li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.get_with_transaction">(gravitate.data_access.ride_request_dao.RideRequestGenericDao static method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.get_with_transaction">(gravitate.domain.rides.dao.RideRequestGenericDao static method)</a>
 </li>
       </ul></li>
       <li><a href="gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.utils.getMemberProfilePhotoUrls">getMemberProfilePhotoUrls() (in module gravitate.domain.event_schedule.utils)</a>
 </li>
-      <li><a href="gravitate.controllers.html#gravitate.controllers.userutils.getUser">getUser() (in module gravitate.controllers.userutils)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.actions.getUser">getUser() (in module gravitate.domain.user.actions)</a>
 </li>
       <li><a href="gravitate.html#module-gravitate">gravitate (module)</a>, <a href="index.html#module-gravitate">[1]</a>
 </li>
@@ -554,7 +604,15 @@
 </li>
       <li><a href="gravitate.api_server.html#module-gravitate.api_server.errors">gravitate.api_server.errors (module)</a>
 </li>
-      <li><a href="gravitate.api_server.html#module-gravitate.api_server.event_service">gravitate.api_server.event_service (module)</a>
+      <li><a href="gravitate.api_server.event.html#module-gravitate.api_server.event">gravitate.api_server.event (module)</a>
+</li>
+      <li><a href="gravitate.api_server.event.html#module-gravitate.api_server.event.parsers">gravitate.api_server.event.parsers (module)</a>
+</li>
+      <li><a href="gravitate.api_server.event.html#module-gravitate.api_server.event.services">gravitate.api_server.event.services (module)</a>
+</li>
+      <li><a href="gravitate.api_server.group_task.html#module-gravitate.api_server.group_task">gravitate.api_server.group_task (module)</a>
+</li>
+      <li><a href="gravitate.api_server.group_task.html#module-gravitate.api_server.group_task.services">gravitate.api_server.group_task.services (module)</a>
 </li>
       <li><a href="gravitate.api_server.html#module-gravitate.api_server.grouping_service">gravitate.api_server.grouping_service (module)</a>
 </li>
@@ -574,6 +632,8 @@
 </li>
       <li><a href="gravitate.html#module-gravitate.config">gravitate.config (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.html#module-gravitate.context">gravitate.context (module)</a>
 </li>
       <li><a href="gravitate.controllers.html#module-gravitate.controllers">gravitate.controllers (module)</a>
@@ -582,27 +642,9 @@
 </li>
       <li><a href="gravitate.controllers.html#module-gravitate.controllers.fireauthutils">gravitate.controllers.fireauthutils (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.controllers.html#module-gravitate.controllers.userutils">gravitate.controllers.userutils (module)</a>
-</li>
       <li><a href="gravitate.data_access.html#module-gravitate.data_access">gravitate.data_access (module)</a>
 </li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.event_dao">gravitate.data_access.event_dao (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.event_schedule_dao">gravitate.data_access.event_schedule_dao (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.id_to_json">gravitate.data_access.id_to_json (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.location_dao">gravitate.data_access.location_dao (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.orbit_dao">gravitate.data_access.orbit_dao (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.ride_request_dao">gravitate.data_access.ride_request_dao (module)</a>
-</li>
       <li><a href="gravitate.data_access.html#module-gravitate.data_access.strategy">gravitate.data_access.strategy (module)</a>
-</li>
-      <li><a href="gravitate.data_access.html#module-gravitate.data_access.user_dao">gravitate.data_access.user_dao (module)</a>
 </li>
       <li><a href="gravitate.data_access.html#module-gravitate.data_access.utils">gravitate.data_access.utils (module)</a>
 </li>
@@ -613,6 +655,16 @@
       <li><a href="gravitate.domain.driver_navigation.html#module-gravitate.domain.driver_navigation.models">gravitate.domain.driver_navigation.models (module)</a>
 </li>
       <li><a href="gravitate.domain.driver_navigation.html#module-gravitate.domain.driver_navigation.utils">gravitate.domain.driver_navigation.utils (module)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#module-gravitate.domain.event">gravitate.domain.event (module)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#module-gravitate.domain.event.actions">gravitate.domain.event.actions (module)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#module-gravitate.domain.event.builders_new">gravitate.domain.event.builders_new (module)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#module-gravitate.domain.event.dao">gravitate.domain.event.dao (module)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#module-gravitate.domain.event.models">gravitate.domain.event.models (module)</a>
 </li>
       <li><a href="gravitate.domain.event_schedule.html#module-gravitate.domain.event_schedule">gravitate.domain.event_schedule (module)</a>
 </li>
@@ -632,15 +684,43 @@
 </li>
       <li><a href="gravitate.domain.group.html#module-gravitate.domain.group.utils">gravitate.domain.group.utils (module)</a>
 </li>
-      <li><a href="gravitate.domain.html#module-gravitate.domain.luggages">gravitate.domain.luggages (module)</a>
+      <li><a href="gravitate.domain.location.html#module-gravitate.domain.location">gravitate.domain.location (module)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#module-gravitate.domain.request_ride">gravitate.domain.request_ride (module)</a>
+      <li><a href="gravitate.domain.location.html#module-gravitate.domain.location.dao">gravitate.domain.location.dao (module)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#module-gravitate.domain.request_ride.actions">gravitate.domain.request_ride.actions (module)</a>
+      <li><a href="gravitate.domain.location.html#module-gravitate.domain.location.models">gravitate.domain.location.models (module)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#module-gravitate.domain.request_ride.builders">gravitate.domain.request_ride.builders (module)</a>
+      <li><a href="gravitate.domain.luggage.html#module-gravitate.domain.luggage">gravitate.domain.luggage (module)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#module-gravitate.domain.request_ride.utils">gravitate.domain.request_ride.utils (module)</a>
+      <li><a href="gravitate.domain.luggage.html#module-gravitate.domain.luggage.actions">gravitate.domain.luggage.actions (module)</a>
+</li>
+      <li><a href="gravitate.domain.luggage.html#module-gravitate.domain.luggage.models">gravitate.domain.luggage.models (module)</a>
+</li>
+      <li><a href="gravitate.domain.orbit.html#module-gravitate.domain.orbit">gravitate.domain.orbit (module)</a>
+</li>
+      <li><a href="gravitate.domain.orbit.html#module-gravitate.domain.orbit.dao">gravitate.domain.orbit.dao (module)</a>
+</li>
+      <li><a href="gravitate.domain.orbit.html#module-gravitate.domain.orbit.models">gravitate.domain.orbit.models (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides">gravitate.domain.rides (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides.actions">gravitate.domain.rides.actions (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides.builders">gravitate.domain.rides.builders (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides.dao">gravitate.domain.rides.dao (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides.models">gravitate.domain.rides.models (module)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#module-gravitate.domain.rides.utils">gravitate.domain.rides.utils (module)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#module-gravitate.domain.user">gravitate.domain.user (module)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#module-gravitate.domain.user.actions">gravitate.domain.user.actions (module)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#module-gravitate.domain.user.dao">gravitate.domain.user.dao (module)</a>
+</li>
+      <li><a href="gravitate.domain.user.html#module-gravitate.domain.user.models">gravitate.domain.user.models (module)</a>
 </li>
       <li><a href="gravitate.forms.html#module-gravitate.forms">gravitate.forms (module)</a>
 </li>
@@ -652,33 +732,21 @@
 </li>
       <li><a href="gravitate.models.html#module-gravitate.models">gravitate.models (module)</a>
 </li>
-      <li><a href="gravitate.models.html#module-gravitate.models.event">gravitate.models.event (module)</a>
-</li>
-      <li><a href="gravitate.models.html#module-gravitate.models.event_schedule">gravitate.models.event_schedule (module)</a>
-</li>
       <li><a href="gravitate.models.html#module-gravitate.models.firestore_object">gravitate.models.firestore_object (module)</a>
 </li>
-      <li><a href="gravitate.models.html#module-gravitate.models.location">gravitate.models.location (module)</a>
-</li>
-      <li><a href="gravitate.models.html#module-gravitate.models.orbit">gravitate.models.orbit (module)</a>
-</li>
-      <li><a href="gravitate.models.html#module-gravitate.models.ride_request">gravitate.models.ride_request (module)</a>
-</li>
       <li><a href="gravitate.models.html#module-gravitate.models.target">gravitate.models.target (module)</a>
-</li>
-      <li><a href="gravitate.models.html#module-gravitate.models.user">gravitate.models.user (module)</a>
 </li>
       <li><a href="gravitate.scripts.html#module-gravitate.scripts">gravitate.scripts (module)</a>
 </li>
       <li><a href="gravitate.scripts.event.html#module-gravitate.scripts.event">gravitate.scripts.event (module)</a>
-</li>
-      <li><a href="gravitate.scripts.event.html#module-gravitate.scripts.event.event_builders">gravitate.scripts.event.event_builders (module)</a>
 </li>
       <li><a href="gravitate.scripts.event.html#module-gravitate.scripts.event.populate_airport_events">gravitate.scripts.event.populate_airport_events (module)</a>
 </li>
       <li><a href="gravitate.scripts.location.html#module-gravitate.scripts.location">gravitate.scripts.location (module)</a>
 </li>
       <li><a href="gravitate.scripts.location.html#module-gravitate.scripts.location.populate_locations">gravitate.scripts.location.populate_locations (module)</a>
+</li>
+      <li><a href="gravitate.scripts.html#module-gravitate.scripts.populate_locations_and_events">gravitate.scripts.populate_locations_and_events (module)</a>
 </li>
       <li><a href="gravitate.scripts.html#module-gravitate.scripts.utils">gravitate.scripts.utils (module)</a>
 </li>
@@ -690,7 +758,11 @@
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.actions.group_two">group_two() (in module gravitate.domain.group.actions)</a>
 </li>
+      <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupCronTasksService">GroupCronTasksService (class in gravitate.api_server.group_task.services)</a>
+</li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.utils.GroupOrbitInteractor">GroupOrbitInteractor (class in gravitate.domain.group.utils)</a>
+</li>
+      <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupTasksService">GroupTasksService (class in gravitate.api_server.group_task.services)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -702,7 +774,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.models.html#gravitate.models.location.AirportLocation.is_lax">is_lax() (gravitate.models.location.AirportLocation method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.insert_new">insert_new() (gravitate.domain.location.dao.LocationGenericDao method)</a>
+</li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.AirportLocation.is_lax">is_lax() (gravitate.domain.location.models.AirportLocation method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -710,29 +784,27 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.latest">latest (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LaxBuilder">LaxBuilder (class in gravitate.scripts.location.populate_locations)</a>
 </li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.LaxEventBuilder">LaxEventBuilder (class in gravitate.scripts.event.event_builders)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.local_time_as_date_str">local_time_as_date_str() (in module gravitate.domain.rides.utils)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.local_time_as_timestamp">local_time_as_timestamp() (in module gravitate.domain.request_ride.utils)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.local_time_as_timestamp">local_time_as_timestamp() (in module gravitate.domain.rides.utils)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.location.Location">Location (class in gravitate.models.location)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location">Location (class in gravitate.domain.location.models)</a>
+</li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.location">location (gravitate.domain.event.models.Event attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.location">location (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
-</li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.location_id">location_id (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LocationBuilder">LocationBuilder (class in gravitate.scripts.location.populate_locations)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao">LocationGenericDao (class in gravitate.data_access.location_dao)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao">LocationGenericDao (class in gravitate.domain.location.dao)</a>
 </li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.location_service.LocationService">LocationService (class in gravitate.api_server.location_service)</a>
 </li>
-      <li><a href="gravitate.domain.html#gravitate.domain.luggages.Luggages">Luggages (class in gravitate.domain.luggages)</a>
+      <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages">Luggages (class in gravitate.domain.luggage.models)</a>
+</li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService">LuggageService (class in gravitate.api_server.ride_request.services)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -740,16 +812,30 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService.mediatypes">mediatypes() (gravitate.api_server.grouping_service.DeleteMatchService method)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventCreation.mediatypes">mediatypes() (gravitate.api_server.event.services.EventCreation method)</a>
 
       <ul>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventService.mediatypes">(gravitate.api_server.event.services.EventService method)</a>
+</li>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService.mediatypes">(gravitate.api_server.event.services.UserEventService method)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupCronTasksService.mediatypes">(gravitate.api_server.group_task.services.GroupCronTasksService method)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupTasksService.mediatypes">(gravitate.api_server.group_task.services.GroupTasksService method)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchServiceNew.mediatypes">(gravitate.api_server.grouping_service.DeleteMatchServiceNew method)</a>
+</li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.OrbitForceMatchService.mediatypes">(gravitate.api_server.grouping_service.OrbitForceMatchService method)</a>
 </li>
-        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.mediatypes">(gravitate.api_server.ride_request.services.AirportRideRequestCreationService method)</a>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService.mediatypes">(gravitate.api_server.ride_request.services.LuggageService method)</a>
 </li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestCreation.mediatypes">(gravitate.api_server.ride_request.services.RideRequestCreation method)</a>
 </li>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestPost.mediatypes">(gravitate.api_server.ride_request.services.RideRequestPost method)</a>
+</li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService.mediatypes">(gravitate.api_server.ride_request.services.RideRequestService method)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService.mediatypes">(gravitate.api_server.user_service.UserNotificationService method)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.mediatypes">(gravitate.api_server.user_service.UserService method)</a>
 </li>
@@ -764,24 +850,38 @@
       </ul></li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.LocationBuilder.mergeDict">mergeDict() (gravitate.scripts.location.populate_locations.LocationBuilder method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.html#gravitate.main.EndpointTestService.method_decorators">method_decorators (gravitate.main.EndpointTestService attribute)</a>
 </li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.event_service.EventService.methods">methods (gravitate.api_server.event_service.EventService attribute)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventCreation.methods">methods (gravitate.api_server.event.services.EventCreation attribute)</a>
 
       <ul>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventService.methods">(gravitate.api_server.event.services.EventService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService.methods">(gravitate.api_server.event.services.UserEventService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupCronTasksService.methods">(gravitate.api_server.group_task.services.GroupCronTasksService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupTasksService.methods">(gravitate.api_server.group_task.services.GroupTasksService attribute)</a>
+</li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService.methods">(gravitate.api_server.grouping_service.DeleteMatchService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchServiceNew.methods">(gravitate.api_server.grouping_service.DeleteMatchServiceNew attribute)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.OrbitForceMatchService.methods">(gravitate.api_server.grouping_service.OrbitForceMatchService attribute)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.location_service.LocationService.methods">(gravitate.api_server.location_service.LocationService attribute)</a>
 </li>
-        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.methods">(gravitate.api_server.ride_request.services.AirportRideRequestCreationService attribute)</a>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService.methods">(gravitate.api_server.ride_request.services.LuggageService attribute)</a>
 </li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestCreation.methods">(gravitate.api_server.ride_request.services.RideRequestCreation attribute)</a>
 </li>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestPost.methods">(gravitate.api_server.ride_request.services.RideRequestPost attribute)</a>
+</li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService.methods">(gravitate.api_server.ride_request.services.RideRequestService attribute)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService.methods">(gravitate.api_server.user_service.UserNotificationService attribute)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.methods">(gravitate.api_server.user_service.UserService attribute)</a>
 </li>
@@ -790,20 +890,20 @@
       </ul></li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.utils.mock_auth_verify_id_token">mock_auth_verify_id_token() (in module gravitate.api_server.utils)</a>
 </li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.MovedPermanently">MovedPermanently</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.models.html#gravitate.models.orbit.Orbit">Orbit (class in gravitate.models.orbit)</a>
+      <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.models.Orbit">Orbit (class in gravitate.domain.orbit.models)</a>
 </li>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.orbit">orbit (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
+      <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao">OrbitDao (class in gravitate.domain.orbit.dao)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao">OrbitDao (class in gravitate.data_access.orbit_dao)</a>
-</li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.OrbitForceMatchService">OrbitForceMatchService (class in gravitate.api_server.grouping_service)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup">OrbitGroup (class in gravitate.domain.group.orbit_group)</a>
@@ -832,7 +932,7 @@
         <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationValidateForm.photo_url">(gravitate.forms.user_creation_form.UserCreationValidateForm attribute)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.pickup_address">pickup_address (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.pickup_address">pickup_address (gravitate.domain.rides.models.Ride attribute)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm.pickupAddress">pickupAddress (gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm attribute)</a>
 
@@ -848,29 +948,45 @@
         <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationValidateForm.pickupAddress">(gravitate.forms.user_creation_form.UserCreationValidateForm attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.populate_airport_events.populate_events">populate_events() (in module gravitate.scripts.event.populate_airport_events)</a>
 </li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.event_service.EventService.post">post() (gravitate.api_server.event_service.EventService method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.populate_airport_events.PopulateEventCommand">PopulateEventCommand (class in gravitate.scripts.event.populate_airport_events)</a>
+</li>
+      <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.PopulateLocationCommand">PopulateLocationCommand (class in gravitate.scripts.location.populate_locations)</a>
+</li>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.EventCreation.post">post() (gravitate.api_server.event.services.EventCreation method)</a>
 
       <ul>
+        <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService.post">(gravitate.api_server.event.services.UserEventService method)</a>
+</li>
+        <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.GroupTasksService.post">(gravitate.api_server.group_task.services.GroupTasksService method)</a>
+</li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchService.post">(gravitate.api_server.grouping_service.DeleteMatchService method)</a>
+</li>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.DeleteMatchServiceNew.post">(gravitate.api_server.grouping_service.DeleteMatchServiceNew method)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.OrbitForceMatchService.post">(gravitate.api_server.grouping_service.OrbitForceMatchService method)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.location_service.LocationService.post">(gravitate.api_server.location_service.LocationService method)</a>
 </li>
-        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.AirportRideRequestCreationService.post">(gravitate.api_server.ride_request.services.AirportRideRequestCreationService method)</a>
-</li>
         <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestCreation.post">(gravitate.api_server.ride_request.services.RideRequestCreation method)</a>
+</li>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestPost.post">(gravitate.api_server.ride_request.services.RideRequestPost method)</a>
 </li>
         <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.post">(gravitate.api_server.user_service.UserService method)</a>
 </li>
         <li><a href="gravitate.html#gravitate.main.EndpointTestService.post">(gravitate.main.EndpointTestService method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.pricing">pricing (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService.put">put() (gravitate.api_server.event.services.UserEventService method)</a>
+
+      <ul>
+        <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.LuggageService.put">(gravitate.api_server.ride_request.services.LuggageService method)</a>
+</li>
+      </ul></li>
+      <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.actions.put_luggages">put_luggages() (in module gravitate.domain.luggage.actions)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -878,7 +994,7 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.query">query() (gravitate.data_access.location_dao.LocationGenericDao method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.query">query() (gravitate.domain.location.dao.LocationGenericDao method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -888,19 +1004,19 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.data_access.html#gravitate.data_access.utils.random_id">random_id() (in module gravitate.data_access.utils)</a>
 </li>
-      <li><a href="gravitate.controllers.html#gravitate.controllers.userutils.randomId">randomId() (in module gravitate.controllers.userutils)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.actions.randomId">randomId() (in module gravitate.domain.user.actions)</a>
 </li>
       <li><a href="gravitate.html#gravitate.context.Context.read">read() (gravitate.context.Context class method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.ref_from_id">ref_from_id() (gravitate.data_access.orbit_dao.OrbitDao method)</a>
+      <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.ref_from_id">ref_from_id() (gravitate.domain.orbit.dao.OrbitDao method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.ref_from_id">(gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.ref_from_id">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
       </ul></li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.grouping_service.refreshGroupAll">refreshGroupAll() (in module gravitate.api_server.grouping_service)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.remove_event_schedule_with_transaction">remove_event_schedule_with_transaction() (gravitate.data_access.user_dao.UserDao static method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.remove_event_schedule_with_transaction">remove_event_schedule_with_transaction() (gravitate.domain.user.dao.UserDao static method)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.actions.remove_from_orbit">remove_from_orbit() (in module gravitate.domain.group.actions)</a>
 </li>
@@ -908,17 +1024,21 @@
 </li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.errors.RequestAlreadyMatchedError">RequestAlreadyMatchedError</a>
 </li>
+      <li><a href="gravitate.api_server.html#gravitate.api_server.errors.RequestNotMatchedError">RequestNotMatchedError</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.ride_requests_existing">ride_requests_existing (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride">Ride (class in gravitate.domain.rides.models)</a>
 </li>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.ride_requests_to_add">ride_requests_to_add (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.ride_category">ride_category (gravitate.domain.rides.builders.AirportRideRequestBuilder attribute)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.ride_category">(gravitate.domain.rides.builders.RideRequestBaseBuilder attribute)</a>
 </li>
-      <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.ride_requests_to_drop">ride_requests_to_drop (gravitate.domain.group.orbit_group.OrbitGroup attribute)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.ride_category">(gravitate.domain.rides.builders.SocialEventRideRequestBuilder attribute)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.ride_request.RideRequest">RideRequest (class in gravitate.models.ride_request)</a>
-</li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder">RideRequestBaseBuilder (class in gravitate.domain.request_ride.builders)</a>
+      </ul></li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder">RideRequestBaseBuilder (class in gravitate.domain.rides.builders)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.RideRequestBaseCreationForm">RideRequestBaseCreationForm (class in gravitate.forms.ride_request_creation_form)</a>
 </li>
@@ -926,7 +1046,9 @@
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.RideRequestCreationValidateForm">RideRequestCreationValidateForm (class in gravitate.forms.ride_request_creation_form)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao">RideRequestGenericDao (class in gravitate.data_access.ride_request_dao)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao">RideRequestGenericDao (class in gravitate.domain.rides.dao)</a>
+</li>
+      <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestPost">RideRequestPost (class in gravitate.api_server.ride_request.services)</a>
 </li>
       <li><a href="gravitate.api_server.ride_request.html#gravitate.api_server.ride_request.services.RideRequestService">RideRequestService (class in gravitate.api_server.ride_request.services)</a>
 </li>
@@ -938,11 +1060,9 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.SampleLaxEventBuilder">SampleLaxEventBuilder (class in gravitate.scripts.event.event_builders)</a>
-</li>
       <li><a href="gravitate.scripts.location.html#gravitate.scripts.location.populate_locations.SanBuilder">SanBuilder (class in gravitate.scripts.location.populate_locations)</a>
 </li>
-      <li><a href="gravitate.controllers.html#gravitate.controllers.userutils.saveUser">saveUser() (in module gravitate.controllers.userutils)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.actions.saveUser">saveUser() (in module gravitate.domain.user.actions)</a>
 </li>
       <li><a href="gravitate.controllers.html#gravitate.controllers.fcmessaging.sendMessage">sendMessage() (in module gravitate.controllers.fcmessaging)</a>
 </li>
@@ -950,64 +1070,80 @@
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.actions.separate_by_event_id">separate_by_event_id() (in module gravitate.domain.group.actions)</a>
 </li>
+      <li><a href="gravitate.domain.group.html#gravitate.domain.group.actions.separate_by_event_id_and_direction">separate_by_event_id_and_direction() (in module gravitate.domain.group.actions)</a>
+</li>
       <li><a href="gravitate.html#gravitate.main.server_error">server_error() (in module gravitate.main)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.set">set() (gravitate.data_access.ride_request_dao.RideRequestGenericDao method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set">set() (gravitate.domain.location.dao.LocationGenericDao method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.set">(gravitate.domain.rides.dao.RideRequestGenericDao method)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.event.Event.set_as_active">set_as_active() (gravitate.models.event.Event method)</a>
+      </ul></li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.set_as_active">set_as_active() (gravitate.domain.event.models.CampusEvent method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.set_as_active">(gravitate.domain.event.models.Event method)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.event.Event.set_as_passed">set_as_passed() (gravitate.models.event.Event method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.set_as_active">(gravitate.domain.event.models.SocialEvent method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.set_data">set_data() (gravitate.domain.request_ride.builders.RideRequestBaseBuilder method)</a>
+      </ul></li>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.set_as_passed">set_as_passed() (gravitate.domain.event.models.CampusEvent method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.set_as_passed">(gravitate.domain.event.models.Event method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.utils.set_disabilities">set_disabilities() (in module gravitate.domain.request_ride.utils)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.set_as_passed">(gravitate.domain.event.models.SocialEvent method)</a>
+</li>
+      </ul></li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.RideRequestBaseBuilder.set_data">set_data() (gravitate.domain.rides.builders.RideRequestBaseBuilder method)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.utils.set_disabilities">set_disabilities() (in module gravitate.domain.rides.utils)</a>
 </li>
       <li><a href="gravitate.models.html#gravitate.models.firestore_object.FirestoreObject.set_firestore_ref">set_firestore_ref() (gravitate.models.firestore_object.FirestoreObject method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.set_user_with_transaction">set_user_with_transaction (gravitate.data_access.user_dao.UserDao attribute)</a>
-</li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.AirportRideRequestBuilder.set_with_form_and_user_id">set_with_form_and_user_id() (gravitate.domain.request_ride.builders.AirportRideRequestBuilder method)</a>
-
-      <ul>
-        <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.SocialEventRideRequestBuilder.set_with_form_and_user_id">(gravitate.domain.request_ride.builders.SocialEventRideRequestBuilder method)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_schedule_dao.EventScheduleGenericDao.set_with_transaction">set_with_transaction() (gravitate.data_access.event_schedule_dao.EventScheduleGenericDao static method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.set_user_with_transaction">set_user_with_transaction (gravitate.domain.user.dao.UserDao attribute)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.AirportRideRequestBuilder.set_with_form_and_user_id">set_with_form_and_user_id() (gravitate.domain.rides.builders.AirportRideRequestBuilder method)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction">(gravitate.data_access.location_dao.LocationGenericDao static method)</a>
-</li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.orbit_dao.OrbitDao.set_with_transaction">(gravitate.data_access.orbit_dao.OrbitDao static method)</a>
-</li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.ride_request_dao.RideRequestGenericDao.set_with_transaction">(gravitate.data_access.ride_request_dao.RideRequestGenericDao static method)</a>
-</li>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.set_with_transaction">(gravitate.data_access.user_dao.UserDao method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder.set_with_form_and_user_id">(gravitate.domain.rides.builders.SocialEventRideRequestBuilder method)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_new">set_with_transaction_new() (gravitate.data_access.location_dao.LocationGenericDao static method)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction">set_with_transaction() (gravitate.domain.location.dao.LocationGenericDao static method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.dao.OrbitDao.set_with_transaction">(gravitate.domain.orbit.dao.OrbitDao static method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.LocationGenericDao.set_with_transaction_transactional">set_with_transaction_transactional (gravitate.data_access.location_dao.LocationGenericDao attribute)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.dao.RideRequestGenericDao.set_with_transaction">(gravitate.domain.rides.dao.RideRequestGenericDao static method)</a>
+</li>
+        <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.set_with_transaction">(gravitate.domain.user.dao.UserDao method)</a>
+</li>
+      </ul></li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_new">set_with_transaction_new() (gravitate.domain.location.dao.LocationGenericDao static method)</a>
+</li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.LocationGenericDao.set_with_transaction_transactional">set_with_transaction_transactional (gravitate.domain.location.dao.LocationGenericDao attribute)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.setup">setup() (gravitate.domain.group.orbit_group.OrbitGroup method)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.setup_with_ref">setup_with_ref() (gravitate.domain.group.orbit_group.OrbitGroup method)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.location.SocialEventLocation">SocialEventLocation (class in gravitate.models.location)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent">SocialEvent (class in gravitate.domain.event.models)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.ride_request.SocialEventRideRequest">SocialEventRideRequest (class in gravitate.models.ride_request)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.SocialEventLocation">SocialEventLocation (class in gravitate.domain.location.models)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.SocialEventRideRequestBuilder">SocialEventRideRequestBuilder (class in gravitate.domain.request_ride.builders)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.SocialEventRide">SocialEventRide (class in gravitate.domain.rides.models)</a>
 </li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.SpecifiedRangeEventBuilder">SpecifiedRangeEventBuilder (class in gravitate.scripts.event.event_builders)</a>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.builders.SocialEventRideRequestBuilder">SocialEventRideRequestBuilder (class in gravitate.domain.rides.builders)</a>
 </li>
       <li><a href="gravitate.html#gravitate.config.StagingGravitateConfig">StagingGravitateConfig (class in gravitate.config)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.event_dao.str_to_ref">str_to_ref() (in module gravitate.data_access.event_dao)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.dao.str_to_ref">str_to_ref() (in module gravitate.domain.event.dao)</a>
 
       <ul>
-        <li><a href="gravitate.data_access.html#gravitate.data_access.location_dao.str_to_ref">(in module gravitate.data_access.location_dao)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.dao.str_to_ref">(in module gravitate.domain.location.dao)</a>
 </li>
       </ul></li>
       <li><a href="gravitate.data_access.html#gravitate.data_access.strategy.TransactionStrategy.strategies">strategies (gravitate.data_access.strategy.TransactionStrategy attribute)</a>
@@ -1025,8 +1161,6 @@
       <ul>
         <li><a href="gravitate.html#gravitate.config.GravitateConfig.TESTING">(gravitate.config.GravitateConfig attribute)</a>
 </li>
-        <li><a href="gravitate.html#gravitate.config.StagingGravitateConfig.TESTING">(gravitate.config.StagingGravitateConfig attribute)</a>
-</li>
         <li><a href="gravitate.html#gravitate.config.TestingGravitateConfig.TESTING">(gravitate.config.TestingGravitateConfig attribute)</a>
 </li>
       </ul></li>
@@ -1037,29 +1171,35 @@
       <li><a href="gravitate.domain.driver_navigation.html#gravitate.domain.driver_navigation.models.DriverNavigation.to_dict">to_dict() (gravitate.domain.driver_navigation.models.DriverNavigation method)</a>
 
       <ul>
-        <li><a href="gravitate.domain.html#gravitate.domain.luggages.Luggages.to_dict">(gravitate.domain.luggages.Luggages method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.to_dict">(gravitate.domain.event.models.AirportEvent method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.event.Event.to_dict">(gravitate.models.event.Event method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.to_dict">(gravitate.domain.event.models.CampusEvent method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.AirportEventSchedule.to_dict">(gravitate.models.event_schedule.AirportEventSchedule method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.to_dict">(gravitate.domain.event.models.Event method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.event_schedule.EventSchedule.to_dict">(gravitate.models.event_schedule.EventSchedule method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.to_dict">(gravitate.domain.event.models.SocialEvent method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.location.AirportLocation.to_dict">(gravitate.models.location.AirportLocation method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.AirportLocation.to_dict">(gravitate.domain.location.models.AirportLocation method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.location.Location.to_dict">(gravitate.models.location.Location method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.Location.to_dict">(gravitate.domain.location.models.Location method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.location.SocialEventLocation.to_dict">(gravitate.models.location.SocialEventLocation method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.SocialEventLocation.to_dict">(gravitate.domain.location.models.SocialEventLocation method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.location.UcLocation.to_dict">(gravitate.models.location.UcLocation method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.UcLocation.to_dict">(gravitate.domain.location.models.UcLocation method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.orbit.Orbit.to_dict">(gravitate.models.orbit.Orbit method)</a>
+        <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.UserLocation.to_dict">(gravitate.domain.location.models.UserLocation method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.ride_request.AirportRideRequest.to_dict">(gravitate.models.ride_request.AirportRideRequest method)</a>
+        <li><a href="gravitate.domain.luggage.html#gravitate.domain.luggage.models.Luggages.to_dict">(gravitate.domain.luggage.models.Luggages method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.ride_request.RideRequest.to_dict">(gravitate.models.ride_request.RideRequest method)</a>
+        <li><a href="gravitate.domain.orbit.html#gravitate.domain.orbit.models.Orbit.to_dict">(gravitate.domain.orbit.models.Orbit method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.ride_request.SocialEventRideRequest.to_dict">(gravitate.models.ride_request.SocialEventRideRequest method)</a>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.AirportRide.to_dict">(gravitate.domain.rides.models.AirportRide method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.to_dict">(gravitate.domain.rides.models.Ride method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.SocialEventRide.to_dict">(gravitate.domain.rides.models.SocialEventRide method)</a>
+</li>
+        <li><a href="gravitate.domain.user.html#gravitate.domain.user.models.User.to_dict">(gravitate.domain.user.models.User method)</a>
 </li>
         <li><a href="gravitate.models.html#gravitate.models.target.FromEventTarget.to_dict">(gravitate.models.target.FromEventTarget method)</a>
 </li>
@@ -1067,14 +1207,28 @@
 </li>
         <li><a href="gravitate.models.html#gravitate.models.target.ToEventTarget.to_dict">(gravitate.models.target.ToEventTarget method)</a>
 </li>
-        <li><a href="gravitate.models.html#gravitate.models.user.User.to_dict">(gravitate.models.user.User method)</a>
-</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.to_event">to_event (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
+      <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.AirportEvent.to_dict_view">to_dict_view() (gravitate.domain.event.models.AirportEvent method)</a>
+
+      <ul>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.CampusEvent.to_dict_view">(gravitate.domain.event.models.CampusEvent method)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.user.User.to_firestore_dict">to_firestore_dict() (gravitate.models.user.User method)</a>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.Event.to_dict_view">(gravitate.domain.event.models.Event method)</a>
+</li>
+        <li><a href="gravitate.domain.event.html#gravitate.domain.event.models.SocialEvent.to_dict_view">(gravitate.domain.event.models.SocialEvent method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.AirportRide.to_dict_view">(gravitate.domain.rides.models.AirportRide method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.to_dict_view">(gravitate.domain.rides.models.Ride method)</a>
+</li>
+        <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.SocialEventRide.to_dict_view">(gravitate.domain.rides.models.SocialEventRide method)</a>
+</li>
+      </ul></li>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.models.User.to_firestore_dict">to_firestore_dict() (gravitate.domain.user.models.User method)</a>
+</li>
+      <li><a href="gravitate.domain.rides.html#gravitate.domain.rides.models.Ride.to_tuple_point">to_tuple_point() (gravitate.domain.rides.models.Ride method)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm.toEvent">toEvent (gravitate.forms.ride_request_creation_form.AirportRideRequestCreationForm attribute)</a>
 
@@ -1096,9 +1250,7 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="gravitate.models.html#gravitate.models.location.UcLocation">UcLocation (class in gravitate.models.location)</a>
-</li>
-      <li><a href="gravitate.scripts.event.html#gravitate.scripts.event.event_builders.UcsbEventBuilder">UcsbEventBuilder (class in gravitate.scripts.event.event_builders)</a>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.UcLocation">UcLocation (class in gravitate.domain.location.models)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationForm.uid">uid (gravitate.forms.user_creation_form.UserCreationForm attribute)</a>
 
@@ -1106,31 +1258,39 @@
         <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationValidateForm.uid">(gravitate.forms.user_creation_form.UserCreationValidateForm attribute)</a>
 </li>
       </ul></li>
-      <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.update">update() (gravitate.api_server.user_service.UserService method)</a>
+      <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService.update">update() (gravitate.api_server.user_service.UserNotificationService method)</a>
+
+      <ul>
+        <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService.update">(gravitate.api_server.user_service.UserService method)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.update_fcm_token">update_fcm_token() (gravitate.data_access.user_dao.UserDao method)</a>
+      </ul></li>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.update_fcm_token">update_fcm_token() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.utils.update_in_orbit_event_schedule">update_in_orbit_event_schedule() (in module gravitate.domain.group.utils)</a>
 </li>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.utils.update_not_in_orbit_event_schedule">update_not_in_orbit_event_schedule() (in module gravitate.domain.group.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.controllers.html#gravitate.controllers.fireauthutils.update_user">update_user() (in module gravitate.controllers.fireauthutils)</a>
 </li>
-      <li><a href="gravitate.models.html#gravitate.models.user.User">User (class in gravitate.models.user)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.models.User">User (class in gravitate.domain.user.models)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.user_exists">user_exists() (gravitate.data_access.user_dao.UserDao static method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.user_exists">user_exists() (gravitate.domain.user.dao.UserDao static method)</a>
 </li>
-      <li><a href="gravitate.domain.request_ride.html#gravitate.domain.request_ride.builders.RideRequestBaseBuilder.user_id">user_id (gravitate.domain.request_ride.builders.RideRequestBaseBuilder attribute)</a>
-</li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao.user_id_exists">user_id_exists() (gravitate.data_access.user_dao.UserDao method)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao.user_id_exists">user_id_exists() (gravitate.domain.user.dao.UserDao method)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationForm">UserCreationForm (class in gravitate.forms.user_creation_form)</a>
 </li>
       <li><a href="gravitate.forms.html#gravitate.forms.user_creation_form.UserCreationValidateForm">UserCreationValidateForm (class in gravitate.forms.user_creation_form)</a>
 </li>
-      <li><a href="gravitate.data_access.html#gravitate.data_access.user_dao.UserDao">UserDao (class in gravitate.data_access.user_dao)</a>
+      <li><a href="gravitate.domain.user.html#gravitate.domain.user.dao.UserDao">UserDao (class in gravitate.domain.user.dao)</a>
+</li>
+      <li><a href="gravitate.api_server.event.html#gravitate.api_server.event.services.UserEventService">UserEventService (class in gravitate.api_server.event.services)</a>
+</li>
+      <li><a href="gravitate.domain.location.html#gravitate.domain.location.models.UserLocation">UserLocation (class in gravitate.domain.location.models)</a>
+</li>
+      <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserNotificationService">UserNotificationService (class in gravitate.api_server.user_service)</a>
 </li>
       <li><a href="gravitate.api_server.html#gravitate.api_server.user_service.UserService">UserService (class in gravitate.api_server.user_service)</a>
 </li>
@@ -1139,6 +1299,10 @@
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gravitate.api_server.group_task.html#gravitate.api_server.group_task.services.validate_cron">validate_cron() (in module gravitate.api_server.group_task.services)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.validate_entities_not_changed">validate_entities_not_changed() (gravitate.domain.group.orbit_group.OrbitGroup method)</a>
 </li>
@@ -1177,8 +1341,6 @@
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -1199,7 +1361,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

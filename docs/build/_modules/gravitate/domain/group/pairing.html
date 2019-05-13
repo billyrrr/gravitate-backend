@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.domain.group.pairing &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -38,15 +36,51 @@
 <span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">ToEventTarget</span>
 
 
-<div class="viewcode-block" id="pair_ride_requests"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.pairing.pair_ride_requests">[docs]</a><span class="k">def</span> <span class="nf">pair_ride_requests</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<div class="viewcode-block" id="pair_ride_requests"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.pairing.pair_ride_requests">[docs]</a><span class="k">def</span> <span class="nf">pair_ride_requests</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;all_riders&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function serves as an adaptor for grouping algorithms.</span>
 <span class="sd">    :param ride_requests:</span>
 <span class="sd">    :return:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tuple_list</span> <span class="o">=</span> <span class="n">_construct_tuple_list</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span>
-    <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span> <span class="o">=</span> <span class="n">_pair</span><span class="p">(</span><span class="n">arr</span><span class="o">=</span><span class="n">tuple_list</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span></div>
+    <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;all_riders&quot;</span><span class="p">:</span>
+        <span class="n">tuple_list</span> <span class="o">=</span> <span class="n">_construct_tuple_list</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span>
+        <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span> <span class="o">=</span> <span class="n">_pair</span><span class="p">(</span><span class="n">arr</span><span class="o">=</span><span class="n">tuple_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span>
+    <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;one_driver_many_riders&quot;</span><span class="p">:</span>
+        <span class="n">tuple_list</span> <span class="o">=</span> <span class="n">_construct_tuple_list_drivers</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">)</span>
+        <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span> <span class="o">=</span> <span class="n">_pair_with_driver</span><span class="p">(</span><span class="n">arr</span><span class="o">=</span><span class="n">tuple_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span></div>
+
+
+<span class="k">def</span> <span class="nf">_construct_tuple_list_drivers</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This function constructs tuple list consisting only variables relevant to the</span>
+<span class="sd">            grouping algorithm.</span>
+<span class="sd">        Note that this function only supports rideRequests with ToEventTarget as Target.</span>
+
+<span class="sd">        :type ride_requests:list:</span>
+<span class="sd">        :param ride_requests:list:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">ride_request</span> <span class="ow">in</span> <span class="n">ride_requests</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">to_event_target</span><span class="p">:</span> <span class="n">ToEventTarget</span> <span class="o">=</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">target</span>
+            <span class="n">earliest</span> <span class="o">=</span> <span class="n">to_event_target</span><span class="o">.</span><span class="n">arrive_at_event_time</span><span class="p">[</span><span class="s1">&#39;earliest&#39;</span><span class="p">]</span>
+            <span class="n">latest</span> <span class="o">=</span> <span class="n">to_event_target</span><span class="o">.</span><span class="n">arrive_at_event_time</span><span class="p">[</span><span class="s1">&#39;latest&#39;</span><span class="p">]</span>
+            <span class="n">driver_status</span> <span class="o">=</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">driver_status</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+            <span class="n">tuple_to_append</span> <span class="o">=</span> <span class="p">[</span><span class="n">earliest</span><span class="p">,</span> <span class="n">latest</span><span class="p">,</span> <span class="n">driver_status</span><span class="p">,</span> <span class="n">ref</span><span class="p">]</span>
+            <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tuple_to_append</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;failed to parse rideRequest: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ride_request</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">arr</span>
 
 
 <span class="k">def</span> <span class="nf">_construct_tuple_list</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
@@ -79,6 +113,51 @@
     <span class="k">return</span> <span class="n">arr</span>
 
 
+<span class="k">def</span> <span class="nf">_construct_tuple_list_new</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Description</span>
+<span class="sd">        This function constructs tuple list consisting only variables relevant to the</span>
+<span class="sd">            grouping algorithm.</span>
+<span class="sd">        Note that this function only supports rideRequests with ToEventTarget as Target.</span>
+
+<span class="sd">        :type ride_requests:list:</span>
+<span class="sd">        :param ride_requests:list:</span>
+
+<span class="sd">        :raises:</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">ride_request</span> <span class="ow">in</span> <span class="n">ride_requests</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">tuple_to_append</span> <span class="o">=</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">to_tuple_point</span><span class="p">(</span><span class="n">to_event</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># tuple_to_append = [earliest, latest, ref]</span>
+            <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tuple_to_append</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;failed to parse rideRequest: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ride_request</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">arr</span>
+
+
+<span class="k">def</span> <span class="nf">_pair_with_driver</span><span class="p">(</span><span class="n">arr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+
+<span class="sd">        Pair rides only if one of them has driver_status set as True</span>
+<span class="sd">        TODO: implement</span>
+
+<span class="sd">        :param arr:  an array of ride requests [the first is earliest allowable time, second is latest time,</span>
+<span class="sd">        third is driver status, fourth is firestore reference]</span>
+<span class="sd">        :param paired:</span>
+<span class="sd">        :param unpaired:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
 <span class="k">def</span> <span class="nf">_pair</span><span class="p">(</span><span class="n">arr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -103,7 +182,7 @@
             <span class="n">unpaired</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unpaired</span><span class="p">),</span> <span class="p">[</span><span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]])</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
 
                 <span class="n">paired</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paired</span><span class="p">),</span> <span class="p">[</span><span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">sortedArr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]])</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -146,8 +225,6 @@
     <form class="search" action="../../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -168,7 +245,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>gravitate.domain.event_schedule.builders &#8212; gravitate-backend 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -36,13 +34,18 @@
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Type</span>
 
 <span class="kn">from</span> <span class="nn">gravitate.domain.event_schedule.utils</span> <span class="k">import</span> <span class="n">getMemberProfilePhotoUrls</span>
-<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">SocialEventRideRequest</span><span class="p">,</span> <span class="n">ToEventTarget</span><span class="p">,</span> <span class="n">AirportRideRequest</span><span class="p">,</span> <span class="n">SocialEventLocation</span><span class="p">,</span> \
-    <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">AirportEventSchedule</span><span class="p">,</span> <span class="n">RideRequest</span><span class="p">,</span> <span class="n">Location</span><span class="p">,</span> <span class="n">Orbit</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.rides</span> <span class="k">import</span> <span class="n">SocialEventRideRequest</span><span class="p">,</span> <span class="n">AirportRideRequest</span><span class="p">,</span> <span class="n">RideRequest</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location</span> <span class="k">import</span> <span class="n">SocialEventLocation</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">,</span> <span class="n">Location</span>
+<span class="kn">from</span> <span class="nn">gravitate.models</span> <span class="k">import</span> <span class="n">ToEventTarget</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.orbit</span> <span class="k">import</span> <span class="n">Orbit</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.event_schedule</span> <span class="k">import</span> <span class="n">AirportEventSchedule</span>
+<span class="kn">from</span> <span class="nn">gravitate.domain.location.models</span> <span class="k">import</span> <span class="n">UserLocation</span>
 
 
 <span class="k">def</span> <span class="nf">_build_social_event_ride_request</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">event_ride_request</span><span class="p">:</span> <span class="n">SocialEventRideRequest</span><span class="p">):</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">pickupAddress</span> <span class="o">=</span> <span class="n">event_ride_request</span><span class="o">.</span><span class="n">pickup_address</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">rideRequestRef</span> <span class="o">=</span> <span class="n">event_ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+    <span class="n">event_schedule</span><span class="o">.</span><span class="n">toEvent</span> <span class="o">=</span> <span class="n">event_ride_request</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_event</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Use destTime for sorting</span>
@@ -57,6 +60,7 @@
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">pickupAddress</span> <span class="o">=</span> <span class="n">airport_ride_request</span><span class="o">.</span><span class="n">pickup_address</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">flightTime</span> <span class="o">=</span> <span class="n">airport_ride_request</span><span class="o">.</span><span class="n">flight_local_time</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">rideRequestRef</span> <span class="o">=</span> <span class="n">airport_ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+    <span class="n">event_schedule</span><span class="o">.</span><span class="n">toEvent</span> <span class="o">=</span> <span class="n">airport_ride_request</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_event</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Use destTime for sorting</span>
@@ -68,15 +72,17 @@
 
 
 <span class="k">def</span> <span class="nf">_build_social_event_location</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">SocialEventLocation</span><span class="p">):</span>
-
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">destName</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">event_name</span>  <span class="c1"># Note that event name is not address</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">locationRef</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">_build_airport_location</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">AirportLocation</span><span class="p">):</span>
-
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">destName</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">airport_code</span>
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">locationRef</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_build_user_location</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">UserLocation</span><span class="p">):</span>
+    <span class="n">event_schedule</span><span class="o">.</span><span class="n">pickupAddress</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">address</span>
 
 
 <span class="k">def</span> <span class="nf">_build_pending_orbit</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">):</span>
@@ -93,7 +99,11 @@
     <span class="n">event_schedule</span><span class="o">.</span><span class="n">orbitRef</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="EventScheduleBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder">[docs]</a><span class="k">class</span> <span class="nc">EventScheduleBuilder</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_build_facebook_event_id</span><span class="p">(</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="n">event_schedule</span><span class="o">.</span><span class="n">fbEventId</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">fb_event_id</span>
+
+
+<div class="viewcode-block" id="EventScheduleBuilder"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder">[docs]</a><span class="k">class</span> <span class="nc">EventScheduleBuilder</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_schedule</span><span class="p">:</span> <span class="n">AirportEventSchedule</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">event_schedule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -109,6 +119,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unsupported ride request type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ride_request</span><span class="p">)))</span></div>
 
+<div class="viewcode-block" id="EventScheduleBuilder.build_event"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_event">[docs]</a>    <span class="k">def</span> <span class="nf">build_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_build_facebook_event_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="EventScheduleBuilder.build_location"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_location">[docs]</a>    <span class="k">def</span> <span class="nf">build_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Location</span><span class="p">]):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">AirportLocation</span><span class="p">):</span>
             <span class="n">_build_airport_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
@@ -116,6 +130,9 @@
             <span class="n">_build_social_event_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Unsupported location type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">location</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="EventScheduleBuilder.build_user_location"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_user_location">[docs]</a>    <span class="k">def</span> <span class="nf">build_user_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">UserLocation</span><span class="p">):</span>
+        <span class="n">_build_user_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_schedule</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EventScheduleBuilder.build_orbit"><a class="viewcode-back" href="../../../../gravitate.domain.event_schedule.html#gravitate.domain.event_schedule.builders.EventScheduleBuilder.build_orbit">[docs]</a>    <span class="k">def</span> <span class="nf">build_orbit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Orbit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">pending</span><span class="p">:</span>
@@ -159,8 +176,6 @@
     <form class="search" action="../../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -181,7 +196,7 @@
       &copy;2019, Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
