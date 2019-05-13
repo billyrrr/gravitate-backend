@@ -86,9 +86,8 @@ def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tupl
 
 def pair_all(ride_requests: list, strategy="all_riders") -> list:
     """ Returns a list of list of ride requests.
-        Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]
 
-    :param ride_requests:
+    :param ride_requests: Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]
     :return: a list of tuples/lists, with each representing all ride requests to be grouped into a single orbit
     """
 

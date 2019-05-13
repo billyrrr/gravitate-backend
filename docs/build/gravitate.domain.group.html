@@ -40,12 +40,20 @@
 <dl class="function">
 <dt id="gravitate.domain.group.actions.drop_group">
 <code class="descclassname">gravitate.domain.group.actions.</code><code class="descname">drop_group</code><span class="sig-paren">(</span><em>ids: set</em>, <em>orbit_id: str = None</em>, <em>event_id: str = None</em>, <em>location_id: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/group/actions.html#drop_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.actions.drop_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Drops ride requests from an orbit.
-:param ids: ids of ride requests to drop
-:param orbit_id: id of the orbit to drop a ride request from
-:param event_id: id of the event associated with the orbit
-:param location_id: id of the location associated with the event / orbit
-:return:</p>
+<dd><p>Drops ride requests from an orbit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ids</strong> – ids of ride requests to drop</p></li>
+<li><p><strong>orbit_id</strong> – id of the orbit to drop a ride request from</p></li>
+<li><p><strong>event_id</strong> – id of the event associated with the orbit</p></li>
+<li><p><strong>location_id</strong> – id of the location associated with the event / orbit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -89,7 +97,7 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 <dd class="field-odd"><p><strong>ride_request_ids</strong> – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -103,7 +111,7 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 <dd class="field-odd"><p><strong>ride_request_ids</strong> – Two rideRequest Ids</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>response: {“notJoined”: &lt;ids of ride requests not joined&gt;}</p>
 </dd>
 </dl>
 </dd></dl>
@@ -120,7 +128,7 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 <dd class="field-odd"><p><strong>ride_requests</strong> – </p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>a list of tuples/lists, with each representing all ride requests to be grouped into a single orbit</p>
 </dd>
 </dl>
 </dd></dl>
@@ -129,7 +137,7 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 <dt id="gravitate.domain.group.actions.remove_from_orbit">
 <code class="descclassname">gravitate.domain.group.actions.</code><code class="descname">remove_from_orbit</code><span class="sig-paren">(</span><em>r: gravitate.domain.rides.models.Ride</em>, <em>o: gravitate.domain.orbit.models.Orbit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/group/actions.html#remove_from_orbit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.actions.remove_from_orbit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes userRef from orbitRef’s userTicketPairs</p>
-<p>search userTicketPairs for userRef, remove userRef and corresponding ticket once done</p>
+<p>(search userTicketPairs for userRef, remove userRef and corresponding ticket once done)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -138,7 +146,7 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -161,15 +169,26 @@ Note that the rideRequests may be in different orbits, and rideRequests may not<
 <dt id="gravitate.domain.group.actions.separate_by_event_id">
 <code class="descclassname">gravitate.domain.group.actions.</code><code class="descname">separate_by_event_id</code><span class="sig-paren">(</span><em>ride_request_ids: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[str, List[Type[gravitate.domain.rides.models.Ride]]]<a class="reference internal" href="_modules/gravitate/domain/group/actions.html#separate_by_event_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.actions.separate_by_event_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>DEPRECATED</p>
-<p>Returns a dict with event id as key and ride request object as value
-:param ride_request_ids: a list of ride requests from any number of events</p>
+<p>Returns a dict with event id as key and ride request object as value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ride_request_ids</strong> – a list of ride requests from any number of events</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict with key of event id and value of list of ride requests with that event id K</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="gravitate.domain.group.actions.separate_by_event_id_and_direction">
 <code class="descclassname">gravitate.domain.group.actions.</code><code class="descname">separate_by_event_id_and_direction</code><span class="sig-paren">(</span><em>ride_request_ids: List[str]</em><span class="sig-paren">)</span> &#x2192; Dict[Tuple, List[Type[gravitate.domain.rides.models.Ride]]]<a class="reference internal" href="_modules/gravitate/domain/group/actions.html#separate_by_event_id_and_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.actions.separate_by_event_id_and_direction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a dict with event id as key and ride request object as value
-:param ride_request_ids: a list of ride requests from any number of events</p>
+<dd><p>Returns a dict with event id as key and ride request object as value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ride_request_ids</strong> – a list of ride requests from any number of events</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -185,18 +204,53 @@ Compared to Group, this new class has better atomicity.</p>
 <dt id="gravitate.domain.group.orbit_group.OrbitGroup.execute">
 <code class="descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; set<a class="reference internal" href="_modules/gravitate/domain/group/orbit_group.html#OrbitGroup.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.orbit_group.OrbitGroup.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.
-:return: a list of rideRequests that are not joined</p>
+Note that ids of ride requests not dropped from the orbit is not returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of rideRequests that are not joined</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.group.orbit_group.OrbitGroup.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><em>intended_orbit_id=None</em>, <em>ids_to_add: set = None</em>, <em>ids_to_drop: set = None</em>, <em>event_id=None</em>, <em>location_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/group/orbit_group.html#OrbitGroup.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.orbit_group.OrbitGroup.setup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set up the OrbitGroup command object with ids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>intended_orbit_id</strong> – id of the orbit</p></li>
+<li><p><strong>ids_to_add</strong> – ids of ride requests to add to the orbit</p></li>
+<li><p><strong>ids_to_drop</strong> – ids of ride requests to drop from the orbit</p></li>
+<li><p><strong>event_id</strong> – ids of the event that the orbit is associated with</p></li>
+<li><p><strong>location_id</strong> – ids of the event location that the orbit is associated with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self (OrbitGroup)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.group.orbit_group.OrbitGroup.setup_with_ref">
 <code class="descname">setup_with_ref</code><span class="sig-paren">(</span><em>orbit_ref=None</em>, <em>refs_to_add: list = None</em>, <em>refs_to_drop: list = None</em>, <em>event_ref=None</em>, <em>location_ref=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gravitate/domain/group/orbit_group.html#OrbitGroup.setup_with_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.orbit_group.OrbitGroup.setup_with_ref" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set up the OrbitGroup command object with firestore references</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orbit_ref</strong> – the firestore reference to the orbit</p></li>
+<li><p><strong>refs_to_add</strong> – the firestore references of ride requests to add to the orbit</p></li>
+<li><p><strong>refs_to_drop</strong> – the firestore references of ride requests to drop from the orbit</p></li>
+<li><p><strong>event_ref</strong> – the firestore reference of the event that the orbit is associated with</p></li>
+<li><p><strong>location_ref</strong> – the firestore reference of the event location that the orbit is associated with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self (OrbitGroup)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="gravitate.domain.group.orbit_group.OrbitGroup.validate_entities_not_changed">
@@ -208,7 +262,16 @@ Compared to Group, this new class has better atomicity.</p>
 <dl class="function">
 <dt id="gravitate.domain.group.orbit_group.id_set_from_dict">
 <code class="descclassname">gravitate.domain.group.orbit_group.</code><code class="descname">id_set_from_dict</code><span class="sig-paren">(</span><em>d: dict</em><span class="sig-paren">)</span> &#x2192; set<a class="reference internal" href="_modules/gravitate/domain/group/orbit_group.html#id_set_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravitate.domain.group.orbit_group.id_set_from_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a set with all keys in the dict provided</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>d</strong> – dict with ids as keys</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a set of ids</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-gravitate.domain.group.pairing">

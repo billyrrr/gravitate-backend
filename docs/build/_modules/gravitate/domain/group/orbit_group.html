@@ -45,15 +45,15 @@
 
 <span class="k">def</span> <span class="nf">_refresh_event_schedules_all</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">in_orbit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">not_in_orbit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Orbit</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span>
                                  <span class="n">location</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This function refreshes event schedules of each rideRequests</span>
+    <span class="sd">&quot;&quot;&quot; Refreshes event schedules for each rideRequest.</span>
 
-<span class="sd">    :param transaction:</span>
-<span class="sd">    :param in_orbit:</span>
-<span class="sd">    :param not_in_orbit:</span>
-<span class="sd">    :param orbit:</span>
-<span class="sd">    :param event:</span>
-<span class="sd">    :param location:</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :param transaction: firestore transaction</span>
+<span class="sd">    :param in_orbit: all ride requests that are currently in the orbit</span>
+<span class="sd">    :param not_in_orbit: all ride requests that are no longer in the orbit</span>
+<span class="sd">    :param orbit: orbit object</span>
+<span class="sd">    :param event: event object</span>
+<span class="sd">    :param location: location object representing event location</span>
+<span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">rid</span><span class="p">,</span> <span class="n">ride_request</span> <span class="ow">in</span> <span class="n">in_orbit</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># (from legacy code:) Note that profile photos may not be populated even after the change is committed</span>
@@ -65,15 +65,15 @@
 
 <span class="k">def</span> <span class="nf">_refresh_ride_requests_all</span><span class="p">(</span><span class="n">transaction</span><span class="p">:</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">in_orbit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">not_in_orbit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Orbit</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span>
                                <span class="n">location</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This function refreshes each rideRequests</span>
+    <span class="sd">&quot;&quot;&quot; Refreshes each rideRequest.</span>
 
-<span class="sd">    :param transaction:</span>
-<span class="sd">    :param in_orbit:</span>
-<span class="sd">    :param not_in_orbit:</span>
-<span class="sd">    :param orbit:</span>
-<span class="sd">    :param event:</span>
-<span class="sd">    :param location:</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :param transaction: firestore transaction</span>
+<span class="sd">    :param in_orbit: all ride requests that are currently in the orbit</span>
+<span class="sd">    :param not_in_orbit: all ride requests that are no longer in the orbit</span>
+<span class="sd">    :param orbit: orbit object</span>
+<span class="sd">    :param event: event object</span>
+<span class="sd">    :param location: location object representing event location</span>
+<span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">rid</span><span class="p">,</span> <span class="n">ride_request</span> <span class="ow">in</span> <span class="n">in_orbit</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">RideRequestGenericDao</span><span class="o">.</span><span class="n">set_with_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ride_request</span><span class="p">,</span> <span class="n">ride_request</span><span class="o">.</span><span class="n">get_firestore_ref</span><span class="p">())</span>
@@ -83,6 +83,11 @@
 
 
 <div class="viewcode-block" id="id_set_from_dict"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.orbit_group.id_set_from_dict">[docs]</a><span class="k">def</span> <span class="nf">id_set_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns a set with all keys in the dict provided</span>
+
+<span class="sd">    :param d: dict with ids as keys</span>
+<span class="sd">    :return: a set of ids</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
 
 
@@ -94,6 +99,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initializes an OrbitGroup object to be executed in a transaction.</span>
+
+<span class="sd">        :param transaction: firestore transaction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Start a transaction</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span>
 
@@ -107,6 +116,15 @@
 
 <div class="viewcode-block" id="OrbitGroup.setup_with_ref"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.setup_with_ref">[docs]</a>    <span class="k">def</span> <span class="nf">setup_with_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbit_ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">refs_to_add</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">refs_to_drop</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                        <span class="n">event_ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location_ref</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set up the OrbitGroup command object with firestore references</span>
+
+<span class="sd">        :param orbit_ref: the firestore reference to the orbit</span>
+<span class="sd">        :param refs_to_add: the firestore references of ride requests to add to the orbit</span>
+<span class="sd">        :param refs_to_drop: the firestore references of ride requests to drop from the orbit</span>
+<span class="sd">        :param event_ref: the firestore reference of the event that the orbit is associated with</span>
+<span class="sd">        :param location_ref: the firestore reference of the event location that the orbit is associated with</span>
+<span class="sd">        :return: self (OrbitGroup)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">orbit_ref</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ids_to_add</span><span class="o">=</span><span class="p">{</span><span class="n">ref</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs_to_add</span><span class="p">},</span>
                           <span class="n">ids_to_drop</span><span class="o">=</span><span class="p">{</span><span class="n">ref</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs_to_drop</span><span class="p">},</span>
                           <span class="n">event_id</span><span class="o">=</span><span class="n">event_ref</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
@@ -114,6 +132,15 @@
 
 <div class="viewcode-block" id="OrbitGroup.setup"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intended_orbit_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ids_to_add</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ids_to_drop</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">location_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set up the OrbitGroup command object with ids</span>
+
+<span class="sd">        :param intended_orbit_id: id of the orbit</span>
+<span class="sd">        :param ids_to_add: ids of ride requests to add to the orbit</span>
+<span class="sd">        :param ids_to_drop: ids of ride requests to drop from the orbit</span>
+<span class="sd">        :param event_id: ids of the event that the orbit is associated with</span>
+<span class="sd">        :param location_id: ids of the event location that the orbit is associated with</span>
+<span class="sd">        :return: self (OrbitGroup)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orbit</span> <span class="o">=</span> <span class="n">OrbitGroup</span><span class="o">.</span><span class="n">_get_orbit</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">,</span> <span class="n">orbit_id</span><span class="o">=</span><span class="n">intended_orbit_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ride_requests_existing</span> <span class="o">=</span> \
             <span class="n">OrbitGroup</span><span class="o">.</span><span class="n">_get_existing_ride_requests</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">,</span> <span class="n">orbit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orbit</span><span class="p">)</span>
@@ -194,9 +221,11 @@
 
 <div class="viewcode-block" id="OrbitGroup.execute"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.orbit_group.OrbitGroup.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.</span>
-<span class="sd">                :return: a list of rideRequests that are not joined</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+<span class="sd">        This method puts rideRequests into orbit and update participants eventSchedule in atomic operations.</span>
+<span class="sd">        Note that ids of ride requests not dropped from the orbit is not returned.</span>
+
+<span class="sd">        :return: a list of rideRequests that are not joined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span>
         <span class="n">orbit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbit</span>
 
@@ -245,10 +274,11 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="n">to_add</span><span class="p">,</span> <span class="n">orbit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot; Add ride request to orbit</span>
+        <span class="sd">&quot;&quot;&quot; Add ride requests to an orbit</span>
 
-<span class="sd">        :param to_add:</span>
-<span class="sd">        :return: (joined, not_j)</span>
+<span class="sd">        :param to_add: dict with key as ride request id and value as ride request</span>
+<span class="sd">        :param orbit: orbit object to add the ride requests to</span>
+<span class="sd">        :return: (joined_ids, not_joined_ids)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">joined_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">not_joined_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -269,6 +299,12 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_drop</span><span class="p">(</span><span class="n">to_drop</span><span class="p">,</span> <span class="n">orbit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Drop ride requests from an orbit</span>
+
+<span class="sd">        :param to_drop: dict with key as ride request id and value as ride request</span>
+<span class="sd">        :param orbit: orbit object to drop the ride requests from</span>
+<span class="sd">        :return: (dropped_ids, not_dropped_ids)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dropped_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">not_dropped_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 

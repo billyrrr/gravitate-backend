@@ -57,7 +57,7 @@
 <span class="sd">        -   &quot;one_driver_many_riders&quot;: Only group rides such that exactly one driver and &gt;= 1 rider will be in the group.</span>
 
 <span class="sd">    :param ride_request_ids:</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">separate_by_event_id_and_direction</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">)</span>
 
@@ -71,7 +71,9 @@
     <span class="sd">&quot;&quot;&quot; DEPRECATED</span>
 
 <span class="sd">    Returns a dict with event id as key and ride request object as value</span>
+
 <span class="sd">    :param ride_request_ids: a list of ride requests from any number of events</span>
+<span class="sd">    :return: dict with key of event id and value of list of ride requests with that event id K</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">ride_request_id</span> <span class="ow">in</span> <span class="n">ride_request_ids</span><span class="p">:</span>
@@ -91,6 +93,7 @@
 
 <div class="viewcode-block" id="separate_by_event_id_and_direction"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.actions.separate_by_event_id_and_direction">[docs]</a><span class="k">def</span> <span class="nf">separate_by_event_id_and_direction</span><span class="p">(</span><span class="n">ride_request_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">RideRequest</span><span class="p">]]]:</span>
     <span class="sd">&quot;&quot;&quot; Returns a dict with event id as key and ride request object as value</span>
+
 <span class="sd">    :param ride_request_ids: a list of ride requests from any number of events</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -119,7 +122,7 @@
 <span class="sd">        Example [ [ride request 1, ride request 3], [ride request 2, ride request 4] ]</span>
 
 <span class="sd">    :param ride_requests:</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: a list of tuples/lists, with each representing all ride requests to be grouped into a single orbit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">paired</span><span class="p">,</span> <span class="n">unpaired</span> <span class="o">=</span> <span class="n">pair_ride_requests</span><span class="p">(</span><span class="n">ride_requests</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
@@ -155,7 +158,7 @@
     <span class="sd">&quot;&quot;&quot; Force matches two rideRequests into an orbit.</span>
 
 <span class="sd">    :param ride_request_ids: Two rideRequest Ids</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: response: {&quot;notJoined&quot;: &lt;ids of ride requests not joined&gt;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ride_requests</span> <span class="o">=</span> <span class="p">[</span><span class="n">RideRequestGenericDao</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="n">rid</span><span class="p">)</span> <span class="k">for</span> <span class="n">rid</span> <span class="ow">in</span> <span class="n">ride_request_ids</span><span class="p">]</span>
 
@@ -214,7 +217,7 @@
 <span class="sd">    :param ride_request_refs: firestore document references of the ride requests to add to an orbit</span>
 <span class="sd">    :param event_ref: firestore document references of the event associated with the orbit</span>
 <span class="sd">    :param location_ref: firestore document references of the location associated with the event / orbit</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: a list of ride request ids not joined</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">OrbitGroup</span> <span class="o">=</span> <span class="n">OrbitGroup</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span><span class="o">.</span><span class="n">setup_with_ref</span><span class="p">(</span><span class="n">orbit_ref</span><span class="o">=</span><span class="n">orbit_ref</span><span class="p">,</span>
                                                                            <span class="n">refs_to_add</span><span class="o">=</span><span class="n">ride_request_refs</span><span class="p">,</span>
@@ -227,11 +230,12 @@
 
 <div class="viewcode-block" id="drop_group"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.actions.drop_group">[docs]</a><span class="k">def</span> <span class="nf">drop_group</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">orbit_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Drops ride requests from an orbit.</span>
+
 <span class="sd">    :param ids: ids of ride requests to drop</span>
 <span class="sd">    :param orbit_id: id of the orbit to drop a ride request from</span>
 <span class="sd">    :param event_id: id of the event associated with the orbit</span>
 <span class="sd">    :param location_id: id of the location associated with the event / orbit</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">transaction</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
     <span class="n">_drop_group</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">orbit_id</span><span class="o">=</span><span class="n">orbit_id</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span> <span class="n">location_id</span><span class="o">=</span><span class="n">location_id</span><span class="p">)</span></div>
@@ -246,7 +250,7 @@
 <span class="sd">    :param orbit_id: id of the orbit to drop a ride request from</span>
 <span class="sd">    :param event_id: id of the event associated with the orbit</span>
 <span class="sd">    :param location_id: id of the location associated with the event / orbit</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: a list of ride request ids not dropped from the orbit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">OrbitGroup</span> <span class="o">=</span> <span class="n">OrbitGroup</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">intended_orbit_id</span><span class="o">=</span><span class="n">orbit_id</span><span class="p">,</span> <span class="n">ids_to_add</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span>
                                                                   <span class="n">ids_to_drop</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span>
@@ -258,11 +262,11 @@
 <div class="viewcode-block" id="remove_from_orbit"><a class="viewcode-back" href="../../../../gravitate.domain.group.html#gravitate.domain.group.actions.remove_from_orbit">[docs]</a><span class="k">def</span> <span class="nf">remove_from_orbit</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">RideRequest</span><span class="p">,</span> <span class="n">o</span><span class="p">:</span> <span class="n">Orbit</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Removes userRef from orbitRef&#39;s userTicketPairs</span>
 
-<span class="sd">    search userTicketPairs for userRef, remove userRef and corresponding ticket once done</span>
+<span class="sd">    (search userTicketPairs for userRef, remove userRef and corresponding ticket once done)</span>
 
 <span class="sd">    :param r: ride request to remove from orbit</span>
 <span class="sd">    :param o: orbit</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">userIds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">user_ticket_pairs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">userId</span> <span class="ow">in</span> <span class="n">userIds</span><span class="p">:</span>
