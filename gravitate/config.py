@@ -39,7 +39,7 @@ class DevelopmentGravitateConfig(GravitateConfig):
     TESTING = False
     FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path,
                                                   "gravitate-dive-dev-5ccd85db04e7.json")
-    APP_NAME = "gravitate-dev"
+    APP_NAME = "gravitate-dive-dev"
 
 
 class TestingGravitateConfig(GravitateConfig):
@@ -47,7 +47,7 @@ class TestingGravitateConfig(GravitateConfig):
     TESTING = True
     FIREBASE_CERTIFICATE_JSON_PATH = os.path.join(config_jsons_path,
                                                   "gravitate-dive-testing-firebase-adminsdk-g1ybn-2dde9daeb0.json")
-    APP_NAME = "gravitate-testing"
+    APP_NAME = "gravitate-dive-testing"
 
 
 class StagingGravitateConfig(GravitateConfig):
