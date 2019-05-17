@@ -1,5 +1,5 @@
 from google.cloud import tasks_v2
-from unittest import TestCase
+from unittest import TestCase, skip
 from gravitate.context import Context as CTX
 from gravitate.common import random_id
 
@@ -10,6 +10,7 @@ project_name = CTX.firebaseApp.name
 queue_region = 'us-central1'
 
 
+@skip("Skip CloudTasksTest")
 class CloudTasksTest(TestCase):
     """ Tests that tasks_v2 is configured
 
