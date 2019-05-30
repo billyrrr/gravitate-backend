@@ -195,7 +195,7 @@ class EventAutofillService(Resource):
     @service_utils.authenticate
     def get(self, eventId, uid):
         """
-        (NOT IMPLEMENTED) Returns default value for ride request creation form.
+        (NOT IMPLEMENTED) Returns default value used to autofill ride request creation form.
         ---
         tags:
          - 'events'
@@ -212,7 +212,7 @@ class EventAutofillService(Resource):
           default:
             description: unexpected error
         """
-        pass
+        raise NotImplementedError
 
 
 class EventService(Resource):
