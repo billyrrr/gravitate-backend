@@ -187,6 +187,34 @@ class EventCreation(Resource):
         return response_dict, 200
 
 
+class EventAutofillService(Resource):
+    """
+    Handles default value for front end create event ride request view
+    """
+
+    @service_utils.authenticate
+    def get(self, eventId, uid):
+        """
+        (NOT IMPLEMENTED) Returns default value for ride request creation form.
+        ---
+        tags:
+         - 'events'
+        parameters:
+          - name: id
+            in: path
+            description: ID of the event to generate default values from
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: event form default values response
+          default:
+            description: unexpected error
+        """
+        pass
+
+
 class EventService(Resource):
 
     def get(self, eventId):
