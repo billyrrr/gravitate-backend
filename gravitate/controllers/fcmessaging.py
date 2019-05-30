@@ -4,6 +4,11 @@ import gravitate.data_access as data_access
 
 
 def sendMessageToUser(userId, data):
+    """ Sends notification to all devices that the user turned on the notifications for.
+    :param userId: user ID of the user to send the notifications to
+    :param data: data to send as notification
+    :return: True if successful (google cloud messaging API returns success), false otherwise
+    """
     # TODO: implement
     # fcmToken = data_access.UserDao().get_fcm_token(userId)
     # sendMessage(fcmToken, data)
