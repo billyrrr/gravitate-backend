@@ -206,9 +206,38 @@ class EventAutofillService(Resource):
             required: true
             schema:
               type: string
+          - name: toEvent
+            description: True if retrieving information for a ride request to this event
+            in: query
+            type: boolean
+            default: true
         responses:
           '200':
             description: event form default values response
+            schema:
+              properties:
+                rideCategory:
+                  type: string
+                  enum:
+                    - event
+                    # - airport NOTE THAT airport is not supported
+                pickupAddress:
+                  description: default pickup address stored for the user
+                  type: string
+                  example: "Tenaya Hall, San Diego, CA 92161"
+                eventId:
+                  type: string
+                driverStatus:
+                  type: boolean
+                  default: false
+                earliest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T07:00:00"
+                latest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T10:00:00"
           default:
             description: unexpected error
         """
