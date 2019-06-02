@@ -6,8 +6,6 @@ This module implements the service for creating and managing rideRequests.
 """
 from flask import request
 from flask_restful import Resource, HTTPException
-from marshmallow import Schema, fields, ValidationError
-from flask_marshmallow import Marshmallow
 
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
@@ -18,12 +16,10 @@ from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
 from gravitate.domain.luggage.models import Luggages
+from gravitate.schemas.luggage import LuggageCollectionSchema
 from . import parsers as ride_request_parsers
 
 db = Context.db
-
-
-ma = Marshmallow()
 
 
 class MovedPermanently(HTTPException):
@@ -251,15 +247,6 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
-class LuggageItemSchema(ma.Schema):
-    luggage_type = fields.Str()
-    weight_in_lbs = fields.Number()
-
-
-class LuggageCollectionSchema(ma.Schema):
-    luggages = fields.Nested('LuggageItemSchema', many=True)
-
-
 luggages_schema = LuggageCollectionSchema()
 
 
@@ -274,6 +261,28 @@ class LuggageService(Resource):
     def get(self, rideRequestId, uid):
         """
         Get the luggage JSON associated with the ride request
+
+        ---
+        tags:
+          - rideRequests
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request associated with the luggages
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: luggages response
+            properties:
+              luggages:
+                type: array
+                items:
+                  $ref: "#/definitions/LuggageItem"
+          default:
+            description: unexpected error
+
         :param rideRequestId:
         :param uid:
         :return:
@@ -304,16 +313,18 @@ class LuggageService(Resource):
 
         json_input = request.get_json()
 
+        # # Marshmallow version 3
         # try:
         #     data = luggages_schema.load(json_input)
         # except ValidationError as err:
         #     return {'errors': err.messages}, 422
         #
+
+        # Marshmallow version 2
         data, errors = luggages_schema.load(json_input)
         if errors:
             return errors, 422
 
-        print(data)
         luggage_list = data["luggages"]
         luggages = Luggages()
         luggages.add_from_list(luggage_list)
