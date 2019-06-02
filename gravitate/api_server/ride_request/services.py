@@ -6,6 +6,8 @@ This module implements the service for creating and managing rideRequests.
 """
 from flask import request
 from flask_restful import Resource, HTTPException
+from marshmallow import Schema, fields, ValidationError
+from flask_marshmallow import Marshmallow
 
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
@@ -19,6 +21,9 @@ from gravitate.domain.luggage.models import Luggages
 from . import parsers as ride_request_parsers
 
 db = Context.db
+
+
+ma = Marshmallow()
 
 
 class MovedPermanently(HTTPException):
@@ -246,6 +251,18 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
+class LuggageItemSchema(ma.Schema):
+    luggage_type = fields.Str()
+    weight_in_lbs = fields.Number()
+
+
+class LuggageCollectionSchema(ma.Schema):
+    luggages = fields.Nested('LuggageItemSchema', many=True)
+
+
+luggages_schema = LuggageCollectionSchema()
+
+
 class LuggageService(Resource):
 
     """
@@ -283,9 +300,21 @@ class LuggageService(Resource):
         :param uid:
         :return:
         """
-        args = ride_request_parsers.luggage_parser.parse_args()
+        # args = ride_request_parsers.luggage_parser.parse_args()
 
-        luggage_list = args["luggages"]
+        json_input = request.get_json()
+
+        # try:
+        #     data = luggages_schema.load(json_input)
+        # except ValidationError as err:
+        #     return {'errors': err.messages}, 422
+        #
+        data, errors = luggages_schema.load(json_input)
+        if errors:
+            return errors, 422
+
+        print(data)
+        luggage_list = data["luggages"]
         luggages = Luggages()
         luggages.add_from_list(luggage_list)
 

@@ -34,3 +34,6 @@ sphinx
 
 google-cloud-tasks
 googleapis-common-protos
+
+marshmallow
+flask_marshmallow
