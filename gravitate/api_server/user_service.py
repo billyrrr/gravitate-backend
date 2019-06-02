@@ -47,6 +47,29 @@ class UserNotificationService(Resource):
 class UserService(Resource):
 
     def get(self, uid):
+        """
+        Returns the json representation of a user based on user id.
+
+        ---
+        tags:
+          - users
+        # operationId: find user by id
+        parameters:
+          - name: id
+            in: path
+            description: ID of the user to fetch
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: user response
+          default:
+            description: unexpected error
+
+        :param uid:
+        :return:
+        """
         # Check Firestore to see if UID Already Exists
         if UserDao().user_id_exists(uid):
             user = UserDao().get_user_by_id(uid)
@@ -78,12 +101,50 @@ class UserService(Resource):
         raise NotImplementedError
 
     def post(self, uid):
-        """ Description
-            This method handles POST request to handle use case "create ride request"
+        """
+        Creates a new user. (user must be registered in firebaseApp first)
+
+        ---
+        tags:
+          - users
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: UserCreationForm
+              required:
+                - uid
+                - phone_number
+                - membership
+                - display_name
+                - photo_url
+                - pickupAddress
+              properties:
+                uid:
+                  description: UID
+                  type: string
+                phone_number:
+                  description: Phone Number
+                  type: string
+                membership:
+                  description: Membership
+                display_name:
+                  description: Name
+                photo_url:
+                  description: (Profile) Photo URL
+                pickupAddress:
+                  description: (Default) Pickup Address
+
+        responses:
+          200:
+            description: user created
+          400:
+            description: form fields error
 
         :param uid:
         :return:
         """
+        # TODO: change to put/update
         requestJson = request.get_json()
         requestForm = json.loads(requestJson) if (type(requestJson) != dict) else requestJson
 

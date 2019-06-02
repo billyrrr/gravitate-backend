@@ -22,6 +22,63 @@ class UserEventService(Resource):
 
     @service_utils.authenticate
     def post(self, uid):
+        """
+        Creates a new event with Facebook event JSON (that is obtained from Facebook Graph API).
+
+        ---
+        tags:
+          - me/events
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: UserEventJSON
+              type: object
+              required:
+                - description
+                - end_time
+                - start_time
+                - place
+                - id
+              properties:
+                description:
+                  type: string
+                  example: "Advance Sale begins Friday, 6/1 at 11AM PDT\nwww.coachella.com"
+                end_time:
+                  type: string
+                  example: "2019-04-14T23:59:00-0700"
+                start_time:
+                  type: string
+                  example: "2019-04-12T12:00:00-0700"
+                place:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Coachella"
+                      location:
+                        type: object
+                        properties:
+                          latitude:
+                            type: number
+                            example: 33.679974
+                          longitude:
+                            type: number
+                            example: -116.237221
+                      id:
+                        example: "20281766647"
+                id:
+                  type: string
+                  example: "137943263736990"
+        responses:
+          200:
+            description: user created
+          400:
+            description: form fields error
+
+        :param uid:
+        :return:
+        """
         json_data = request.get_json()
         b = event_builders.FbEventBuilder()
         b.build_with_fb_dict(json_data)
@@ -42,6 +99,24 @@ class UserEventService(Resource):
 
     @service_utils.authenticate
     def put(self, uid):
+        """
+        Creates many new events with a list of Facebook event JSON's (that are obtained from Facebook Graph API).
+        ---
+        tags:
+          - me/events
+        parameters:
+          - in: body
+            name: body
+            schema:
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/definitions/UserEventJSON"
+
+        :param uid:
+        :return:
+        """
         json_data = request.get_json()
         event_dicts = json_data["data"]
         ids = list()
@@ -112,9 +187,86 @@ class EventCreation(Resource):
         return response_dict, 200
 
 
+class EventAutofillService(Resource):
+    """
+    Handles default value for front end create event ride request view
+    """
+
+    @service_utils.authenticate
+    def get(self, eventId, uid):
+        """
+        (NOT IMPLEMENTED) Returns default value used to autofill ride request creation form.
+        ---
+        tags:
+         - 'events'
+        parameters:
+          - name: id
+            in: path
+            description: ID of the event to generate default values from
+            required: true
+            schema:
+              type: string
+          - name: toEvent
+            description: True if retrieving information for a ride request to this event
+            in: query
+            type: boolean
+            default: true
+        responses:
+          '200':
+            description: event form default values response
+            schema:
+              properties:
+                rideCategory:
+                  type: string
+                  enum:
+                    - event
+                    # - airport NOTE THAT airport is not supported
+                pickupAddress:
+                  description: default pickup address stored for the user
+                  type: string
+                  example: "Tenaya Hall, San Diego, CA 92161"
+                eventId:
+                  type: string
+                driverStatus:
+                  type: boolean
+                  default: false
+                earliest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T07:00:00"
+                latest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T10:00:00"
+          default:
+            description: unexpected error
+        """
+        raise NotImplementedError
+
+
 class EventService(Resource):
 
     def get(self, eventId):
+        """
+        Returns a JSON representation of an event based on a single ID.
+
+        ---
+        tags:
+          - events
+        # operationId: find event by id
+        parameters:
+          - name: id
+            in: path
+            description: ID of the event to fetch
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: event response
+          default:
+            description: unexpected error
+        """
         event = EventDao().get_by_id(event_id=eventId)
         event_dict = event.to_dict_view()
         return event_dict
