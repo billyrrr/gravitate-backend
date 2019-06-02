@@ -264,7 +264,7 @@ class LuggageService(Resource):
 
         ---
         tags:
-          - rideRequests
+          - luggage
         parameters:
           - name: id
             in: path
@@ -304,6 +304,26 @@ class LuggageService(Resource):
     @service_utils.authenticate
     def put(self, rideRequestId, uid):
         """
+        Add luggage to the ride request.
+
+        ---
+        tags:
+          - luggage
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request associated with the luggages
+            required: true
+            schema:
+              $ref: "#/definitions/LuggageCollection"
+        responses:
+          '200':
+            description: luggages response
+            properties:
+              newLuggageValues:
+                type: array
+                items:
+                  $ref: "#/definitions/LuggageItem"
 
         :param rideRequestId:
         :param uid:
