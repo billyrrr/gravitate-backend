@@ -294,7 +294,7 @@ class AccommodationService(Resource):
     @service_utils.authenticate
     def get(self, rideRequestId, uid):
         """
-            (NOT IMPLEMENTED) Get the disabilities accommodation JSON associated with the ride request
+            (NOT IMPLEMENTED) Get the disabilities accommodation JSON associated with the ride request.
 
             ---
             tags:
@@ -361,7 +361,7 @@ class LuggageService(Resource):
     @service_utils.authenticate
     def get(self, rideRequestId, uid):
         """
-        Get the luggage JSON associated with the ride request
+        Get the luggage JSON associated with the ride request.
 
         ---
         tags:

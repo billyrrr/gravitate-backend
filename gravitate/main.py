@@ -49,8 +49,8 @@ from gravitate import schemas
 # Flasgger docs
 # Create an APISpec
 spec = APISpec(
-    title='Flasger Petstore',
-    version='1.0.10',
+    title='Gravitate REST API',
+    version='0.0.1',
     openapi_version='2.0',
     plugins=[
         FlaskPlugin(),
