@@ -27,7 +27,7 @@ class UserEventService(Resource):
 
         ---
         tags:
-          - me/events
+          - events
         parameters:
           - in: body
             name: body
@@ -103,7 +103,7 @@ class UserEventService(Resource):
         Creates many new events with a list of Facebook event JSON's (that are obtained from Facebook Graph API).
         ---
         tags:
-          - me/events
+          - events
         parameters:
           - in: body
             name: body
