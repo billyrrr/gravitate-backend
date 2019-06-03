@@ -32,7 +32,7 @@ from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService, EventAutofillService
 from gravitate.api_server.group_task.services import GroupCronTasksService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, DeleteMatchServiceNew
-from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
+from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost, AccommodationService
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService, UserNotificationService
 from gravitate.api_server.group_task import GroupTasksService
@@ -98,6 +98,7 @@ api.add_resource(RideRequestPost, '/rideRequests')
 api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
 api.add_resource(LuggageService, '/rideRequests/<string:rideRequestId>/luggage')
+api.add_resource(AccommodationService, '/rideRequests/<string:rideRequestId>/accommodation')
 
 # Event Related Endpoints
 api.add_resource(EventCreation, '/events')

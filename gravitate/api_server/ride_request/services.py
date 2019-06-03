@@ -223,31 +223,132 @@ class RideRequestService(Resource):
     @service_utils.authenticate
     def patch(self, uid):
         """
-        TODO implement
+        (NOT IMPLEMENTED) Modifies a ride request.
 
-        This method modifies fields in an airportRideRequest.
-            Allow user to patch these fields at any time:
-                * disabilities
-                * pickupAddress
-                * "baggages"
-            If the rideRequest is not matched into an orbit, allow user to patch these fields:
-                * driverStatus
-                furthermore, if flightLocalTime still in the same event and eventLocation is "LAX",
-                    * flightLocalTime
-                    * earliest
-                    * latest
-                    * flightNumber
+        ---
+        tags:
+          - rideRequests
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: RideRequestPatch
+              properties:
+                pickupAddress:
+                  description: "new pickup address to change to"
+                  type: string
+                  example: "Tenaya Hall, San Diego, CA 92161"
+                flightLocalTime:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-20T12:00:00"
+                driverStatus:
+                  description: "(temporary) set or unset the user as the driver for the orbit"
+                  type: boolean
+                earliest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T07:00:00"
+                latest:
+                  type: string
+                  description: "datetime ISO8601 local time"
+                  example: "2018-12-17T10:00:00"
+        responses:
+          '200':
+            description: ride request modified
+          default:
+            description: unexpected error
+
+        # TODO implement
+
+        # This method modifies fields in an airportRideRequest.
+        #     Allow user to patch these fields at any time:
+        #         * disabilities
+        #         * pickupAddress
+        #         * "baggages"
+        #     If the rideRequest is not matched into an orbit, allow user to patch these fields:
+        #         * driverStatus
+        #         furthermore, if flightLocalTime still in the same event and eventLocation is "LAX",
+        #             * flightLocalTime
+        #             * earliest
+        #             * latest
+        #             * flightNumber
 
 
-        Note that this operation should be done in a transaction to ensure atomicity of the operation.
-
-        :param uid:
-        :return:
+        # Note that this operation should be done in a transaction to ensure atomicity of the operation.
+        #
+        # :param uid:
+        # :return:
         """
         raise NotImplementedError
 
 
 luggages_schema = LuggageCollectionSchema()
+
+
+class AccommodationService(Resource):
+    """
+    Keeps track of accommodation for travelers with disabilities.
+    """
+
+    @service_utils.authenticate
+    def get(self, rideRequestId, uid):
+        """
+            (NOT IMPLEMENTED) Get the disabilities accommodation JSON associated with the ride request
+
+            ---
+            tags:
+             - accommodation
+            parameters:
+              - name: id
+                in: path
+                description: ID of the ride request associated with the accommodations
+                required: true
+                schema:
+                  type: string
+
+            responses:
+              '200':
+                description: accommodations response
+
+              default:
+                description: unexpected error
+
+            :param rideRequestId:
+            :param uid:
+            :return:
+        """
+        raise NotImplementedError
+
+    @service_utils.authenticate
+    def put(self, rideRequestId, uid):
+        """
+        (NOT IMPLEMENTED) Add accommodation options to the ride request.
+
+        ---
+        tags:
+          - accommodation
+        parameters:
+          - name: id
+            in: path
+            description: ID of the ride request associated with the luggages
+            required: true
+            schema:
+              $ref: "#/definitions/LuggageCollection"
+          - in: body
+            name: body
+            description: new values on accommodation options
+        responses:
+          '200':
+            description: successful operation
+          default:
+            description: unexpected error
+
+        :param rideRequestId:
+        :param uid:
+        :return:
+        """
+        raise NotImplementedError
 
 
 class LuggageService(Resource):
