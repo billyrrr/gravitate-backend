@@ -36,6 +36,7 @@ from gravitate.api_server.ride_request.services import LuggageService, RideReque
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService, UserNotificationService
 from gravitate.api_server.group_task import GroupTasksService
+from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService, RideRequestOrbitService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 from gravitate import schemas
@@ -99,6 +100,7 @@ api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
 api.add_resource(LuggageService, '/rideRequests/<string:rideRequestId>/luggage')
 api.add_resource(AccommodationService, '/rideRequests/<string:rideRequestId>/accommodation')
+api.add_resource(RideRequestOrbitService, '/rideRequests/<string:rideRequestId>/orbit')
 
 # Event Related Endpoints
 api.add_resource(EventCreation, '/events')
@@ -109,6 +111,10 @@ api.add_resource(EventAutofillService, '/events/<string:eventId>/defaultRide')
 api.add_resource(GroupTasksService, '/groupTasks')
 api.add_resource(GroupCronTasksService, '/groupAll')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
+
+# Orbit Related Endpoints
+api.add_resource(OrbitCommandService, '/orbits/<string:orbitId>/command')
+api.add_resource(OrbitService, '/orbits/<string:orbitId>')
 
 # Endpoint for Testing Purposes
 api.add_resource(EndpointTestService, '/endpointTest')
