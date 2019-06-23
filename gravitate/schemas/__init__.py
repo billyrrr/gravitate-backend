@@ -1,0 +1,1 @@
+from .luggage import LuggageCollectionSchema, LuggageItemSchema

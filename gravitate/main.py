@@ -23,25 +23,42 @@ import logging
 # from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, Api, Resource
-from flasgger import Swagger
+from flasgger import APISpec, Swagger
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
 from google.auth.transport import requests
 
 from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService, EventAutofillService
 from gravitate.api_server.group_task.services import GroupCronTasksService
 from gravitate.api_server.grouping_service import OrbitForceMatchService, DeleteMatchServiceNew
-from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost
+from gravitate.api_server.ride_request.services import LuggageService, RideRequestPost, AccommodationService
 from gravitate.api_server.ride_request.services import RideRequestService, RideRequestCreation
 from gravitate.api_server.user_service import UserService, UserNotificationService
 from gravitate.api_server.group_task import GroupTasksService
+from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService, RideRequestOrbitService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
+from gravitate import schemas
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
 # sched = BackgroundScheduler(daemon=True)
 # sched.add_job(refreshGroupAll, 'interval', minutes=1)
 # sched.start()
+
+# Flasgger docs
+# Create an APISpec
+spec = APISpec(
+    title='Gravitate REST API',
+    version='0.0.1',
+    openapi_version='2.0',
+    plugins=[
+        FlaskPlugin(),
+        MarshmallowPlugin(),
+    ],
+)
+
 
 # Initialize Flask
 firebase_request_adapter = requests.Request()
@@ -82,6 +99,8 @@ api.add_resource(RideRequestPost, '/rideRequests')
 api.add_resource(RideRequestService, '/rideRequests/<string:rideRequestId>')
 api.add_resource(DeleteMatchServiceNew, '/rideRequests/<string:rideRequestId>/unmatch')
 api.add_resource(LuggageService, '/rideRequests/<string:rideRequestId>/luggage')
+api.add_resource(AccommodationService, '/rideRequests/<string:rideRequestId>/accommodation')
+api.add_resource(RideRequestOrbitService, '/rideRequests/<string:rideRequestId>/orbit')
 
 # Event Related Endpoints
 api.add_resource(EventCreation, '/events')
@@ -92,6 +111,10 @@ api.add_resource(EventAutofillService, '/events/<string:eventId>/defaultRide')
 api.add_resource(GroupTasksService, '/groupTasks')
 api.add_resource(GroupCronTasksService, '/groupAll')
 api.add_resource(OrbitForceMatchService, '/devForceMatch')
+
+# Orbit Related Endpoints
+api.add_resource(OrbitCommandService, '/orbits/<string:orbitId>/command')
+api.add_resource(OrbitService, '/orbits/<string:orbitId>')
 
 # Endpoint for Testing Purposes
 api.add_resource(EndpointTestService, '/endpointTest')
@@ -136,7 +159,12 @@ def server_error(e):
 
 if __name__ == '__main__':
     # flasgger for hosting REST API docs
-    swagger = Swagger(app)
+    template = spec.to_flasgger(
+        app,
+        definitions=[schemas.LuggageCollectionSchema, schemas.LuggageItemSchema],
+        # paths=[random_pet]
+    )
+    swagger = Swagger(app, template=template)
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)

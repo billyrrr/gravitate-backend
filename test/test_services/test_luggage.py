@@ -42,6 +42,33 @@ class GetLuggageTest(TestCase):
         self.assertEqual(r.status_code, 200, "GET is successful")
         self.assertDictEqual(dict_expected, result)
 
+    def testPutInvalid(self):
+        to_put = {
+            "luggages": [
+                {
+                    "luggage_type": "large",
+                    "weight_in_lbs": "invalidInputInsteadOfNumber"
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 15
+                },
+                {
+                    "luggage_type": "medium",
+                    "weight_in_lbs": 25
+                }
+            ]
+        }
+
+        print(json.dumps(to_put))
+
+        # Note that the result may be hardcoded for now
+        r = self.app.put(path='/rideRequests' + '/' + self.rideRequestId + '/' + "luggage",
+                         json=to_put,
+                         headers=getMockAuthHeaders()
+                         )
+        self.assertEqual(r.status_code, 422, "PUT luggage should fail with status 422")
+
     def testPutAndGet(self):
 
         to_put = {

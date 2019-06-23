@@ -81,12 +81,56 @@ class UserService(Resource):
             }
             return errorResponseDict, 400
 
-    def update(self, uid):
-        """ Description
-            Handles client FCM Token refresh
-                https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
-            Note that FCM refresh shall not override the user's settings for enabling notification
-                (if specified in requirement).
+    def put(self, uid):
+        """
+        (NOT IMPLEMENTED) Updates a user.
+
+        ---
+        tags:
+          - users
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: UserCreationForm
+              required:
+                - uid
+                - phone_number
+                - membership
+                - display_name
+                - photo_url
+                - pickupAddress
+              properties:
+                uid:
+                  description: UID
+                  type: string
+                phone_number:
+                  description: Phone Number
+                  type: string
+                membership:
+                  description: Membership
+                display_name:
+                  description: Name
+                photo_url:
+                  description: (Profile) Photo URL
+                pickupAddress:
+                  description: (Default) Pickup Address
+
+        responses:
+          200:
+            description: user updated
+          400:
+            description: form fields error
+
+        # Description
+        #   (user has to be already POST'ed to '/users')
+        #
+        # Comments below are outdated but preserved for reference:
+        #     Handles client FCM Token refresh
+        #         https://firebase.google.com/docs/cloud-messaging/android/client#monitor-token-generation
+        #     Note that FCM refresh shall not override the user's settings for enabling notification
+        #         (if specified in requirement).
+        # End of outdated comments
 
         :type self:
         :param self:

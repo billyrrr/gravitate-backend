@@ -40,6 +40,31 @@ class GroupCronTasksService(Resource):
 
     @validate_cron
     def get(self):
+        """
+        Triggers an automatic grouping for all incomplete requests. \
+            (temporary: will migrate to other ways to trigger grouping) \
+            Can only be called by google cloud cron tasks.
+
+        ---
+        tags:
+          - groupAll
+          # operationId: find ride request by id
+
+        responses:
+            '200':
+              description: successful operation
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                operationMode:
+                  type: string
+                  example: all
+            '403':
+              description: Unauthorized. This resource must be run with Appengine-Cron.
+            default:
+              description: unexpected error
+        """
         all_ride_request_ids = RideRequestGenericDao().get_ids(incomplete=True)
         actions.group_many(all_ride_request_ids)
         response_dict = {"success": True, "operationMode": "all"}
@@ -53,6 +78,52 @@ class GroupTasksService(Resource):
     """
 
     def post(self):
+        """
+        Matches rideRequests in ways specified in the given json
+
+        ---
+        tags:
+          - groupTasks
+
+        parameters:
+          - in: body
+            name: body
+            schema:
+              id: GroupTask
+              required:
+                - operationMode
+              properties:
+                operationMode:
+                  type: string
+                  enum:
+                    - two
+                    - many
+                    - all
+                rideRequestIds:
+                  type: array
+                  items:
+                    name: rideRequestId
+                    type: string
+                    example: "riderequestid1"
+
+        responses:
+          '200':
+            description: successful operation
+            properties:
+              success:
+                type: boolean
+                example: true
+              operationMode:
+                type: string
+                example: all
+
+          '400':
+            description: unexpected error
+            properties:
+              error:
+                description: error message
+                example: "Not specified operation mode."
+        """
         request_json = request.get_json()
         request_form = json.loads(request_json) if (
                 type(request_json) != dict) else request_json

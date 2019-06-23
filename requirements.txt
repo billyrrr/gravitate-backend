@@ -30,7 +30,17 @@ python-coveralls
 networkx
 
 flasgger
+
 sphinx
 
 google-cloud-tasks
 googleapis-common-protos
+
+
+# PRESERVE ORDER (pip install marshmallow apispec)
+marshmallow
+# NOTE: apispec==1.0.0b4 won't work either without changing source code
+apispec==1.0.0b4
+apispec_webframeworks
+
+flask_marshmallow
