@@ -1,14 +1,18 @@
+import json
 import unittest
 
+from firebase_admin import auth
 from google.cloud import firestore
 
 from gravitate import main as main
 from gravitate.domain.location import LocationGenericDao, Location
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
+from gravitate.context import Context as CTX
 from test import scripts
 from test.store import getEventDict, getLocationDict
 from test.test_main import getMockAuthHeaders
+from test.test_services.test_user.test_services import test_user1_dict
 
 
 class UserEventServiceTest(unittest.TestCase):
@@ -19,7 +23,7 @@ class UserEventServiceTest(unittest.TestCase):
         self.app = main.app.test_client()
 
     def test_put_many(self):
-        fb_dicts = { "data": [
+        fb_dicts = {"data": [
             {
                 "description": "Pool season will be back in session from June 7-9 for Splash House 2019 💦\n\nPackages and early bird pre-sale begins Wed, 2/6 at 12PM PT at www.splashhouse.com \n21+\n\nJune 7 / 8 / 9\nPalm Springs, CA\nBringing the best house music to 3 resorts:\nRenaissance Palm Springs Hotel\nThe Riviera Palm Springs, A Tribute Portfolio Resort\nThe Saguaro Palm Springs\n+\nAfter Hours at Palm Springs Air Museum",
                 "end_time": "2019-06-09T23:00:00-0700",
@@ -159,7 +163,7 @@ class UserEventServiceTest(unittest.TestCase):
                 "id": "629428087472698",
                 "rsvp_status": "unsure"
             }
-        ] }
+        ]}
         r = self.app.put(path='/me/events',
                          headers=getMockAuthHeaders(),
                          json=fb_dicts
@@ -240,7 +244,6 @@ class EventServiceTest(unittest.TestCase):
     maxDiff = None
 
     def setUp(self):
-
         self.refs_to_delete = list()
 
         event_dict = getEventDict(use_firestore_ref=True,
@@ -304,3 +307,63 @@ class EventServiceTest(unittest.TestCase):
             ref.delete()
         self.refs_to_delete.clear()
         self.c.clear_after()
+
+
+class DefaultRideTest(unittest.TestCase):
+
+    def setUp(self):
+        self.refs_to_delete = list()
+
+        event_dict = getEventDict(use_firestore_ref=True,
+                                  to_earliest=1545033600,
+                                  to_latest=1545119999,
+                                  from_earliest=1545033600,
+                                  from_latest=1545119999)
+
+        self.event = Event.from_dict(event_dict)
+
+        main.app.testing = True
+        self.app = main.app.test_client()
+        self.userId = test_user1_dict["uid"]
+        auth.create_user(app=CTX.firebaseApp, uid=test_user1_dict["uid"])
+        path = '/users/' + test_user1_dict["uid"]
+        r = self.app.post(path=path, json=json.dumps(test_user1_dict))
+        assert r.status_code == 200
+
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000", num_days=5)
+
+        # Populate location
+        location_ref = event_dict["locationRef"]
+        location_d = getLocationDict(location_category="social")
+        location = Location.from_dict(location_d)
+        LocationGenericDao().set(location, location_ref)
+        self.refs_to_delete.append(location_ref)
+
+        event_ref: firestore.DocumentReference = EventDao().create(self.event)
+        self.event.set_firestore_ref(event_ref)
+        self.refs_to_delete.append(event_ref)
+        self.event_id = event_ref.id
+
+    def tearDown(self):
+        auth.delete_user(app=CTX.firebaseApp, uid=test_user1_dict["uid"])
+
+        for ref in self.refs_to_delete:
+            ref.delete()
+        self.refs_to_delete.clear()
+        self.c.clear_after()
+
+    def test_get_default_ride(self):
+        r = self.app.get(path='/events' + '/' + self.event_id
+                              + '/' + 'defaultRide' + '?toEvent=true',
+                         headers=getMockAuthHeaders(self.userId)
+                         )
+
+        self.assertEqual(r.status_code, 200, "GET is successful")
+
+        result = r.json
+        expected = {'earliest': '2018-12-17T00:00:00', 'latest': '2018-12-17T23:59:59',
+                    'eventId': self.event_id, 'rideCategory': 'airport', 'pickupAddress': 'UCSD',
+                    'driverStatus': False}
+        self.assertDictEqual(expected, result)

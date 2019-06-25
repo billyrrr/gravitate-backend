@@ -1,5 +1,5 @@
 from flask import request
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from google.cloud.firestore import DocumentReference
 
 import gravitate.api_server.utils as service_utils
@@ -241,7 +241,41 @@ class EventAutofillService(Resource):
           default:
             description: unexpected error
         """
-        raise NotImplementedError
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('toEvent',
+                            type=bool,
+                            help='True if the ride arriving to the event. False if leaving the event.')
+        args = parser.parse_args()
+
+        to_event = args['toEvent']
+
+        event = EventDao().get_by_id(event_id=eventId)
+
+        d = dict()
+
+        if to_event:
+            to_event_target = [ target for target in event.targets if target.to_event ].pop()
+            d['earliest'] = to_event_target.get_earliest_arrival_view()
+            d['latest'] = to_event_target.get_latest_arrival_view()
+        else:
+            from_event_target = [target for target in event.targets if not target.to_event].pop()
+            d['earliest'] = from_event_target.get_earliest_departure_view()
+            d['latest'] = from_event_target.get_latest_departure_view()
+
+        d['eventId'] = eventId
+
+        d['rideCategory'] = event.event_category  # TODO: debug
+
+        user = UserDao().get_user_by_id(userId=uid)
+
+        # Note that pickupAddress may not be valid
+        # User may need to reenter the pickupAddress and resubmit
+        d['pickupAddress'] = user.pickupAddress
+
+        d['driverStatus'] = user.membership == "driver"  # TODO: debug
+
+        return d
 
 
 class EventService(Resource):
