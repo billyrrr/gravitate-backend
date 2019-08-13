@@ -12,6 +12,6 @@ def update_user(user: User):
                      phone_number=user.phone_number,
                      display_name=user.display_name,
                      photo_url=user.photo_url,
-                     disabled=False, app=config.Context.firebaseApp)
+                     disabled=False, app=config.Context.firebase_app)
 
 # TODO: firebase_admin auth
