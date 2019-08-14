@@ -5,7 +5,7 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
 
 from unittest import TestCase
 
-from gravitate.domain.luggage.boiler_models import Luggages, LuggageItem
+from gravitate.domain.luggage.models import Luggages, LuggageItem
 
 
 class LuggageItemTest(TestCase):
@@ -29,9 +29,6 @@ class LuggageItemTest(TestCase):
         expected.luggage_type = "large"
 
         assert_luggage_equal(expected, luggage_item)
-
-
-
 
 
 # @skip("not yet implemented. Comment this decorator when test is needed")
@@ -119,7 +116,8 @@ class LuggagesTest(TestCase):
             "total_weight": 20,
             "total_count": 1
         }
-        self.assertDictEqual(expected_dict, luggages.to_dict(), "Luggages did not return correct dict")
+        self.assertDictEqual(expected_dict, luggages.to_dict(),
+                             "Luggages did not return correct dict")
 
     def test_to_dict_two_pcs(self):
         luggages = Luggages()
@@ -138,11 +136,13 @@ class LuggagesTest(TestCase):
             "total_weight": 35,
             "total_count": 2
         }
-        self.assertDictEqual(expected_dict, luggages.to_dict(), "Luggages did not return correct dict")
+        self.assertDictEqual(expected_dict, luggages.to_dict(),
+                             "Luggages did not return correct dict")
 
     def test_to_dict_many_pcs(self):
         luggages = Luggages()
-        luggages._luggage_list = [self.luggage_list[0], self.luggage_list[1], self.luggage_list[2]]
+        luggages._luggage_list = [self.luggage_list[0], self.luggage_list[1],
+                                  self.luggage_list[2]]
         expected_dict = {
             "luggages": [
                 {
@@ -161,7 +161,8 @@ class LuggagesTest(TestCase):
             "total_weight": 60,
             "total_count": 3
         }
-        self.assertDictEqual(expected_dict, luggages.to_dict(), "Luggages did not return correct dict")
+        self.assertDictEqual(expected_dict, luggages.to_dict(),
+                             "Luggages did not return correct dict")
 
     def test_from_dict(self):
         d = {
@@ -179,7 +180,5 @@ class LuggagesTest(TestCase):
             "total_count": 2
         }
         luggages = Luggages.from_dict(d)
-        self.assertListEqual(luggages._luggage_list, [self.luggage_list[0], self.luggage_list[1]])
-
-
-
+        self.assertListEqual(luggages._luggage_list,
+                             [self.luggage_list[0], self.luggage_list[1]])

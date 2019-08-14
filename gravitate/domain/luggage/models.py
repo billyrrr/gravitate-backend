@@ -1,9 +1,55 @@
-class Luggages:
+
+from flask_boiler import serializable, schema, fields
+
+Schema = schema.Schema
+
+
+class LuggageItemSchema(Schema):
+    luggage_type = fields.Str(load_from="luggage_type", dump_to="luggage_type")
+    weight_in_lbs = fields.Integer(load_from="weight_in_lbs", dump_to="weight_in_lbs")
+
+
+class LuggageCollectionSchema(Schema):
+    luggages = fields.Nested('LuggageItemSchema', many=True, load_from="luggages", dump_to="luggages")
+    total_weight = fields.Integer(dump_to="total_weight", dump_only=True)
+    total_count = fields.Integer(dump_to="total_count", dump_only=True)
+
+
+class LuggageItem(serializable.Serializable):
+
+    _schema = LuggageItemSchema()
+
+    def __init__(self):
+        super().__init__()
+        self.luggage_type = str()
+        self.weight_in_lbs = int()
+
+
+class Luggages(serializable.Serializable):
     """ Keeps track of luggage amount
     """
 
+    _schema = LuggageCollectionSchema()
+
     def __init__(self):
+        super().__init__()
         self._luggage_list = []
+
+    @property
+    def luggages(self):
+        return self._luggage_list.copy()
+
+    @luggages.setter
+    def luggages(self, val):
+        self._luggage_list = val.copy()
+
+    @property
+    def total_weight(self) -> int:
+        return self._get_weight()
+
+    @property
+    def total_count(self) -> int:
+        return self._get_count()
 
     def add(self, luggage: dict):
         """ Append a piece of luggage to self._luggage_list
@@ -20,7 +66,7 @@ class Luggages:
         """
         return len(self._luggage_list)
 
-    def _get_weight(self) -> float:
+    def _get_weight(self) -> int:
         """ Returns the weight for luggages by accumulating all luggages in self._luggage_list.
 
         :return:
@@ -33,36 +79,6 @@ class Luggages:
                     weight += v
 
         return weight
-
-    @staticmethod
-    def from_dict(d: dict):
-        """ Creates a Luggages class with a dict presentation of luggages.
-
-        :return:
-        """
-
-        # Obtain the list from dictionary
-        # Create Luggages object
-        # Use add_from_list
-        # return the Luggages object that you created
-
-        luggagelist = []
-        index = 0
-        for a in d['luggages']:
-            luggagelist.insert(index, a)
-            index += 1
-        updated = Luggages()
-        updated.add_from_list(luggagelist)
-        return updated
-
-    def to_dict(self) -> dict:
-        """ Returns a dict representation of all luggages
-        Get value for "total_weight" by self._get_weight() and value for "total_count" by self._get_count().
-
-        :return:
-        """
-
-        return {"luggages": self._luggage_list, "total_weight": self._get_weight(), "total_count": self._get_count()}
 
     def add_from_list(self, l: list):
         """ Add luggages from a list of luggages
