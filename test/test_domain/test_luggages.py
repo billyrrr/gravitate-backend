@@ -5,7 +5,33 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
 
 from unittest import TestCase
 
-from gravitate.domain.luggage.models import Luggages
+from gravitate.domain.luggage.boiler_models import Luggages, LuggageItem
+
+
+class LuggageItemTest(TestCase):
+
+    def setUp(self):
+        luggage_a = {
+            "luggage_type": "large",
+            "weight_in_lbs": 20
+        }
+        self.luggage = luggage_a
+
+    def test_from_dict(self):
+        luggage_item = LuggageItem.from_dict(self.luggage)
+
+        def assert_luggage_equal(a: LuggageItem, b: LuggageItem):
+            assert a.luggage_type == b.luggage_type
+            assert a.weight_in_lbs == b.weight_in_lbs
+
+        expected = LuggageItem()
+        expected.weight_in_lbs = 20
+        expected.luggage_type = "large"
+
+        assert_luggage_equal(expected, luggage_item)
+
+
+
 
 
 # @skip("not yet implemented. Comment this decorator when test is needed")
