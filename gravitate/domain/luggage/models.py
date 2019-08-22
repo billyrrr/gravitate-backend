@@ -17,7 +17,7 @@ class LuggageCollectionSchema(Schema):
 
 class LuggageItem(serializable.Serializable):
 
-    _schema = LuggageItemSchema()
+    _schema_cls = LuggageItemSchema
 
     def __init__(self):
         super().__init__()
@@ -29,7 +29,7 @@ class Luggages(serializable.Serializable):
     """ Keeps track of luggage amount
     """
 
-    _schema = LuggageCollectionSchema()
+    _schema_cls = LuggageCollectionSchema
 
     def __init__(self):
         super().__init__()
