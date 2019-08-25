@@ -6,6 +6,7 @@ Schema = schema.Schema
 class LuggageItemSchema(Schema):
     luggage_type = fields.Str(load_from="luggage_type", dump_to="luggage_type")
     weight_in_lbs = fields.Integer(load_from="weight_in_lbs", dump_to="weight_in_lbs")
+    # ride_request_id = fields.Integer(load_from="rideRequestId", dump_to="rideRequestId", required=False)
 
 
 class LuggageCollectionSchema(Schema):
@@ -41,7 +42,7 @@ class Luggages(view_model.ViewModel):
     @luggages.setter
     def luggages(self, val):
         for item in val:
-            self._luggage_d[ item.luggage_id ] = item
+            self._luggage_d[ item.doc_id ] = item
 
     @property
     def total_weight(self) -> int:

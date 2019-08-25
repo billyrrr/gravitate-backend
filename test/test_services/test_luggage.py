@@ -1,5 +1,6 @@
 import json
 from unittest import TestCase
+import time
 
 from google.cloud.firestore import DocumentReference
 from google.cloud.firestore import CollectionReference
@@ -49,10 +50,15 @@ class GetLuggageTest(TestCase):
         # self.assertDictEqual(dict_expected, result)
 
     def testGetTrivial(self):
+        """
+        Note that teardown will not delete the nested collection
+        :return:
+        """
 
         doc_ref: DocumentReference = CTX.db.document(
             "rideRequests/{}/lcc/luggages_vm".format(self.rideRequestId)
         )
+
         doc_ref.set(document_data={
                     "luggages": [
                     ],
@@ -61,15 +67,70 @@ class GetLuggageTest(TestCase):
                     "obj_type": "Luggages"
                 })
 
+        time.sleep(2)
+
+        r = self.app.get(
+            path='/rideRequests' + '/' + self.rideRequestId + '/' + "luggage",
+            headers=getMockAuthHeaders()
+            )
+
+        dict_expected = {
+            "luggages": [
+            ],
+            "total_weight": 0,
+            "total_count": 0
+        }
+
+        result = dict(r.json)
+
+        self.assertEqual(r.status_code, 200, "GET is successful")
+        self.assertDictEqual(dict_expected, result)
+
+    def testGet(self):
+        """
+        Note that teardown will not delete the nested collection
+        :return:
+        """
+
+        # doc_ref: DocumentReference = CTX.db.document(
+        #     "rideRequests/{}/lcc/luggages_vm".format(self.rideRequestId)
+        # )
+        #
+        #
+        #
+        # doc_ref.set(document_data={
+        #             "luggages": [
+        #             ],
+        #             "total_weight": 0,
+        #             "total_count": 0,
+        #             "obj_type": "Luggages"
+        #         })
+
+        _ref: CollectionReference = CTX.db.collection("LuggageItem")
+        _ref.add(
+            {
+                "luggage_type": "large",
+                "weight_in_lbs": 20,
+                "rideRequestId": self.rideRequestId,
+                "obj_type": "LuggageItem"
+            }
+        )
+
+        time.sleep(2)
+
         r = self.app.get(path='/rideRequests' + '/' + self.rideRequestId + '/' + "luggage",
                          headers=getMockAuthHeaders()
                          )
 
         dict_expected = {
                     "luggages": [
+                        {
+                            "luggage_type": "large",
+                            "weight_in_lbs": 20,
+                        }
                     ],
-                    "total_weight": 0,
-                    "total_count": 0
+                    "total_weight": 20,
+                    "total_count": 1
             }
 
         result = dict(r.json)

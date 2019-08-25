@@ -3,7 +3,7 @@ Flask==1.0.2
 gunicorn==19.9.0
 
 google-auth==1.5.1
-google-cloud-datastore
+google-cloud-datastore>=1.4.0
 google-api-python-client
 googlemaps
 
@@ -38,9 +38,9 @@ googleapis-common-protos
 
 
 # PRESERVE ORDER (pip install marshmallow apispec)
-marshmallow
+marshmallow==2.19.2
 # NOTE: apispec==1.0.0b4 won't work either without changing source code
-apispec==1.0.0b4
+apispec
 apispec_webframeworks
 
 flask_marshmallow

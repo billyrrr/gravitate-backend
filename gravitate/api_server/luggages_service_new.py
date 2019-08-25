@@ -15,8 +15,8 @@ luggages_doc_mapper = \
 
 def register_luggages_service_new(app):
 
-    view.document_as_view(app=app,
+    view.flask_as_view(app=app, domain_model_cls=models.LuggageItem,
                           view_model_cls=models.Luggages,
                           endpoint="/rideRequests/<string:rideRequestId>/luggage",
-                          mapper=luggages_doc_mapper)
+                        )
 
