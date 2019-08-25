@@ -5,7 +5,7 @@ Instruction: run LuggagesTest in your IDE. Run test_context first to show that y
 
 from unittest import TestCase, skip
 
-from gravitate.domain.luggage.models import Luggages, LuggageItem
+from gravitate.domain.luggage_new.models import Luggages, LuggageItem
 
 
 class LuggageItemTest(TestCase):
