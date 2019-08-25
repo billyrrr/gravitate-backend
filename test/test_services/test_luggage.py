@@ -1,10 +1,14 @@
 import json
 from unittest import TestCase
 
+from google.cloud.firestore import DocumentReference
+from google.cloud.firestore import CollectionReference
+
 from gravitate import main as main
 from test import scripts
 from test.test_main import getMockAuthHeaders
 from test.test_services.utils import _create_ride_requests_for_tests
+from gravitate.context import Context as CTX
 
 
 class GetLuggageTest(TestCase):
@@ -35,7 +39,38 @@ class GetLuggageTest(TestCase):
                          headers=getMockAuthHeaders()
                          )
 
+
+
         dict_expected = {}
+        # print(r)
+        # result = dict(r.json)
+
+        self.assertEqual(r.status_code, 200, "GET is successful")
+        # self.assertDictEqual(dict_expected, result)
+
+    def testGetTrivial(self):
+
+        doc_ref: DocumentReference = CTX.db.document(
+            "rideRequests/{}/lcc/luggages_vm".format(self.rideRequestId)
+        )
+        doc_ref.set(document_data={
+                    "luggages": [
+                    ],
+                    "total_weight": 0,
+                    "total_count": 0,
+                    "obj_type": "Luggages"
+                })
+
+        r = self.app.get(path='/rideRequests' + '/' + self.rideRequestId + '/' + "luggage",
+                         headers=getMockAuthHeaders()
+                         )
+
+        dict_expected = {
+                    "luggages": [
+                    ],
+                    "total_weight": 0,
+                    "total_count": 0
+            }
 
         result = dict(r.json)
 

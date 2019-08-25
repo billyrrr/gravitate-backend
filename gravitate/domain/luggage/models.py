@@ -6,11 +6,10 @@ Schema = schema.Schema
 class LuggageItemSchema(Schema):
     luggage_type = fields.Str(load_from="luggage_type", dump_to="luggage_type")
     weight_in_lbs = fields.Integer(load_from="weight_in_lbs", dump_to="weight_in_lbs")
-    doc_id = fields.Str(dump_to="luggage_id", dump_only=True)
 
 
 class LuggageCollectionSchema(Schema):
-    luggages = fields.Nested('LuggageItemSchema', many=True, load_from="luggages", dump_to="luggages")
+    luggages = fields.Raw(many=True, load_from="luggages", dump_to="luggages")
     total_count = fields.Integer(dump_to="total_count", dump_only=True)
     total_weight = fields.Integer(dump_to="total_weight", dump_only=True)
 
@@ -23,7 +22,6 @@ class LuggageItem(domain_model.DomainModel):
         super().__init__(*args, **kwargs)
         self.luggage_type = str()
         self.weight_in_lbs = int()
-        self.luggage_id = str()
 
 
 class Luggages(view_model.ViewModel):
@@ -38,15 +36,12 @@ class Luggages(view_model.ViewModel):
 
     @property
     def luggages(self):
-        return [ v._export_as_view_dict() for _, v in self._luggage_d.items() ]
+        return [ v for _, v in self._luggage_d.items() ]
 
     @luggages.setter
     def luggages(self, val):
-        for item_d in val:
-            self._luggage_d[ item_d["luggage_id"] ] = \
-                LuggageItem.from_dict(item_d,
-                                      doc_id=item_d["luggage_id"]
-                                      )
+        for item in val:
+            self._luggage_d[ item.luggage_id ] = item
 
     @property
     def total_weight(self) -> int:

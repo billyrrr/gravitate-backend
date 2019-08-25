@@ -39,7 +39,7 @@ class LuggagesTest(TestCase):
         d_a = {
             "luggage_type": "large",
             "weight_in_lbs": 20,
-            "luggage_id": id_a  # abnormal usage
+            "doc_id": id_a  # abnormal usage
         }
         luggage_a = LuggageItem.from_dict( d_a, doc_id=id_a)
         luggage_a.save()
@@ -48,7 +48,7 @@ class LuggagesTest(TestCase):
         d_b = {
             "luggage_type": "medium",
             "weight_in_lbs": 15,
-            "luggage_id": id_b  # abnormal usage
+            "doc_id": id_b  # abnormal usage
         }
         luggage_b = LuggageItem.from_dict( d_b, doc_id=id_b )
         luggage_b.save()
@@ -57,7 +57,7 @@ class LuggagesTest(TestCase):
         d_c = {
             "luggage_type": "medium",
             "weight_in_lbs": 25,
-            "luggage_id": id_c  # abnormal usage
+            "doc_id": id_c  # abnormal usage
         }
         luggage_c = LuggageItem.from_dict( d_c, doc_id=id_c )
         luggage_c.save()
@@ -66,7 +66,7 @@ class LuggagesTest(TestCase):
         d_d = {
             "luggage_type": "small",
             "weight_in_lbs": 5,
-            "luggage_id": id_d  # abnormal usage
+            "doc_id": id_d  # abnormal usage
         }
         luggage_d = LuggageItem.from_dict( d_d, doc_id=id_d )
         luggage_d.save()
@@ -88,14 +88,14 @@ class LuggagesTest(TestCase):
     def test_add_one(self):
         luggages = Luggages()
         luggages.set("luggage_id_0", self.luggage_list[0])
-        self.assertListEqual(luggages.luggages, [self.luggage_d_list[0]])
+        self.assertListEqual(luggages.luggages, [self.luggage_list[0]])
 
     def test_add_many(self):
         luggages = Luggages()
         for idx in range(len(self.luggage_list)):
             luggage = self.luggage_list[idx]
             luggages.set("luggage_id_{}".format(idx), luggage)
-        self.assertListEqual(luggages.luggages, self.luggage_d_list)
+        self.assertListEqual(luggages.luggages, self.luggage_list)
 
     def test_get_count(self):
         """ Tests that Luggages class counts luggages correctly.
@@ -128,8 +128,10 @@ class LuggagesTest(TestCase):
         expected_dict = {
             "luggages": [
                 {
+                    # "doc_id": "luggage_id_0",
                     "luggage_type": "large",
-                    "weight_in_lbs": 20
+                    "weight_in_lbs": 20,
+                    # 'obj_type': 'LuggageItem'
                 }
             ],
             "total_weight": 20,
@@ -137,6 +139,26 @@ class LuggagesTest(TestCase):
         }
         self.assertDictEqual(expected_dict, luggages.to_dict(),
                              "Luggages did not return correct dict")
+
+    def test_to_view_dict_one_pcs(self):
+        """
+        Tests that Luggages successfully returns view dict with correct count and weight.
+        :return:
+        """
+        luggages = Luggages()
+        luggages.set("luggage_id_0", self.luggage_list[0])
+        expected_dict = {
+            "luggages": [
+                {
+                    "luggage_type": "large",
+                    "weight_in_lbs": 20
+                }
+            ],
+            "total_weight": 20,
+            "total_count": 1
+        }
+        self.assertDictEqual(expected_dict, luggages.to_view_dict(),
+                             "Luggages did not return correct view dict")
 
     def test_to_dict_two_pcs(self):
         luggages = Luggages()
@@ -146,11 +168,13 @@ class LuggagesTest(TestCase):
             "luggages": [
                 {
                     "luggage_type": "large",
-                    "weight_in_lbs": 20
+                    "weight_in_lbs": 20,
+                    # 'obj_type': 'LuggageItem'
                 },
                 {
                     "luggage_type": "medium",
-                    "weight_in_lbs": 15
+                    "weight_in_lbs": 15,
+                    # 'obj_type': 'LuggageItem'
                 }
             ],
             "total_weight": 35,
@@ -168,15 +192,18 @@ class LuggagesTest(TestCase):
             "luggages": [
                 {
                     "luggage_type": "large",
-                    "weight_in_lbs": 20
+                    "weight_in_lbs": 20,
+                    # 'obj_type': 'LuggageItem'
                 },
                 {
                     "luggage_type": "medium",
-                    "weight_in_lbs": 15
+                    "weight_in_lbs": 15,
+                    # 'obj_type': 'LuggageItem'
                 },
                 {
                     "luggage_type": "medium",
-                    "weight_in_lbs": 25
+                    "weight_in_lbs": 25,
+                    # 'obj_type': 'LuggageItem'
                 }
             ],
             "total_weight": 60,
