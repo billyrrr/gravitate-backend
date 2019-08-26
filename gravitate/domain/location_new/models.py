@@ -5,16 +5,15 @@ from gravitate.domain.driver_navigation.utils import get_coordinates, \
 Schema = schema.Schema
 
 
-class CoordinateSchema(Schema):
-    latitude = fields.Raw(load_from="latitude", dump_to="latitude")
-    longitude = fields.Raw(load_from="longitude", dump_to="longitude")
+# class CoordinateSchema(Schema):
+#     latitude = fields.Raw(load_from="latitude", dump_to="latitude")
+#     longitude = fields.Raw(load_from="longitude", dump_to="longitude")
 
 
 class LocationSchema(Schema):
 
-    coordinates = fields.Nested(CoordinateSchema,
-                                load_from="coordinates",
-                                dump_to="coordinates")
+    coordinates = fields.Raw(load_from="coordinates",
+                             dump_to="coordinates")
     address = fields.Raw(load_from="address",
                          dump_to="address")
 
