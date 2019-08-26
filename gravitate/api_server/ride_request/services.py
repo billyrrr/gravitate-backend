@@ -16,7 +16,7 @@ from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
 from gravitate.domain.luggage.models import Luggages
-from gravitate.schemas.luggage import LuggageCollectionSchema
+from gravitate.schemas.luggage import LuggageCollectionSchemaOld
 from . import parsers as ride_request_parsers
 
 db = Context.db
@@ -283,7 +283,7 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
-luggages_schema = LuggageCollectionSchema()
+luggages_schema = LuggageCollectionSchemaOld()
 
 
 class AccommodationService(Resource):

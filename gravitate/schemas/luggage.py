@@ -5,10 +5,10 @@ from flasgger import Schema, fields
 # ma = Marshmallow()
 
 
-class LuggageItemSchema(Schema):
+class LuggageItemSchemaOld(Schema):
     luggage_type = fields.Str()
     weight_in_lbs = fields.Number()
 
 
-class LuggageCollectionSchema(Schema):
-    luggages = fields.Nested('LuggageItemSchema', many=True)
+class LuggageCollectionSchemaOld(Schema):
+    luggages = fields.Nested('LuggageItemSchemaOld', many=True)

@@ -1,1 +1,1 @@
-from .luggage import LuggageCollectionSchema, LuggageItemSchema
+from .luggage import LuggageCollectionSchemaOld, LuggageItemSchemaOld

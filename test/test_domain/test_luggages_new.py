@@ -8,6 +8,7 @@ from unittest import TestCase, skip
 from gravitate.domain.luggage_new.models import Luggages, LuggageItem
 
 
+@skip
 class LuggageItemTest(TestCase):
 
     def setUp(self):
@@ -32,6 +33,7 @@ class LuggageItemTest(TestCase):
 
 
 # @skip("not yet implemented. Comment this decorator when test is needed")
+@skip
 class LuggagesTest(TestCase):
 
     def setUp(self):
