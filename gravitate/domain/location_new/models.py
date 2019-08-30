@@ -1,4 +1,5 @@
 from flask_boiler import schema, fields, domain_model
+from flask_boiler.src.serializable import SerializableClsFactory
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
     get_address
 
@@ -18,26 +19,16 @@ class LocationSchema(Schema):
                          dump_to="address")
 
 
-class Location(domain_model.DomainModel):
-
-    _schema_cls = LocationSchema
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.coordinates = dict()
-        self.address = str()
+Location = SerializableClsFactory.create(
+    "Location", LocationSchema, base=domain_model.DomainModel)
 
 
 class UserLocationSchema(LocationSchema):
     pass
 
 
-class UserLocation(Location):
-
-    _schema_cls = UserLocationSchema
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+UserLocation = SerializableClsFactory.create(
+    "UserLocation", UserLocationSchema, base=domain_model.DomainModel)
 
 
 class SocialEventLocationSchema(LocationSchema):
@@ -47,13 +38,10 @@ class SocialEventLocationSchema(LocationSchema):
         dump_to="eventName")
 
 
-class SocialEventLocation(Location):
-
-    _schema_cls = SocialEventLocationSchema
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.event_name = str()
+SocialEventLocation = SerializableClsFactory.create(
+    "SocialEventLocation",
+    SocialEventLocationSchema,
+    base=domain_model.DomainModel)
 
 
 class UcLocationSchema(LocationSchema):
@@ -62,14 +50,9 @@ class UcLocationSchema(LocationSchema):
     campus_name = fields.Raw(load_from="campusName", dump_to="campusName")
 
 
-class UcLocation(Location):
-
-    _schema_cls = UcLocationSchema
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.campus_code = str()
-        self.campus_name = str()
+UcLocation = SerializableClsFactory.create(
+    "UcLocation", UcLocationSchema, base=domain_model.DomainModel
+)
 
 
 class AirportLocationSchema(LocationSchema):
@@ -77,13 +60,9 @@ class AirportLocationSchema(LocationSchema):
     airport_code = fields.Raw(load_from="airportCode", dump_to="airportCode")
 
 
-class AirportLocation(Location):
-
-    _schema_cls = AirportLocationSchema
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.airport_code = str()
+AirportLocation = SerializableClsFactory.create(
+    "AirportLocation", AirportLocationSchema, base=domain_model.DomainModel
+)
 
 
 campus_code_table = {
