@@ -3,6 +3,7 @@ from unittest import TestCase
 from gravitate.domain.location import Location
 from gravitate.domain.event.builders_new import AirportEventBuilder, FbEventBuilder, build_ucsb_event
 from gravitate.domain.event.models import AirportEvent, SocialEvent, CampusEvent
+from gravitate.domain.location.models import LocationFactory
 from test import scripts
 
 
@@ -132,7 +133,7 @@ class CampusEventBuilderTest(TestCase):
     def setUp(self):
         self._to_delete = list()
 
-        campusLocation = Location.from_code("UCSB", "campus")
+        campusLocation = LocationFactory.from_code("UCSB", "campus")
         campusLocation.save()
         self._to_delete.append(campusLocation.doc_ref)
         self.event_dict = {

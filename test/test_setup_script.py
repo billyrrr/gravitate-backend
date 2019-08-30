@@ -10,7 +10,7 @@ db = CTX.db
 
 
 def _count_location_docs():
-    location_col_ref: CollectionReference = db.collection("locations")
+    location_col_ref: CollectionReference = db.collection("Location")
     all_docs = location_col_ref.get()
     counter = 0
     for _ in all_docs:
@@ -19,6 +19,7 @@ def _count_location_docs():
 
 
 def _count_event_docs():
+    # TODO: change once switched to flask_boiler
     event_col_ref: CollectionReference = db.collection("events")
     all_docs = event_col_ref.get()
     counter = 0
@@ -30,6 +31,11 @@ def _count_event_docs():
 class SetupScriptTest(unittest.TestCase):
 
     def test_database_operations(self):
+        """
+        Note that tearDown is not called for this test.
+        This test may crush all other tests.
+        :return:
+        """
 
         c = setup_scripts.SetUpTestDatabase()
 

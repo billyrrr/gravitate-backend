@@ -6,7 +6,7 @@ import iso8601
 from gravitate.domain.event import AirportEvent
 from gravitate.domain.location import Location, SocialEventLocation
 from gravitate.domain.event.models import Event
-from gravitate.domain.location.models import LocationQuery
+from gravitate.domain.location.models import LocationQuery, LocationFactory
 from gravitate.models import ToEventTarget, FromEventTarget
 
 
@@ -168,7 +168,7 @@ class FbEventBuilder(EventBaseBuilder):
         :param d:
         :return:
         """
-        location: SocialEventLocation = SocialEventLocation.from_fb_place(d)
+        location: SocialEventLocation = LocationFactory.from_fb_place(d)
         location.save()
         self._event_dict["locationRef"] = location.doc_ref
 
