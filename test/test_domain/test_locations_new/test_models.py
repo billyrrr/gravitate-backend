@@ -74,14 +74,11 @@ class SocialEventLocationModelTest(TestCase):
             "id": "20281766647"
         }
         location = models.LocationFactory.from_fb_place(fb_d)
-        result = location.to_dict()
-        expected_d = {
-            'obj_type': "SocialEventLocation",
-            'coordinates': {
+        self.assertDictEqual(location.coordinates, {
                 "latitude": 33.679974,
                 "longitude": -116.237221
-            },
-            'eventName': 'Coachella',
-            'address': 'Indio, CA, USA',
-        }
-        self.assertDictEqual(expected_d, result)
+            }
+        )
+        self.assertEqual(location.event_name, 'Coachella')
+        self.assertTrue(isinstance(location, models.SocialEventLocation))
+        self.assertEqual(location.address, 'Indio, CA, USA')
