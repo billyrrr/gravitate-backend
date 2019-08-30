@@ -73,6 +73,7 @@ class LocationGenericDao:
         location = Location.from_dict(snapshotDict)
         location.set_firestore_ref(locationRef)
         return location
+        return locationResult
 
     def set(self, location, location_ref: DocumentReference):
         location_ref.set(location.to_dict())

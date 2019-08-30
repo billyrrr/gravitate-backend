@@ -337,8 +337,8 @@ def getLocationDict(location_category="airport"):
 
 def getLocation():
     locationDict = getLocationDict()
-    location = Location.from_dict(locationDict)
-    location.set_firestore_ref(mock1["locationFirestoreRef"])
+    location = Location.from_dict(locationDict, doc_id=mock1["locationId"])
+    # location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
 
 

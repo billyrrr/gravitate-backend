@@ -3,7 +3,8 @@ Author: Zixuan Rao
 Reference: https://github.com/faif/python-patterns/blob/master/creational/builder.py
 
 """
-from gravitate.domain.location import Location, LocationGenericDao
+from gravitate.domain.location import Location, LocationGenericDao, \
+    AirportLocation
 
 
 class LocationBuilder(object):
@@ -23,7 +24,7 @@ class LocationBuilder(object):
         self.locationDict.update(otherDict)
 
     def exportToLocation(self):
-        return Location.from_dict(self.locationDict)
+        return AirportLocation.from_dict(self.locationDict)
 
 
 class LaxBuilder(LocationBuilder):
@@ -95,12 +96,10 @@ def doWork(airportCode='LAX'):
 
     if airportCode == 'LAX':
         airportLocation = LaxBuilder().exportToLocation()
-        ref = LocationGenericDao().insert_new(airportLocation)
-        airportLocation.set_firestore_ref(ref)
+        airportLocation.save()
     elif airportCode == 'SAN':
         airportLocation = SanBuilder().exportToLocation()
-        ref = LocationGenericDao().insert_new(airportLocation)
-        airportLocation.set_firestore_ref(ref)
+        airportLocation.save()
     else:
         raise ValueError
 
@@ -123,14 +122,16 @@ class PopulateLocationCommand:
 
         if self.airport_code == 'LAX':
             airportLocation = LaxBuilder().exportToLocation()
-            ref = LocationGenericDao().insert_new(airportLocation)
-            airportLocation.set_firestore_ref(ref)
-            refs.append(ref)
+            airportLocation.save()
+            # ref = LocationGenericDao().insert_new(airportLocation)
+            # airportLocation.set_firestore_ref(ref)
+            refs.append(airportLocation.doc_ref)
         elif self.airport_code == 'SAN':
             airportLocation = SanBuilder().exportToLocation()
-            ref = LocationGenericDao().insert_new(airportLocation)
-            airportLocation.set_firestore_ref(ref)
-            refs.append(ref)
+            # ref = LocationGenericDao().insert_new(airportLocation)
+            # airportLocation.set_firestore_ref(ref)
+            airportLocation.save()
+            refs.append(airportLocation.doc_ref)
         else:
             raise ValueError("unsupported airportCode: {}".format(self.airport_code))
 

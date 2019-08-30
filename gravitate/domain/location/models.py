@@ -1,79 +1,82 @@
-from gravitate.domain.driver_navigation.utils import get_coordinates, get_address
-from gravitate.models.firestore_object import FirestoreObject
+import warnings
+
+from google.cloud.firestore import Query
+
+from flask_boiler import schema, fields, domain_model
+from flask_boiler.src.serializable import SerializableClsFactory
+from gravitate.domain.driver_navigation.utils import get_coordinates, \
+    get_address
+
+Schema = schema.Schema
 
 
-class Location(FirestoreObject):
-
-    coordinates = {
-        'latitude': None,
-        'longitude': None
-    }
-
-    def __init__(self, coordinates, address):
-        super().__init__()
-        self.coordinates = coordinates
-        self.address = address
-
-    @staticmethod
-    def from_pickup_address(pickup_address):
-        coordinates = get_coordinates(pickup_address)
-        return UserLocation(coordinates=coordinates, address=pickup_address)
-
-    @staticmethod
-    def from_dict(location_dict):
-        coordinates = location_dict['coordinates']
-        address = location_dict['address']
-        location_category = location_dict['locationCategory']
-        if location_category == 'airport':
-            airport_code = location_dict['airportCode']
-            return AirportLocation(coordinates, address, airport_code)
-        elif location_category == 'social':
-            event_name = location_dict['eventName']
-            return SocialEventLocation(coordinates, address, event_name)
-        elif location_category == 'campus':
-            campus_code = location_dict['campusCode']
-            campus_name = location_dict['campusName']
-            coordinates = location_dict['coordinates']
-            address = location_dict['address']
-            return UcLocation(coordinates, address, campus_name, campus_code)
-        elif location_category == 'user':
-            return UserLocation(coordinates, address)
-        else:
-            raise NotImplementedError(
-                'Unsupported locationCategory ' + str(location_category) + '. ')
-                
-        return Location(coordinates, address)
-
-    @staticmethod
-    def from_code(code, location_category="campus"):
-        if location_category == "campus" and code in campus_code_table.keys():
-            return Location.from_dict(campus_code_table[code])
-        raise NotImplementedError
-    
-    def to_dict(self) -> dict:
-        return {
-            'coordinates': self.coordinates,
-            'address': self.address
-        }
+# class CoordinateSchema(Schema):
+#     latitude = fields.Raw(load_from="latitude", dump_to="latitude")
+#     longitude = fields.Raw(load_from="longitude", dump_to="longitude")
 
 
-class UserLocation(Location):
+class LocationDomainModelBase(domain_model.DomainModel):
 
-    def __init__(self, coordinates, address):
-        super().__init__(coordinates, address)
-        self.location_category = 'user'
+    _collection_name = "Location"
 
-    def to_dict(self):
-        return {
-            'locationCategory': self.location_category,
-            'coordinates': self.coordinates,
-            'address': self.address,
-        }
+
+class LocationSchema(Schema):
+
+    coordinates = fields.Raw(load_from="coordinates",
+                             dump_to="coordinates")
+    address = fields.Raw(load_from="address",
+                         dump_to="address")
+
+
+Location = SerializableClsFactory.create(
+    "Location", LocationSchema, base=LocationDomainModelBase)
+
+
+class UserLocationSchema(LocationSchema):
+    pass
+
+
+UserLocation = SerializableClsFactory.create(
+    "UserLocation", UserLocationSchema, base=Location)
+
+
+class SocialEventLocationSchema(LocationSchema):
+
+    event_name = fields.Raw(
+        load_from="eventName",
+        dump_to="eventName")
+
+
+SocialEventLocation = SerializableClsFactory.create(
+    "SocialEventLocation",
+    SocialEventLocationSchema,
+    base=Location)
+
+
+class UcLocationSchema(LocationSchema):
+
+    campus_code = fields.Raw(load_from="campusCode", dump_to="campusCode")
+    campus_name = fields.Raw(load_from="campusName", dump_to="campusName")
+
+
+UcLocation = SerializableClsFactory.create(
+    "UcLocation", UcLocationSchema, base=Location
+)
+
+
+class AirportLocationSchema(LocationSchema):
+
+    airport_code = fields.Raw(load_from="airportCode", dump_to="airportCode")
+
+
+AirportLocation = SerializableClsFactory.create(
+    "AirportLocation", AirportLocationSchema, base=Location
+)
 
 
 campus_code_table = {
     "UCSB": {
-        "locationCategory": "campus",
+        "obj_type": "UcLocation",
         "coordinates": {
             "latitude": 34.414132,
             "longitude": -119.848868
@@ -85,12 +88,20 @@ campus_code_table = {
 }
 
 
-class SocialEventLocation(Location):
+class LocationFactory:
 
-    def __init__(self, coordinates, address, event_name):
-        super().__init__(coordinates, address)
-        self.location_category = 'social'
-        self.event_name = event_name
+    @staticmethod
+    def from_pickup_address(pickup_address):
+        coordinates = get_coordinates(pickup_address)
+        obj = UserLocation.create()
+        obj.coordinates = coordinates
+        obj.address = pickup_address
+        return obj
+
+    @staticmethod
+    def from_code(code, location_category="campus"):
+        if location_category == "campus" and code in campus_code_table.keys():
+            return UcLocation.from_dict(campus_code_table[code])
 
     @staticmethod
     def from_fb_place(d):
@@ -107,78 +118,39 @@ class SocialEventLocation(Location):
         :return:
         """
         address = get_address(d["location"])
-        return SocialEventLocation(
-            coordinates=d["location"],
-            address=address,
-            event_name=d["name"]
-        )
 
-    def to_dict(self):
-        return {
-            'locationCategory': self.location_category,
-            'coordinates': self.coordinates,
-            'address': self.address,
-            'eventName': self.event_name
-        }
+        obj = SocialEventLocation.create()
+
+        obj.coordinates=d["location"]
+        obj.address=address
+        obj.event_name=d["name"]
+
+        return obj
 
 
-class UcLocation(Location):
-    """ Description
-        This class represents a UC campus in another city.
-    """
+class LocationQuery(Location):
 
-    def __init__(self, coordinates, address, campus_name, campus_code):
-        super().__init__(coordinates, address)
-        self.location_category = 'campus'
-        self.campus_name = campus_name
-        self.campus_code = campus_code
+    @classmethod
+    def find_by_airport_code(cls, airportCode) -> AirportLocation:
+        airportLocations = list( Location.where(airportCode=airportCode) )
+        if len(airportLocations) != 1:
+            warnings.warn(
+                "Airport Location that has the airport code"
+                " is not unique or does not exist: {}".format(
+                    airportLocations))
+            return None
+        result = airportLocations.pop()
+        return result
 
-    def to_dict(self):
-        return {
-            'locationCategory': self.location_category,
-            'coordinates': self.coordinates,
-            'address': self.address,
-            'campusName': self.campus_name,
-            'campusCode': self.campus_code,
-        }
+    @classmethod
+    def find_by_campus_code(self, campusCode) -> UcLocation:
+        campus_locations = list( Location.where(campusCode=campusCode) )
+        if len(campus_locations) != 1:
+            warnings.warn(
+                "Campus Location that has the campus code is not unique or does not exist: {}".format(
+                    campus_locations))
+            return None
 
+        result = campus_locations.pop()
+        return result
 
-class AirportLocation(Location):
-    """
-    Description
-        This class represents an airport location.
-        Two airport locations are considered the same if 
-            their airportCode (ie. "LAX") 
-            are identical. 
-
-    """
-
-    def __init__(self, coordinates, address, airport_code):
-        super().__init__(coordinates, address)
-        self.location_category = 'airport'
-        self.airport_code = airport_code
-
-    def is_lax(self):
-        return self.airport_code == 'LAX'
-
-    def to_dict(self):
-        return {
-            'locationCategory': self.location_category,
-            'coordinates': self.coordinates,
-            'address': self.address,
-            'airportCode': self.airport_code,
-        }
-
-    def __eq__(self, other):
-        """
-        Description
-            This method overrides python '==' operator and returns true if 
-                this and the other location is identical. 
-            Note that we are using python3 so overriding __neq__ is not necessary. 
-
-            :param self: 
-            :param other: 
-        """
-        if isinstance(other, AirportLocation):
-            return self.airport_code == other.airport_code
-    

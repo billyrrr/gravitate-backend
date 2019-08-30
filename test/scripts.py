@@ -75,9 +75,10 @@ class SetUpTestDatabase:
         self.refs_to_delete.extend(refs)
 
         d = store.getUserLocationDict()
-        location = Location.from_dict(d)
-        location_ref = store.getMockKeys()["originFirestoreRef"]
-        LocationGenericDao().set(location, location_ref)
+        location = Location.from_dict(d, doc_id=store.getMockKeys()["originId"])
+        location.save()
+        location_ref = location.doc_ref
+        # LocationGenericDao().set(location, location_ref)
         self.refs_to_delete.append(location_ref)
 
     def clear_after(self):

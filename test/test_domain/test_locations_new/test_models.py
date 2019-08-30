@@ -1,4 +1,4 @@
-from gravitate.domain.location_new import models
+from gravitate.domain.location import models
 from unittest import TestCase
 
 
