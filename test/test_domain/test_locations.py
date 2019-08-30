@@ -1,12 +1,13 @@
 from unittest import TestCase
 
 from gravitate.domain.location import Location, SocialEventLocation
+from gravitate.domain.location.models import LocationFactory
 
 
 class LocationModelTest(TestCase):
 
     def test_location_factory(self):
-        location = Location.from_pickup_address('Tenaya Hall, San Diego, CA 92161')
+        location = LocationFactory.from_pickup_address('Tenaya Hall, San Diego, CA 92161')
         location_dict = {
             'locationCategory': "user",
             'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
@@ -26,7 +27,7 @@ class EventLocationTest(TestCase):
             },
             "id": "20281766647"
         }
-        location = SocialEventLocation.from_fb_place(fb_d)
+        location = LocationFactory.from_fb_place(fb_d)
         result = location.to_dict()
         expected_d = {
             'locationCategory': "social",

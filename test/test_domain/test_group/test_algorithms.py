@@ -5,7 +5,7 @@ import test.store.model
 from gravitate import context
 from math import inf
 
-from gravitate.domain.location import LocationGenericDao, Location
+from gravitate.domain.location import Location
 from gravitate.domain.rides import RideRequest
 from gravitate import distance_func
 
@@ -131,7 +131,8 @@ class TestExportTuplePoints(unittest.TestCase):
 
             # Generate Test Locations
             location = Location.from_dict(location_d)
-            ref = LocationGenericDao().insert_new(location)
+            location.save()
+            ref = location.doc_ref
             ride_request.origin_ref = ref
 
             rideRequests.append(ride_request)

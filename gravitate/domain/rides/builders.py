@@ -1,6 +1,5 @@
 from typing import Type
 
-from gravitate.domain.location import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
 from . import utils
 from . import RideRequest
@@ -171,7 +170,7 @@ class RideRequestBaseBuilder:
 
     def _build_pickup(self):
         origin_location = Location.from_pickup_address(pickup_address=self.pickup_address)
-        origin_ref = LocationGenericDao().insert_new(origin_location)
+        origin_ref = Location.insert_new(origin_location)
         self._ride_request_dict["originRef"] = origin_ref
         # self._ride_request_dict["pickupAddress"] = self.pickup_address
 

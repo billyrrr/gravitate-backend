@@ -3,7 +3,7 @@ import unittest
 
 import test.store.model as model
 from gravitate import context
-from gravitate.domain.location import Location, LocationGenericDao
+from gravitate.domain.location import Location
 from gravitate.domain.location.models import LocationFactory, LocationQuery
 from test import scripts as setup_scripts
 
@@ -32,17 +32,11 @@ class LocationDAOTest(unittest.TestCase):
 
     def testSetWithTransaction(self):
         transaction = db.transaction()
-        ref = model.mock1["locationFirestoreRef"]
-        LocationGenericDao.set_with_transaction(transaction, model.getLocation(), ref)
-        self.to_delete.append(ref)
+        location = model.getLocation()
+        location.save(transaction=transaction)
+        self.to_delete.append(location.doc_ref)
         transaction.commit()
 
-    def testSetWithTransactionTransactional(self):
-        transaction = db.transaction()
-        ref = model.mock1["locationFirestoreRef"]
-        LocationGenericDao.set_with_transaction_transactional(transaction, model.getLocation(), ref)
-        self.to_delete.append(ref)
-        # transaction.commit()
 
     def testGet(self):
 

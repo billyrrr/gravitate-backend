@@ -3,8 +3,7 @@ Author: Zixuan Rao
 Reference: https://github.com/faif/python-patterns/blob/master/creational/builder.py
 
 """
-from gravitate.domain.location import Location, LocationGenericDao, \
-    AirportLocation
+from gravitate.domain.location import Location, AirportLocation
 
 
 class LocationBuilder(object):
@@ -38,7 +37,7 @@ class LaxBuilder(LocationBuilder):
 
     def buildAirportInfo(self):
         self.locationDict['airportCode'] = 'LAX'
-        self.locationDict['locationCategory'] = 'airport'
+        self.locationDict['obj_type'] = 'AirportLocation'
 
     def buildBasicInfo(self):
         self.locationDict['coordinates'] = {
@@ -55,7 +54,7 @@ class SanBuilder(LocationBuilder):
 
     def buildAirportInfo(self):
         self.locationDict['airportCode'] = 'SAN'
-        self.locationDict['locationCategory'] = 'airport'
+        self.locationDict['obj_type'] = 'AirportLocation'
 
     def buildBasicInfo(self):
         self.locationDict['coordinates'] = {
@@ -77,7 +76,8 @@ def buildLaxTerminal(terminal: str):
 
 def doWorkUc(campusCode="UCSB"):
     campusLocation = Location.from_code("UCSB", "campus")
-    ref = LocationGenericDao().insert_new(campusLocation)
+    campusLocation.save()
+    ref = campusLocation.doc_ref
     campusLocation.set_firestore_ref(ref)
 
 
@@ -86,7 +86,8 @@ def doWorkDeprecated():
 
     for terminal in terminals:
         airportLocation = buildLaxTerminal(terminal)
-        ref = LocationGenericDao().insert_new(airportLocation)
+        airportLocation.save()
+        ref = airportLocation.doc_ref
         airportLocation.set_firestore_ref(ref)
         print(vars(airportLocation))
 

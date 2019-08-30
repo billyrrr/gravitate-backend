@@ -3,7 +3,7 @@ import unittest
 from google.cloud import firestore
 
 from gravitate import main as main
-from gravitate.domain.location import LocationGenericDao, Location
+from gravitate.domain.location import Location
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
 from test import scripts
@@ -262,8 +262,8 @@ class EventServiceTest(unittest.TestCase):
         # Populate location
         location_ref = event_dict["locationRef"]
         location_d = getLocationDict(location_category="social")
-        location = Location.from_dict(location_d)
-        LocationGenericDao().set(location, location_ref)
+        location = Location.from_dict(location_d, doc_id=location_ref.id)
+        location.save()
         self.refs_to_delete.append(location_ref)
 
         event_ref: firestore.DocumentReference = EventDao().create(self.event)

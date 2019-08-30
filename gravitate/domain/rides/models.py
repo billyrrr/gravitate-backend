@@ -1,7 +1,6 @@
 """Author: Zixuan Rao, Andrew Kim
 """
-
-from gravitate.domain.location.dao import LocationGenericDao
+from gravitate.domain.location import Location
 from gravitate.models.firestore_object import FirestoreObject
 from gravitate.models.target import Target, ToEventTarget
 
@@ -77,7 +76,7 @@ class Ride(FirestoreObject):
         #     location = LocationGenericDao().get_with_transaction(self._transaction, pickup_location_ref)
         #     return location.address
         # else:
-        location = LocationGenericDao().get(pickup_location_ref)
+        location = Location.get(pickup_location_ref)
         return location.address
         # warnings.warn("Using mock pickup address. Delete Before Release ")
         #
@@ -89,7 +88,7 @@ class Ride(FirestoreObject):
             dropoff_location_ref = self.destination_ref
         else:
             raise ValueError("Pickup address of to_event=True is not supported. ")
-        location = LocationGenericDao().get(dropoff_location_ref)
+        location = Location.get(dropoff_location_ref)
         return location.address
 
     def to_tuple_point(self, to_event = True):
@@ -115,7 +114,7 @@ class Ride(FirestoreObject):
             pickup_location_ref = self.origin_ref
         else:
             raise ValueError("Pickup address of to_event=False is not supported. ")
-        location = LocationGenericDao().get(pickup_location_ref)
+        location = Location.get(pickup_location_ref)
         coordinates = location.coordinates
         latitude = coordinates["latitude"]
         longitude = coordinates["longitude"]

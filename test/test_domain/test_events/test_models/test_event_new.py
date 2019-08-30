@@ -1,6 +1,6 @@
 import unittest
 
-from gravitate.domain.location import LocationGenericDao, SocialEventLocation
+from gravitate.domain.location import Location, SocialEventLocation
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import SocialEvent, AirportEvent
 from gravitate import context
@@ -81,7 +81,8 @@ class SocialEventModelTest(unittest.TestCase):
             "id": "20281766647"
         }
         location = SocialEventLocation.from_fb_place(fb_d)
-        self.location_ref = LocationGenericDao().insert_new(location)
+        location.save()
+        self.location_ref = location.doc_ref
 
         self.refs_to_delete.append(self.location_ref)
 

@@ -306,7 +306,7 @@ def getOrbitDict():
 
 
 airportLocationDict = {
-    'locationCategory': "airport",
+    'obj_type': "AirportLocation",
     'coordinates': {
         "latitude": 33.9416,
         "longitude": -118.4085
@@ -316,7 +316,7 @@ airportLocationDict = {
 }
 
 socialEventLocationDict = {
-    'locationCategory': "social",
+    'obj_type': "SocialEventLocation",
     'coordinates': {
         "latitude": 33.9416,
         "longitude": -118.4085
@@ -344,7 +344,7 @@ def getLocation():
 
 def getUserLocationDict():
     return {
-        'locationCategory': "user",
+        'obj_type': "UserLocation",
         'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
         'address': 'Tenaya Hall, San Diego, CA 92161',
     }

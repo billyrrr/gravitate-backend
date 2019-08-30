@@ -2,7 +2,7 @@ from typing import Type
 
 from gravitate import context
 from gravitate import scripts
-from gravitate.domain.location import LocationGenericDao, Location
+from gravitate.domain.location import Location
 from gravitate.domain.group import actions as group_actions
 from gravitate.domain.rides import RideRequest
 from gravitate.domain.rides import RideRequestGenericDao
