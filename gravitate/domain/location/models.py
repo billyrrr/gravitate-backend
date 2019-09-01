@@ -3,7 +3,7 @@ import warnings
 from google.cloud.firestore import Query
 
 from flask_boiler import schema, fields, domain_model
-from flask_boiler.src.serializable import SerializableClsFactory
+from flask_boiler.serializable import SerializableClsFactory
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
     get_address
 
