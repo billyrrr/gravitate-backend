@@ -76,7 +76,7 @@ class Ride(FirestoreObject):
         #     location = LocationGenericDao().get_with_transaction(self._transaction, pickup_location_ref)
         #     return location.address
         # else:
-        location = Location.get(pickup_location_ref)
+        location = Location.get(pickup_location_ref.id)
         return location.address
         # warnings.warn("Using mock pickup address. Delete Before Release ")
         #
