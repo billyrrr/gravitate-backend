@@ -17,7 +17,7 @@ Schema = schema.Schema
 
 class LocationDomainModelBase(domain_model.DomainModel):
 
-    _collection_name = "Location"
+    _collection_name = "locations"
 
 
 class LocationSchema(Schema):
@@ -134,11 +134,12 @@ class LocationQuery(Location):
     def find_by_airport_code(cls, airportCode) -> AirportLocation:
         airportLocations = list( Location.where(airportCode=airportCode) )
         if len(airportLocations) != 1:
-            warnings.warn(
+            location_ids = [obj.doc_ref.path for obj in airportLocations]
+            raise ValueError(
                 "Airport Location that has the airport code"
                 " is not unique or does not exist: {}".format(
-                    airportLocations))
-            return None
+                    " ".join(location_ids)
+                    ))
         result = airportLocations.pop()
         return result
 

@@ -5,6 +5,7 @@ import pytz
 from google.cloud.firestore import DocumentReference, transactional
 
 import gravitate.domain.event_schedule.actions
+from gravitate.domain.location.models import LocationQuery
 from gravitate.domain.user import UserDao
 from gravitate.domain.location import Location, AirportLocation
 from gravitate.domain.event.dao import EventDao
@@ -104,7 +105,7 @@ def get_airport_location(airport_code) -> AirportLocation:
     :param airport_code:
     :return:
     """
-    return Location.find_by_airport_code(airport_code)
+    return LocationQuery.find_by_airport_code(airport_code)
 
 
 def find_event(flight_local_time) -> DocumentReference:

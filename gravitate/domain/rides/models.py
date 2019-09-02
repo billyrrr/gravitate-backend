@@ -5,6 +5,13 @@ from gravitate.models.firestore_object import FirestoreObject
 from gravitate.models.target import Target, ToEventTarget
 
 
+def any_to_doc_id(doc_ref_r):
+    if isinstance(doc_ref_r, str):
+        return "/".split(doc_ref_r)[-1]
+    else:
+        return doc_ref_r.id
+
+
 class Ride(FirestoreObject):
     """ Description
         This class represents a RideRequest object
@@ -76,7 +83,8 @@ class Ride(FirestoreObject):
         #     location = LocationGenericDao().get_with_transaction(self._transaction, pickup_location_ref)
         #     return location.address
         # else:
-        location = Location.get(pickup_location_ref.id)
+
+        location = Location.get(doc_id=any_to_doc_id(pickup_location_ref))
         return location.address
         # warnings.warn("Using mock pickup address. Delete Before Release ")
         #
@@ -114,7 +122,7 @@ class Ride(FirestoreObject):
             pickup_location_ref = self.origin_ref
         else:
             raise ValueError("Pickup address of to_event=False is not supported. ")
-        location = Location.get(pickup_location_ref)
+        location = Location.get(doc_id=any_to_doc_id(pickup_location_ref.id))
         coordinates = location.coordinates
         latitude = coordinates["latitude"]
         longitude = coordinates["longitude"]

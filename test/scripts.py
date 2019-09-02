@@ -84,6 +84,8 @@ class SetUpTestDatabase:
     def clear_after(self):
         for ref in self.refs_to_delete:
             ref.delete()
+        scripts.delete_all_events()
+        scripts.delete_all_locations()
 
 
 if __name__ == "__main__":

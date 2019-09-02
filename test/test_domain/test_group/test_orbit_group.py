@@ -31,15 +31,14 @@ class TestOrbitGroupHelpers(unittest.TestCase):
 
     def tearDown(self):
         self.c.clear_after()
+        self.r.get_firestore_ref().delete()
+        self.o.get_firestore_ref().delete()
 
     def test_add(self):
 
         is_successful = grouping_utils.add_orbit_to_ride_request(self.r, self.o)
         self.assertTrue(is_successful)
 
-    def tearDown(self):
-        self.r.get_firestore_ref().delete()
-        self.o.get_firestore_ref().delete()
 
     def test_validate_add(self):
         is_valid = grouping_utils._validate_to_add(self.r, self.o)

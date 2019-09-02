@@ -45,7 +45,7 @@ class LocationDAOTest(unittest.TestCase):
         doc_id = l.doc_id
         self.to_delete.append(l.doc_ref)
 
-        location = Location.get(doc_id)
+        location = Location.get(doc_id=doc_id)
         self.assertIsNotNone(location)
         print(location.to_dict())
 

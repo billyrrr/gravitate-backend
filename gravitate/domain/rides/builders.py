@@ -3,7 +3,7 @@ from typing import Type
 from gravitate.domain.event.dao import EventDao
 from . import utils
 from . import RideRequest
-from gravitate.domain.location.models import Location
+from gravitate.domain.location.models import Location, LocationFactory
 from gravitate.models import Target
 
 
@@ -169,8 +169,10 @@ class RideRequestBaseBuilder:
         self._ride_request_dict['pricing'] = 987654321
 
     def _build_pickup(self):
-        origin_location = Location.from_pickup_address(pickup_address=self.pickup_address)
-        origin_ref = Location.insert_new(origin_location)
+        origin_location = LocationFactory.from_pickup_address(
+            pickup_address=self.pickup_address)
+        origin_location.save()
+        origin_ref = origin_location.doc_ref
         self._ride_request_dict["originRef"] = origin_ref
         # self._ride_request_dict["pickupAddress"] = self.pickup_address
 

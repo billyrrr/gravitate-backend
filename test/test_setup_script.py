@@ -11,7 +11,7 @@ db = CTX.db
 
 
 def _count_location_docs():
-    location_col_ref: CollectionReference = db.collection("Location")
+    location_col_ref: CollectionReference = db.collection("locations")
     all_docs = location_col_ref.get()
     counter = 0
     for _ in all_docs:
