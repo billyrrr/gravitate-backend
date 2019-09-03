@@ -75,8 +75,7 @@ def _create_social_event_ride_request(args, user_id):
         .set_with_form_and_user_id(args, user_id) \
         .build_social_event_ride_request() \
         .export_as_class(SocialEventRideRequest)
-    print(ride_request.location_ref)
-    location = Location.get(ride_request.location_ref)
+    location = Location.get(doc_id=ride_request.location_ref.id)
     event = EventDao().get(ride_request.event_ref)
 
     # Do Validation Tasks before saving rideRequest

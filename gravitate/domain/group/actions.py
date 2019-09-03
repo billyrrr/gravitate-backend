@@ -165,7 +165,7 @@ def run_orbit_group(ride_requests: dict):
     orbit.set_firestore_ref(orbit_ref)
     event = EventDao().get(event_ref)
     location_ref: DocumentReference = event.location_ref
-    location = Location.get(location_ref)
+    location = Location.get(doc_id=location_ref.id)
     ride_request_refs = [r.get_firestore_ref() for rid, r in ride_requests.items()]
 
     transaction = db.transaction()
