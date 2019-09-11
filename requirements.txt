@@ -38,7 +38,7 @@ googleapis-common-protos
 
 
 # PRESERVE ORDER (pip install marshmallow apispec)
-marshmallow==2.19.2
+marshmallow>=3.0.3
 # NOTE: apispec==1.0.0b4 won't work either without changing source code
 apispec
 apispec_webframeworks

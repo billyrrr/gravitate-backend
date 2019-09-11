@@ -7,7 +7,7 @@ from gravitate.models.target import Target, ToEventTarget
 
 def any_to_doc_id(doc_ref_r):
     if isinstance(doc_ref_r, str):
-        return "/".split(doc_ref_r)[-1]
+        return doc_ref_r.split("/")[-1]
     else:
         return doc_ref_r.id
 

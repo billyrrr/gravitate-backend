@@ -3,7 +3,7 @@ import json
 # import gravitate.models as models
 from gravitate import context
 from gravitate.domain.rides import RideRequest
-from gravitate.domain.location import Location
+from gravitate.domain.location import Location, AirportLocation
 
 db = context.Context.db
 
@@ -337,7 +337,7 @@ def getLocationDict(location_category="airport"):
 
 def getLocation():
     locationDict = getLocationDict()
-    location = Location.from_dict(locationDict, doc_id=mock1["locationId"])
+    location = AirportLocation.from_dict(locationDict, doc_id=mock1["locationId"])
     # location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
 

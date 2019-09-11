@@ -442,8 +442,9 @@ class LuggageService(Resource):
         #
 
         # Marshmallow version 2
-        data, errors = luggages_schema.load(json_input)
-        if errors:
+        try:
+            data = luggages_schema.load(json_input)
+        except Exception as errors:
             return errors, 422
 
         luggage_list = data["luggages"]
