@@ -22,10 +22,8 @@ class LocationDomainModelBase(domain_model.DomainModel):
 
 class LocationSchema(Schema):
 
-    coordinates = fields.Raw(load_from="coordinates",
-                             dump_to="coordinates")
-    address = fields.Raw(load_from="address",
-                         dump_to="address")
+    coordinates = fields.Raw()
+    address = fields.Raw()
 
 
 Location = SerializableClsFactory.create(
@@ -42,9 +40,7 @@ UserLocation = SerializableClsFactory.create(
 
 class SocialEventLocationSchema(LocationSchema):
 
-    event_name = fields.Raw(
-        load_from="eventName",
-        dump_to="eventName")
+    event_name = fields.Raw()
 
 
 SocialEventLocation = SerializableClsFactory.create(
@@ -55,8 +51,8 @@ SocialEventLocation = SerializableClsFactory.create(
 
 class UcLocationSchema(LocationSchema):
 
-    campus_code = fields.Raw(load_from="campusCode", dump_to="campusCode")
-    campus_name = fields.Raw(load_from="campusName", dump_to="campusName")
+    campus_code = fields.Raw()
+    campus_name = fields.Raw()
 
 
 UcLocation = SerializableClsFactory.create(
@@ -66,7 +62,7 @@ UcLocation = SerializableClsFactory.create(
 
 class AirportLocationSchema(LocationSchema):
 
-    airport_code = fields.Raw(load_from="airportCode", dump_to="airportCode")
+    airport_code = fields.Raw()
 
 
 AirportLocation = SerializableClsFactory.create(
