@@ -2,7 +2,8 @@ language: python
 python:
   - "3.6"
   - "3.7-dev"
-#before_install:
+before_install:
+  - openssl aes-256-cbc -K $encrypted_2240fe55269d_key -iv $encrypted_2240fe55269d_iv -in gravitate-backend-testing-firebase-adminsdk-nztgj-d063415ecc.json.enc -out gravitate/config_jsons/gravitate-backend-testing-firebase-adminsdk-nztgj-d063415ecc.json -d
 #  - "export PYTHONPATH=$PYTHONPATH:$(pwd)"
 # command to install dependencies
 install:
