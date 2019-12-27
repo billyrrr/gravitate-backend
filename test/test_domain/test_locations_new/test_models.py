@@ -61,6 +61,8 @@ class SocialEventLocationModelTest(TestCase):
                 "longitude": -118.4085
             })
         self.assertEqual(obj.address, "3150 Paradise Rd, Las Vegas, NV 89109")
+        print(obj.schema_obj.fields.keys())
+        print(vars(obj))
         self.assertEqual(obj.event_name, "CES")
         self.assertTrue(isinstance(obj, models.SocialEventLocation))
 

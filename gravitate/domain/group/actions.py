@@ -8,6 +8,7 @@ from gravitate.domain.group.pairing import pair_ride_requests
 from gravitate.domain.location import Location
 from gravitate.domain.rides import RideRequest, RideRequestGenericDao
 from gravitate.domain.orbit import Orbit, OrbitDao
+from gravitate.domain.rides.models import any_to_doc_id
 from .orbit_group import OrbitGroup
 
 db = context.Context.db
@@ -73,7 +74,7 @@ def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tupl
         if ride_request.request_completion:
             continue
 
-        event_id = ride_request.event_ref.id
+        event_id = any_to_doc_id(ride_request.event_ref)
 
         if event_id not in event_ids:
             event_ids.append(event_id)

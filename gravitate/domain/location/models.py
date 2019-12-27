@@ -35,7 +35,9 @@ class UserLocationSchema(LocationSchema):
 
 
 UserLocation = SerializableClsFactory.create(
-    "UserLocation", UserLocationSchema, base=Location)
+    "UserLocation",
+    UserLocationSchema,
+    base=LocationDomainModelBase)
 
 
 class SocialEventLocationSchema(LocationSchema):
@@ -46,7 +48,7 @@ class SocialEventLocationSchema(LocationSchema):
 SocialEventLocation = SerializableClsFactory.create(
     "SocialEventLocation",
     SocialEventLocationSchema,
-    base=Location)
+    base=LocationDomainModelBase)
 
 
 class UcLocationSchema(LocationSchema):
@@ -56,7 +58,9 @@ class UcLocationSchema(LocationSchema):
 
 
 UcLocation = SerializableClsFactory.create(
-    "UcLocation", UcLocationSchema, base=Location
+    "UcLocation",
+    UcLocationSchema,
+    base=LocationDomainModelBase
 )
 
 
@@ -66,7 +70,9 @@ class AirportLocationSchema(LocationSchema):
 
 
 AirportLocation = SerializableClsFactory.create(
-    "AirportLocation", AirportLocationSchema, base=Location
+    "AirportLocation",
+    AirportLocationSchema,
+    base=LocationDomainModelBase
 )
 
 
