@@ -3,7 +3,6 @@ import warnings
 from google.cloud.firestore import Query
 
 from flask_boiler import schema, fields, domain_model
-from flask_boiler.serializable import SerializableClsFactory
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
     get_address
 
@@ -15,29 +14,35 @@ Schema = schema.Schema
 #     longitude = fields.Raw(load_from="longitude", dump_to="longitude")
 
 
-class LocationDomainModelBase(domain_model.DomainModel):
-
-    _collection_name = "locations"
-
-
 class LocationSchema(Schema):
 
     coordinates = fields.Raw()
     address = fields.Raw()
 
 
-Location = SerializableClsFactory.create(
-    "Location", LocationSchema, base=LocationDomainModelBase)
+class Location(domain_model.DomainModel):
+
+    class Meta:
+        collection_name = "locations"
+
+
+# Location = SerializableClsFactory.create(
+#     "Location", LocationSchema, base=Location)
 
 
 class UserLocationSchema(LocationSchema):
     pass
 
 
-UserLocation = SerializableClsFactory.create(
-    "UserLocation",
-    UserLocationSchema,
-    base=LocationDomainModelBase)
+# UserLocation = SerializableClsFactory.create(
+#     "UserLocation",
+#     UserLocationSchema,
+#     base=Location)
+
+class UserLocation(Location):
+
+    class Meta:
+        schema_cls = UserLocationSchema
 
 
 class SocialEventLocationSchema(LocationSchema):
@@ -45,10 +50,16 @@ class SocialEventLocationSchema(LocationSchema):
     event_name = fields.Raw()
 
 
-SocialEventLocation = SerializableClsFactory.create(
-    "SocialEventLocation",
-    SocialEventLocationSchema,
-    base=LocationDomainModelBase)
+# SocialEventLocation = SerializableClsFactory.create(
+#     "SocialEventLocation",
+#     SocialEventLocationSchema,
+#     base=Location)
+
+
+class SocialEventLocation(Location):
+
+    class Meta:
+        schema_cls = SocialEventLocationSchema
 
 
 class UcLocationSchema(LocationSchema):
@@ -57,23 +68,35 @@ class UcLocationSchema(LocationSchema):
     campus_name = fields.Raw()
 
 
-UcLocation = SerializableClsFactory.create(
-    "UcLocation",
-    UcLocationSchema,
-    base=LocationDomainModelBase
-)
+# UcLocation = SerializableClsFactory.create(
+#     "UcLocation",
+#     UcLocationSchema,
+#     base=Location
+# )
+
+
+class UcLocation(Location):
+
+    class Meta:
+        schema_cls = UcLocationSchema
 
 
 class AirportLocationSchema(LocationSchema):
 
     airport_code = fields.Raw()
 
+#
+# AirportLocation = SerializableClsFactory.create(
+#     "AirportLocation",
+#     AirportLocationSchema,
+#     base=Location
+# )
 
-AirportLocation = SerializableClsFactory.create(
-    "AirportLocation",
-    AirportLocationSchema,
-    base=LocationDomainModelBase
-)
+
+class AirportLocation(Location):
+
+    class Meta:
+        schema_cls = AirportLocationSchema
 
 
 campus_code_table = {
@@ -95,9 +118,7 @@ class LocationFactory:
     @staticmethod
     def from_pickup_address(pickup_address):
         coordinates = get_coordinates(pickup_address)
-        obj = UserLocation.create()
-        obj.coordinates = coordinates
-        obj.address = pickup_address
+        obj = UserLocation.new(coordinates=coordinates, address=pickup_address)
         return obj
 
     @staticmethod
@@ -121,11 +142,15 @@ class LocationFactory:
         """
         address = get_address(d["location"])
 
-        obj = SocialEventLocation.create()
-
-        obj.coordinates=d["location"]
-        obj.address=address
-        obj.event_name=d["name"]
+        obj = SocialEventLocation.new(
+            coordinates=d["location"],
+            address=address,
+            event_name=d["name"]
+        )
+        #
+        # obj.coordinates=d["location"]
+        # obj.address=address
+        # obj.event_name=d["name"]
 
         return obj
 
@@ -134,7 +159,7 @@ class LocationQuery(Location):
 
     @classmethod
     def find_by_airport_code(cls, airportCode) -> AirportLocation:
-        airportLocations = list( Location.where(airportCode=airportCode) )
+        airportLocations = list(AirportLocation.where(airport_code=airportCode))
         if len(airportLocations) != 1:
             location_ids = [obj.doc_ref.path for obj in airportLocations]
             raise ValueError(
@@ -147,7 +172,7 @@ class LocationQuery(Location):
 
     @classmethod
     def find_by_campus_code(self, campusCode) -> UcLocation:
-        campus_locations = list( Location.where(campusCode=campusCode) )
+        campus_locations = list(UcLocation.where(campus_code=campusCode))
         if len(campus_locations) != 1:
             warnings.warn(
                 "Campus Location that has the campus code is not unique or does not exist: {}".format(
