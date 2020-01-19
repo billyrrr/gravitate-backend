@@ -6,6 +6,7 @@ This module implements the service for creating and managing rideRequests.
 """
 from flask import request
 from flask_restful import Resource, HTTPException
+from marshmallow import ValidationError
 
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
@@ -16,7 +17,7 @@ from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain import rides
 from gravitate.domain.luggage import actions as luggage_actions
 from gravitate.domain.luggage.models import Luggages
-from gravitate.schemas.luggage import LuggageCollectionSchema
+from gravitate.schemas.luggage import LuggageCollectionSchemaOld
 from . import parsers as ride_request_parsers
 
 db = Context.db
@@ -283,7 +284,7 @@ class RideRequestService(Resource):
         raise NotImplementedError
 
 
-luggages_schema = LuggageCollectionSchema()
+luggages_schema = LuggageCollectionSchemaOld()
 
 
 class AccommodationService(Resource):
@@ -415,16 +416,16 @@ class LuggageService(Resource):
             in: path
             description: ID of the ride request associated with the luggages
             required: true
-            schema:
-              $ref: "#/definitions/LuggageCollection"
+            # schema:
+            #   $ref: "#/definitions/LuggageCollection"
         responses:
           '200':
             description: luggages response
             properties:
               newLuggageValues:
                 type: array
-                items:
-                  $ref: "#/definitions/LuggageItem"
+                # items:
+                  # $ref: "#/definitions/LuggageItem"
 
         :param rideRequestId:
         :param uid:
@@ -442,9 +443,10 @@ class LuggageService(Resource):
         #
 
         # Marshmallow version 2
-        data, errors = luggages_schema.load(json_input)
-        if errors:
-            return errors, 422
+        try:
+            data = luggages_schema.load(json_input)
+        except ValidationError as error:
+            return error.messages, 422
 
         luggage_list = data["luggages"]
         luggages = Luggages()

@@ -87,6 +87,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def tearDown(self):
         self.c.clear_after()
+        for earliest, latest, firestoreRef in self.arr:
+            RideRequestGenericDao().delete(firestoreRef)
 
     def setUp(self):
         self.c = scripts.SetUpTestDatabase()

@@ -4,8 +4,9 @@ from typing import Type
 import iso8601
 
 from gravitate.domain.event import AirportEvent
-from gravitate.domain.location import LocationGenericDao, SocialEventLocation
+from gravitate.domain.location import Location, SocialEventLocation
 from gravitate.domain.event.models import Event
+from gravitate.domain.location.models import LocationQuery, LocationFactory
 from gravitate.models import ToEventTarget, FromEventTarget
 
 
@@ -167,8 +168,9 @@ class FbEventBuilder(EventBaseBuilder):
         :param d:
         :return:
         """
-        location: SocialEventLocation = SocialEventLocation.from_fb_place(d)
-        self._event_dict["locationRef"] = LocationGenericDao().insert_new(location)
+        location: SocialEventLocation = LocationFactory.from_fb_place(d)
+        location.save()
+        self._event_dict["locationRef"] = location.doc_ref
 
     def _build_fb_event_id(self, d):
         """ Set self._event_dict["fbEventId"] with d["id]
@@ -205,7 +207,7 @@ class AirportEventBuilder(EventBaseBuilder):
 
     def build_airport(self, airport_code):
         self._event_dict["airportCode"] = airport_code
-        self._event_dict["locationRef"] = LocationGenericDao().find_by_airport_code(airport_code).get_firestore_ref()
+        self._event_dict["locationRef"] = LocationQuery.find_by_airport_code(airport_code).doc_ref
 
 
 class CampusEventBuilder(EventBaseBuilder):
@@ -219,7 +221,7 @@ class CampusEventBuilder(EventBaseBuilder):
 
     def build_campus(self, campus_code):
         self._event_dict["campusCode"] = campus_code
-        self._event_dict["locationRef"] = LocationGenericDao().find_by_campus_code(campus_code).get_firestore_ref()
+        self._event_dict["locationRef"] = LocationQuery.find_by_campus_code(campus_code).doc_ref
 
     def build_start_end(self, start_timestamp=None, end_timestamp=None, local_date_string=None):
         """ Build event start time and event end time

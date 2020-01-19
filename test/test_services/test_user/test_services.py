@@ -37,13 +37,13 @@ class UserEndPointTest(TestCase):
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
-        auth.create_user(app=context.Context.firebaseApp, uid = test_user1_dict["uid"])
+        auth.create_user(app=context.Context.firebase_app, uid = test_user1_dict["uid"])
         path = '/users/' + test_user1_dict["uid"]
         r = self.app.post(path=path, json=json.dumps(test_user1_dict))
         assert r.status_code == 200
 
     def tearDown(self):
-        auth.delete_user(app=context.Context.firebaseApp, uid=test_user1_dict["uid"])
+        auth.delete_user(app=context.Context.firebase_app, uid=test_user1_dict["uid"])
 
     def testGetUser(self):
         path = '/users/' + test_user1_dict["uid"]
@@ -57,10 +57,10 @@ class UserCreationEndpointTest(TestCase):
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
-        auth.create_user(app=context.Context.firebaseApp, uid=test_user2_dict["uid"])
+        auth.create_user(app=context.Context.firebase_app, uid=test_user2_dict["uid"])
 
     def tearDown(self):
-        auth.delete_user(app=context.Context.firebaseApp, uid=test_user2_dict["uid"])
+        auth.delete_user(app=context.Context.firebase_app, uid=test_user2_dict["uid"])
 
     def testCreateUser(self):
         path = '/users/' + test_user2_dict["uid"]
@@ -104,13 +104,13 @@ class UserDAOTestGet(TestCase):
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
-        auth.create_user(app=context.Context.firebaseApp, uid=test_user1_dict["uid"])
+        auth.create_user(app=context.Context.firebase_app, uid=test_user1_dict["uid"])
         path = '/users/' + test_user1_dict["uid"]
         r = self.app.post(path=path, json=json.dumps(test_user1_dict))
         assert r.status_code == 200
 
     def tearDown(self):
-        auth.delete_user(app=context.Context.firebaseApp, uid=test_user1_dict["uid"])
+        auth.delete_user(app=context.Context.firebase_app, uid=test_user1_dict["uid"])
 
     def testGetUser(self):
         uid = userDict["uid"]
@@ -132,16 +132,16 @@ class FirebaseUserTest(TestCase):
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
-        auth.create_user(app=context.Context.firebaseApp, uid=test_user1_dict["uid"])
+        auth.create_user(app=context.Context.firebase_app, uid=test_user1_dict["uid"])
         path = '/users/' + test_user1_dict["uid"]
         r = self.app.post(path=path, json=json.dumps(test_user1_dict))
         assert r.status_code == 200
 
     def tearDown(self):
-        auth.delete_user(app=context.Context.firebaseApp, uid=test_user1_dict["uid"])
+        auth.delete_user(app=context.Context.firebase_app, uid=test_user1_dict["uid"])
 
     def testGetFirebaseInfo(self):
-        user = auth.get_user(userDict["uid"], app=context.Context.firebaseApp)
+        user = auth.get_user(userDict["uid"], app=context.Context.firebase_app)
         print(user.display_name)
 
     # def testDeleteUser(self):
@@ -153,7 +153,7 @@ class FirebaseUserTest(TestCase):
                          phone_number="+17777777779",
                          display_name="Zixuan Rao",
                          disabled=False,
-                         app=context.Context.firebaseApp
+                         app=context.Context.firebase_app
                          )
         user = UserDao().get_user_by_id(userDict["uid"])
         self.assertEquals("Zixuan Rao", user.display_name)

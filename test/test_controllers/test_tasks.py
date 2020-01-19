@@ -1,12 +1,13 @@
 from google.cloud import tasks_v2
 from unittest import TestCase, skip
-from gravitate.context import Context as CTX
+from flask_boiler import context
+CTX = context.Context
 from gravitate.common import random_id
 
 # Configs for task queue
 # Run "gcloud beta tasks queues describe my-appengine-queue" to obtain them
 
-project_name = CTX.firebaseApp.name
+project_name = CTX.firebase_app.name
 queue_region = 'us-central1'
 
 

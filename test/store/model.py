@@ -3,7 +3,7 @@ import json
 # import gravitate.models as models
 from gravitate import context
 from gravitate.domain.rides import RideRequest
-from gravitate.domain.location import Location
+from gravitate.domain.location import Location, AirportLocation
 
 db = context.Context.db
 
@@ -306,7 +306,7 @@ def getOrbitDict():
 
 
 airportLocationDict = {
-    'locationCategory': "airport",
+    'obj_type': "AirportLocation",
     'coordinates': {
         "latitude": 33.9416,
         "longitude": -118.4085
@@ -316,7 +316,7 @@ airportLocationDict = {
 }
 
 socialEventLocationDict = {
-    'locationCategory': "social",
+    'obj_type': "SocialEventLocation",
     'coordinates': {
         "latitude": 33.9416,
         "longitude": -118.4085
@@ -337,14 +337,14 @@ def getLocationDict(location_category="airport"):
 
 def getLocation():
     locationDict = getLocationDict()
-    location = Location.from_dict(locationDict)
-    location.set_firestore_ref(mock1["locationFirestoreRef"])
+    location = AirportLocation.from_dict(locationDict, doc_id=mock1["locationId"])
+    # location.set_firestore_ref(mock1["locationFirestoreRef"])
     return location
 
 
 def getUserLocationDict():
     return {
-        'locationCategory': "user",
+        'obj_type': "UserLocation",
         'coordinates': {'latitude': 32.8794203, 'longitude': -117.2428555},
         'address': 'Tenaya Hall, San Diego, CA 92161',
     }

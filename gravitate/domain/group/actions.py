@@ -3,11 +3,12 @@ from typing import Type, List, Dict, Tuple
 from google.cloud.firestore import transactional, DocumentReference
 
 from gravitate import context
-from gravitate.domain.location import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.group.pairing import pair_ride_requests
+from gravitate.domain.location import Location
 from gravitate.domain.rides import RideRequest, RideRequestGenericDao
 from gravitate.domain.orbit import Orbit, OrbitDao
+from gravitate.domain.rides.models import any_to_doc_id
 from .orbit_group import OrbitGroup
 
 db = context.Context.db
@@ -73,7 +74,7 @@ def separate_by_event_id_and_direction(ride_request_ids: List[str]) -> Dict[Tupl
         if ride_request.request_completion:
             continue
 
-        event_id = ride_request.event_ref.id
+        event_id = any_to_doc_id(ride_request.event_ref)
 
         if event_id not in event_ids:
             event_ids.append(event_id)
@@ -148,9 +149,9 @@ def run_orbit_group(ride_requests: dict):
     :return: ride requests that could not be joined
     """
     assert len(ride_requests) != 0
-    event_ids: set = {r.event_ref.id for rid, r in ride_requests.items()}
-    assert len(event_ids) == 1
-    event_ref = EventDao().get_ref(event_ids.pop())
+    event_refs: set = {r.event_ref for rid, r in ride_requests.items()}
+    assert len(event_refs) == 1
+    event_ref = event_refs.pop()
 
     orbit = Orbit.from_dict({
         "orbitCategory": "airportRide",
@@ -165,7 +166,7 @@ def run_orbit_group(ride_requests: dict):
     orbit.set_firestore_ref(orbit_ref)
     event = EventDao().get(event_ref)
     location_ref: DocumentReference = event.location_ref
-    location = LocationGenericDao().get(location_ref)
+    location = Location.get(doc_id=location_ref.id)
     ride_request_refs = [r.get_firestore_ref() for rid, r in ride_requests.items()]
 
     transaction = db.transaction()

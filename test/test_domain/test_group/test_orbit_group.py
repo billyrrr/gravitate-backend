@@ -31,15 +31,14 @@ class TestOrbitGroupHelpers(unittest.TestCase):
 
     def tearDown(self):
         self.c.clear_after()
+        self.r.get_firestore_ref().delete()
+        self.o.get_firestore_ref().delete()
 
     def test_add(self):
 
         is_successful = grouping_utils.add_orbit_to_ride_request(self.r, self.o)
         self.assertTrue(is_successful)
 
-    def tearDown(self):
-        self.r.get_firestore_ref().delete()
-        self.o.get_firestore_ref().delete()
 
     def test_validate_add(self):
         is_valid = grouping_utils._validate_to_add(self.r, self.o)
@@ -64,6 +63,12 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def setUp(self):
         self.maxDiff = None
+
+        self.c = scripts.SetUpTestDatabase()
+        self.c.clear_before()
+        self.c.generate_test_data(start_string="2018-12-17T08:00:00.000",
+                                  num_days=5)
+
         self.arr = [[12000000, 12005000, RideRequestGenericDao().rideRequestCollectionRef.document('A')],
                     [12000000, 12005000, RideRequestGenericDao(
                     ).rideRequestCollectionRef.document('B')],
@@ -85,13 +90,18 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
             rideRequest = test.store.model.getMockRideRequest(
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef,
                 userId='userIdA' if firestoreRef.id == 'A' else 'userIdBmore')
-            transaction = db.transaction()
-            RideRequestGenericDao().set_with_transaction(
-                transaction, rideRequest, firestoreRef)
+
             rideRequest.set_firestore_ref(firestoreRef)
+            RideRequestGenericDao().set(rideRequest)
+
             rideRequests.append(rideRequest)
 
         self.rideRequests = rideRequests
+
+    def tearDown(self):
+        self.c.clear_after()
+        for earliest, latest, firestoreRef in self.arr:
+            RideRequestGenericDao().delete(firestoreRef)
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests

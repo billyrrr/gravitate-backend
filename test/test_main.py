@@ -7,7 +7,7 @@ import gravitate.main as main
 from gravitate import context
 
 db = context.Context.db
-firebaseApp = context.Context.firebaseApp
+firebaseApp = context.Context.firebase_app
 
 userId = 'SQytDq13q00e0N3H4agR'
 

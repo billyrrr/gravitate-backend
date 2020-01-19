@@ -6,7 +6,7 @@ import warnings
 
 from google.cloud.firestore_v1beta1 import DocumentReference
 
-from gravitate.domain.location import LocationGenericDao
+from gravitate.domain.location import Location
 from gravitate.models import Target
 from gravitate.models.firestore_object import FirestoreObject
 
@@ -148,7 +148,7 @@ class Event(FirestoreObject):
             :return:
         """
         location_ref = self.location_ref
-        location = LocationGenericDao().get(location_ref)
+        location = Location.get(doc_id=location_ref.id)
         return location
 
     def __init__(self, event_category, participants, targets, pricing, location_ref, is_closed, local_date_string, name,

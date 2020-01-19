@@ -37,6 +37,7 @@ from gravitate.api_server.ride_request.services import RideRequestService, RideR
 from gravitate.api_server.user_service import UserService, UserNotificationService
 from gravitate.api_server.group_task import GroupTasksService
 from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService, RideRequestOrbitService
+# from gravitate.api_server.luggages_service_new import register_luggages_service_new
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 from gravitate import schemas
@@ -86,6 +87,9 @@ class EndpointTestService(Resource):
         responseDict = {'uid': uid, 'request_data': data}
         return responseDict, 200
 
+# swagger = Swagger(app)
+
+# register_luggages_service_new(app)
 
 api = Api(app, errors=service_errors.errors)
 

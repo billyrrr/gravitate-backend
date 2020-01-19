@@ -8,7 +8,7 @@ db = Context.db
 
 
 def _delete_all(collection_name):
-    app_name = Context.firebaseApp.name
+    app_name = Context.firebase_app.name
     if not app_name.find("testing"):
         raise Exception("Firebase App Name is {}. Only app name containing testing is supported".format(app_name))
     event_collection: CollectionReference = db.collection(collection_name)

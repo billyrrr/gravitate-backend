@@ -19,7 +19,7 @@ db = CTX.db
 # TODO remove transactional and add test
 
 def _get_auth_info(uid: string, userDict: dict):
-    userRecord = auth.get_user(uid, app=CTX.firebaseApp)
+    userRecord = auth.get_user(uid, app=CTX.firebase_app)
     userDict["uid"] = userRecord.uid
     userDict["phone_number"] = userRecord.phone_number
     userDict["photo_url"] = userRecord.photo_url

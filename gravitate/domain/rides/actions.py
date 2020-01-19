@@ -1,7 +1,8 @@
 from gravitate import context
 from gravitate.api_server import errors as service_errors
-from gravitate.domain.location import LocationGenericDao
 from gravitate.domain.event.dao import EventDao
+from gravitate.domain.location import Location
+from gravitate.domain.rides.models import any_to_doc_id
 from .builders import AirportRideRequestBuilder, SocialEventRideRequestBuilder
 from . import utils
 from . import AirportRideRequest, SocialEventRideRequest
@@ -37,9 +38,14 @@ def _create_airport_ride_request(args, user_id):
         .set_with_form_and_user_id(args, user_id) \
         .build_airport_ride_request() \
         .export_as_class(AirportRideRequest)
-    location = LocationGenericDao().get(ride_request.airport_location)
+    location = Location.get(
+        doc_id=any_to_doc_id(ride_request.airport_location)
+    )
     if ride_request.target.to_event:
-        user_location = LocationGenericDao().get(ride_request.origin_ref)
+        # TODO: fix
+        user_location = Location.get(
+            doc_id=any_to_doc_id(ride_request.origin_ref)
+        )
     else:
         raise ValueError("to_event is False ")
     # Do Validation Tasks before saving rideRequest
@@ -69,8 +75,7 @@ def _create_social_event_ride_request(args, user_id):
         .set_with_form_and_user_id(args, user_id) \
         .build_social_event_ride_request() \
         .export_as_class(SocialEventRideRequest)
-    print(ride_request.location_ref)
-    location = LocationGenericDao().get(ride_request.location_ref)
+    location = Location.get(doc_id=ride_request.location_ref.id)
     event = EventDao().get(ride_request.event_ref)
 
     # Do Validation Tasks before saving rideRequest

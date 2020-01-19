@@ -5,7 +5,7 @@ from google.cloud.firestore_v1beta1 import Transaction
 from gravitate.domain.rides import RideRequestGenericDao
 from gravitate.domain.event.dao import EventDao
 from gravitate.domain.event.models import Event
-from gravitate.domain.location import LocationGenericDao, Location
+from gravitate.domain.location import Location
 from gravitate.domain.orbit import Orbit, OrbitDao
 from . import utils
 
@@ -126,8 +126,7 @@ class OrbitGroup:
 
     @staticmethod
     def _get_location(transaction: Transaction = None, location_id: str = None) -> Type[Location]:
-        location_ref = LocationGenericDao().get_ref_by_id(location_id)
-        return LocationGenericDao.get_with_transaction(transaction, location_ref)
+        return Location.get(doc_id=location_id, transaction=transaction)
 
     @staticmethod
     def _get_orbit(transaction: Transaction = None, orbit_id: str = None) -> Orbit:

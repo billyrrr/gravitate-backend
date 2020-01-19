@@ -5,8 +5,9 @@ import pytz
 from google.cloud.firestore import DocumentReference, transactional
 
 import gravitate.domain.event_schedule.actions
+from gravitate.domain.location.models import LocationQuery
 from gravitate.domain.user import UserDao
-from gravitate.domain.location import LocationGenericDao, AirportLocation
+from gravitate.domain.location import Location, AirportLocation
 from gravitate.domain.event.dao import EventDao
 from .models import Ride as RideRequest
 from .dao import RideRequestGenericDao
@@ -89,7 +90,7 @@ def get_location_ref_by_id(location_id: str) -> DocumentReference:
     :param location_id:
     :return:
     """
-    return LocationGenericDao().get_ref_by_id(location_id)
+    return Location.get_ref_by_id(location_id)
 
 
 def get_ride_request(d: dict) -> Type[RideRequest]:
@@ -104,7 +105,7 @@ def get_airport_location(airport_code) -> AirportLocation:
     :param airport_code:
     :return:
     """
-    return LocationGenericDao().find_by_airport_code(airport_code)
+    return LocationQuery.find_by_airport_code(airport_code)
 
 
 def find_event(flight_local_time) -> DocumentReference:
