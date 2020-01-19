@@ -5,7 +5,7 @@ import test.store.model
 from gravitate import context
 from math import inf
 
-from gravitate.domain.location import Location
+from gravitate.domain.location import Location, UserLocation
 from gravitate.domain.rides import RideRequest
 from gravitate import distance_func
 
@@ -130,7 +130,7 @@ class TestExportTuplePoints(unittest.TestCase):
                 earliest=earliest, latest=latest, firestoreRef=firestoreRef, returnDict=False)
 
             # Generate Test Locations
-            location = Location.from_dict(location_d)
+            location = UserLocation.from_dict(location_d)
             location.save()
             ref = location.doc_ref
             ride_request.origin_ref = ref

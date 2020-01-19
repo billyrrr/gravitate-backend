@@ -100,6 +100,8 @@ class TestGroupUsersWithRideRequestRef(unittest.TestCase):
 
     def tearDown(self):
         self.c.clear_after()
+        for earliest, latest, firestoreRef in self.arr:
+            RideRequestGenericDao().delete(firestoreRef)
 
     def testConstructTupleList(self):
         rideRequests: list = self.rideRequests

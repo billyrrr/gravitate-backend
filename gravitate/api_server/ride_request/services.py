@@ -6,6 +6,7 @@ This module implements the service for creating and managing rideRequests.
 """
 from flask import request
 from flask_restful import Resource, HTTPException
+from marshmallow import ValidationError
 
 import gravitate.api_server.utils as service_utils
 from gravitate.api_server import errors as service_errors
@@ -415,16 +416,16 @@ class LuggageService(Resource):
             in: path
             description: ID of the ride request associated with the luggages
             required: true
-            schema:
-              $ref: "#/definitions/LuggageCollection"
+            # schema:
+            #   $ref: "#/definitions/LuggageCollection"
         responses:
           '200':
             description: luggages response
             properties:
               newLuggageValues:
                 type: array
-                items:
-                  $ref: "#/definitions/LuggageItem"
+                # items:
+                  # $ref: "#/definitions/LuggageItem"
 
         :param rideRequestId:
         :param uid:
@@ -444,8 +445,8 @@ class LuggageService(Resource):
         # Marshmallow version 2
         try:
             data = luggages_schema.load(json_input)
-        except Exception as errors:
-            return errors, 422
+        except ValidationError as error:
+            return error.messages, 422
 
         luggage_list = data["luggages"]
         luggages = Luggages()

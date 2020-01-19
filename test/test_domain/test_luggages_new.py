@@ -8,7 +8,7 @@ from unittest import TestCase, skip
 from gravitate.domain.luggage_new.models import Luggages, LuggageItem
 
 
-@skip
+# @skip
 class LuggageItemTest(TestCase):
 
     def setUp(self):
@@ -19,7 +19,7 @@ class LuggageItemTest(TestCase):
         self.luggage = luggage_a
 
     def test_from_dict(self):
-        luggage_item = LuggageItem.from_dict(self.luggage)
+        luggage_item = LuggageItem.new(**self.luggage)
 
         def assert_luggage_equal(a: LuggageItem, b: LuggageItem):
             assert a.luggage_type == b.luggage_type

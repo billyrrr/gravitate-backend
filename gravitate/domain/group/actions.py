@@ -149,9 +149,9 @@ def run_orbit_group(ride_requests: dict):
     :return: ride requests that could not be joined
     """
     assert len(ride_requests) != 0
-    event_ids: set = {r.event_ref.id for rid, r in ride_requests.items()}
-    assert len(event_ids) == 1
-    event_ref = EventDao().get_ref(event_ids.pop())
+    event_refs: set = {r.event_ref for rid, r in ride_requests.items()}
+    assert len(event_refs) == 1
+    event_ref = event_refs.pop()
 
     orbit = Orbit.from_dict({
         "orbitCategory": "airportRide",

@@ -6,7 +6,7 @@ Schema = schema.Schema
 class LuggageItemSchema(Schema):
     luggage_type = fields.Str(load_from="luggage_type", dump_to="luggage_type")
     weight_in_lbs = fields.Integer(load_from="weight_in_lbs", dump_to="weight_in_lbs")
-    ride_request_id = fields.Integer(load_from="rideRequestId", dump_to="rideRequestId", required=False)
+    ride_request_id = fields.Str(load_from="ride_request_id", dump_to="rideRequestId", required=False)
 
 
 class LuggageCollectionSchema(Schema):
@@ -19,11 +19,11 @@ class LuggageItem(domain_model.DomainModel):
 
     _schema_cls = LuggageItemSchema
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.luggage_type = str()
-        self.weight_in_lbs = int()
-        self.ride_request_id = str()
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.luggage_type = str()
+    #     self.weight_in_lbs = int()
+    #     self.ride_request_id = str()
 
 
 class Luggages(view_model.ViewModel):
