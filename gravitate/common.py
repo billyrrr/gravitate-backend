@@ -33,3 +33,7 @@ def local_time_from_timestamp(timestamp) -> str:
 def str_to_local_time(s) -> datetime.datetime:
     tz = pytz.timezone('America/Los_Angeles')
     return tz.localize(iso8601.parse_date(s, default_timezone=None))
+
+
+def timestamp_from_local_time(s) -> int:
+    return int(str_to_local_time(s).timestamp())

@@ -41,6 +41,8 @@ from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 from gravitate import schemas
+from gravitate.domain.host_car import RHMediator, RideHostView, \
+    RideHostMutation, RideHost
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
@@ -127,6 +129,11 @@ api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 # api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 # api.add_resource(DeleteMatchService, '/deleteMatch')
+
+ride_host_mediator = \
+    RHMediator(view_model_cls=RideHostView, app=app, mutation_cls=RideHostMutation)
+
+ride_host_mediator.add_list_post(rule='/rideHosts', list_post_view=ride_host_mediator._default_list_post_view())
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
