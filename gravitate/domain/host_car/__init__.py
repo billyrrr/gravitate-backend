@@ -1,13 +1,15 @@
 from flask_boiler import schema, fields, domain_model, view_model, view_mediator, mutation
 from google.cloud.firestore_v1 import DocumentReference
 
+from gravitate.domain.bookings.models import Target
+
 
 class RideHostSchema(schema.Schema):
 
     from_location = fields.Relationship(nested=False)
     to_location = fields.Relationship(nested=False)
 
-    target = fields.Raw()
+    target = fields.Embedded()
 
     user_id = fields.String()
 
@@ -18,13 +20,44 @@ class RideHost(domain_model.DomainModel):
         schema_cls = RideHostSchema
         collection_name = "rideHosts"
 
+    @property
+    def target(self):
+        if getattr(self, "_target", None) is None:
+            self._target = Target.new()
+        return self._target
+
+    @target.setter
+    def target(self, value):
+        self._target = value
+
 
 class RideHostViewSchema(schema.Schema):
 
+    case_conversion = False
+
     from_location = fields.String()
     to_location = fields.String()
-    target = fields.Raw()
+    earliest_arrival = fields.ISODatetime()
+    latest_arrival = fields.ISODatetime()
+    earliest_departure = fields.ISODatetime()
+    latest_departure = fields.ISODatetime()
     user_id = fields.String()
+
+
+def get_property(attr_name, inner_attr):
+    def fget(self):
+        inner = getattr(self, inner_attr)
+        return getattr(inner, attr_name)
+
+    def fset(self, value):
+        inner = getattr(self, inner_attr)
+        setattr(inner, attr_name, value)
+
+    def fdel(self):
+        inner = getattr(self, inner_attr)
+        delattr(inner, attr_name)
+
+    return property(fget=fget, fset=fset, fdel=fdel)
 
 
 class RideHostView(view_model.ViewModel):
@@ -35,8 +68,13 @@ class RideHostView(view_model.ViewModel):
     def propagate_change(self):
         self.ride_host.save()
 
+    earliest_departure = get_property("earliest_departure", "target")
+    latest_departure = get_property("latest_departure", "target")
+    earliest_arrival = get_property("earliest_arrival", "target")
+    latest_arrival = get_property("latest_arrival", "target")
+
     @classmethod
-    def new(cls, *args, doc_id=None, **kwargs):
+    def new(cls, *args, **kwargs):
         return super().new(*args, **kwargs)
 
     @property
@@ -91,7 +129,7 @@ class RideHostMutation(mutation.Mutation):
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.new(**data)
+        obj = cls.view_model_cls.from_dict(d=data)
         obj.propagate_change()
         return obj
 

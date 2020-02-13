@@ -1,6 +1,7 @@
 from flask_boiler.schema import Schema
 from flask_boiler.fields import Embedded, Integer, Relationship, Boolean, String
 from flask_boiler.domain_model import DomainModel
+from flask_boiler.serializable import Serializable
 
 
 class TargetSchema(Schema):
@@ -9,6 +10,12 @@ class TargetSchema(Schema):
     latest_arrival = Integer()
     earliest_departure = Integer()
     latest_departure = Integer()
+
+
+class Target(Serializable):
+
+    class Meta:
+        schema_cls = TargetSchema
 
 
 class BookingSchema(Schema):

@@ -23,7 +23,7 @@ class RequestRideTest(TestCase):
             "from_location": self.from_location.doc_ref_str,
             "to_location": self.to_location.doc_ref_str,
             "user_id": "testuid1",
-            "target": dict()
+            "earliest_departure": "2014-12-29T03:12:58.019077"
         }
 
         r = self.app.post(path='/rideHosts', json=form)
