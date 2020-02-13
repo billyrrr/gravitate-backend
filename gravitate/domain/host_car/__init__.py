@@ -37,10 +37,10 @@ class RideHostViewSchema(schema.Schema):
 
     from_location = fields.String()
     to_location = fields.String()
-    earliest_arrival = fields.ISODatetime()
-    latest_arrival = fields.ISODatetime()
-    earliest_departure = fields.ISODatetime()
-    latest_departure = fields.ISODatetime()
+    earliest_arrival = fields.Localtime()
+    latest_arrival = fields.Localtime()
+    earliest_departure = fields.Localtime()
+    latest_departure = fields.Localtime()
     user_id = fields.String()
 
 
