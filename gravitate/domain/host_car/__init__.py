@@ -2,14 +2,19 @@ from flask_boiler import schema, fields, domain_model, view_model, view_mediator
 from google.cloud.firestore_v1 import DocumentReference
 
 from gravitate.domain.bookings.models import Target
+from gravitate.domain.location import Location
+
+
+class RideHostTarget(Target):
+    pass
 
 
 class RideHostSchema(schema.Schema):
 
-    from_location = fields.Relationship(nested=False)
-    to_location = fields.Relationship(nested=False)
+    from_location = fields.Relationship(nested=True)
+    to_location = fields.Relationship(nested=True)
 
-    target = fields.Embedded()
+    target = fields.Relationship(nested=True)
 
     user_id = fields.String()
 
@@ -23,8 +28,22 @@ class RideHost(domain_model.DomainModel):
     @property
     def target(self):
         if getattr(self, "_target", None) is None:
-            self._target = Target.new()
+            #         "coordinates": {
+            #             "latitude": 34.414132,
+            #             "longitude": -119.848868
+            #         },
+            self._target = RideHostTarget.new(
+                r_ref=self.doc_ref
+            )
         return self._target
+
+    def save(self, *args, **kwargs):
+        self.target.update_vals(with_dict=dict(
+            from_lat=self.from_location.coordinates["latitude"],
+            from_lng=self.from_location.coordinates["longitude"],
+            to_lat=self.to_location.coordinates["latitude"],
+            to_lng=self.to_location.coordinates["longitude"]))
+        return super().save(*args, **kwargs)
 
     @target.setter
     def target(self, value):
@@ -85,19 +104,21 @@ class RideHostView(view_model.ViewModel):
 
     @property
     def from_location(self):
-        return self.ride_host.from_location
+        return self.ride_host.from_location.doc_ref
 
     @from_location.setter
     def from_location(self, value):
-        self.ride_host.from_location = value
+        if value != '':
+            self.ride_host.from_location = Location.get(doc_ref_str=value)
 
     @property
     def to_location(self):
-        return self.ride_host.to_location
+        return self.ride_host.to_location.doc_ref
 
     @to_location.setter
     def to_location(self, value):
-        self.ride_host.to_location = value
+        if value != '':
+            self.ride_host.to_location = Location.get(doc_ref_str=value)
 
     @property
     def target(self):
