@@ -20,9 +20,10 @@ class CreateRiderBookingTest(TestCase):
         self.to_location = LocationFactory.from_pickup_address("Tioga Hall, San Diego, CA 92161")
         self.to_location.save()
 
-    def testCreateRideHost(self):
+    def testCreateRiderBooking(self):
 
         form = {
+            "doc_id": "rider_booking_id_2",
             "from_location": self.from_location.doc_ref_str,
             "to_location": self.to_location.doc_ref_str,
             "user_id": "testuid1",
