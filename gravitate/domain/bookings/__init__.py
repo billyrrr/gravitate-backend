@@ -20,24 +20,22 @@ from gravitate.domain.target import Target
 
 
 class RiderTarget(Target):
-
     class Meta:
         collection_name = "riderTargets"
 
 
 class RiderBookingSchema(schema.Schema):
-
     from_location = fields.Relationship(nested=True)
     to_location = fields.Relationship(nested=True)
 
     target = fields.Relationship(nested=True)
 
     user_id = fields.String()
-    orbit_ref = fields.Relationship(nested=False, required=False, allow_none=True)
+    orbit_ref = fields.Relationship(nested=False, required=False,
+                                    allow_none=True)
 
 
 class RiderBooking(domain_model.DomainModel):
-
     class Meta:
         schema_cls = RiderBookingSchema
         collection_name = "riderBookings"
@@ -63,7 +61,6 @@ class RiderBooking(domain_model.DomainModel):
 
 
 class RiderBookingViewSchema(schema.Schema):
-
     case_conversion = False
 
     from_location = fields.String()
@@ -88,13 +85,11 @@ class BookingStore(SimpleStore):
 
 
 class RiderBookingView(view_model.ViewModel):
-
     class Meta:
         schema_cls = RiderBookingViewSchema
 
 
 class RiderBookingReadModel(RiderBookingView):
-
     class Meta:
         schema_cls = RiderBookingViewSchema
 
@@ -106,7 +101,7 @@ class RiderBookingReadModel(RiderBookingView):
     @property
     def doc_ref(self):
         return CTX.db.document("users/{}/bookings/{}".format(self.user_id,
-                                 self.store.rider_booking.doc_id))
+                                                             self.store.rider_booking.doc_id))
 
     @classmethod
     def new(cls, *args, snapshot=None, **kwargs):
@@ -139,7 +134,6 @@ class RiderBookingReadModel(RiderBookingView):
 
 
 class RiderBookingForm(RiderBookingView):
-
     class Meta:
         schema_cls = RiderBookingViewSchema
 
@@ -168,7 +162,7 @@ class RiderBookingForm(RiderBookingView):
 
     @earliest_arrival.setter
     def earliest_arrival(self, value):
-       self.target.earliest_arrival = value
+        self.target.earliest_arrival = value
 
     @property
     def latest_arrival(self):
@@ -198,7 +192,8 @@ class RiderBookingForm(RiderBookingView):
 
     @classmethod
     def new(cls, *args, doc_id=None, **kwargs):
-        return super().new(*args, rider_booking=RiderBooking.new(doc_id=doc_id),
+        return super().new(*args,
+                           rider_booking=RiderBooking.new(doc_id=doc_id),
                            **kwargs)
 
     @property
@@ -226,16 +221,15 @@ class RiderBookingForm(RiderBookingView):
 
 
 class RiderBookingMutation(mutation.Mutation):
-
     view_model_cls = RiderBookingForm
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.from_dict(doc_id=data["doc_id"], d=data)
+        obj = cls.view_model_cls.from_dict(doc_id=data.get("doc_id", None),
+                                           d=data)
         obj.propagate_change()
         return obj
 
 
 class RBMediator(view_mediator.ViewMediator):
-
     pass

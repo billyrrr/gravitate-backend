@@ -233,7 +233,8 @@ class RideHostMutation(mutation.Mutation):
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.from_dict(doc_id=data["doc_id"], d=data)
+        obj = cls.view_model_cls.from_dict(doc_id=data.get("doc_id", None),
+                                           d=data)
         obj.propagate_change()
         return obj
 
