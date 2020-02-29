@@ -1,12 +1,28 @@
-from flask_boiler import schema, fields, domain_model, view_model, view_mediator, mutation
-from google.cloud.firestore_v1 import DocumentReference
+from math import inf
 
-from gravitate.domain.bookings.models import Target
+from flask_boiler import schema, fields, domain_model, view_model, mutation, \
+    view_mediator
+from flask_boiler.business_property_store import SimpleStore, BPSchema, \
+    BusinessPropertyStore
+from flask_boiler.schema import Schema
+from flask_boiler.fields import Embedded, Integer, Relationship, Boolean, \
+    String, Raw
+from flask_boiler.domain_model import DomainModel
+from flask_boiler.serializable import Serializable
+from flask_boiler.snapshot_container import SnapshotContainer
+from flask_boiler.struct import Struct
+from flask_boiler.utils import get_property
+from google.cloud.firestore import DocumentReference
+
+from gravitate import CTX
 from gravitate.domain.location import Location
+from gravitate.domain.target import Target
 
 
 class RideHostTarget(Target):
-    pass
+
+    class Meta:
+        collection_name = "hostTargets"
 
 
 class RideHostSchema(schema.Schema):
@@ -17,6 +33,7 @@ class RideHostSchema(schema.Schema):
     target = fields.Relationship(nested=True)
 
     user_id = fields.String()
+    orbit_ref = fields.Relationship(nested=False, required=False, allow_none=True)
 
 
 class RideHost(domain_model.DomainModel):
@@ -25,29 +42,24 @@ class RideHost(domain_model.DomainModel):
         schema_cls = RideHostSchema
         collection_name = "rideHosts"
 
-    @property
-    def target(self):
-        if getattr(self, "_target", None) is None:
-            #         "coordinates": {
-            #             "latitude": 34.414132,
-            #             "longitude": -119.848868
-            #         },
-            self._target = RideHostTarget.new(
-                r_ref=self.doc_ref
-            )
-        return self._target
-
     def save(self, *args, **kwargs):
         self.target.update_vals(with_dict=dict(
+            r_ref=self.doc_ref,
             from_lat=self.from_location.coordinates["latitude"],
             from_lng=self.from_location.coordinates["longitude"],
             to_lat=self.to_location.coordinates["latitude"],
             to_lng=self.to_location.coordinates["longitude"]))
         return super().save(*args, **kwargs)
 
-    @target.setter
-    def target(self, value):
-        self._target = value
+    @classmethod
+    def new(cls, *args, target=None, **kwargs):
+        if target is None:
+            target = RideHostTarget.new()
+        return super().new(*args, target=target, **kwargs)
+
+    # @target.setter
+    # def target(self, value):
+    #     self._target = value
 
 
 class RideHostViewSchema(schema.Schema):
@@ -56,27 +68,17 @@ class RideHostViewSchema(schema.Schema):
 
     from_location = fields.String()
     to_location = fields.String()
-    earliest_arrival = fields.Localtime()
-    latest_arrival = fields.Localtime()
-    earliest_departure = fields.Localtime()
-    latest_departure = fields.Localtime()
+    earliest_arrival = fields.Localtime(allow_none=True, missing=-inf)
+    latest_arrival = fields.Localtime(allow_none=True, missing=inf)
+    earliest_departure = fields.Localtime(allow_none=True, missing=-inf)
+    latest_departure = fields.Localtime(allow_none=True, missing=inf)
     user_id = fields.String()
 
+    ride_host = fields.Raw(load_only=True, required=False)
 
-def get_property(attr_name, inner_attr):
-    def fget(self):
-        inner = getattr(self, inner_attr)
-        return getattr(inner, attr_name)
 
-    def fset(self, value):
-        inner = getattr(self, inner_attr)
-        setattr(inner, attr_name, value)
-
-    def fdel(self):
-        inner = getattr(self, inner_attr)
-        delattr(inner, attr_name)
-
-    return property(fget=fget, fset=fset, fdel=fdel)
+class HostingStoreBpss(BPSchema):
+    ride_host = fields.StructuralRef(dm_cls=RideHost)
 
 
 class RideHostView(view_model.ViewModel):
@@ -84,27 +86,103 @@ class RideHostView(view_model.ViewModel):
     class Meta:
         schema_cls = RideHostViewSchema
 
-    def propagate_change(self):
-        self.ride_host.save()
+
+class RideHostReadModel(RideHostView):
+
+    class Meta:
+        schema_cls = RideHostViewSchema
 
     earliest_departure = get_property("earliest_departure", "target")
     latest_departure = get_property("latest_departure", "target")
     earliest_arrival = get_property("earliest_arrival", "target")
     latest_arrival = get_property("latest_arrival", "target")
 
-    @classmethod
-    def new(cls, *args, **kwargs):
-        return super().new(*args, **kwargs)
-
     @property
-    def ride_host(self):
-        if not getattr(self, "_ride_host", None):
-            self._ride_host = RideHost.new()
-        return self._ride_host
+    def doc_ref(self):
+        return CTX.db.document("users/{}/hostings/{}".format(self.user_id,
+                                 self.store.ride_host.doc_id))
+
+    @classmethod
+    def new(cls, *args, snapshot=None, **kwargs):
+        struct = Struct(schema_obj=HostingStoreBpss())
+        struct["ride_host"] = (RideHost, snapshot.reference.id)
+
+        container = SnapshotContainer()
+        container.set(snapshot.reference._document_path, snapshot)
+
+        store = BusinessPropertyStore(struct=struct,
+                                      snapshot_container=container)
+        store.refresh()
+        return super().new(*args, store=store, **kwargs)
 
     @property
     def from_location(self):
-        return self.ride_host.from_location.doc_ref
+        return self.store.ride_host.from_location.doc_ref.path
+
+    @property
+    def to_location(self):
+        return self.store.ride_host.to_location.doc_ref.path
+
+    @property
+    def target(self):
+        return self.store.ride_host.target
+
+    @property
+    def user_id(self):
+        return self.store.ride_host.user_id
+
+
+class RideHostForm(RideHostView):
+
+    class Meta:
+        schema_cls = RideHostViewSchema
+    #
+    # @property
+    # def ride_host_id(self):
+    #     return self.ride_host.doc_id
+    #
+    # @ride_host_id.setter
+    # def ride_host_id(self, value):
+    #     self.ride_host.doc_id = value
+
+    def propagate_change(self):
+        self.ride_host.save()
+
+    @property
+    def earliest_departure(self):
+        raise AttributeError
+
+    @earliest_departure.setter
+    def earliest_departure(self, value):
+        self.target.earliest_departure = value
+
+    @property
+    def latest_departure(self):
+        raise AttributeError
+
+    @latest_departure.setter
+    def latest_departure(self, value):
+        self.target.latest_departure = value
+
+    @property
+    def earliest_arrival(self):
+        raise AttributeError
+
+    @earliest_arrival.setter
+    def earliest_arrival(self, value):
+       self.target.earliest_arrival = value
+
+    @property
+    def latest_arrival(self):
+        raise AttributeError
+
+    @latest_arrival.setter
+    def latest_arrival(self, value):
+        self.target.latest_arrival = value
+
+    @property
+    def from_location(self):
+        raise AttributeError
 
     @from_location.setter
     def from_location(self, value):
@@ -113,44 +191,49 @@ class RideHostView(view_model.ViewModel):
 
     @property
     def to_location(self):
-        return self.ride_host.to_location.doc_ref
+        raise AttributeError
 
     @to_location.setter
     def to_location(self, value):
         if value != '':
             self.ride_host.to_location = Location.get(doc_ref_str=value)
 
-    @property
-    def target(self):
-        return self.ride_host.target
+    @classmethod
+    def new(cls, *args, doc_id=None, **kwargs):
+        return super().new(*args, ride_host=RideHost.new(doc_id=doc_id),
+                           **kwargs)
 
-    @target.setter
-    def target(self, value):
-        self.ride_host.target = value
+    @property
+    def target(self) -> RideHostTarget:
+        return self.ride_host.target
 
     @property
     def user_id(self):
-        return self.ride_host.user_id
+        raise AttributeError
 
     @user_id.setter
     def user_id(self, value):
         self.ride_host.user_id = value
 
-    # @property
-    # def from_location(self):
-    #     raise AttributeError
     #
-    # @from_location.setter
-    # def from_location(self, d):
+    # @property
+    # def ride_host(self):
+    #     if not getattr(self, "_ride_host", None):
+    #         self._ride_host = RiderBooking.new()
+    #     return self._ride_host
+    #
+    # @ride_host.setter
+    # def ride_host(self, value):
+    #     self._ride_host = value
 
 
 class RideHostMutation(mutation.Mutation):
 
-    view_model_cls = RideHostView
+    view_model_cls = RideHostForm
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.from_dict(d=data)
+        obj = cls.view_model_cls.from_dict(doc_id=data["doc_id"], d=data)
         obj.propagate_change()
         return obj
 
@@ -158,6 +241,3 @@ class RideHostMutation(mutation.Mutation):
 class RHMediator(view_mediator.ViewMediator):
 
     pass
-
-
-
