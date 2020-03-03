@@ -1,3 +1,4 @@
+import time
 from unittest import TestCase
 
 from gravitate import main
@@ -5,7 +6,7 @@ from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.host_car import RideHost
 from gravitate.domain.location import UserLocation
 from gravitate.domain.location.models import LocationFactory
-from gravitate.domain.matcher.orbit import Orbit
+from gravitate.domain.matcher.orbit import Orbit, OrbitViewMediator, OrbitView
 from gravitate.domain.target import Target
 
 
@@ -42,11 +43,21 @@ class CreateRideHostTest(TestCase):
         self.rider_booking.save()
 
     def testCreateRideHost(self):
-        self.orbit = Orbit.new()
+        self.orbit = Orbit.new(status="open")
 
         orbit = self.orbit
         orbit.add_rider(self.rider_booking)
         orbit.add_host(self.ride_host)
+
+        orbit.save()
+
+        hosting_mediator = OrbitViewMediator(
+            view_model_cls=OrbitView
+        )
+
+        hosting_mediator.start()
+
+        time.sleep(5)
 
     def tearDown(self) -> None:
         self.from_location.delete()
