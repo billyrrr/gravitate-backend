@@ -21,6 +21,8 @@ import logging
 # Reference: https://stackoverflow.com/questions/21214270/scheduling-a-function-to-run-every-hour-on-flask/38501429
 # Deprecated
 # from apscheduler.schedulers.background import BackgroundScheduler
+import sys
+
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, Api, Resource
 from flasgger import APISpec, Swagger
@@ -41,6 +43,11 @@ from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 from gravitate import schemas
+from gravitate.domain.bookings import RBMediator, RiderBookingView, \
+    RiderBookingMutation, RiderBookingForm, RiderBookingReadModel
+from gravitate.domain.bookings.view_mediator import UserBookingMediator
+from gravitate.domain.host_car import RHMediator, RideHostView, \
+    RideHostMutation, RideHost, RideHostReadModel, RideHostForm
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
@@ -50,6 +57,8 @@ from gravitate import schemas
 
 # Flasgger docs
 # Create an APISpec
+from gravitate.domain.host_car.view_mediator import UserHostingMediator
+
 spec = APISpec(
     title='Gravitate REST API',
     version='0.0.1',
@@ -64,6 +73,21 @@ spec = APISpec(
 # Initialize Flask
 firebase_request_adapter = requests.Request()
 app = Flask(__name__)
+
+PRINT_LOGGING = True
+
+if PRINT_LOGGING:
+    import logging
+
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
 
 db = Context.db
 parser = reqparse.RequestParser()
@@ -127,6 +151,35 @@ api.add_resource(EndpointTestService, '/endpointTest')
 api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 # api.add_resource(AirportRideRequestCreationService, '/airportRideRequests')
 # api.add_resource(DeleteMatchService, '/deleteMatch')
+
+
+
+rider_booking_mediator = RBMediator(
+    view_model_cls=RiderBookingForm,
+    app=app,
+    mutation_cls=RiderBookingMutation)
+
+rider_booking_mediator.add_list_post(
+    rule='/riderBookings',
+    list_post_view=rider_booking_mediator._default_list_post_view())
+
+booking_mediator = UserBookingMediator(
+    view_model_cls=RiderBookingReadModel,
+)
+
+booking_mediator.start()
+
+ride_host_mediator = \
+    RHMediator(view_model_cls=RideHostForm, app=app, mutation_cls=RideHostMutation)
+
+ride_host_mediator.add_list_post(rule='/rideHosts',
+                                 list_post_view=ride_host_mediator._default_list_post_view())
+
+hosting_mediator = UserHostingMediator(
+    view_model_cls=RideHostReadModel
+)
+
+hosting_mediator.start()
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
