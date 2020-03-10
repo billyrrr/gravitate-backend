@@ -30,10 +30,18 @@ class CreateRiderBookingTest(TestCase):
             "earliest_departure": "2014-12-29T03:12:58.019077"
         }
 
+        # Creates a rider booking
         r = self.app.post(path='/riderBookings', json=form)
         assert r.status_code == 200
-        print(r.json)
-        print(r)
+        doc_id = r.json["booking_id"]
+
+        time.sleep(5)
+
+        # Deletes a rider booking
+        r = self.app.delete(path='/riderBookings/{}'.format(doc_id))
+        assert r.status_code == 200
+
+        time.sleep(5)
 
     def testUserSubcollection(self):
 
@@ -49,6 +57,6 @@ class CreateRiderBookingTest(TestCase):
 
         time.sleep(5)
 
-    def tearDown(self) -> None:
-        self.from_location.delete()
-        self.to_location.delete()
+    # def tearDown(self) -> None:
+    #     self.from_location.delete()
+    #     self.to_location.delete()

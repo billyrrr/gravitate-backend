@@ -1,15 +1,16 @@
 from collections import UserDict
 import random
+from math import inf
 
 from flask_boiler import schema, fields, domain_model
 
 
 class TargetSchema(schema.Schema):
 
-    earliest_arrival = fields.Integer()
-    latest_arrival = fields.Integer()
-    earliest_departure = fields.Integer()
-    latest_departure = fields.Integer()
+    earliest_arrival = fields.NumberTimestamp(default=-inf)
+    latest_arrival = fields.NumberTimestamp(default=inf)
+    earliest_departure = fields.NumberTimestamp(default=-inf)
+    latest_departure = fields.NumberTimestamp(default=inf)
     r_ref = fields.Relationship(nested=False)
     from_lat = fields.Raw()
     from_lng = fields.Raw()

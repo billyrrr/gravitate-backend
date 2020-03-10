@@ -68,10 +68,10 @@ class RideHostViewSchema(schema.Schema):
 
     from_location = fields.String()
     to_location = fields.String()
-    earliest_arrival = fields.Localtime(allow_none=True, missing=-inf)
-    latest_arrival = fields.Localtime(allow_none=True, missing=inf)
-    earliest_departure = fields.Localtime(allow_none=True, missing=-inf)
-    latest_departure = fields.Localtime(allow_none=True, missing=inf)
+    earliest_arrival = fields.Localtime(default=-inf)
+    latest_arrival = fields.Localtime(default=inf)
+    earliest_departure = fields.Localtime(default=-inf)
+    latest_departure = fields.Localtime(default=inf)
     user_id = fields.String()
 
     ride_host = fields.Raw(load_only=True, required=False)

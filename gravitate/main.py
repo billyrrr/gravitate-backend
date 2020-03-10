@@ -45,7 +45,8 @@ from gravitate.context import Context
 from gravitate import schemas
 from gravitate.domain.bookings import RBMediator, RiderBookingView, \
     RiderBookingMutation, RiderBookingForm, RiderBookingReadModel
-from gravitate.domain.bookings.view_mediator import UserBookingMediator
+from gravitate.domain.bookings.view_mediator import UserBookingMediator, \
+    BookingTargetMediator
 from gravitate.domain.host_car import RHMediator, RideHostView, \
     RideHostMutation, RideHost, RideHostReadModel, RideHostForm
 
@@ -153,7 +154,6 @@ api.add_resource(RideRequestCreation, '/requestRide/<string:rideCategory>')
 # api.add_resource(DeleteMatchService, '/deleteMatch')
 
 
-
 rider_booking_mediator = RBMediator(
     view_model_cls=RiderBookingForm,
     app=app,
@@ -162,12 +162,18 @@ rider_booking_mediator = RBMediator(
 rider_booking_mediator.add_list_post(
     rule='/riderBookings',
     list_post_view=rider_booking_mediator._default_list_post_view())
+rider_booking_mediator.add_instance_delete(
+    rule='/riderBookings/<string:doc_id>')
 
 booking_mediator = UserBookingMediator(
     view_model_cls=RiderBookingReadModel,
 )
 
 booking_mediator.start()
+
+booking_target_mediator = BookingTargetMediator()
+
+booking_target_mediator.start()
 
 ride_host_mediator = \
     RHMediator(view_model_cls=RideHostForm, app=app, mutation_cls=RideHostMutation)

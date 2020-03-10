@@ -1,4 +1,5 @@
 import datetime
+from math import inf
 
 import pytz
 from iso8601 import iso8601
@@ -22,7 +23,6 @@ def local_time_from_timestamp(timestamp) -> str:
     :param timestamp: for example: 1545062400
     :return: for example: "2018-12-17T08:00:00"
     """
-
     tz = pytz.timezone('US/Pacific') #('America/Los_Angeles')
 
     d: datetime.datetime = datetime.datetime.fromtimestamp(timestamp, tz=tz)
