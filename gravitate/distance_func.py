@@ -30,6 +30,9 @@ def distance_func( params_a:list, params_b:list, max_dist:float = 500):
 
 def edge_weight( params_a:dict, params_b:dict, max_dist:float = 500):
 
+    if params_a["rid"] == params_b["rid"]:
+        return inf
+
     a_from = (params_a["from_lat"], params_a["from_lng"])
     b_from = (params_b["from_lat"], params_b["from_lng"])
     dist_from = haversine(a_from, b_from, unit="km")

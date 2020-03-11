@@ -59,6 +59,7 @@ from gravitate.domain.host_car import RHMediator, RideHostView, \
 # Flasgger docs
 # Create an APISpec
 from gravitate.domain.host_car.view_mediator import UserHostingMediator
+from gravitate.domain.target.mediator import TargetMatchMediator
 
 spec = APISpec(
     title='Gravitate REST API',
@@ -186,6 +187,10 @@ hosting_mediator = UserHostingMediator(
 )
 
 hosting_mediator.start()
+
+target_match_mediator = TargetMatchMediator()
+
+target_match_mediator.start()
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])

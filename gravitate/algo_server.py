@@ -1,5 +1,6 @@
 import sys
 import time
+from math import inf
 
 from flask_boiler.utils import snapshot_to_obj
 from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV
@@ -7,10 +8,12 @@ from google.cloud.firestore import Query
 from google.cloud.firestore import DocumentSnapshot
 
 from gravitate.domain import bookings
+from gravitate.domain.bookings import RiderBooking
+from gravitate.domain.matcher.orbit import Orbit
 from gravitate.domain.target import Target
 from gravitate.domain import host_car
 
-from networkx import Graph
+from gravitate.distance_func import edge_weight
 
 
 class RiderTargetMediator(ViewMediatorDeltaDAV):
@@ -29,7 +32,17 @@ class RiderTargetMediator(ViewMediatorDeltaDAV):
 
                     assert isinstance(snapshot, DocumentSnapshot)
                     obj = snapshot_to_obj(snapshot=snapshot)
-                    self.target_repo.add(obj)
+                    other = self.target_repo.add(obj)
+                    if other is not None:
+                        other_target = bookings.RiderTarget.get(
+                            doc_ref_str=other)
+                        orbit = Orbit.new(status="open")
+
+                        this = RiderBooking.get(doc_ref=obj.r_ref)
+                        that = RiderBooking.get(doc_ref=other_target.r_ref)
+
+                        orbit.add_rider(this)
+                        orbit.add_rider(that)
 
         return query, on_snapshot
 
@@ -56,22 +69,28 @@ class HostTargetMediator(ViewMediatorDeltaDAV):
 
 
 class TargetRepo:
+    """
+    Perform range and proximity search using Brute Force
+    TODO: change to K-D Tree
+    """
 
-    def __init__(self, graph):
+    def __init__(self):
         self.d = dict()
-        self.graph = graph
 
     def add(self, target: Target):
-        from gravitate.distance_func import edge_weight
-        self.d[target.doc_ref_str] = target
-        new_node = target.to_graph_node()
-        graph.add_node(new_node)
-        for node in graph.nodes:
-            if node == new_node:
-                continue
-            weight = edge_weight(node, new_node)
-            graph.add_weighted_edges_from(
-                ebunch_to_add={(node, new_node, weight)})
+        target_node = target.to_graph_node()
+        res = list()
+        for key, val in self.d.items():
+            dist = edge_weight(target_node, val)
+            if dist < inf:
+                item = (dist, key)
+                res.append(item)
+        self.d[target.doc_ref_str] = target_node
+        res.sort()
+        if len(res) == 0:
+            return None
+        else:
+            return res[0][1]
 
 
 """
@@ -95,13 +114,8 @@ root.addHandler(handler)
 
 if __name__ == '__main__':
 
-    graph = Graph()
-
-    target_repo = TargetRepo(graph)
+    target_repo = TargetRepo()
     rider_target_mediator = RiderTargetMediator(target_repo=target_repo)
     rider_target_mediator.start()
 
-    host_target_mediator = HostTargetMediator(target_repo=target_repo)
-    host_target_mediator.start()
-
-    time.sleep(5)
+    time.sleep(20)
