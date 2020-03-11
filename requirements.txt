@@ -46,4 +46,4 @@ apispec_webframeworks
 
 flask_marshmallow
 
-flask-boiler
+flask-boiler>=0.0.1.b2
