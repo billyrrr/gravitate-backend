@@ -46,7 +46,7 @@ from gravitate import schemas
 from gravitate.domain.bookings import RBMediator, RiderBookingView, \
     RiderBookingMutation, RiderBookingForm, RiderBookingReadModel
 from gravitate.domain.bookings.view_mediator import UserBookingMediator, \
-    BookingTargetMediator
+    BookingTargetMediator, UserBookingEditMediator
 from gravitate.domain.host_car import RHMediator, RideHostView, \
     RideHostMutation, RideHost, RideHostReadModel, RideHostForm
 
@@ -166,6 +166,11 @@ rider_booking_mediator.add_list_post(
 rider_booking_mediator.add_instance_delete(
     rule='/riderBookings/<string:doc_id>')
 
+user_booking_mediator = UserBookingEditMediator(
+    view_model_cls=RiderBookingForm)
+
+user_booking_mediator.start()
+
 booking_mediator = UserBookingMediator(
     view_model_cls=RiderBookingReadModel,
 )
@@ -227,12 +232,12 @@ def server_error(e):
 
 if __name__ == '__main__':
     # flasgger for hosting REST API docs
-    template = spec.to_flasgger(
-        app,
-        definitions=[schemas.LuggageCollectionSchema, schemas.LuggageItemSchema],
-        # paths=[random_pet]
-    )
-    swagger = Swagger(app, template=template)
+    # template = spec.to_flasgger(
+    #     app,
+    #     definitions=[schemas.LuggageCollectionSchema, schemas.LuggageItemSchema],
+    #     # paths=[random_pet]
+    # )
+    # swagger = Swagger(app, template=template)
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)

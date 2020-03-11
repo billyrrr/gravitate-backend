@@ -9,6 +9,7 @@ from flask_boiler.utils import snapshot_to_obj
 from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV
 from google.cloud.firestore import DocumentSnapshot
 
+from gravitate import CTX
 from gravitate.domain.user import User
 from . import RiderBooking, BookingStoreBpss, RiderTarget
 from google.cloud.firestore import Query
@@ -41,6 +42,38 @@ class UserBookingMediator(ViewMediatorDeltaDAV):
                     obj: RiderBooking = snapshot_to_obj(snapshot)
                     if obj.status == "removed":
                         self.view_model_cls.remove_one(obj=obj)
+
+        return query, on_snapshot
+
+
+class UserBookingEditMediator(ViewMediatorDeltaDAV):
+    """
+    Forwards a rider booking to a user subcollection
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _get_query_and_on_snapshot(self):
+        query = CTX.db.collection_group("bookings_POST")
+
+        def on_snapshot(snapshots, changes, timestamp):
+            for change, snapshot in zip(changes, snapshots):
+                if change.type.name == 'ADDED':
+
+                    # assert issubclass(self.model_cls, RiderBooking)
+                    assert isinstance(snapshot, DocumentSnapshot)
+                    path = snapshot.reference
+
+                    booking_id = path.id
+                    user_id = path.parent.parent.id
+
+                    d = snapshot.to_dict()
+
+                    obj = self.view_model_cls.from_dict(doc_id=booking_id,
+                                                  d=dict(**d, user_id=user_id)
+                    )
+                    obj.propagate_change()
 
         return query, on_snapshot
 
