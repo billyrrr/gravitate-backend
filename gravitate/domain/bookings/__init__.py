@@ -58,8 +58,8 @@ class RiderBooking(domain_model.DomainModel):
 class RiderBookingViewSchema(schema.Schema):
     case_conversion = False
 
-    from_location = fields.String()
-    to_location = fields.String()
+    from_location = fields.Raw()
+    to_location = fields.Raw()
 
     earliest_arrival = fields.Localtime(allow_none=True)
     latest_arrival = fields.Localtime(allow_none=True)
@@ -69,6 +69,9 @@ class RiderBookingViewSchema(schema.Schema):
     user_id = fields.String()
 
     rider_booking = fields.Raw(load_only=True, required=False)
+
+    preview_pic_url = fields.Raw(allow_none=True)
+    isoweekday = fields.Raw(allow_none=True)
 
     booking_id = fields.Raw(dump_only=True)
 
@@ -127,11 +130,30 @@ class RiderBookingReadModel(RiderBookingView):
 
     @property
     def from_location(self):
-        return self.store.rider_booking.from_location.doc_ref.path
+        return self.store.rider_booking.from_location.to_dict()
 
     @property
     def to_location(self):
-        return self.store.rider_booking.to_location.doc_ref.path
+        return self.store.rider_booking.to_location.to_dict()
+
+    @property
+    def preview_pic_url(self):
+        url="https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap%20&markers=color:blue%7Clabel:S%7C{}&markers=color:red%7Clabel:E%7C{}%20&path=color:0x0000ff80|weight:10|geodesic:true|{}|{}&key=AIzaSyAeyQklNOdZGCNxSME0UpU-zntYPh9MY9E"
+        return url.format(
+            self.store.rider_booking.from_location.to_coordinate_str(),
+            self.store.rider_booking.to_location.to_coordinate_str(),
+            self.store.rider_booking.from_location.to_coordinate_str(),
+            self.store.rider_booking.to_location.to_coordinate_str()
+        )
+
+    @property
+    def isoweekday(self):
+        """
+        TODO: add read weekday from other time attributes
+        :return:
+        """
+        val = common.local_dt_from_timestamp(self.earliest_departure)
+        return val.isoweekday()
 
     @property
     def user_id(self):

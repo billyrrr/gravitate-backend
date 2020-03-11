@@ -25,6 +25,10 @@ class Location(domain_model.DomainModel):
     class Meta:
         collection_name = "locations"
 
+    def to_coordinate_str(self):
+        return "{},{}".format(
+            self.coordinates["latitude"], self.coordinates["longitude"])
+
 
 # Location = SerializableClsFactory.create(
 #     "Location", LocationSchema, base=Location)

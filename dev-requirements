@@ -1,1 +1,4 @@
 pytest
+
+# For running dev server locally for testing purposes
+pyOpenSSL
