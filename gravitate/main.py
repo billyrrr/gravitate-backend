@@ -192,10 +192,10 @@ hosting_mediator = UserHostingMediator(
 )
 
 hosting_mediator.start()
-#
-# target_match_mediator = TargetMatchMediator()
-#
-# target_match_mediator.start()
+
+target_match_mediator = TargetMatchMediator()
+
+target_match_mediator.start()
 
 
 @app.route('/contextTest', methods=['POST', 'PUT'])

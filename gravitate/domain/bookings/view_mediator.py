@@ -91,6 +91,15 @@ class BookingTargetMediator(ViewMediatorDeltaDAV):
         query = Query(parent=self.model_cls._get_collection())
 
         def on_snapshot(snapshots, changes, timestamp):
+            """
+            Note that server reboot will result in some "Modified" objects
+                to be routed as "Added" objects
+
+            :param snapshots:
+            :param changes:
+            :param timestamp:
+            :return:
+            """
             for change, snapshot in zip(changes, snapshots):
                 if change.type.name == 'ADDED':
 
@@ -127,7 +136,10 @@ class BookingTargetMediator(ViewMediatorDeltaDAV):
                     assert isinstance(snapshot, DocumentSnapshot)
 
                     obj: RiderBooking = snapshot_to_obj(snapshot=snapshot)
-                    if obj.status == "removed":
+                    if obj.status in {"matched", }:
+                        """
+                        Delete targets for matched rider bookings 
+                        """
                         booking_ref = obj.doc_ref
                         for target in RiderTarget.where(r_ref=booking_ref):
                             target.delete()

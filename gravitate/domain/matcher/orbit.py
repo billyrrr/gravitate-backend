@@ -34,6 +34,7 @@ class Orbit(OrbitBase):
 
     def add_rider(self, rider_booking: RiderBooking):
         rider_booking.orbit_ref = self.doc_ref
+        rider_booking.status = "matched"
         self.bookings.append(rider_booking.doc_ref)
 
         rider_booking.save()
