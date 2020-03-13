@@ -3,7 +3,7 @@ import time
 from flask_boiler import schema, fields, domain_model
 from flask_boiler.struct import Struct
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV
+from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
 from flask_boiler.view_model import ViewModel
 from flask_boiler.business_property_store import BPSchema
 from google.cloud.firestore import DocumentSnapshot, DocumentReference, Query
@@ -101,7 +101,7 @@ class OrbitView(ViewModel):
         if orbit.ride_host is not None:
             struct["ride_host"] = (RideHost, orbit.ride_host.id)
 
-        return cls.get(struct_d=struct, once=False, **kwargs)
+        return cls.get(struct_d=struct, **kwargs)
 
     def save(self, **kwargs):
         for _, booking in self.store.bookings.items():
@@ -126,22 +126,14 @@ class OrbitViewMediator(ViewMediatorDeltaDAV):
     Forwards a rider booking to a user subcollection
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.model_cls = Orbit
+    model_cls = Orbit
 
-    def _get_query_and_on_snapshot(self):
-        query = Query(parent=self.model_cls._get_collection())
+    class Protocol(ProtocolBase):
 
-        def on_snapshot(snapshots, changes, timestamp):
-            for change, snapshot in zip(changes, snapshots):
-                if change.type.name == 'ADDED':
-
-                    obj = self.view_model_cls.new(
-                        snapshot=snapshot,
-                        f_notify=self.notify
-                    )
-                    # time.sleep(5)
-                    # print(obj.store)
-
-        return query, on_snapshot
+        @staticmethod
+        def on_create(snapshot, mediator):
+            obj = OrbitView.new(
+                snapshot=snapshot,
+                once=True
+            )
+            mediator.notify(obj=obj)

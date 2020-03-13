@@ -45,13 +45,14 @@ class CreateRideHostTest(TestCase):
         ref = CTX.db.document(
             "users/{}/hostings/{}".format(self.userIds[0], doc_id_1))
         d = ref.get().to_dict()
-        assert set(d.items()) >= set(
-            {'obj_type': 'RideHostReadModel', 'latest_departure': None,
-             'user_id': 'testuid1',
-             'earliest_departure': '2014-12-29T03:12:58.019077',
-             'latest_arrival': None,
-             'doc_ref': 'users/testuid1/hostings/test_doc_id_1',
-             'earliest_arrival': None}.items())
+        assert d.items() >= {
+            'obj_type': 'RideHostReadModel',
+            'latest_departure': None,
+            'user_id': 'testuid1',
+            'earliest_departure': '2014-12-29T03:12:58.019077',
+            'latest_arrival': None,
+            'doc_ref': 'users/testuid1/hostings/test_doc_id_1',
+            'earliest_arrival': None}.items()
 
     def tearDown(self) -> None:
         self.from_location.delete()

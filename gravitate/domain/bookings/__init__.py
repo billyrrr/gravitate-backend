@@ -47,13 +47,6 @@ class RiderBooking(domain_model.DomainModel):
         schema_cls = RiderBookingSchema
         collection_name = "riderBookings"
 
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
-
-    @classmethod
-    def new(cls, *args, **kwargs):
-        return super().new(*args, **kwargs)
-
 
 class RiderBookingViewSchema(schema.Schema):
     case_conversion = False
@@ -80,12 +73,6 @@ class BookingStoreBpss(BPSchema):
     rider_booking = fields.StructuralRef(dm_cls=RiderBooking)
 
 
-class BookingStore(SimpleStore):
-
-    def __init__(self, booking):
-        self.rider_booking = booking
-
-
 class RiderBookingView(view_model.ViewModel):
     class Meta:
         schema_cls = RiderBookingViewSchema
@@ -96,10 +83,14 @@ class RiderBookingReadModel(RiderBookingView):
         schema_cls = RiderBookingViewSchema
 
     @property
+    def booking_id(self):
+        return self.store.rider_booking.doc_id
+
+    @property
     def doc_ref(self):
         return self._get_booking_ref(
             user_id=self.user_id,
-            booking_id=self.store.rider_booking.doc_id
+            booking_id=self.booking_id
         )
 
     @classmethod
@@ -147,15 +138,6 @@ class RiderBookingReadModel(RiderBookingView):
         )
 
     @property
-    def isoweekday(self):
-        """
-        TODO: add read weekday from other time attributes
-        :return:
-        """
-        val = common.local_dt_from_timestamp(self.earliest_departure)
-        return val.isoweekday()
-
-    @property
     def user_id(self):
         return self.store.rider_booking.user_id
 
@@ -178,6 +160,15 @@ class RiderBookingReadModel(RiderBookingView):
     def latest_arrival(self):
         val = self.store.rider_booking.latest_arrival
         return val
+
+    @property
+    def isoweekday(self):
+        """
+        TODO: add read weekday from other time attributes
+        :return:
+        """
+        val = common.local_dt_from_timestamp(self.earliest_departure)
+        return val.isoweekday()
 
 
 class RiderBookingForm(RiderBookingView):
@@ -256,17 +247,6 @@ class RiderBookingForm(RiderBookingView):
     @latest_arrival.setter
     def latest_arrival(self, value):
         self.rider_booking.latest_arrival = value
-
-    #
-    # @property
-    # def rider_booking(self):
-    #     if not getattr(self, "_rider_booking", None):
-    #         self._rider_booking = RiderBooking.new()
-    #     return self._rider_booking
-    #
-    # @rider_booking.setter
-    # def rider_booking(self, value):
-    #     self._rider_booking = value
 
 
 class RiderBookingMutation(mutation.Mutation):

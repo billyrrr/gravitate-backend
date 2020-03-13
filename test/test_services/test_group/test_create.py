@@ -1,6 +1,8 @@
 import time
 from unittest import TestCase
 
+from google.cloud.firestore_v1 import Query
+
 from gravitate import main
 from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.host_car import RideHost
@@ -24,20 +26,22 @@ class CreateRideHostTest(TestCase):
 
         self.ride_host = RideHost.new(
             doc_id="tmp_ride_host_1",
+            earliest_departure=1419851578,
             from_location=self.from_location,
             to_location=self.to_location,
-            target=Target.new(),  # Note that target is not saved yet
-            user_id="testuid1"
+            user_id="testuid1",
+            status="created"
         )
 
         self.ride_host.save()
 
         self.rider_booking = RiderBooking.new(
             doc_id="tmp_rider_booking_1",
+            earliest_departure=1419851578,
             from_location=self.from_location,
             to_location=self.to_location,
-            target=Target.new(),  # Note that target is not saved yet
-            user_id="testuid2"
+            user_id="testuid2",
+            status="created"
         )
 
         self.rider_booking.save()
@@ -52,7 +56,7 @@ class CreateRideHostTest(TestCase):
         orbit.save()
 
         hosting_mediator = OrbitViewMediator(
-            view_model_cls=OrbitView
+            query=Query(parent=Orbit._get_collection())
         )
 
         hosting_mediator.start()

@@ -29,6 +29,7 @@ from flasgger import APISpec, Swagger
 from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec_webframeworks.flask import FlaskPlugin
 from google.auth.transport import requests
+from google.cloud.firestore_v1 import Query
 
 from gravitate.api_server import errors as service_errors
 from gravitate.api_server.event.services import EventService, EventCreation, UserEventService, EventAutofillService
@@ -44,7 +45,8 @@ from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
 from gravitate import schemas
 from gravitate.domain.bookings import RBMediator, RiderBookingView, \
-    RiderBookingMutation, RiderBookingForm, RiderBookingReadModel
+    RiderBookingMutation, RiderBookingForm, RiderBookingReadModel, RiderTarget, \
+    RiderBooking
 from gravitate.domain.bookings.view_mediator import UserBookingMediator, \
     BookingTargetMediator, UserBookingEditMediator
 from gravitate.domain.host_car import RHMediator, RideHostView, \
@@ -167,17 +169,20 @@ rider_booking_mediator.add_instance_delete(
     rule='/riderBookings/<string:doc_id>')
 
 user_booking_mediator = UserBookingEditMediator(
-    view_model_cls=RiderBookingForm)
+    query=Context.db.collection_group("bookings_POST")
+)
 
 user_booking_mediator.start()
 
 booking_mediator = UserBookingMediator(
-    view_model_cls=RiderBookingReadModel,
+    query=Query(parent=RiderBooking._get_collection())
 )
 
 booking_mediator.start()
 
-booking_target_mediator = BookingTargetMediator()
+booking_target_mediator = BookingTargetMediator(
+    query=Query(parent=RiderBooking._get_collection())
+)
 
 booking_target_mediator.start()
 
@@ -188,12 +193,14 @@ ride_host_mediator.add_list_post(rule='/rideHosts',
                                  list_post_view=ride_host_mediator._default_list_post_view())
 
 hosting_mediator = UserHostingMediator(
-    view_model_cls=RideHostReadModel
+    query=Query(parent=RideHost._get_collection())
 )
 
 hosting_mediator.start()
 
-target_match_mediator = TargetMatchMediator()
+target_match_mediator = TargetMatchMediator(
+    query=Query(parent=RiderTarget._get_collection())
+)
 
 target_match_mediator.start()
 

@@ -5,34 +5,27 @@ from flask_boiler.business_property_store import SimpleStore, BPSchema, \
     BusinessPropertyStore
 from flask_boiler.snapshot_container import SnapshotContainer
 from flask_boiler.struct import Struct
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV
+from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
 from google.cloud.firestore import DocumentSnapshot
 
 from gravitate.domain.user import User
-from . import RideHost
+from . import RideHost, RideHostReadModel
 from google.cloud.firestore import Query
 
 
 class UserHostingMediator(ViewMediatorDeltaDAV):
     """
-    Forwards a rider booking to a user subcollection
+    Forwards a host ride to a user subcollection
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.model_cls = RideHost
+    model_cls = RideHost
 
-    def _get_query_and_on_snapshot(self):
-        query = Query(parent=self.model_cls._get_collection())
+    class Protocol(ProtocolBase):
 
-        def on_snapshot(snapshots, changes, timestamp):
-            for change, snapshot in zip(changes, snapshots):
-                if change.type.name == 'ADDED':
+        @staticmethod
+        def on_create(snapshot, mediator):
+            obj = RideHostReadModel.new(snapshot=snapshot)
+            mediator.notify(obj=obj)
 
-                    # assert issubclass(self.model_cls, RiderBooking)
-                    assert isinstance(snapshot, DocumentSnapshot)
-
-                    obj = self.view_model_cls.new(snapshot=snapshot)
-                    obj.save()
-
-        return query, on_snapshot
+    def notify(self, obj):
+        obj.save()
