@@ -52,8 +52,8 @@ class RiderBooking(domain_model.DomainModel):
 class RiderBookingViewSchema(schema.Schema):
     case_conversion = False
 
-    from_location = fields.Nested(UserLocationSchema(), description="the origin of the trip")
-    to_location = fields.Nested(UserLocationSchema(), description="the destination of the trip")
+    from_location = fields.Raw(description="the origin of the trip")
+    to_location = fields.Raw(description="the destination of the trip")
 
     earliest_arrival = fields.Localtime(allow_none=True)
     latest_arrival = fields.Localtime(allow_none=True)
