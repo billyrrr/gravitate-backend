@@ -46,4 +46,4 @@ apispec_webframeworks
 
 flask_marshmallow
 
-flask-boiler>=0.0.1.b2
+flask-boiler @ git+https://github.com/billyrrr/flask-boiler.git@39429c2f8f8a4e395d46822d7dfcd9ed2b335315
