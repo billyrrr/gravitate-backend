@@ -40,7 +40,7 @@ class CreateRideHostTest(TestCase):
             earliest_departure=1419851578,
             from_location=self.from_location,
             to_location=self.to_location,
-            user_id="testuid2",
+            user_id="xHU5Hp8OJbVitZEWPlWk3VGyC8I3",
             status="created"
         )
 

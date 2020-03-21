@@ -165,8 +165,20 @@ rider_booking_mediator = RBMediator(
 rider_booking_mediator.add_list_post(
     rule='/riderBookings',
     list_post_view=rider_booking_mediator._default_list_post_view())
+
 rider_booking_mediator.add_instance_delete(
     rule='/riderBookings/<string:doc_id>')
+
+rider_booking_mediator_get = RBMediator(
+    view_model_cls=RiderBookingReadModel,
+    app=app,
+    mutation_cls=RiderBookingMutation
+)
+
+rider_booking_mediator_get.add_instance_get(
+    rule='/riderBookings/<string:doc_id>',
+    instance_get_view=rider_booking_mediator._default_instance_get_view()
+)
 
 user_booking_mediator = UserBookingEditMediator(
     query=Context.db.collection_group("bookings_POST")
@@ -239,12 +251,12 @@ def server_error(e):
 
 if __name__ == '__main__':
     # flasgger for hosting REST API docs
-    # template = spec.to_flasgger(
-    #     app,
-    #     definitions=[schemas.LuggageCollectionSchema, schemas.LuggageItemSchema],
-    #     # paths=[random_pet]
-    # )
-    # swagger = Swagger(app, template=template)
+    template = spec.to_flasgger(
+        app,
+        # definitions=[schemas.LuggageCollectionSchema, schemas.LuggageItemSchema],
+        # paths=[random_pet]
+    )
+    swagger = Swagger(app, template=template)
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)

@@ -14,7 +14,7 @@ class CreateRiderBookingTest(TestCase):
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
-        self.userIds = ["testuid1", "testuid2"]
+        self.userIds = ["xHU5Hp8OJbVitZEWPlWk3VGyC8I3", "testuid2"]
         self.from_location = LocationFactory.from_pickup_address("Tenaya Hall, San Diego, CA 92161")
         self.from_location.save()
         self.to_location = LocationFactory.from_pickup_address("Tioga Hall, San Diego, CA 92161")
@@ -23,11 +23,11 @@ class CreateRiderBookingTest(TestCase):
     def testCreateRiderBooking(self):
 
         form = {
-            "doc_id": "rider_booking_id_2",
+            "doc_id": "rider_booking_id_5",
             "from_location": self.from_location.doc_ref_str,
             "to_location": self.to_location.doc_ref_str,
-            "user_id": "testuid1",
-            "earliest_departure": "2014-12-29T03:12:58.019077"
+            "user_id": self.userIds[0],
+            "earliest_departure": "2014-12-21T11:00:00"
         }
 
         # Creates a rider booking
@@ -37,11 +37,11 @@ class CreateRiderBookingTest(TestCase):
 
         time.sleep(5)
 
-        # Deletes a rider booking
-        r = self.app.delete(path='/riderBookings/{}'.format(doc_id))
-        assert r.status_code == 200
+        # # Deletes a rider booking
+        # r = self.app.delete(path='/riderBookings/{}'.format(doc_id))
+        # assert r.status_code == 200
 
-        time.sleep(5)
+        # time.sleep(5)
 
     def testUserSubcollection(self):
 

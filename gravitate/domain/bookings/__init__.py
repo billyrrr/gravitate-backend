@@ -17,6 +17,7 @@ from google.cloud.firestore import DocumentReference
 
 from gravitate import CTX
 from gravitate.domain.location import Location
+from gravitate.domain.location.models import LocationSchema, UserLocationSchema
 from gravitate.domain.target import Target
 from gravitate import common
 
@@ -51,22 +52,24 @@ class RiderBooking(domain_model.DomainModel):
 class RiderBookingViewSchema(schema.Schema):
     case_conversion = False
 
-    from_location = fields.Raw()
-    to_location = fields.Raw()
+    from_location = fields.Nested(UserLocationSchema(), description="the origin of the trip")
+    to_location = fields.Nested(UserLocationSchema(), description="the destination of the trip")
 
     earliest_arrival = fields.Localtime(allow_none=True)
     latest_arrival = fields.Localtime(allow_none=True)
     earliest_departure = fields.Localtime(allow_none=True)
     latest_departure = fields.Localtime(allow_none=True)
 
-    user_id = fields.String()
+    user_id = fields.String(description="User Id (redundant)")
 
     rider_booking = fields.Raw(load_only=True, required=False)
 
-    preview_pic_url = fields.Raw(allow_none=True)
-    isoweekday = fields.Raw(allow_none=True)
+    preview_pic_url = fields.Raw(allow_none=True, description="Url of the preview picture of the origin and destination")
+    localdate_timestamp = fields.Raw(allow_none=True, description="local time in timestamp (for sorting)")
+    localdate_string = fields.Raw(allow_none=True, description="local time in iso8601 string")
+    weekday = fields.Raw(allow_none=True, description="Return the day of the week as an integer, where Monday is 0 and Sunday is 6. For example, date(2002, 12, 4).weekday() == 2, a Wednesday")
 
-    booking_id = fields.Raw(dump_only=True)
+    booking_id = fields.Raw(dump_only=True, description="Resource ID for booking (redundant)")
 
 
 class BookingStoreBpss(BPSchema):
@@ -107,7 +110,11 @@ class RiderBookingReadModel(RiderBookingView):
             "users/{}/bookings/{}".format(user_id, booking_id))
 
     @classmethod
-    def new(cls, *args, snapshot=None, **kwargs):
+    def new(cls, *args, snapshot=None, doc_id=None, **kwargs):
+        if snapshot is None:
+            doc_ref = RiderBooking.ref_from_id(doc_id=doc_id)
+            snapshot = CTX.db.document(doc_ref).get()
+            return cls.new(*args, snapshot=snapshot, **kwargs)
         struct = Struct(schema_obj=BookingStoreBpss())
         struct["rider_booking"] = (RiderBooking, snapshot.reference.id)
 
@@ -162,13 +169,22 @@ class RiderBookingReadModel(RiderBookingView):
         return val
 
     @property
-    def isoweekday(self):
+    def localdate_timestamp(self):
+        return self.earliest_departure
+
+    @property
+    def localdate_string(self):
+        return common.local_dt_from_timestamp(self.localdate_timestamp)\
+            .isoformat()
+
+    @property
+    def weekday(self):
         """
         TODO: add read weekday from other time attributes
         :return:
         """
-        val = common.local_dt_from_timestamp(self.earliest_departure)
-        return val.isoweekday()
+        val = common.local_dt_from_timestamp(self.localdate_timestamp)
+        return val.weekday()
 
 
 class RiderBookingForm(RiderBookingView):
