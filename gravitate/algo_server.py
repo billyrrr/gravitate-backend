@@ -36,13 +36,12 @@ class RiderTargetMediator(ViewMediatorDeltaDAV):
                     if other is not None:
                         other_target = bookings.RiderTarget.get(
                             doc_ref_str=other)
-                        orbit = Orbit.new(status="open")
-
-                        this = RiderBooking.get(doc_ref=obj.r_ref)
-                        that = RiderBooking.get(doc_ref=other_target.r_ref)
-
-                        orbit.add_rider(this)
-                        orbit.add_rider(that)
+                        orbit_id = Orbit.create_one()
+                        Orbit.add_rider(
+                            orbit_id=orbit_id, booking_id=obj.r_ref.id)
+                        Orbit.add_rider(
+                            orbit_id=orbit_id, booking_id=other_target.r_ref.id
+                        )
 
         return query, on_snapshot
 

@@ -1,4 +1,5 @@
 import time
+from typing import Type
 
 from flask_boiler import schema, fields, domain_model
 from flask_boiler.struct import Struct
@@ -7,6 +8,7 @@ from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
 from flask_boiler.view_model import ViewModel
 from flask_boiler.business_property_store import BPSchema
 from google.cloud.firestore import DocumentSnapshot, DocumentReference, Query
+from google.cloud.firestore_v1 import transactional
 
 from gravitate import CTX
 from gravitate.domain.bookings import RiderBooking
@@ -16,7 +18,7 @@ from gravitate.domain.host_car import RideHost
 class OrbitSchema(schema.Schema):
 
     bookings = fields.Relationship(nested=False, many=True)
-    ride_host = fields.Relationship(nested=False, many=False)
+    ride_host = fields.Relationship(nested=False, many=False, allow_none=True)
 
     status = fields.Raw()
 
@@ -32,20 +34,63 @@ class Orbit(OrbitBase):
     class Meta:
         schema_cls = OrbitSchema
 
-    def add_rider(self, rider_booking: RiderBooking):
+    @classmethod
+    def create_one(cls):
+        obj = cls.new(status="open")
+        obj.save()
+        return obj.doc_id
+
+    @classmethod
+    def add_rider(cls, *args, **kwargs):
+        transaction = CTX.db.transaction()
+
+        @transactional
+        def _add_rider_transactional(transaction, orbit_id, booking_id):
+            orbit = cls.get(doc_id=orbit_id, transaction=transaction)
+            rider_booking = RiderBooking.get(
+                doc_id=booking_id,
+                transaction=transaction
+            )
+            orbit._add_rider(rider_booking)
+
+            orbit.save(transaction=transaction)
+            rider_booking.save(transaction=transaction)
+
+        return _add_rider_transactional(
+            transaction=transaction, *args, **kwargs
+        )
+
+    def _add_rider(self, rider_booking: RiderBooking):
         rider_booking.orbit_ref = self.doc_ref
         rider_booking.status = "matched"
         self.bookings.append(rider_booking.doc_ref)
 
-        rider_booking.save()
-        self.save()
+        # rider_booking.save()
+        # self.save()
 
-    def add_host(self, ride_host: RideHost):
+    @classmethod
+    def add_host(cls, *args, **kwargs):
+        transaction = CTX.db.transaction()
+
+        @transactional
+        def _add_host_transactional(transaction, orbit_id, hosting_id):
+            orbit = cls.get(doc_id=orbit_id, transaction=transaction)
+            ride_host = RideHost.get(
+                doc_id=hosting_id,
+                transaction=transaction
+            )
+            orbit._add_host(ride_host)
+
+            orbit.save(transaction=transaction)
+            ride_host.save(transaction=transaction)
+
+        return _add_host_transactional(
+            transaction=transaction, *args, **kwargs
+        )
+
+    def _add_host(self, ride_host: RideHost):
         ride_host.orbit_ref = self.doc_ref
         self.ride_host = ride_host.doc_ref
-
-        ride_host.save()
-        self.save()
 
 
 class OrbitViewSchema(schema.Schema):

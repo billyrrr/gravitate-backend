@@ -12,7 +12,7 @@ from gravitate.domain.matcher.orbit import Orbit, OrbitViewMediator, OrbitView
 from gravitate.domain.target import Target
 
 
-class CreateRideHostTest(TestCase):
+class CreateOrbitTest(TestCase):
     ride_request_ids_to_delete = list()
 
     def setUp(self):
@@ -46,23 +46,28 @@ class CreateRideHostTest(TestCase):
 
         self.rider_booking.save()
 
-    def testCreateRideHost(self):
-        self.orbit = Orbit.new(status="open")
-
-        orbit = self.orbit
-        orbit.add_rider(self.rider_booking)
-        orbit.add_host(self.ride_host)
-
-        orbit.save()
-
-        hosting_mediator = OrbitViewMediator(
-            query=Query(parent=Orbit._get_collection())
+    def testAddRiderHost(self):
+        orbit_id = Orbit.create_one()
+        Orbit.add_rider(
+            orbit_id=orbit_id, booking_id=self.rider_booking.doc_id)
+        obj = Orbit.get(doc_id=orbit_id)
+        Orbit.add_host(
+            orbit_id=orbit_id, hosting_id=self.ride_host.doc_id
         )
+        obj = Orbit.get(doc_id=orbit_id)
 
-        hosting_mediator.start()
 
-        time.sleep(5)
+    # def test_generate_view(self):
+    #     hosting_mediator = OrbitViewMediator(
+    #         query=Query(parent=Orbit._get_collection())
+    #     )
+    #
+    #     hosting_mediator.start()
+    #
+    #     time.sleep(5)
 
     def tearDown(self) -> None:
         self.from_location.delete()
         self.to_location.delete()
+        self.ride_host.delete()
+        self.rider_booking.delete()
