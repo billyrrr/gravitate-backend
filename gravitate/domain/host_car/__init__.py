@@ -60,10 +60,13 @@ class RideHostViewSchema(schema.Schema):
 
     user_id = fields.String()
 
-    ride_host = fields.Raw(load_only=True, required=False)
+    ride_host = fields.Raw(
+        missing=fields.allow_missing, load_only=True, required=False)
 
     preview_pic_url = fields.Raw(allow_none=True)
-    isoweekday = fields.Raw(allow_none=True)
+    localdate_timestamp = fields.Raw(allow_none=True, description="local time in timestamp (for sorting)")
+    localdate_string = fields.Raw(allow_none=True, description="local time in iso8601 string")
+    weekday = fields.Raw(allow_none=True, description="Return the day of the week as an integer, where Monday is 0 and Sunday is 6. For example, date(2002, 12, 4).weekday() == 2, a Wednesday")
 
     hosting_id = fields.Raw(dump_only=True)
 
@@ -171,6 +174,24 @@ class RideHostReadModel(RideHostView):
         val = self.store.ride_host.latest_arrival
         return val
 
+    @property
+    def localdate_timestamp(self):
+        return self.earliest_departure
+
+    @property
+    def localdate_string(self):
+        return common.local_dt_from_timestamp(self.localdate_timestamp)\
+            .isoformat()
+
+    @property
+    def weekday(self):
+        """
+        TODO: add read weekday from other time attributes
+        :return:
+        """
+        val = common.local_dt_from_timestamp(self.localdate_timestamp)
+        return val.weekday()
+
 
 class RideHostForm(RideHostView):
 
@@ -255,10 +276,9 @@ class RideHostMutation(mutation.Mutation):
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.from_dict(doc_id=data.get("doc_id", None),
-                                           d=data)
+        obj = cls.view_model_cls.new(doc_id=data.get("doc_id", None))
+        obj.update_vals(with_raw=data)
         obj.propagate_change()
-
         return obj
 
     @classmethod

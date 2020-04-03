@@ -28,7 +28,7 @@ class CreateRideHostTest(TestCase):
             "from_location": self.from_location.doc_ref_str,
             "to_location": self.to_location.doc_ref_str,
             "user_id": self.userIds[0],
-            "earliest_departure": "2014-12-29T03:12:58.019077"
+            "earliest_departure": "2014-12-29T03:12:58"
         }
 
         r = self.app.post(path='/rideHosts', json=form)
@@ -49,11 +49,11 @@ class CreateRideHostTest(TestCase):
             'obj_type': 'RideHostReadModel',
             'latest_departure': None,
             'user_id': 'testuid1',
-            'earliest_departure': '2014-12-29T03:12:58.019077',
+            'localdate_string': '2014-12-29T03:12:58',
             'latest_arrival': None,
             'doc_ref': 'users/testuid1/hostings/test_doc_id_1',
             'earliest_arrival': None}.items()
 
-    def tearDown(self) -> None:
-        self.from_location.delete()
-        self.to_location.delete()
+    # def tearDown(self) -> None:
+    #     self.from_location.delete()
+    #     self.to_location.delete()

@@ -62,7 +62,8 @@ class RiderBookingViewSchema(schema.Schema):
 
     user_id = fields.String(description="User Id (redundant)")
 
-    rider_booking = fields.Raw(load_only=True, required=False)
+    rider_booking = fields.Raw(
+        missing=fields.allow_missing, load_only=True, required=False)
 
     preview_pic_url = fields.Raw(allow_none=True, description="Url of the preview picture of the origin and destination")
     localdate_timestamp = fields.Raw(allow_none=True, description="local time in timestamp (for sorting)")
@@ -151,21 +152,29 @@ class RiderBookingReadModel(RiderBookingView):
     @property
     def earliest_departure(self):
         val = self.store.rider_booking.earliest_departure
+        if val is None:
+            raise AttributeError
         return val
 
     @property
     def latest_departure(self):
         val = self.store.rider_booking.latest_departure
+        if val is None:
+            raise AttributeError
         return val
 
     @property
     def earliest_arrival(self):
         val = self.store.rider_booking.earliest_arrival
+        if val is None:
+            raise AttributeError
         return val
 
     @property
     def latest_arrival(self):
         val = self.store.rider_booking.latest_arrival
+        if val is None:
+            raise AttributeError
         return val
 
     @property
@@ -270,10 +279,9 @@ class RiderBookingMutation(mutation.Mutation):
 
     @classmethod
     def mutate_create(cls, data=None):
-        obj = cls.view_model_cls.from_dict(doc_id=data.get("doc_id", None),
-                                           d=data)
+        obj = cls.view_model_cls.new(doc_id=data.get("doc_id", None))
+        obj.update_vals(with_raw=data)
         obj.propagate_change()
-
         return obj
 
     @classmethod
