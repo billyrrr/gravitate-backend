@@ -90,5 +90,10 @@ class Target(domain_model.DomainModel):
         _d = TargetNodeSchema().dump(self)
         d = {key: _d[key] for key in keys}
         r_ref: DocumentReference = self.r_ref
-        d["rid"] = r_ref.id
+        if isinstance(r_ref, DocumentReference):
+            d["rid"] = r_ref.id
+        elif isinstance(r_ref, str):
+            d["rid"] = r_ref
+        else:
+            raise TypeError
         return TargetNode(d)

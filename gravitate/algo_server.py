@@ -3,7 +3,7 @@ import time
 from math import inf
 
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV
+from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
 from google.cloud.firestore import Query
 from google.cloud.firestore import DocumentSnapshot
 
@@ -23,27 +23,23 @@ class RiderTargetMediator(ViewMediatorDeltaDAV):
         self.model_cls = bookings.RiderTarget
         self.target_repo = target_repo
 
-    def _get_query_and_on_snapshot(self):
-        query = Query(parent=self.model_cls._get_collection())
+    class Protocol(ProtocolBase):
 
-        def on_snapshot(snapshots, changes, timestamp):
-            for change, snapshot in zip(changes, snapshots):
-                if change.type.name == 'ADDED':
+        @staticmethod
+        def on_create(snapshot: DocumentSnapshot, mediator):
 
-                    assert isinstance(snapshot, DocumentSnapshot)
-                    obj = snapshot_to_obj(snapshot=snapshot)
-                    other = self.target_repo.add(obj)
-                    if other is not None:
-                        other_target = bookings.RiderTarget.get(
-                            doc_ref_str=other)
-                        orbit_id = Orbit.create_one()
-                        Orbit.add_rider(
-                            orbit_id=orbit_id, booking_id=obj.r_ref.id)
-                        Orbit.add_rider(
-                            orbit_id=orbit_id, booking_id=other_target.r_ref.id
-                        )
-
-        return query, on_snapshot
+            assert isinstance(snapshot, DocumentSnapshot)
+            obj = snapshot_to_obj(snapshot=snapshot)
+            other = mediator.target_repo.add(obj)
+            if other is not None:
+                other_target = bookings.RiderTarget.get(
+                    doc_ref_str=other)
+                orbit_id = Orbit.create_one()
+                Orbit.add_rider(
+                    orbit_id=orbit_id, booking_id=obj.r_ref.id)
+                Orbit.add_rider(
+                    orbit_id=orbit_id, booking_id=other_target.r_ref.id
+                )
 
 
 class HostTargetMediator(ViewMediatorDeltaDAV):
@@ -53,18 +49,13 @@ class HostTargetMediator(ViewMediatorDeltaDAV):
         self.model_cls = host_car.RideHostTarget
         self.target_repo = target_repo
 
-    def _get_query_and_on_snapshot(self):
-        query = Query(parent=self.model_cls._get_collection())
+    class Protocol(ProtocolBase):
 
-        def on_snapshot(snapshots, changes, timestamp):
-            for change, snapshot in zip(changes, snapshots):
-                if change.type.name == 'ADDED':
-
-                    assert isinstance(snapshot, DocumentSnapshot)
-                    obj = snapshot_to_obj(snapshot=snapshot)
-                    self.target_repo.add(obj)
-
-        return query, on_snapshot
+        @staticmethod
+        def on_create(snapshot: DocumentSnapshot, mediator):
+            assert isinstance(snapshot, DocumentSnapshot)
+            obj = snapshot_to_obj(snapshot=snapshot)
+            mediator.target_repo.add(obj)
 
 
 class TargetRepo:
@@ -92,29 +83,13 @@ class TargetRepo:
             return res[0][1]
 
 
-"""
-[BEGIN] ENABLE LOGGING
-"""
-import logging
-
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
-
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-root.addHandler(handler)
-"""
-[END] ENABLE LOGGING
-"""
-
-
 if __name__ == '__main__':
 
     target_repo = TargetRepo()
-    rider_target_mediator = RiderTargetMediator(target_repo=target_repo)
+    rider_target_mediator = RiderTargetMediator(
+        target_repo=target_repo,
+        query=Query(parent=RiderBooking._get_collection())
+    )
     rider_target_mediator.start()
 
     time.sleep(20)
