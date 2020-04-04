@@ -1,4 +1,4 @@
 app_name: "gravitate-backend-testing"
 debug: True
 testing: True
-certificate_filename: "gravitate-backend-testing-firebase-adminsdk-nztgj-d063415ecc.json"
+certificate_path: "gravitate/config_jsons/gravitate-backend-testing-firebase-adminsdk-nztgj-d063415ecc.json"
