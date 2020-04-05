@@ -26,7 +26,6 @@ sklearn
 pytest-cov
 pytest>=3.6
 coverage>=4.4
-python-coveralls
 
 networkx
 
