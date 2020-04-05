@@ -3,6 +3,9 @@ import warnings
 from google.cloud.firestore import Query
 
 from flask_boiler import schema, fields, domain_model
+from google.cloud.firestore_v1 import transactional
+
+from gravitate import CTX
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
     get_address
 
@@ -19,7 +22,6 @@ class LocationSchema(Schema):
     coordinates = fields.Raw()
     address = fields.Raw()
 
-
 class Location(domain_model.DomainModel):
 
     class Meta:
@@ -35,7 +37,9 @@ class Location(domain_model.DomainModel):
 
 
 class UserLocationSchema(LocationSchema):
-    pass
+    sublocations = fields.Relationship(nested=False, many=True)
+    place_id = fields.Raw(missing=fields.allow_missing, default=None, required=False, allow_none=True)
+    user_id = fields.Raw(missing=fields.allow_missing, default=None, required=False, allow_none=True)
 
 
 # UserLocation = SerializableClsFactory.create(
@@ -47,6 +51,36 @@ class UserLocation(Location):
 
     class Meta:
         schema_cls = UserLocationSchema
+
+    @classmethod
+    def add_sublocation(cls, location_id, sublocation_ids):
+        transaction = CTX.db.transaction()
+
+        @transactional
+        def _add_sublocation_transactional(
+                transaction, location_id, sublocation_ids):
+            location = cls.get(doc_id=location_id, transaction=transaction)
+            sublocations = list()
+            for sublocation_id in sublocation_ids:
+                sublocation = Location.get(
+                    doc_id=sublocation_id,
+                    transaction=transaction
+                )
+                sublocations.append(sublocation)
+                location._add_sublocation(sublocation)
+
+            location.save(transaction=transaction)
+            # _ = [sublocation.save(transaction=transaction)
+            #      for sublocation in sublocations ]
+
+        return _add_sublocation_transactional(
+            transaction=transaction,
+            location_id=location_id,
+            sublocation_ids=sublocation_ids
+        )
+
+    def _add_sublocation(self, sublocation):
+        self.sublocations.append(sublocation.doc_ref)
 
 
 class SocialEventLocationSchema(LocationSchema):

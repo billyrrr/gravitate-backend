@@ -12,7 +12,7 @@ from flask_boiler.domain_model import DomainModel
 from flask_boiler.serializable import Serializable
 from flask_boiler.snapshot_container import SnapshotContainer
 from flask_boiler.struct import Struct
-from flask_boiler.utils import get_property, snapshot_to_obj
+from flask_boiler.utils import snapshot_to_obj
 from google.cloud.firestore import DocumentReference
 
 from gravitate import CTX
