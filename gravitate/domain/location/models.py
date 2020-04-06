@@ -22,9 +22,11 @@ class LocationSchema(Schema):
     coordinates = fields.Raw()
     address = fields.Raw()
 
+
 class Location(domain_model.DomainModel):
 
     class Meta:
+        schema_cls = LocationSchema
         collection_name = "locations"
 
     def to_coordinate_str(self):

@@ -51,7 +51,8 @@ from gravitate.domain.bookings.view_mediator import UserBookingMediator, \
     BookingTargetMediator, UserBookingEditMediator
 from gravitate.domain.host_car import RHMediator, RideHostView, \
     RideHostMutation, RideHost, RideHostReadModel, RideHostForm
-from gravitate.domain.location.forms import UserLocationViewMediator
+from gravitate.domain.location.forms import UserLocationViewMediator, \
+    UserSublocationViewMediator
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
@@ -192,6 +193,12 @@ user_location_mediator = UserLocationViewMediator(
 )
 
 user_location_mediator.start()
+
+user_sublocation_mediator = UserSublocationViewMediator(
+    query=Context.db.collection_group("sublocations_POST")
+)
+
+user_sublocation_mediator.start()
 
 booking_mediator = UserBookingMediator(
     query=Query(parent=RiderBooking._get_collection())
