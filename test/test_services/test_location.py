@@ -23,8 +23,8 @@ class CreateUserLocationTest(TestCase):
         doc_ref: firestore.DocumentReference = \
             CTX.db.document(self.expected_path)
         form = {
-            'coordinates': {'latitude': 32.8794203,
-                            'longitude': -117.2428555},
+            'latitude': 32.8794203,
+            'longitude': -117.2428555,
             'address': 'Tenaya Hall, San Diego, CA 92161',
             'placeId': 'test_place_id_1',
         }
@@ -74,8 +74,8 @@ class CreateUserSublocationTest(TestCase):
                            'placeId': 'test_place_id_1', 'sublocations': [],
                            'doc_id': 'test_doc_id_1', 'userId': 'user_id_1',
                            'doc_ref': 'locations/test_doc_id_1',
-                           'coordinates': {'longitude': -117.2428555,
-                                           'latitude': 32.8794203},
+                           'longitude': -117.2428555,
+                            'latitude': 32.8794203,
                            'address': 'Tenaya Hall, San Diego, CA 92161'}
         )
 
@@ -84,8 +84,8 @@ class CreateUserSublocationTest(TestCase):
         sublocation_ref = CTX.db.document(self.expected_path)
         sublocation_ref.create(
             document_data={
-                'coordinates': {'latitude': 32.87952213052025,
-                                'longitude': -117.2436009719968},
+                'latitude': 32.87952213052025,
+                'longitude': -117.2436009719968,
             }
         )
 
@@ -106,8 +106,8 @@ class CreateUserSublocationTest(TestCase):
             doc_id=self.doc_id,
             user_location_id=self.user_location_id
         )
-        obj.coordinates = {'latitude': 32.87952213052025,
-                           'longitude': -117.2436009719968}
+        obj.latitude = 32.87952213052025
+        obj.longitude = -117.2436009719968
         testing_utils._wait(1)
         assert obj.location.address == \
                "Scholars Dr S, San Diego, CA 92161, USA"

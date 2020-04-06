@@ -7,7 +7,7 @@ from google.cloud.firestore_v1 import transactional
 
 from gravitate import CTX
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
-    get_address
+    get_address, gmaps
 
 Schema = schema.Schema
 
@@ -19,11 +19,34 @@ Schema = schema.Schema
 
 class LocationSchema(Schema):
 
-    coordinates = fields.Raw()
+    coordinates = fields.Dict()
     address = fields.Raw()
 
 
 class Location(domain_model.DomainModel):
+
+    @staticmethod
+    def _to_address(coordinates):
+        res = gmaps.reverse_geocode(
+            latlng=(coordinates["latitude"],
+                    coordinates["longitude"]),
+            result_type=["route",]
+        )
+        return res[0]["formatted_address"]
+
+    @property
+    def address(self):
+        if not getattr(self, "_address", None):
+            if self.coordinates:
+                return self._to_address(self.coordinates)
+            else:
+                raise AttributeError
+        else:
+            return self._address
+
+    @address.setter
+    def address(self, value):
+        self._address = value
 
     class Meta:
         schema_cls = LocationSchema

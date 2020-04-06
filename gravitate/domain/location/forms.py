@@ -9,7 +9,8 @@ from gravitate.domain.location import UserLocation, Location
 
 
 class LocationFormSchema(schema.Schema):
-    coordinates = fields.Raw()
+    latitude = fields.Raw()
+    longitude = fields.Raw()
     address = fields.Raw()
 
 
@@ -36,7 +37,22 @@ class UserLocationForm(view_model.ViewModel):
             **kwargs
         )
 
-    coordinates = fb_utils.auto_property("coordinates", "user_location")
+    @property
+    def latitude(self):
+        return self.user_location.coordinates["latitude"]
+
+    @latitude.setter
+    def latitude(self, value):
+        self.user_location.coordinates["latitude"] = value
+
+    @property
+    def longitude(self):
+        return self.user_location.coordinates["longitude"]
+
+    @longitude.setter
+    def longitude(self, value):
+        self.user_location.coordinates["longitude"] = value
+
     address = fb_utils.auto_property("address", "user_location")
     place_id = fb_utils.auto_property("place_id", "user_location")
     user_id = fb_utils.auto_property("user_id", "user_location")
@@ -86,21 +102,20 @@ class UserSublocationForm(view_model.ViewModel):
         )
 
     @property
-    def coordinates(self):
-        return self.location.coordinates
+    def latitude(self):
+        return self.location.coordinates["latitude"]
 
-    def _to_address(self):
-        res = gmaps.reverse_geocode(
-            latlng=(self.location.coordinates["latitude"],
-                    self.location.coordinates["longitude"]),
-            result_type=["route",]
-        )
-        return res[0]["formatted_address"]
+    @latitude.setter
+    def latitude(self, value):
+        self.location.coordinates["latitude"] = value
 
-    @coordinates.setter
-    def coordinates(self, value):
-        self.location.coordinates = value
-        self.location.address = self._to_address()
+    @property
+    def longitude(self):
+        return self.location.coordinates["longitude"]
+
+    @longitude.setter
+    def longitude(self, value):
+        self.location.coordinates["longitude"] = value
 
     def propagate_change(self):
         self.location.save()
