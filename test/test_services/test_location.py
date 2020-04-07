@@ -20,6 +20,7 @@ class LocationModelTest(TestCase):
         }, address="Tenaya Hall, San Diego, CA 92161")
         assert obj.address == "Tenaya Hall, San Diego, CA 92161"
 
+
 class CreateUserLocationTest(TestCase):
 
     def setUp(self):
@@ -130,10 +131,8 @@ class CreateUserSublocationTest(TestCase):
     def test_view(self):
         doc_ref = CTX.db.document(self.user_location_path)
         doc_ref.set(
-            document_data={'obj_type': 'UserLocation',
-                           'placeId': 'test_place_id_1', 'sublocations': [],
-                           'doc_id': 'test_doc_id_1', 'userId': 'user_id_1',
-                           'doc_ref': 'locations/test_doc_id_1',
+            document_data={'placeId': 'test_place_id_1',
+                           'userId': 'user_id_1',
                            'longitude': -117.2428555,
                            'latitude': 32.8794203,
                            'address': 'Tenaya Hall, San Diego, CA 92161'}
@@ -149,6 +148,47 @@ class CreateUserSublocationTest(TestCase):
             'latitude': 32.8794203,
             'longitude': -117.2428555,
             'placeId': 'test_place_id_1',
+            'sublocations': []
+        }
+
+    def test_view_with_sublocation(self):
+        doc_ref = CTX.db.document(self.user_location_path)
+        doc_ref.set(
+            document_data={'placeId': 'test_place_id_1',
+                           'userId': 'user_id_1',
+                           'longitude': -117.2428555,
+                           'latitude': 32.8794203,
+                           'address': 'Tenaya Hall, San Diego, CA 92161'}
+        )
+
+        testing_utils._wait()
+
+        sublocation_ref = CTX.db.document(self.expected_path)
+        sublocation_ref.create(
+            document_data={
+                'latitude': 32.87952213052025,
+                'longitude': -117.2436009719968,
+            }
+        )
+
+        testing_utils._wait()
+
+        snapshot = UserLocation.ref_from_id(doc_id=self.user_location_id).get()
+        obj = UserLocationView.new(
+            snapshot=snapshot
+        )
+        assert obj.to_dict() == {
+            'address': 'Tenaya Hall, San Diego, CA 92161',
+            'latitude': 32.8794203,
+            'longitude': -117.2428555,
+            'placeId': 'test_place_id_1',
+            'sublocations': [
+                {'address': 'Scholars Dr S, San Diego, CA 92161, USA',
+                 'coordinates': {'latitude': 32.87952213052025,
+                                 'longitude': -117.2436009719968},
+                 'doc_id': 'sublocation_id',
+                 'doc_ref': 'locations/sublocation_id',
+                 'obj_type': 'Location'}]
         }
 
     def tearDown(self) -> None:

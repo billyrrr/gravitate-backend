@@ -12,6 +12,7 @@ class UserSublocationViewSchema(schema.Schema):
     latitude = fields.Raw(dump_only=True)
     longitude = fields.Raw(dump_only=True)
     address = fields.Raw(dump_only=True)
+    sublocations = fields.Raw(dump_only=True)
 
 
 class UserLocationViewStoreSchema(bpstore.BPSchema):
@@ -30,7 +31,10 @@ class UserLocationView(view_model.ViewModel):
             schema_cls=UserLocationViewStoreSchema)
         snapshot_struct["user_location"] = (UserLocation, snapshot)
         store = bpstore.BusinessPropertyStore.from_snapshot_struct(
-            snapshot_struct=snapshot_struct
+            snapshot_struct=snapshot_struct,
+            obj_options=dict(
+                must_get=True
+            )
         )
         return super().new(*args, store=store, **kwargs)
 
@@ -55,6 +59,11 @@ class UserLocationView(view_model.ViewModel):
         return CTX.db.document(f"users/{self.store.user_location.user_id}/"
                                f"locations/{self.store.user_location.doc_id}")
 
+    @property
+    def sublocations(self):
+        return [sublocation.to_dict()
+                for sublocation in self.store.user_location.sublocations]
+
 
 class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
 
@@ -63,4 +72,4 @@ class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
         @staticmethod
         def on_create(snapshot: DocumentSnapshot, mediator):
             obj = UserLocationView.new(snapshot=snapshot)
-            obj.save()
+            mediator.notify(obj=obj)
