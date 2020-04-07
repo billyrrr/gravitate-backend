@@ -8,7 +8,17 @@ from gravitate import main
 from gravitate.domain.location import UserLocation, Location
 from gravitate.domain.location.forms import UserLocationForm, \
     UserSublocationForm
+from gravitate.domain.location.view_models import UserLocationView
 
+
+class LocationModelTest(TestCase):
+
+    def test_new(self):
+        obj = UserLocation.new(coordinates={
+            "latitude": 32.8794203,
+            "longitude": -117.2428555
+        }, address="Tenaya Hall, San Diego, CA 92161")
+        assert obj.address == "Tenaya Hall, San Diego, CA 92161"
 
 class CreateUserLocationTest(TestCase):
 
@@ -75,7 +85,7 @@ class CreateUserSublocationTest(TestCase):
                            'doc_id': 'test_doc_id_1', 'userId': 'user_id_1',
                            'doc_ref': 'locations/test_doc_id_1',
                            'longitude': -117.2428555,
-                            'latitude': 32.8794203,
+                           'latitude': 32.8794203,
                            'address': 'Tenaya Hall, San Diego, CA 92161'}
         )
 
@@ -93,13 +103,18 @@ class CreateUserSublocationTest(TestCase):
         testing_utils._wait()
         location = Location.get(doc_id=self.doc_id)
         d = location.to_dict()
-        assert d == {'coordinates': {'longitude': -117.2436009719968, 'latitude': 32.87952213052025}, 'doc_id': 'sublocation_id', 'obj_type': 'Location', 'doc_ref': 'locations/sublocation_id', 'address': 'Scholars Dr S, San Diego, CA 92161, USA'}
+        assert d == {'coordinates': {'longitude': -117.2436009719968,
+                                     'latitude': 32.87952213052025},
+                     'doc_id': 'sublocation_id', 'obj_type': 'Location',
+                     'doc_ref': 'locations/sublocation_id',
+                     'address': 'Scholars Dr S, San Diego, CA 92161, USA'}
 
         # Tests that the new location is registered as a sublocation
         #       of the parent UserLocation
         user_location = UserLocation.get(doc_id=self.user_location_id)
         d = user_location.to_dict()
         assert d["sublocations"] == [location.doc_ref]
+        testing_utils._wait()
 
     def test_new(self):
         obj = UserSublocationForm.new(
@@ -111,6 +126,30 @@ class CreateUserSublocationTest(TestCase):
         testing_utils._wait(1)
         assert obj.location.address == \
                "Scholars Dr S, San Diego, CA 92161, USA"
+
+    def test_view(self):
+        doc_ref = CTX.db.document(self.user_location_path)
+        doc_ref.set(
+            document_data={'obj_type': 'UserLocation',
+                           'placeId': 'test_place_id_1', 'sublocations': [],
+                           'doc_id': 'test_doc_id_1', 'userId': 'user_id_1',
+                           'doc_ref': 'locations/test_doc_id_1',
+                           'longitude': -117.2428555,
+                           'latitude': 32.8794203,
+                           'address': 'Tenaya Hall, San Diego, CA 92161'}
+        )
+
+        testing_utils._wait()
+        snapshot = UserLocation.ref_from_id(doc_id=self.user_location_id).get()
+        obj = UserLocationView.new(
+            snapshot=snapshot
+        )
+        assert obj.to_dict() == {
+            'address': 'Tenaya Hall, San Diego, CA 92161',
+            'latitude': 32.8794203,
+            'longitude': -117.2428555,
+            'placeId': 'test_place_id_1',
+        }
 
     def tearDown(self) -> None:
         CTX.db.document(self.user_location_path).delete()

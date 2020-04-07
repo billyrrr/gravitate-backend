@@ -50,6 +50,10 @@ class RiderBooking(domain_model.DomainModel):
 
 
 class RiderBookingViewSchema(schema.Schema):
+
+    rider_booking = fields.Raw(
+        missing=fields.allow_missing, load_only=True, required=False)
+
     case_conversion = False
 
     from_location = fields.Raw(description="the origin of the trip")
@@ -61,9 +65,6 @@ class RiderBookingViewSchema(schema.Schema):
     latest_departure = fields.Localtime(allow_none=True)
 
     user_id = fields.String(description="User Id (redundant)")
-
-    rider_booking = fields.Raw(
-        missing=fields.allow_missing, load_only=True, required=False)
 
     preview_pic_url = fields.Raw(allow_none=True, description="Url of the preview picture of the origin and destination")
     localdate_timestamp = fields.Raw(allow_none=True, description="local time in timestamp (for sorting)")

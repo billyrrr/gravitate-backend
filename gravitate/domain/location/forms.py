@@ -1,25 +1,10 @@
-import json
-
-from flask_boiler import schema, fields, view_model, view_mediator_dav
+from flask_boiler import view_model, view_mediator_dav
 from flask_boiler import utils as fb_utils
 from google.cloud.firestore_v1 import DocumentSnapshot
 
-from gravitate.domain.driver_navigation.utils import gmaps
 from gravitate.domain.location import UserLocation, Location
-
-
-class LocationFormSchema(schema.Schema):
-    latitude = fields.Raw()
-    longitude = fields.Raw()
-    address = fields.Raw()
-
-
-class UserLocationFormSchema(LocationFormSchema):
-
-    place_id = fields.Raw()
-    user_id = fields.Raw(dump_only=True)
-    user_location = fields.Raw(
-        missing=fields.allow_missing, load_only=True, required=False)
+from gravitate.domain.location.schema import UserLocationFormSchema, \
+    UserSublocationFormSchema
 
 
 class UserLocationForm(view_model.ViewModel):
@@ -61,7 +46,7 @@ class UserLocationForm(view_model.ViewModel):
         self.user_location.save()
 
 
-class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+class UserLocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
 
     class Protocol(view_mediator_dav.ProtocolBase):
 
@@ -75,16 +60,6 @@ class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
             form.propagate_change()
 
         on_update = on_create
-
-
-class UserSublocationFormSchema(LocationFormSchema):
-
-    place_id = fields.Raw()
-    user_id = fields.Raw()
-    user_location = fields.Raw(
-        missing=fields.allow_missing, load_only=True, required=False)
-    location = fields.Raw(
-        missing=fields.allow_missing, load_only=True, required=False)
 
 
 class UserSublocationForm(view_model.ViewModel):
@@ -125,7 +100,7 @@ class UserSublocationForm(view_model.ViewModel):
         )
 
 
-class UserSublocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+class UserSublocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
 
     class Protocol(view_mediator_dav.ProtocolBase):
 

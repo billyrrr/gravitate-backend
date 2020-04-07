@@ -1,0 +1,66 @@
+from flask_boiler import bpstore, fields, view_model, view_mediator_dav, schema
+from flask_boiler.struct import Struct, SnapshotStruct
+from google.cloud.firestore_v1 import DocumentSnapshot
+
+from . import UserLocation
+from ... import CTX
+
+
+class UserSublocationViewSchema(schema.Schema):
+
+    place_id = fields.Raw(dump_only=True)
+    latitude = fields.Raw(dump_only=True)
+    longitude = fields.Raw(dump_only=True)
+    address = fields.Raw(dump_only=True)
+
+
+class UserLocationViewStoreSchema(bpstore.BPSchema):
+
+    user_location = fields.StructuralRef(many=False, dm_cls=UserLocation)
+
+
+class UserLocationView(view_model.ViewModel):
+
+    class Meta:
+        schema_cls = UserSublocationViewSchema
+
+    @classmethod
+    def new(cls, *args, snapshot=None, **kwargs):
+        snapshot_struct = SnapshotStruct(
+            schema_cls=UserLocationViewStoreSchema)
+        snapshot_struct["user_location"] = (UserLocation, snapshot)
+        store = bpstore.BusinessPropertyStore.from_snapshot_struct(
+            snapshot_struct=snapshot_struct
+        )
+        return super().new(*args, store=store, **kwargs)
+
+    @property
+    def latitude(self):
+        return self.store.user_location.coordinates["latitude"]
+
+    @property
+    def longitude(self):
+        return self.store.user_location.coordinates["longitude"]
+
+    @property
+    def address(self):
+        return self.store.user_location.address
+
+    @property
+    def place_id(self):
+        return self.store.user_location.place_id
+
+    @property
+    def doc_ref(self):
+        return CTX.db.document(f"users/{self.store.user_location.user_id}/"
+                               f"locations/{self.store.user_location.doc_id}")
+
+
+class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+
+    class Protocol(view_mediator_dav.ProtocolBase):
+
+        @staticmethod
+        def on_create(snapshot: DocumentSnapshot, mediator):
+            obj = UserLocationView.new(snapshot=snapshot)
+            obj.save()

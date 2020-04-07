@@ -49,6 +49,9 @@ class RideHost(domain_model.DomainModel):
 class RideHostViewSchema(schema.Schema):
     case_conversion = False
 
+    ride_host = fields.Raw(
+        missing=fields.allow_missing, load_only=True, required=False)
+
     from_location = fields.Raw()
     to_location = fields.Raw()
 
@@ -58,9 +61,6 @@ class RideHostViewSchema(schema.Schema):
     latest_departure = fields.Localtime(allow_none=True)
 
     user_id = fields.String()
-
-    ride_host = fields.Raw(
-        missing=fields.allow_missing, load_only=True, required=False)
 
     preview_pic_url = fields.Raw(allow_none=True)
     localdate_timestamp = fields.Raw(allow_none=True, description="local time in timestamp (for sorting)")

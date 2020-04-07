@@ -51,8 +51,9 @@ from gravitate.domain.bookings.view_mediator import UserBookingMediator, \
     BookingTargetMediator, UserBookingEditMediator
 from gravitate.domain.host_car import RHMediator, RideHostView, \
     RideHostMutation, RideHost, RideHostReadModel, RideHostForm
-from gravitate.domain.location.forms import UserLocationViewMediator, \
-    UserSublocationViewMediator
+from gravitate.domain.location import UserLocation
+from gravitate.domain.location.forms import UserLocationFormMediator, \
+    UserSublocationFormMediator
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
@@ -63,6 +64,7 @@ from gravitate.domain.location.forms import UserLocationViewMediator, \
 # Flasgger docs
 # Create an APISpec
 from gravitate.domain.host_car.view_mediator import UserHostingMediator
+from gravitate.domain.location.view_models import UserLocationViewMediator
 from gravitate.domain.target.mediator import TargetMatchMediator
 
 spec = APISpec(
@@ -188,26 +190,32 @@ user_booking_mediator = UserBookingEditMediator(
 
 user_booking_mediator.start()
 
-user_location_mediator = UserLocationViewMediator(
+user_location_mediator = UserLocationFormMediator(
     query=Context.db.collection_group("locations_POST")
 )
 
 user_location_mediator.start()
 
-user_sublocation_mediator = UserSublocationViewMediator(
+user_sublocation_mediator = UserSublocationFormMediator(
     query=Context.db.collection_group("sublocations_POST")
 )
 
 user_sublocation_mediator.start()
 
+user_location_view_mediator = UserLocationViewMediator(
+    query=UserLocation.get_query()
+)
+
+user_location_view_mediator.start()
+
 booking_mediator = UserBookingMediator(
-    query=Query(parent=RiderBooking._get_collection())
+    query=RiderBooking.get_query()
 )
 
 booking_mediator.start()
 
 booking_target_mediator = BookingTargetMediator(
-    query=Query(parent=RiderBooking._get_collection())
+    query=RiderBooking.get_query()
 )
 
 booking_target_mediator.start()
@@ -219,13 +227,13 @@ ride_host_mediator.add_list_post(rule='/rideHosts',
                                  list_post_view=ride_host_mediator._default_list_post_view())
 
 hosting_mediator = UserHostingMediator(
-    query=Query(parent=RideHost._get_collection())
+    query=RideHost.get_query()
 )
 
 hosting_mediator.start()
 
 target_match_mediator = TargetMatchMediator(
-    query=Query(parent=RiderTarget._get_collection())
+    query=RiderTarget.get_query()
 )
 
 target_match_mediator.start()
