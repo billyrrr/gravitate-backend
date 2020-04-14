@@ -88,7 +88,7 @@ if __name__ == '__main__':
     target_repo = TargetRepo()
     rider_target_mediator = RiderTargetMediator(
         target_repo=target_repo,
-        query=Query(parent=RiderBooking._get_collection())
+        query=Target.get_query()
     )
     rider_target_mediator.start()
 

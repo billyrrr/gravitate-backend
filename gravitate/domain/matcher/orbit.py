@@ -17,8 +17,8 @@ from gravitate.domain.host_car import RideHost
 
 class OrbitSchema(schema.Schema):
 
-    bookings = fields.Relationship(nested=False, many=True)
-    ride_host = fields.Relationship(nested=False, many=False, allow_none=True)
+    bookings = fields.Relationship(nested=True, many=True)
+    ride_host = fields.Relationship(nested=True, many=False, allow_none=True)
 
     status = fields.Raw()
 
@@ -54,7 +54,7 @@ class Orbit(OrbitBase):
             orbit._add_rider(rider_booking)
 
             orbit.save(transaction=transaction)
-            rider_booking.save(transaction=transaction)
+            # rider_booking.save(transaction=transaction)
 
         return _add_rider_transactional(
             transaction=transaction, *args, **kwargs
@@ -63,7 +63,7 @@ class Orbit(OrbitBase):
     def _add_rider(self, rider_booking: RiderBooking):
         rider_booking.orbit_ref = self.doc_ref
         rider_booking.status = "matched"
-        self.bookings.append(rider_booking.doc_ref)
+        self.bookings.append(rider_booking)
 
         # rider_booking.save()
         # self.save()
@@ -82,7 +82,7 @@ class Orbit(OrbitBase):
             orbit._add_host(ride_host)
 
             orbit.save(transaction=transaction)
-            ride_host.save(transaction=transaction)
+            # ride_host.save(transaction=transaction)
 
         return _add_host_transactional(
             transaction=transaction, *args, **kwargs
@@ -90,7 +90,7 @@ class Orbit(OrbitBase):
 
     def _add_host(self, ride_host: RideHost):
         ride_host.orbit_ref = self.doc_ref
-        self.ride_host = ride_host.doc_ref
+        self.ride_host = ride_host
 
 
 class OrbitViewSchema(schema.Schema):

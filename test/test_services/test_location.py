@@ -5,6 +5,7 @@ from flask_boiler.context import Context as CTX
 from google.cloud import firestore
 
 from gravitate import main
+from gravitate.domain.driver_navigation.utils import gmaps
 from gravitate.domain.location import UserLocation, Location
 from gravitate.domain.location.forms import UserLocationForm, \
     UserSublocationForm
@@ -116,6 +117,19 @@ class CreateUserSublocationTest(TestCase):
         d = user_location.to_dict()
         assert d["sublocations"] == [location.doc_ref]
         testing_utils._wait()
+
+    def test_gmaps(self):
+        coordinates = dict(
+            latitude=32.879707,
+            longitude=-117.241254,
+        )
+        res = gmaps.reverse_geocode(
+            latlng=(coordinates["latitude"],
+                    coordinates["longitude"]),
+            result_type=["route", ]
+        )
+        import json
+        print(json.dumps(res))
 
     def test_new(self):
         obj = UserSublocationForm.new(

@@ -37,7 +37,6 @@ def get_distance_and_duration(origin, destination, mode="driving"):
 def get_coordinates(address=None):
     assert address is not None
     geocode_result = gmaps.geocode(address)
-    print(geocode_result[0]["geometry"]["location"])
     latlng = geocode_result[0]["geometry"]["location"]
     lat = latlng["lat"]
     lng = latlng["lng"]
@@ -45,6 +44,12 @@ def get_coordinates(address=None):
         'latitude': lat,
         'longitude': lng
     }
+
+
+def get_geocode(address=None):
+    geocode_result = gmaps.geocode(address)
+    # print(geocode_result[0])
+    return geocode_result[0]
 
 
 def get_address(coordinates, result_type="locality"):

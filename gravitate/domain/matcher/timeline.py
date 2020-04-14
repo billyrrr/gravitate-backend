@@ -1,8 +1,12 @@
+import json
+
+import googlemaps
 from flask_boiler.factory import ClsFactory
 from flask_boiler import schema, fields, view_model
 from flask_boiler.struct import Struct
 
 from gravitate.domain.bookings import RiderBooking
+from gravitate.domain.driver_navigation.utils import gmaps
 from gravitate.domain.host_car import RideHost
 from gravitate.domain.matcher.orbit import Orbit
 
@@ -33,14 +37,38 @@ class Timeline(TimelineBase):
         struct = Struct(schema_obj=TimelineBpss())
 
         struct["orbit"] = (Orbit, orbit.doc_id)
-        struct["ride_host"] = (RideHost, orbit.ride_host.id)
+        struct["ride_host"] = (RideHost, orbit.ride_host.doc_id)
 
         struct["rider_bookings"] = {
-            booking_ref.id: (RiderBooking, booking_ref.id)
-            for booking_ref in orbit.bookings
+            booking.doc_id: (RiderBooking, booking.doc_id)
+            for booking in orbit.bookings
         }
 
         return cls.get(struct_d=struct, once=True, **kwargs)
+
+    def _directions(self):
+        """
+        NOTE: Waypoint may be reordered to the point of reversing from and to
+            location of a rider
+        :return:
+        """
+        waypoints = list()
+        for _, booking in self.store.rider_bookings.items():
+            assert isinstance(booking, RiderBooking)
+            waypoints.append("place_id:"+booking.from_location.place_id)
+            waypoints.append("place_id:"+booking.to_location.place_id)
+
+        res = gmaps.directions(
+            mode='driving',
+            origin=self.store.ride_host.from_location.to_coordinate_str(),
+            destination=self.store.ride_host.to_location.to_coordinate_str(),
+            waypoints=waypoints,
+            optimize_waypoints=True,
+            departure_time=self.store.ride_host.latest_departure,
+
+        )
+        print(json.dumps(res))
+
 
     @property
     def timeline(self):

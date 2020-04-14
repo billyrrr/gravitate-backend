@@ -215,7 +215,10 @@ class RiderBookingForm(RiderBookingView):
     @from_location.setter
     def from_location(self, value):
         if value != '':
-            self.rider_booking.from_location = Location.get(doc_ref_str=value)
+            if "/" in value:
+                self.rider_booking.from_location = Location.get(doc_ref_str=value)
+            else:
+                self.rider_booking.from_location = Location.get(doc_id=value)
 
     @property
     def to_location(self):
@@ -224,7 +227,10 @@ class RiderBookingForm(RiderBookingView):
     @to_location.setter
     def to_location(self, value):
         if value != '':
-            self.rider_booking.to_location = Location.get(doc_ref_str=value)
+            if "/" in value:
+                self.rider_booking.to_location = Location.get(doc_ref_str=value)
+            else:
+                self.rider_booking.to_location = Location.get(doc_id=value)
 
     @classmethod
     def new(cls, *args, doc_id=None, **kwargs):

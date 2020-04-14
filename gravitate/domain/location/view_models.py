@@ -7,7 +7,7 @@ from ... import CTX
 
 
 class UserSublocationViewSchema(schema.Schema):
-
+    _id = fields.Raw(dump_only=True, data_key="id")
     place_id = fields.Raw(dump_only=True)
     latitude = fields.Raw(dump_only=True)
     longitude = fields.Raw(dump_only=True)
@@ -37,6 +37,10 @@ class UserLocationView(view_model.ViewModel):
             )
         )
         return super().new(*args, store=store, **kwargs)
+
+    @property
+    def _id(self):
+        return self.doc_ref.id
 
     @property
     def latitude(self):

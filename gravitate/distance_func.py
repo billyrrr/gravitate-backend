@@ -28,7 +28,7 @@ def distance_func( params_a:list, params_b:list, max_dist:float = 500):
         return inf
 
 
-def edge_weight( params_a:dict, params_b:dict, max_dist:float = 500):
+def edge_weight( params_a:dict, params_b:dict, max_dist:float = 5000):
 
     if params_a["rid"] == params_b["rid"]:
         return inf

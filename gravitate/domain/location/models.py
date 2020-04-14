@@ -7,7 +7,7 @@ from google.cloud.firestore_v1 import transactional
 
 from gravitate import CTX
 from gravitate.domain.driver_navigation.utils import get_coordinates, \
-    get_address, gmaps
+    get_address, gmaps, get_geocode
 
 Schema = schema.Schema
 
@@ -19,7 +19,7 @@ Schema = schema.Schema
 
 class LocationSchema(Schema):
 
-    coordinates = fields.Dict()
+    coordinates = fields.Dict(missing=dict)
     address = fields.Raw()
 
 
@@ -108,6 +108,31 @@ class UserLocation(Location):
         self.sublocations.append(sublocation.doc_ref)
 
 
+class UserSublocation(Location):
+
+    @classmethod
+    def new(cls, *, latitude, longitude):
+        res = gmaps.reverse_geocode(
+            latlng=(latitude,
+                    longitude),
+            result_type=["route", ]
+        )
+        return super().new(
+            coordinates={
+                "latitude": res[0]["geometry"]["location"]["lat"],
+                "longitude": res[0]["geometry"]["location"]["lng"]
+            },
+            address=res[0]["formatted_address"],
+        )
+
+    def to_view_dict(self):
+        return dict(
+            latitude=self.coordinates["latitude"],
+            longitude=self.coordinates["longitude"],
+            address=self.address
+        )
+
+
 class SocialEventLocationSchema(LocationSchema):
 
     event_name = fields.Raw()
@@ -180,8 +205,25 @@ class LocationFactory:
 
     @staticmethod
     def from_pickup_address(pickup_address):
-        coordinates = get_coordinates(pickup_address)
+        coordinates = get_coordinates(address=pickup_address)
         obj = UserLocation.new(coordinates=coordinates, address=pickup_address)
+        return obj
+
+    @staticmethod
+    def from_place_address(address):
+        g = get_geocode(address)
+
+        latlng = g["geometry"]["location"]
+        coordinates = {
+            'latitude':     latlng["lat"],
+            'longitude':    latlng["lng"]
+        }
+
+        obj = UserLocation.new(
+            coordinates=coordinates,
+            address=address,
+            place_id=g["place_id"]
+        )
         return obj
 
     @staticmethod
