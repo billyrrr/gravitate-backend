@@ -1,5 +1,6 @@
 import flask_socketio
 
+from gravitate.domain.location import Location
 from gravitate.domain.location.websocket import UserLocationWsMediator, \
     UserLocationWebsocket
 
@@ -11,6 +12,8 @@ def test_view_websocket():
         view_model_cls=UserLocationWebsocket,
         namespace="/sublocations"
     )
+
+    print(Location.get_schema_obj().fields)
 
     io = flask_socketio.SocketIO(app=app)
     io.on_namespace(mediator)

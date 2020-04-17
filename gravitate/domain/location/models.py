@@ -2,7 +2,7 @@ import warnings
 
 from google.cloud.firestore import Query
 
-from flask_boiler import schema, fields, domain_model
+from flask_boiler import schema, fields, domain_model, attrs
 from google.cloud.firestore_v1 import transactional
 
 from gravitate import CTX
@@ -17,13 +17,15 @@ Schema = schema.Schema
 #     longitude = fields.Raw(load_from="longitude", dump_to="longitude")
 
 
-class LocationSchema(Schema):
-
-    coordinates = fields.Dict(missing=dict)
-    address = fields.Raw()
+# class LocationSchema(Schema):
+#
+#     coordinates = fields.Dict(missing=dict)
+#     address = fields.Raw()
 
 
 class Location(domain_model.DomainModel):
+    coordinates = attrs.bdict()
+    address = attrs.bproperty()
 
     @staticmethod
     def _to_address(coordinates):
@@ -34,7 +36,7 @@ class Location(domain_model.DomainModel):
         )
         return res[0]["formatted_address"]
 
-    @property
+    @address.getter
     def address(self):
         if not getattr(self, "_address", None):
             if self.coordinates:
@@ -49,7 +51,7 @@ class Location(domain_model.DomainModel):
         self._address = value
 
     class Meta:
-        schema_cls = LocationSchema
+        # schema_cls = LocationSchema
         collection_name = "locations"
 
     def to_coordinate_str(self):
@@ -61,12 +63,6 @@ class Location(domain_model.DomainModel):
 #     "Location", LocationSchema, base=Location)
 
 
-class UserLocationSchema(LocationSchema):
-    sublocations = fields.Relationship(nested=False, many=True)
-    place_id = fields.Raw(missing=fields.allow_missing, default=None, required=False, allow_none=True)
-    user_id = fields.Raw(missing=fields.allow_missing, default=None, required=False, allow_none=True)
-
-
 # UserLocation = SerializableClsFactory.create(
 #     "UserLocation",
 #     UserLocationSchema,
@@ -74,8 +70,14 @@ class UserLocationSchema(LocationSchema):
 
 class UserLocation(Location):
 
-    class Meta:
-        schema_cls = UserLocationSchema
+    sublocations = attrs.relation(nested=False, many=True, initialize=True)
+
+    @sublocations.init
+    def sublocations(self):
+        self._attrs.sublocations = []
+
+    place_id = attrs.bproperty(import_required=False, export_required=False)
+    user_id = attrs.bproperty(import_required=False, export_required=False)
 
     @classmethod
     def add_sublocation(cls, location_id, sublocation_ids):
@@ -133,11 +135,6 @@ class UserSublocation(Location):
         )
 
 
-class SocialEventLocationSchema(LocationSchema):
-
-    event_name = fields.Raw()
-
-
 # SocialEventLocation = SerializableClsFactory.create(
 #     "SocialEventLocation",
 #     SocialEventLocationSchema,
@@ -145,46 +142,17 @@ class SocialEventLocationSchema(LocationSchema):
 
 
 class SocialEventLocation(Location):
-
-    class Meta:
-        schema_cls = SocialEventLocationSchema
-
-
-class UcLocationSchema(LocationSchema):
-
-    campus_code = fields.Raw()
-    campus_name = fields.Raw()
-
-
-# UcLocation = SerializableClsFactory.create(
-#     "UcLocation",
-#     UcLocationSchema,
-#     base=Location
-# )
+    event_name = attrs.bproperty()
 
 
 class UcLocation(Location):
-
-    class Meta:
-        schema_cls = UcLocationSchema
-
-
-class AirportLocationSchema(LocationSchema):
-
-    airport_code = fields.Raw()
-
-#
-# AirportLocation = SerializableClsFactory.create(
-#     "AirportLocation",
-#     AirportLocationSchema,
-#     base=Location
-# )
+    campus_code = attrs.bproperty()
+    campus_name = attrs.bproperty(requires=[super().address, campus_code])
 
 
 class AirportLocation(Location):
 
-    class Meta:
-        schema_cls = AirportLocationSchema
+    airport_code = attrs.bproperty()
 
 
 campus_code_table = {

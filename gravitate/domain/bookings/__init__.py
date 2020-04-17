@@ -17,7 +17,6 @@ from google.cloud.firestore import DocumentReference
 
 from gravitate import CTX
 from gravitate.domain.location import Location
-from gravitate.domain.location.models import LocationSchema, UserLocationSchema
 from gravitate.domain.target import Target
 from gravitate import common
 
@@ -214,7 +213,7 @@ class RiderBookingForm(RiderBookingView):
 
     @from_location.setter
     def from_location(self, value):
-        if value != '':
+        if value != '' and value is not None:
             if "/" in value:
                 self.rider_booking.from_location = Location.get(doc_ref_str=value)
             else:
@@ -226,7 +225,7 @@ class RiderBookingForm(RiderBookingView):
 
     @to_location.setter
     def to_location(self, value):
-        if value != '':
+        if value != '' and value is not None:
             if "/" in value:
                 self.rider_booking.to_location = Location.get(doc_ref_str=value)
             else:

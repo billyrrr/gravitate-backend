@@ -210,7 +210,7 @@ class RideHostForm(RideHostView):
 
     @from_location.setter
     def from_location(self, value):
-        if value != '':
+        if value != '' and value is not None:
             self.ride_host.from_location = Location.get(doc_ref_str=value)
 
     @property
@@ -219,7 +219,7 @@ class RideHostForm(RideHostView):
 
     @to_location.setter
     def to_location(self, value):
-        if value != '':
+        if value != '' and value is not None:
             self.ride_host.to_location = Location.get(doc_ref_str=value)
 
     @classmethod

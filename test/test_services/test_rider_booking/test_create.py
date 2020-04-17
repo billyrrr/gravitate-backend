@@ -2,6 +2,7 @@ import sys
 from unittest import TestCase
 
 from gravitate import main
+from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.location import UserLocation
 from gravitate.domain.location.models import LocationFactory
 
@@ -19,6 +20,7 @@ class CreateRiderBookingTest(TestCase):
         self.from_location.save()
         self.to_location = LocationFactory.from_pickup_address("Tioga Hall, San Diego, CA 92161")
         self.to_location.save()
+        self.booking_id_to_delete = list()
 
     def testCreateRiderBooking(self):
 
@@ -34,6 +36,7 @@ class CreateRiderBookingTest(TestCase):
         r = self.app.post(path='/riderBookings', json=form)
         assert r.status_code == 200
         doc_id = r.json["booking_id"]
+        self.booking_id_to_delete.append(doc_id)
 
         time.sleep(5)
 
@@ -54,9 +57,13 @@ class CreateRiderBookingTest(TestCase):
 
         r = self.app.post(path='/riderBookings', json=form)
         assert r.status_code == 200
-
+        doc_id = r.json["booking_id"]
+        self.booking_id_to_delete.append(doc_id)
         time.sleep(5)
 
-    # def tearDown(self) -> None:
-    #     self.from_location.delete()
-    #     self.to_location.delete()
+    def tearDown(self) -> None:
+        self.from_location.delete()
+        self.to_location.delete()
+
+        for booking_id in self.booking_id_to_delete:
+            RiderBooking.get(doc_id=booking_id).delete()

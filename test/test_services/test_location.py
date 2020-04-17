@@ -134,10 +134,10 @@ class CreateUserSublocationTest(TestCase):
     def test_new(self):
         obj = UserSublocationForm.new(
             doc_id=self.doc_id,
-            user_location_id=self.user_location_id
+            user_location_id=self.user_location_id,
+            latitude=32.87952213052025,
+            longitude = -117.2436009719968
         )
-        obj.latitude = 32.87952213052025
-        obj.longitude = -117.2436009719968
         testing_utils._wait(1)
         assert obj.location.address == \
                "Scholars Dr S, San Diego, CA 92161, USA"
@@ -149,7 +149,9 @@ class CreateUserSublocationTest(TestCase):
                            'userId': 'user_id_1',
                            'longitude': -117.2428555,
                            'latitude': 32.8794203,
-                           'address': 'Tenaya Hall, San Diego, CA 92161'}
+                           'address': 'Tenaya Hall, San Diego, CA 92161',
+                           'id': 'test_doc_id_1',
+                           }
         )
 
         testing_utils._wait()
@@ -158,6 +160,7 @@ class CreateUserSublocationTest(TestCase):
             snapshot=snapshot
         )
         assert obj.to_dict() == {
+            'id': 'test_doc_id_1',
             'address': 'Tenaya Hall, San Diego, CA 92161',
             'latitude': 32.8794203,
             'longitude': -117.2428555,
@@ -172,7 +175,9 @@ class CreateUserSublocationTest(TestCase):
                            'userId': 'user_id_1',
                            'longitude': -117.2428555,
                            'latitude': 32.8794203,
-                           'address': 'Tenaya Hall, San Diego, CA 92161'}
+                           'address': 'Tenaya Hall, San Diego, CA 92161',
+                           'id': 'test_doc_id_1',
+                           }
         )
 
         testing_utils._wait()
@@ -192,6 +197,7 @@ class CreateUserSublocationTest(TestCase):
             snapshot=snapshot
         )
         assert obj.to_dict() == {
+            'id': 'test_doc_id_1',
             'address': 'Tenaya Hall, San Diego, CA 92161',
             'latitude': 32.8794203,
             'longitude': -117.2428555,
