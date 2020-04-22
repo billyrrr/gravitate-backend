@@ -147,7 +147,7 @@ class SocialEventLocation(Location):
 
 class UcLocation(Location):
     campus_code = attrs.bproperty()
-    campus_name = attrs.bproperty(requires=[super().address, campus_code])
+    campus_name = attrs.bproperty()
 
 
 class AirportLocation(Location):
@@ -175,6 +175,12 @@ class LocationFactory:
     def from_pickup_address(pickup_address):
         coordinates = get_coordinates(address=pickup_address)
         obj = UserLocation.new(coordinates=coordinates, address=pickup_address)
+        return obj
+
+    @staticmethod
+    def from_address(address):
+        coordinates = get_coordinates(address=address)
+        obj = Location.new(coordinates=coordinates, address=address)
         return obj
 
     @staticmethod

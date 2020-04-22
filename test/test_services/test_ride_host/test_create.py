@@ -2,31 +2,34 @@ import time
 from unittest import TestCase
 
 from gravitate import main, CTX
+from gravitate.domain.host_car import RideHost
 from gravitate.domain.location import UserLocation
 from gravitate.domain.location.models import LocationFactory
 
 
 class CreateRideHostTest(TestCase):
-    ride_request_ids_to_delete = list()
 
     def setUp(self):
         main.app.testing = True
         self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
-        self.from_location = LocationFactory.from_pickup_address(
-            "Tenaya Hall, San Diego, CA 92161")
-        self.from_location.save()
-        self.to_location = LocationFactory.from_pickup_address(
-            "Tioga Hall, San Diego, CA 92161")
-        self.to_location.save()
+
+        self.from_location_1 = LocationFactory.from_pickup_address("Tenaya Hall, San Diego, CA 92161")
+        self.from_location_1.user_id = self.userIds[0]
+        self.from_location_1.save()
+        self.to_location_1 = LocationFactory.from_pickup_address("Tioga Hall, San Diego, CA 92161")
+        self.to_location_1.user_id = self.userIds[0]
+        self.to_location_1.save()
+
+        self.hosting_id_to_delete = list()
 
     def testCreateRideHost(self):
         doc_id_1 = "test_doc_id_1"
 
         form = {
             "doc_id": doc_id_1,
-            "from_location": self.from_location.doc_ref_str,
-            "to_location": self.to_location.doc_ref_str,
+            "from_location": self.from_location_1.doc_ref_str,
+            "to_location": self.to_location_1.doc_ref_str,
             "user_id": self.userIds[0],
             "earliest_departure": "2014-12-29T03:12:58"
         }
@@ -54,6 +57,10 @@ class CreateRideHostTest(TestCase):
             'doc_ref': 'users/testuid1/hostings/test_doc_id_1',
             'earliest_arrival': None}.items()
 
-    # def tearDown(self) -> None:
-    #     self.from_location.delete()
-    #     self.to_location.delete()
+    def tearDown(self) -> None:
+        self.from_location_1.delete()
+        self.to_location_1.delete()
+
+        for hosting_id in self.hosting_id_to_delete:
+            RideHost.get(doc_id=hosting_id).delete()
+

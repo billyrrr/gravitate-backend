@@ -169,8 +169,8 @@ class RideRequestBaseBuilder:
         self._ride_request_dict['pricing'] = 987654321
 
     def _build_pickup(self):
-        origin_location = LocationFactory.from_pickup_address(
-            pickup_address=self.pickup_address)
+        origin_location = LocationFactory.from_address(
+            address=self.pickup_address)
         origin_location.save()
         origin_ref = origin_location.doc_ref
         self._ride_request_dict["originRef"] = origin_ref
