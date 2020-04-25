@@ -61,6 +61,7 @@ class UserBookingEditMediator(ViewMediatorDeltaDAV):
                                              d=dict(**d, user_id=user_id))
 
             mediator.notify(obj=obj)
+            snapshot.reference.delete()
 
 
 class BookingTargetMediator(ViewMediatorDeltaDAV):

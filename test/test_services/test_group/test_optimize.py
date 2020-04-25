@@ -62,8 +62,8 @@ class CreateTimelineTest(TestCase):
         timeline = Timeline.new(orbit=obj)
 
         timeline._directions()
-        assert False
-
+        # assert False
+    #
     # def test_generate_view(self):
     #     hosting_mediator = OrbitViewMediator(
     #         query=Query(parent=Orbit._get_collection())

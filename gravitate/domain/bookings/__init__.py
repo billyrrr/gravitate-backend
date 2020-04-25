@@ -84,7 +84,38 @@ class RiderBookingView(view_model.ViewModel):
 
 class RiderBookingReadModel(RiderBookingView):
     class Meta:
-        schema_cls = RiderBookingViewSchema
+        class schema_cls(schema.Schema):
+            rider_booking = fields.Raw(
+                missing=fields.allow_missing, load_only=True, required=False)
+
+            case_conversion = False
+
+            from_location = fields.Raw(description="the origin of the trip", dump_only=True)
+            to_location = fields.Raw(description="the destination of the trip", dump_only=True)
+
+            earliest_arrival = fields.Localtime(allow_none=True, dump_only=True)
+            latest_arrival = fields.Localtime(allow_none=True, dump_only=True)
+            earliest_departure = fields.Localtime(allow_none=True, dump_only=True)
+            latest_departure = fields.Localtime(allow_none=True, dump_only=True)
+
+            user_id = fields.String(description="User Id (redundant)", dump_only=True)
+
+            preview_pic_url = fields.Raw(allow_none=True,
+                                         description="Url of the preview picture of the origin and destination",
+                                         dump_only=True)
+            localdate_timestamp = fields.Raw(allow_none=True,
+                                             description="local time in timestamp (for sorting)",
+                                             dump_only=True)
+            localdate_string = fields.Raw(allow_none=True,
+                                          description="local time in iso8601 string",
+                                          dump_only=True)
+            weekday = fields.Raw(allow_none=True,
+                                 description="Return the day of the week as an integer, where Monday is 0 and Sunday is 6. For example, date(2002, 12, 4).weekday() == 2, a Wednesday",
+                                 dump_only=True)
+
+            booking_id = fields.Raw(dump_only=True,
+                                    description="Resource ID for booking (redundant)")
+
 
     @property
     def booking_id(self):

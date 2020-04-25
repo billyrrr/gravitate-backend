@@ -48,6 +48,9 @@ class UserLocationForm(view_model.ViewModel):
 
 class UserLocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
 
+    def notify(self, obj):
+        obj.propagate_change()
+
     class Protocol(view_mediator_dav.ProtocolBase):
 
         @staticmethod
@@ -57,7 +60,8 @@ class UserLocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
             doc_id = doc_ref.id
             form = UserLocationForm.new(user_id=user_id, doc_id=doc_id)
             form.update_vals(with_raw=snapshot.to_dict())
-            form.propagate_change()
+            mediator.notify(obj=form)
+            snapshot.reference.delete()
 
         on_update = on_create
 
@@ -102,6 +106,9 @@ class UserSublocationForm(view_model.ViewModel):
 
 class UserSublocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
 
+    def notify(self, obj):
+        obj.propagate_change()
+
     class Protocol(view_mediator_dav.ProtocolBase):
 
         @staticmethod
@@ -113,6 +120,7 @@ class UserSublocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
             form = UserSublocationForm.new(
                 user_location_id=user_location_id, doc_id=doc_id)
             form.update_vals(with_raw=snapshot.to_dict())
-            form.propagate_change()
+            mediator.notify(obj=form)
+            snapshot.reference.delete()
 
         on_update = on_create
