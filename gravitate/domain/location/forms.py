@@ -1,4 +1,4 @@
-from flask_boiler import view_model, view_mediator_dav
+from flask_boiler import view_model, view
 from flask_boiler import utils as fb_utils
 from google.cloud.firestore_v1 import DocumentSnapshot
 
@@ -46,12 +46,12 @@ class UserLocationForm(view_model.ViewModel):
         self.user_location.save()
 
 
-class UserLocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+class UserLocationFormMediator(view.QueryMediator):
 
     def notify(self, obj):
         obj.propagate_change()
 
-    class Protocol(view_mediator_dav.ProtocolBase):
+    class Protocol(view.ProtocolBase):
 
         @staticmethod
         def on_create(snapshot: DocumentSnapshot, mediator):
@@ -104,12 +104,12 @@ class UserSublocationForm(view_model.ViewModel):
         )
 
 
-class UserSublocationFormMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+class UserSublocationFormMediator(view.QueryMediator):
 
     def notify(self, obj):
         obj.propagate_change()
 
-    class Protocol(view_mediator_dav.ProtocolBase):
+    class Protocol(view.ProtocolBase):
 
         @staticmethod
         def on_create(snapshot: DocumentSnapshot, mediator):

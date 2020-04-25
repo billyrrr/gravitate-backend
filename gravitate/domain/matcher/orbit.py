@@ -4,7 +4,7 @@ from typing import Type
 from flask_boiler import schema, fields, domain_model
 from flask_boiler.struct import Struct
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
+from flask_boiler.view import QueryMediator, ProtocolBase
 from flask_boiler.view_model import ViewModel
 from flask_boiler.business_property_store import BPSchema
 from google.cloud.firestore import DocumentSnapshot, DocumentReference, Query
@@ -166,7 +166,7 @@ class OrbitView(ViewModel):
             super().save(doc_ref=doc_ref, save_rel=False, **kwargs)
 
 
-class OrbitViewMediator(ViewMediatorDeltaDAV):
+class OrbitViewMediator(QueryMediator):
     """
     Forwards a rider booking to a user subcollection
     """

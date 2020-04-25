@@ -1,12 +1,7 @@
 import time
 
-from flask_boiler import utils, fields
-from flask_boiler.business_property_store import SimpleStore, BPSchema, \
-    BusinessPropertyStore
-from flask_boiler.snapshot_container import SnapshotContainer
-from flask_boiler.struct import Struct
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
+from flask_boiler.view.query_delta import ViewMediatorDeltaDAV, ProtocolBase
 from google.cloud.firestore import DocumentSnapshot
 
 from gravitate import CTX

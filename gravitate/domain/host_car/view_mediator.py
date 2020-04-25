@@ -5,7 +5,7 @@ from flask_boiler.business_property_store import SimpleStore, BPSchema, \
     BusinessPropertyStore
 from flask_boiler.snapshot_container import SnapshotContainer
 from flask_boiler.struct import Struct
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
+from flask_boiler.view import QueryMediator, ProtocolBase
 from google.cloud.firestore import DocumentSnapshot
 
 from gravitate.domain.user import User
@@ -13,7 +13,7 @@ from . import RideHost, RideHostReadModel
 from google.cloud.firestore import Query
 
 
-class UserHostingMediator(ViewMediatorDeltaDAV):
+class UserHostingMediator(QueryMediator):
     """
     Forwards a host ride to a user subcollection
     """

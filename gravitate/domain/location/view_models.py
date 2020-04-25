@@ -1,4 +1,4 @@
-from flask_boiler import bpstore, fields, view_model, view_mediator_dav, schema
+from flask_boiler import bpstore, fields, view_model, schema, view
 from flask_boiler.struct import Struct, SnapshotStruct
 from google.cloud.firestore_v1 import DocumentSnapshot
 
@@ -69,9 +69,9 @@ class UserLocationView(view_model.ViewModel):
                 for sublocation in self.store.user_location.sublocations]
 
 
-class UserLocationViewMediator(view_mediator_dav.ViewMediatorDeltaDAV):
+class UserLocationViewMediator(view.QueryMediator):
 
-    class Protocol(view_mediator_dav.ProtocolBase):
+    class Protocol(view.ProtocolBase):
 
         @staticmethod
         def on_create(snapshot: DocumentSnapshot, mediator):

@@ -1,17 +1,11 @@
 from math import inf
 
-from flask_boiler import schema, fields, domain_model, view_model, mutation, \
-    view_mediator
+from flask_boiler import schema, fields, domain_model, view_model, mutation
+from flask_boiler.view import RestMediator
 from flask_boiler.business_property_store import SimpleStore, BPSchema, \
     BusinessPropertyStore
-from flask_boiler.schema import Schema
-from flask_boiler.fields import Embedded, Integer, Relationship, Boolean, \
-    String, Raw
-from flask_boiler.domain_model import DomainModel
-from flask_boiler.serializable import Serializable
 from flask_boiler.snapshot_container import SnapshotContainer
 from flask_boiler.struct import Struct
-from google.cloud.firestore import DocumentReference
 
 from gravitate import CTX, common
 from gravitate.domain.location import Location
@@ -325,6 +319,6 @@ class RideHostMutation(mutation.Mutation):
         return obj
 
 
-class RHMediator(view_mediator.ViewMediator):
+class RHMediator(RestMediator):
 
     pass

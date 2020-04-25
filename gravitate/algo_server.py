@@ -3,7 +3,8 @@ import time
 from math import inf
 
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view_mediator_dav import ViewMediatorDeltaDAV, ProtocolBase
+from flask_boiler.view import QueryMediator
+from flask_boiler.view.query_delta import ProtocolBase
 from google.cloud.firestore import Query
 from google.cloud.firestore import DocumentSnapshot
 
@@ -16,7 +17,7 @@ from gravitate.domain import host_car
 from gravitate.distance_func import edge_weight
 
 
-class RiderTargetMediator(ViewMediatorDeltaDAV):
+class RiderTargetMediator(QueryMediator):
 
     def __init__(self, *args, target_repo, **kwargs):
         super().__init__(*args, **kwargs)
@@ -42,7 +43,7 @@ class RiderTargetMediator(ViewMediatorDeltaDAV):
                 )
 
 
-class HostTargetMediator(ViewMediatorDeltaDAV):
+class HostTargetMediator(QueryMediator):
 
     def __init__(self, *args, target_repo, **kwargs):
         super().__init__(*args, **kwargs)
