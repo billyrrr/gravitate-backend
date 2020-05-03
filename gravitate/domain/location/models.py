@@ -77,7 +77,16 @@ class UserLocation(Location):
         self._attrs.sublocations = []
 
     place_id = attrs.bproperty(import_required=False, export_required=False)
+    place_name = attrs.bproperty(import_required=False, export_required=False)
     user_id = attrs.bproperty(import_required=False, export_required=False)
+
+    @property
+    def latitude(self):
+        return self.coordinates["latitude"]
+
+    @property
+    def longitude(self):
+        return self.coordinates["longitude"]
 
     @classmethod
     def add_sublocation(cls, location_id, sublocation_ids):
@@ -89,7 +98,7 @@ class UserLocation(Location):
             location = cls.get(doc_id=location_id, transaction=transaction)
             sublocations = list()
             for sublocation_id in sublocation_ids:
-                sublocation = Location.get(
+                sublocation = Sublocation.get(
                     doc_id=sublocation_id,
                     transaction=transaction
                 )
@@ -110,21 +119,24 @@ class UserLocation(Location):
         self.sublocations.append(sublocation.doc_ref)
 
 
-class UserSublocation(Location):
+class Sublocation(Location):
+
+    road_name = attrs.bproperty(import_required=False, export_required=False)
 
     @classmethod
-    def new(cls, *, latitude, longitude):
+    def get_with_latlng(cls, *, latitude, longitude):
         res = gmaps.reverse_geocode(
             latlng=(latitude,
                     longitude),
             result_type=["route", ]
         )
-        return super().new(
+        return cls.new(
             coordinates={
                 "latitude": res[0]["geometry"]["location"]["lat"],
                 "longitude": res[0]["geometry"]["location"]["lng"]
             },
             address=res[0]["formatted_address"],
+            road_name=res[0]['address_components'][0]["short_name"]
         )
 
     def to_view_dict(self):

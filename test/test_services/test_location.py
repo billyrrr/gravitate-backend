@@ -9,6 +9,7 @@ from gravitate.domain.driver_navigation.utils import gmaps
 from gravitate.domain.location import UserLocation, Location
 from gravitate.domain.location.forms import UserLocationForm, \
     UserSublocationForm
+from gravitate.domain.location.models import Sublocation
 from gravitate.domain.location.view_models import UserLocationView
 
 
@@ -81,15 +82,14 @@ class CreateUserSublocationTest(TestCase):
 
     def test_create(self):
         doc_ref = CTX.db.document(self.user_location_path)
-        doc_ref.set(
-            document_data={'obj_type': 'UserLocation',
-                           'placeId': 'test_place_id_1', 'sublocations': [],
-                           'doc_id': 'test_doc_id_1', 'userId': 'user_id_1',
-                           'doc_ref': 'locations/test_doc_id_1',
+        UserLocation.new(doc_id=self.user_location_id,
+                         user_id=self.user_id,
+                         **{
+            'coordinates': {
                            'longitude': -117.2428555,
-                           'latitude': 32.8794203,
+                           'latitude': 32.8794203},
                            'address': 'Tenaya Hall, San Diego, CA 92161'}
-        )
+        ).save()
 
         testing_utils._wait()
 
@@ -103,11 +103,12 @@ class CreateUserSublocationTest(TestCase):
 
         # Tests that a new location is created
         testing_utils._wait()
-        location = Location.get(doc_id=self.doc_id)
-        d = location.to_dict()
+        sublocation = Sublocation.get(doc_id=self.doc_id)
+        d = sublocation.to_dict()
         assert d == {'coordinates': {'longitude': -117.2436009719968,
                                      'latitude': 32.87952213052025},
-                     'doc_id': 'sublocation_id', 'obj_type': 'Location',
+                     'doc_id': 'sublocation_id',
+                     'obj_type': 'Sublocation',
                      'doc_ref': 'locations/sublocation_id',
                      'address': 'Scholars Dr S, San Diego, CA 92161, USA'}
 
@@ -115,7 +116,7 @@ class CreateUserSublocationTest(TestCase):
         #       of the parent UserLocation
         user_location = UserLocation.get(doc_id=self.user_location_id)
         d = user_location.to_dict()
-        assert d["sublocations"] == [location.doc_ref]
+        assert d["sublocations"] == [sublocation.doc_ref]
         testing_utils._wait()
 
     def test_gmaps(self):
@@ -208,7 +209,7 @@ class CreateUserSublocationTest(TestCase):
                                  'longitude': -117.2436009719968},
                  'doc_id': 'sublocation_id',
                  'doc_ref': 'locations/sublocation_id',
-                 'obj_type': 'Location'}]
+                 'obj_type': 'Sublocation'}]
         }
 
     def tearDown(self) -> None:

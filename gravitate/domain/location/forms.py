@@ -3,6 +3,7 @@ from flask_boiler import utils as fb_utils
 from google.cloud.firestore_v1 import DocumentSnapshot
 
 from gravitate.domain.location import UserLocation, Location
+from gravitate.domain.location.models import Sublocation
 from gravitate.domain.location.schema import UserLocationFormSchema, \
     UserSublocationFormSchema
 
@@ -76,7 +77,7 @@ class UserSublocationForm(view_model.ViewModel):
         return super().new(
             *args,
             user_location=UserLocation.get(doc_id=user_location_id),
-            location=Location.new(doc_id=doc_id),
+            location=Sublocation.new(doc_id=doc_id),
             **kwargs
         )
 

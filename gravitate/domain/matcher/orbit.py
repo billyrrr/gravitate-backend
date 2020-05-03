@@ -19,8 +19,8 @@ class OrbitSchema(schema.Schema):
 
     bookings = fields.Relationship(nested=True, many=True)
     ride_host = fields.Relationship(nested=True, many=False, allow_none=True)
-
     status = fields.Raw()
+    user_ticket_pairs = fields.Raw(missing=dict)
 
 
 class OrbitBase(domain_model.DomainModel):
@@ -45,13 +45,14 @@ class Orbit(OrbitBase):
         transaction = CTX.db.transaction()
 
         @transactional
-        def _add_rider_transactional(transaction, orbit_id, booking_id):
+        def _add_rider_transactional(transaction, orbit_id, booking_id, **kwargs):
             orbit = cls.get(doc_id=orbit_id, transaction=transaction)
             rider_booking = RiderBooking.get(
                 doc_id=booking_id,
                 transaction=transaction
             )
-            orbit._add_rider(rider_booking)
+            orbit._add_rider(rider_booking,
+                             **kwargs)
 
             orbit.save(transaction=transaction)
             # rider_booking.save(transaction=transaction)
@@ -60,10 +61,21 @@ class Orbit(OrbitBase):
             transaction=transaction, *args, **kwargs
         )
 
-    def _add_rider(self, rider_booking: RiderBooking):
+    def _add_rider(self, rider_booking: RiderBooking,
+                   pickup_sublocation_id=None,
+                   dropoff_sublocation_id=None,
+                   ):
         rider_booking.orbit_ref = self.doc_ref
         rider_booking.status = "matched"
         self.bookings.append(rider_booking)
+        self.user_ticket_pairs[rider_booking.user_id] = {
+            "bookingId": rider_booking.doc_id,
+            "userWillDrive": False,
+            "hasCheckedIn": False,
+            "state": "added",
+            "pickupSublocationId": pickup_sublocation_id,
+            "dropoffSublocationId": dropoff_sublocation_id
+        }
 
         # rider_booking.save()
         # self.save()
@@ -91,6 +103,12 @@ class Orbit(OrbitBase):
     def _add_host(self, ride_host: RideHost):
         ride_host.orbit_ref = self.doc_ref
         self.ride_host = ride_host
+        self.user_ticket_pairs[ride_host.user_id] = {
+            "hostId": ride_host.doc_id,
+            "userWillDrive": True,
+            "hasCheckedIn": False,
+            "state": "added"
+        }
 
 
 class OrbitViewSchema(schema.Schema):

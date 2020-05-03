@@ -4,7 +4,7 @@ from unittest import TestCase
 # from gravitate import main
 from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.host_car import RideHost
-from gravitate.domain.location.models import LocationFactory
+from gravitate.domain.location.models import LocationFactory, Sublocation
 from gravitate.domain.matcher.orbit import Orbit
 from gravitate.domain.matcher.timeline import Timeline
 
@@ -19,13 +19,32 @@ class CreateTimelineTest(TestCase):
         self.userIds = ["testuid1", "testuid2"]
 
         self.host_from = LocationFactory.from_place_address("8775 Costa Verde Blvd, San Diego, CA 92122")
+        self.host_from.user_id = self.userIds[0]
         self.host_from.save()
+
         self.host_to = LocationFactory.from_place_address("Center Hall, San Diego, CA")
+        self.host_to.user_id = self.userIds[0]
         self.host_to.save()
+
         self.rider_from = LocationFactory.from_place_address("3915 Nobel Drive, San Diego, CA")
+        a = Sublocation.get_with_latlng(
+            latitude=self.rider_from.coordinates["latitude"],
+            longitude=self.rider_from.coordinates["longitude"])
+        a.save()
+        self.a = a
+        self.rider_from.sublocations = [a.doc_ref]
+        self.rider_from.user_id = self.userIds[1]
         self.rider_from.save()
+
         self.rider_to = LocationFactory.from_place_address(
             "Center Hall, San Diego, CA")
+        b = Sublocation.get_with_latlng(
+            latitude=self.rider_to.coordinates["latitude"],
+            longitude=self.rider_to.coordinates["longitude"])
+        b.save()
+        self.b = b
+        self.rider_to.sublocations = [b.doc_ref]
+        self.rider_to.user_id = self.userIds[1]
         self.rider_to.save()
 
         self.ride_host = RideHost.new(
@@ -53,7 +72,10 @@ class CreateTimelineTest(TestCase):
     def testCreateTimeline(self):
         orbit_id = Orbit.create_one()
         Orbit.add_rider(
-            orbit_id=orbit_id, booking_id=self.rider_booking.doc_id)
+            orbit_id=orbit_id, booking_id=self.rider_booking.doc_id,
+            pickup_sublocation_id=self.a.doc_id,
+            dropoff_sublocation_id=self.b.doc_id
+        )
         # obj = Orbit.get(doc_id=orbit_id)
         Orbit.add_host(
             orbit_id=orbit_id, hosting_id=self.ride_host.doc_id

@@ -24,6 +24,7 @@ def test_view_websocket():
 
     _ = client.emit('create_draft',
                     {
+                        "user_id": "test_user_id1",
                         "latitude": 32.879707,
                         "longitude": -117.241254
                     },
@@ -31,7 +32,7 @@ def test_view_websocket():
 
     res = client.get_received(namespace="/sublocations")
     assert res[-1] == {'name': 'draft_created', 'args': [
-        {'latitude': 32.8796984,
-         'longitude': -117.2412359,
+        {'latitude': 32.879707,
+         'longitude': -117.241254,
          'address': 'Muir Ln, San Diego, CA 92161, USA'}],
                        'namespace': '/sublocations'}

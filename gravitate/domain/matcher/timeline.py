@@ -8,7 +8,10 @@ from flask_boiler.struct import Struct
 from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.driver_navigation.utils import gmaps
 from gravitate.domain.host_car import RideHost
+from gravitate.domain.location.models import Sublocation
 from gravitate.domain.matcher.orbit import Orbit
+
+from gravitate.domain.user_new import User
 
 
 class TimelineSchema(schema.Schema):
@@ -53,29 +56,61 @@ class Timeline(TimelineBase):
         :return:
         """
         waypoints = list()
-        for _, booking in self.store.rider_bookings.items():
+        for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
+            if ticket["userWillDrive"]:
+                continue
+            booking = self.store.rider_bookings[ticket["bookingId"]]
             assert isinstance(booking, RiderBooking)
-            waypoints.append("place_id:"+booking.from_location.place_id)
-            waypoints.append("place_id:"+booking.to_location.place_id)
+            pickup_sublocation = Sublocation.get(doc_id=ticket["pickupSublocationId"])
+            waypoints.append(pickup_sublocation.to_coordinate_str())
+            dropoff_sublocation = Sublocation.get(doc_id=ticket["dropoffSublocationId"])
+            waypoints.append(dropoff_sublocation.to_coordinate_str())
 
         res = gmaps.directions(
             mode='driving',
             origin=self.store.ride_host.from_location.to_coordinate_str(),
             destination=self.store.ride_host.to_location.to_coordinate_str(),
             waypoints=waypoints,
-            optimize_waypoints=True,
+            optimize_waypoints=False,
             departure_time=self.store.ride_host.latest_departure,
-
         )
-        print(json.dumps(res))
-
+        # print(json.dumps(res))
 
     @property
     def timeline(self):
         res = list()
         res.append({
-            "description": "Origin",
-            "location": self.store.ride_host.from_location.to_dict(),
+            "description": f"{User.get(doc_id=self.store.ride_host.user_id).name} will depart from {self.store.ride_host.from_location.address}",
+            "latitude": self.store.ride_host.from_location.latitude,
+            "longitude": self.store.ride_host.from_location.longitude,
             "time": self.store.ride_host.earliest_departure
         })
+
+        for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
+            if ticket["userWillDrive"]:
+                continue
+            booking = self.store.rider_bookings[ticket["bookingId"]]
+            assert isinstance(booking, RiderBooking)
+            pickup_sublocation = Sublocation.get(doc_id=ticket["pickupSublocationId"])
+            res.append({
+                "description":  f"{User.get(doc_id=booking.user_id).name} will be picked up from {pickup_sublocation.road_name}",
+                "latitude": booking.from_location.latitude,
+                "longitude": booking.from_location.longitude,
+                "time": booking.earliest_departure
+            })
+            dropoff_sublocation = Sublocation.get(doc_id=ticket["dropoffSublocationId"])
+            res.append({
+                "description": f"{User.get(doc_id=booking.user_id).name} will be dropped off at {dropoff_sublocation.road_name}",
+                "latitude": booking.to_location.latitude,
+                "longitude": booking.to_location.longitude,
+                "time": booking.earliest_departure
+            })
+
+        res.append({
+            "description":  f"{User.get(doc_id=self.store.ride_host.user_id).name} will arrive at {self.store.ride_host.to_location.address}",
+            "latitude": self.store.ride_host.to_location.latitude,
+            "longitude": self.store.ride_host.to_location.longitude,
+            "time": self.store.ride_host.earliest_departure
+        })
+
         return res

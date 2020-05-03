@@ -13,6 +13,7 @@ class UserSublocationViewSchema(schema.Schema):
     longitude = fields.Raw(dump_only=True)
     address = fields.Raw(dump_only=True)
     sublocations = fields.Raw(dump_only=True)
+    place_name = fields.Raw(dump_only=True)
 
 
 class UserLocationViewStoreSchema(bpstore.BPSchema):
