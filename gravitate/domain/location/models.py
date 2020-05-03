@@ -96,13 +96,11 @@ class UserLocation(Location):
         def _add_sublocation_transactional(
                 transaction, location_id, sublocation_ids):
             location = cls.get(doc_id=location_id, transaction=transaction)
-            sublocations = list()
             for sublocation_id in sublocation_ids:
                 sublocation = Sublocation.get(
                     doc_id=sublocation_id,
                     transaction=transaction
                 )
-                sublocations.append(sublocation)
                 location._add_sublocation(sublocation)
 
             location.save(transaction=transaction)

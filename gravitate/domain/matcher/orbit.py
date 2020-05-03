@@ -1,6 +1,7 @@
 import time
 from typing import Type
 
+from flask_boiler import attrs
 from flask_boiler import schema, fields, domain_model
 from flask_boiler.struct import Struct
 from flask_boiler.utils import snapshot_to_obj
@@ -13,10 +14,12 @@ from google.cloud.firestore_v1 import transactional
 from gravitate import CTX
 from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.host_car import RideHost
+from gravitate.domain.location.models import Sublocation
+from gravitate.domain.user_new import User
+from gravitate.domain.user_new.view import CoriderView, RideHostUserView
 
 
 class OrbitSchema(schema.Schema):
-
     bookings = fields.Relationship(nested=True, many=True)
     ride_host = fields.Relationship(nested=True, many=False, allow_none=True)
     status = fields.Raw()
@@ -24,13 +27,11 @@ class OrbitSchema(schema.Schema):
 
 
 class OrbitBase(domain_model.DomainModel):
-
     class Meta:
         collection_name = "Orbit"
 
 
 class Orbit(OrbitBase):
-
     class Meta:
         schema_cls = OrbitSchema
 
@@ -45,7 +46,8 @@ class Orbit(OrbitBase):
         transaction = CTX.db.transaction()
 
         @transactional
-        def _add_rider_transactional(transaction, orbit_id, booking_id, **kwargs):
+        def _add_rider_transactional(transaction, orbit_id, booking_id,
+                                     **kwargs):
             orbit = cls.get(doc_id=orbit_id, transaction=transaction)
             rider_booking = RiderBooking.get(
                 doc_id=booking_id,
@@ -55,7 +57,7 @@ class Orbit(OrbitBase):
                              **kwargs)
 
             orbit.save(transaction=transaction)
-            # rider_booking.save(transaction=transaction)
+            rider_booking.save(transaction=transaction)
 
         return _add_rider_transactional(
             transaction=transaction, *args, **kwargs
@@ -65,6 +67,8 @@ class Orbit(OrbitBase):
                    pickup_sublocation_id=None,
                    dropoff_sublocation_id=None,
                    ):
+        if rider_booking.status != "created":
+            raise ValueError
         rider_booking.orbit_ref = self.doc_ref
         rider_booking.status = "matched"
         self.bookings.append(rider_booking)
@@ -94,14 +98,52 @@ class Orbit(OrbitBase):
             orbit._add_host(ride_host)
 
             orbit.save(transaction=transaction)
-            # ride_host.save(transaction=transaction)
+            ride_host.save(transaction=transaction)
 
         return _add_host_transactional(
             transaction=transaction, *args, **kwargs
         )
 
+    @classmethod
+    def match(cls, orbit_id=None, hosting_id=None, rider_records=None):
+        transaction = CTX.db.transaction()
+
+        @transactional
+        def _match_transactional(transaction, orbit_id=None, hosting_id=None,
+                                 rider_records=None):
+            if orbit_id is None:
+                orbit: Orbit = cls.new(status="open", transaction=transaction)
+            else:
+                orbit = cls.get(doc_id=orbit_id, transaction=transaction)
+            ride_host = RideHost.get(
+                doc_id=hosting_id,
+                transaction=transaction
+            )
+            orbit._add_host(ride_host)
+
+            for booking_id, pickup_sublocation_id, dropoff_sublocation_id in rider_records:
+                rider_booking = RiderBooking.get(
+                    doc_id=booking_id,
+                    transaction=transaction
+                )
+                orbit._add_rider(rider_booking=rider_booking,
+                                 pickup_sublocation_id=pickup_sublocation_id,
+                                 dropoff_sublocation_id=dropoff_sublocation_id)
+                # rider_booking.save(transaction=transaction)
+
+            orbit.save(transaction=transaction)
+            # ride_host.save(transaction=transaction)
+
+        return _match_transactional(
+            transaction=transaction, orbit_id=orbit_id, hosting_id=hosting_id,
+            rider_records=rider_records
+        )
+
     def _add_host(self, ride_host: RideHost):
+        if ride_host.status != "created":
+            raise ValueError
         ride_host.orbit_ref = self.doc_ref
+        ride_host.status = "matched"
         self.ride_host = ride_host
         self.user_ticket_pairs[ride_host.user_id] = {
             "hostId": ride_host.doc_id,
@@ -109,15 +151,6 @@ class Orbit(OrbitBase):
             "hasCheckedIn": False,
             "state": "added"
         }
-
-
-class OrbitViewSchema(schema.Schema):
-
-    users = fields.List(dump_only=True)
-    bookings = fields.Relationship(nested=True, many=True, dump_only=True)
-    ride_host = fields.Raw(dump_only=True)
-
-    status = fields.Raw(dump_only=True)
 
 
 class OrbitViewBpss(BPSchema):
@@ -128,25 +161,47 @@ class OrbitViewBpss(BPSchema):
 
 class OrbitView(ViewModel):
 
-    class Meta:
-        schema_cls = OrbitViewSchema
+    coriders = attrs.bproperty()
+    host_user = attrs.bproperty()
+    status = attrs.bproperty()
+    timeline = attrs.bproperty()
 
-    @property
+    @status.getter
     def status(self):
         return self.store.orbit.status
 
-    @property
-    def bookings(self):
-        return self.store.bookings
+    @coriders.getter
+    def coriders(self):
+        res = dict()
+        for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
+            if ticket["userWillDrive"]:
+                continue
+            user = User.get(doc_id=user_id)
+            pickup_location = Sublocation.get(doc_id=ticket["pickupSublocationId"])
+            dropoff_location = Sublocation.get(doc_id=ticket["dropoffSublocationId"])
+            booking_id = ticket["bookingId"]
+            booking = self.store.bookings[booking_id]
+            view = CoriderView.new(
+                user=user,
+                pickup_location=pickup_location,
+                dropoff_location=dropoff_location,
+                booking=booking
+            )
+            res[user_id] = view.to_view_dict()
+        return res
 
-    @property
-    def ride_host(self):
-        return self.store.ride_host.to_dict()
+    @host_user.getter
+    def host_user(self):
+        for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
+            if not ticket["userWillDrive"]:
+                continue
+            user = User.get(doc_id=user_id)
+            return RideHostUserView.new(user=user).to_view_dict()
 
-    @property
-    def users(self):
-        # TODO: implement
-        return []
+    @timeline.getter
+    def timeline(self):
+        from gravitate.domain.matcher.timeline import Timeline
+        return Timeline.new(orbit=self.store.orbit).timeline
 
     @classmethod
     def new(cls, snapshot=None, **kwargs):
@@ -158,11 +213,10 @@ class OrbitView(ViewModel):
         struct["orbit"] = (Orbit, orbit.doc_id)
 
         for item in orbit.bookings:
-            assert isinstance(item, DocumentReference)
-            struct["bookings"][item.id] = (RiderBooking, item.id)
+            struct["bookings"][item.doc_id] = (RiderBooking, item.doc_id)
 
         if orbit.ride_host is not None:
-            struct["ride_host"] = (RideHost, orbit.ride_host.id)
+            struct["ride_host"] = (RideHost, orbit.ride_host.doc_id)
 
         return cls.get(struct_d=struct, **kwargs)
 
@@ -197,6 +251,6 @@ class OrbitViewMediator(QueryMediator):
         def on_create(snapshot, mediator):
             obj = OrbitView.new(
                 snapshot=snapshot,
-                once=True
+                once=True,
+                f_notify=mediator.notify
             )
-            mediator.notify(obj=obj)

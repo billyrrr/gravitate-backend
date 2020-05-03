@@ -61,5 +61,5 @@ def test_add():
         to_lat=122,
         to_lng=199
     )
-    t = repo.add(target_4)
+    t = repo.search(target_4)
     assert t == 'Target/target_1'

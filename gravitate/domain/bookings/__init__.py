@@ -1,3 +1,5 @@
+from math import inf
+
 from flask_boiler import schema, fields, domain_model, view_model, mutation, \
     view
 from flask_boiler.business_property_store import SimpleStore, BPSchema, \

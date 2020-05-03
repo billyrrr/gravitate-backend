@@ -1,0 +1,4 @@
+app_name: "multiride-gravitate-dev"
+debug: False
+testing: True
+certificate_path: "gravitate/config_jsons/multiride-gravitate-dev-f14ef444870a.json"

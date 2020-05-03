@@ -13,7 +13,7 @@ class UserSublocationViewSchema(schema.Schema):
     longitude = fields.Raw(dump_only=True)
     address = fields.Raw(dump_only=True)
     sublocations = fields.Raw(dump_only=True)
-    place_name = fields.Raw(dump_only=True)
+    place_name = fields.Raw(dump_only=True, default=fields.allow_missing)
 
 
 class UserLocationViewStoreSchema(bpstore.BPSchema):
@@ -58,6 +58,10 @@ class UserLocationView(view_model.ViewModel):
     @property
     def place_id(self):
         return self.store.user_location.place_id
+
+    @property
+    def place_name(self):
+        return self.store.user_location.place_name
 
     @property
     def doc_ref(self):

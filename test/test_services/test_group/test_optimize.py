@@ -1,14 +1,24 @@
+import json
 import unittest
 from unittest import TestCase
 
 # from gravitate import main
-from gravitate.domain.bookings import RiderBooking
+from google.cloud.firestore_v1 import DocumentReference, DocumentSnapshot
+from marshmallow.utils import is_iterable_but_not_string
+
+from gravitate import CTX
+from gravitate.algo_server import TargetRepo, RiderTargetMediator, \
+    HostTargetSearchMediator
+from gravitate.domain.bookings import RiderBooking, RiderTarget
 from gravitate.domain.host_car import RideHost
 from gravitate.domain.location.models import LocationFactory, Sublocation
-from gravitate.domain.matcher.orbit import Orbit
+from gravitate.domain.matcher.orbit import Orbit, OrbitView
 from gravitate.domain.matcher.timeline import Timeline
 
-from flask_boiler import fields
+from flask_boiler import fields, testing_utils
+
+from gravitate.domain.user_new import User
+
 
 class CreateTimelineTest(TestCase):
     ride_request_ids_to_delete = list()
@@ -17,6 +27,12 @@ class CreateTimelineTest(TestCase):
         # main.app.testing = True
         # self.app = main.app.test_client()
         self.userIds = ["testuid1", "testuid2"]
+        self.users = {
+            user_id: User.new(doc_id=user_id, name="My Name",
+                              email=f"{user_id}@myemail.com")
+            for user_id in self.userIds
+        }
+        _ = [user.save() for _, user in self.users.items()]
 
         self.host_from = LocationFactory.from_place_address("8775 Costa Verde Blvd, San Diego, CA 92122")
         self.host_from.user_id = self.userIds[0]
@@ -52,7 +68,7 @@ class CreateTimelineTest(TestCase):
             earliest_departure=fields.timestamp_from_local_time("2020-04-09T10:55:00"),
             from_location=self.host_from,
             to_location=self.host_to,
-            user_id="testuid1",
+            user_id=self.userIds[0],
             status="created"
         )
 
@@ -63,11 +79,54 @@ class CreateTimelineTest(TestCase):
             earliest_departure=fields.timestamp_from_local_time("2020-04-09T11:00:00"),
             from_location=self.rider_from,
             to_location=self.rider_to,
-            user_id="xHU5Hp8OJbVitZEWPlWk3VGyC8I3",
+            user_id=self.userIds[1],
             status="created"
         )
 
         self.rider_booking.save()
+
+    def testMatch(self):
+        from gravitate.main import booking_target_mediator, orbit_view_mediator
+
+        orbit_view_mediator.start()
+
+        booking_target_mediator.start()
+
+        target_repo = TargetRepo()
+        rider_target_mediator = RiderTargetMediator(
+            target_repo=target_repo,
+            query=RiderTarget.get_query()
+        )
+        rider_target_mediator.start()
+
+        testing_utils._wait()  # Necessary
+
+        host_target_search_mediator = HostTargetSearchMediator(
+            target_repo=target_repo,
+            query=RideHost.get_query()
+        )
+        host_target_search_mediator.start()
+
+        testing_utils._wait(factor=10)
+
+        # for _doc in CTX.db.collection("Orbit").stream():
+        #     doc = _doc
+        #     break
+        # else:
+        #     raise
+        #
+        # view = OrbitView.new(snapshot=doc)
+        # is_iterable_but_not_string(view)
+
+        for doc in CTX.db.collection(f"users/{self.userIds[1]}/bookings/{self.rider_booking.doc_id}/orbits").stream():
+            assert isinstance(doc, DocumentSnapshot)
+            print(doc.to_dict())
+            # assert False
+            json.dumps(doc.to_dict())
+            break
+        else:
+            # Should contain at least one element
+            assert False
 
     def testCreateTimeline(self):
         orbit_id = Orbit.create_one()
@@ -84,7 +143,6 @@ class CreateTimelineTest(TestCase):
         timeline = Timeline.new(orbit=obj)
 
         timeline._directions()
-        # assert False
     #
     # def test_generate_view(self):
     #     hosting_mediator = OrbitViewMediator(
@@ -103,3 +161,7 @@ class CreateTimelineTest(TestCase):
 
         self.ride_host.delete()
         self.rider_booking.delete()
+
+        testing_utils._delete_all(CTX=CTX, collection_name="Orbit")
+        testing_utils._delete_all(CTX=CTX, subcollection_name="orbits")
+        testing_utils._delete_all(CTX=CTX, subcollection_name="bookings")

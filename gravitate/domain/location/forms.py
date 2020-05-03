@@ -41,6 +41,7 @@ class UserLocationForm(view_model.ViewModel):
 
     address = fb_utils.auto_property("address", "user_location")
     place_id = fb_utils.auto_property("place_id", "user_location")
+    place_name = fb_utils.auto_property("place_name", "user_location")
     user_id = fb_utils.auto_property("user_id", "user_location")
 
     def propagate_change(self):

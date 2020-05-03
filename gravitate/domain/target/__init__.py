@@ -8,15 +8,17 @@ from google.cloud.firestore import DocumentReference
 
 class TargetSchema(schema.Schema):
 
-    earliest_arrival = fields.NumberTimestamp(default=-inf)
-    latest_arrival = fields.NumberTimestamp(default=inf)
-    earliest_departure = fields.NumberTimestamp(default=-inf)
-    latest_departure = fields.NumberTimestamp(default=inf)
+    earliest_arrival = fields.NumberTimestamp(missing=-inf, allow_none=False)
+    latest_arrival = fields.NumberTimestamp(missing=inf, allow_none=False)
+    earliest_departure = fields.NumberTimestamp(missing=-inf, allow_none=False)
+    latest_departure = fields.NumberTimestamp(missing=inf, allow_none=False)
     r_ref = fields.Relationship(nested=False)
     from_lat = fields.Raw()
     from_lng = fields.Raw()
+    from_id = fields.Raw()
     to_lat = fields.Raw()
     to_lng = fields.Raw()
+    to_id = fields.Raw()
     origin_geohash = fields.Raw(dump_only=True)
     destination_geohash = fields.Raw(dump_only=True)
 
@@ -25,14 +27,17 @@ class TargetNodeSchema(schema.Schema):
 
     case_conversion = False
 
-    earliest_arrival = fields.Integer()
-    latest_arrival = fields.Integer()
-    earliest_departure = fields.Integer()
-    latest_departure = fields.Integer()
+    earliest_arrival = fields.Raw()
+    latest_arrival = fields.Raw()
+    earliest_departure = fields.Raw()
+    latest_departure = fields.Raw()
+    r_ref = fields.Relationship(nested=False)
     from_lat = fields.Raw()
     from_lng = fields.Raw()
+    from_id = fields.Raw()
     to_lat = fields.Raw()
     to_lng = fields.Raw()
+    to_id = fields.Raw()
 
 
 def random_integer_id():
@@ -84,7 +89,7 @@ class Target(domain_model.DomainModel):
         return self.to_lat
 
     def to_graph_node(self):
-        keys = {"from_lat", "from_lng", "to_lat", "to_lng",
+        keys = {"from_lat", "from_lng", "from_id", "to_lat", "to_lng", "to_id",
                 "earliest_arrival", "latest_arrival", "earliest_departure",
                 "latest_departure", "doc_id"}
         _d = TargetNodeSchema().dump(self)

@@ -33,6 +33,9 @@ class CreateUserLocationTest(TestCase):
         testing_utils._wait()
 
     def test_create(self):
+        main.user_sublocation_mediator.start()
+        main.user_location_mediator.start()
+        main.user_location_view_mediator.start()
         doc_ref: firestore.DocumentReference = \
             CTX.db.document(self.expected_path)
         form = {
@@ -81,6 +84,9 @@ class CreateUserSublocationTest(TestCase):
         testing_utils._wait()
 
     def test_create(self):
+        main.user_sublocation_mediator.start()
+        main.user_location_mediator.start()
+        main.user_location_view_mediator.start()
         doc_ref = CTX.db.document(self.user_location_path)
         UserLocation.new(doc_id=self.user_location_id,
                          user_id=self.user_id,
@@ -144,6 +150,9 @@ class CreateUserSublocationTest(TestCase):
                "Scholars Dr S, San Diego, CA 92161, USA"
 
     def test_view(self):
+        main.user_sublocation_mediator.start()
+        main.user_location_mediator.start()
+        main.user_location_view_mediator.start()
         doc_ref = CTX.db.document(self.user_location_path)
         doc_ref.set(
             document_data={'placeId': 'test_place_id_1',
@@ -170,6 +179,9 @@ class CreateUserSublocationTest(TestCase):
         }
 
     def test_view_with_sublocation(self):
+        main.user_sublocation_mediator.start()
+        main.user_location_mediator.start()
+        main.user_location_view_mediator.start()
         doc_ref = CTX.db.document(self.user_location_path)
         doc_ref.set(
             document_data={'placeId': 'test_place_id_1',

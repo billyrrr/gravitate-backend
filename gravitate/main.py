@@ -65,6 +65,7 @@ from gravitate.domain.location.forms import UserLocationFormMediator, \
 # Create an APISpec
 from gravitate.domain.host_car.view_mediator import UserHostingMediator
 from gravitate.domain.location.view_models import UserLocationViewMediator
+from gravitate.domain.matcher.orbit import OrbitViewMediator, Orbit
 from gravitate.domain.target.mediator import TargetMatchMediator
 
 spec = APISpec(
@@ -173,37 +174,26 @@ user_booking_mediator = UserBookingEditMediator(
     query=Context.db.collection_group("bookings_POST")
 )
 
-user_booking_mediator.start()
-
 user_location_mediator = UserLocationFormMediator(
     query=Context.db.collection_group("locations_POST")
 )
-
-user_location_mediator.start()
 
 user_sublocation_mediator = UserSublocationFormMediator(
     query=Context.db.collection_group("sublocations_POST")
 )
 
-user_sublocation_mediator.start()
-
 user_location_view_mediator = UserLocationViewMediator(
     query=UserLocation.get_query()
 )
-
-user_location_view_mediator.start()
 
 booking_mediator = UserBookingMediator(
     query=RiderBooking.get_query()
 )
 
-booking_mediator.start()
-
 booking_target_mediator = BookingTargetMediator(
     query=RiderBooking.get_query()
 )
 
-booking_target_mediator.start()
 
 ride_host_mediator = \
     RHMediator(view_model_cls=RideHostForm, app=app, mutation_cls=RideHostMutation)
@@ -215,14 +205,13 @@ hosting_mediator = UserHostingMediator(
     query=RideHost.get_query()
 )
 
-hosting_mediator.start()
+# target_match_mediator = TargetMatchMediator(
+#     query=RiderTarget.get_query()
+# )
 
-target_match_mediator = TargetMatchMediator(
-    query=RiderTarget.get_query()
+orbit_view_mediator = OrbitViewMediator(
+    query=Orbit.get_query()
 )
-
-target_match_mediator.start()
-
 
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data():
@@ -257,6 +246,18 @@ def server_error(e):
 
 
 if __name__ == '__main__':
+
+    user_booking_mediator.start()
+    user_location_mediator.start()
+    user_sublocation_mediator.start()
+    user_location_view_mediator.start()
+
+    booking_mediator.start()
+    booking_target_mediator.start()
+    hosting_mediator.start()
+    # target_match_mediator.start()
+    orbit_view_mediator.start()
+
     # flasgger for hosting REST API docs
     template = spec.to_flasgger(
         app,

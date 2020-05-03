@@ -10,6 +10,8 @@ from . import RiderBooking, BookingStoreBpss, RiderTarget, RiderBookingView, \
     RiderBookingForm, RiderBookingReadModel
 from google.cloud.firestore import Query
 
+from ..location.models import Sublocation
+
 
 class UserBookingMediator(ViewMediatorDeltaDAV):
     """
@@ -74,30 +76,37 @@ class BookingTargetMediator(ViewMediatorDeltaDAV):
         @staticmethod
         def on_create(snapshot, mediator):
             obj: RiderBooking = snapshot_to_obj(snapshot=snapshot)
-            d = dict(
-                r_ref=obj.doc_ref,
-                from_lat=obj.from_location.coordinates[
-                    "latitude"],
-                from_lng=obj.from_location.coordinates[
-                    "longitude"],
-                to_lat=obj.to_location.coordinates["latitude"],
-                to_lng=obj.to_location.coordinates["longitude"]
-            )
+            for from_sublocation_ref in obj.from_location.sublocations:
+                from_sublocation = Sublocation.get(doc_ref=from_sublocation_ref)
+                for to_sublocation_ref in obj.to_location.sublocations:
+                    to_sublocation = Sublocation.get(
+                        doc_ref=to_sublocation_ref)
+                    d = dict(
+                        r_ref=obj.doc_ref,
+                        from_lat=from_sublocation.coordinates[
+                            "latitude"],
+                        from_lng=from_sublocation.coordinates[
+                            "longitude"],
+                        from_id=from_sublocation.doc_id,
+                        to_lat=to_sublocation.coordinates["latitude"],
+                        to_lng=to_sublocation.coordinates["longitude"],
+                        to_id=to_sublocation.doc_id
+                    )
 
-            ts = dict(
-                earliest_arrival=obj.earliest_arrival,
-                latest_arrival=obj.latest_arrival,
-                earliest_departure=obj.earliest_departure,
-                latest_departure=obj.latest_departure,
-            )
+                    ts = dict(
+                        earliest_arrival=obj.earliest_arrival,
+                        latest_arrival=obj.latest_arrival,
+                        earliest_departure=obj.earliest_departure,
+                        latest_departure=obj.latest_departure,
+                    )
 
-            ts = {k: v for k, v in ts.items() if v is not None}
+                    ts = {k: v for k, v in ts.items() if v is not None}
 
-            target = RiderTarget.new(
-                **d, **ts
-            )
+                    target = RiderTarget.new(
+                        **d, **ts
+                    )
 
-            mediator.notify(obj=target)
+                    mediator.notify(obj=target)
 
         @staticmethod
         def on_delete(snapshot, mediator):
