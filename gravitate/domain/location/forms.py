@@ -1,5 +1,6 @@
 from flask_boiler import view_model, view
 from flask_boiler import utils as fb_utils
+from flask_boiler.query import run_transaction
 from google.cloud.firestore_v1 import DocumentSnapshot
 
 from gravitate.domain.location import UserLocation, Location
@@ -101,8 +102,8 @@ class UserSublocationForm(view_model.ViewModel):
     def propagate_change(self):
         self.location.save()
         UserLocation.add_sublocation(
-            location_id=self.user_location.doc_id,
-            sublocation_ids=[self.location.doc_id]
+            location=self.user_location,
+            sublocations=[self.location]
         )
 
 
@@ -114,8 +115,12 @@ class UserSublocationFormMediator(view.QueryMediator):
     class Protocol(view.ProtocolBase):
 
         @staticmethod
-        def on_create(snapshot: DocumentSnapshot, mediator):
+        @run_transaction
+        def on_create(snapshot: DocumentSnapshot, mediator, transaction):
             doc_ref = snapshot.reference
+            # Do a redundant get to register document to transaction
+            _ = transaction.get(doc_ref)
+
             # user_id = doc_ref.parent.parent.parent.parent.id
             doc_id = doc_ref.id
             user_location_id = doc_ref.parent.parent.id

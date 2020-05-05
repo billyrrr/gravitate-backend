@@ -90,8 +90,30 @@ class UserLocation(Location):
         return self.coordinates["longitude"]
 
     @classmethod
+    def add_sublocation(cls, location, sublocations):
+        """ Add sublocation to a location (runs as a step in a transaction).
+
+        :param location_id:
+        :param sublocation_ids:
+        :return:
+        """
+        for sublocation in sublocations:
+            location._add_sublocation(sublocation)
+
+        location.save()
+        # _ = [sublocation.save(transaction=transaction)
+        #      for sublocation in sublocations ]
+
+    @classmethod
     @run_transaction
-    def add_sublocation(cls, location_id, sublocation_ids, transaction=None):
+    def add_sublocation_with_id(cls, location_id, sublocation_ids, transaction):
+        """ Add sublocation to a location (runs in a separate transaction).
+
+        :param location_id:
+        :param sublocation_ids:
+        :return:
+        """
+
         location = cls.get(doc_id=location_id)
         for sublocation_id in sublocation_ids:
             sublocation = Sublocation.get(
@@ -100,8 +122,6 @@ class UserLocation(Location):
             location._add_sublocation(sublocation)
 
         location.save()
-        # _ = [sublocation.save(transaction=transaction)
-        #      for sublocation in sublocations ]
 
     def _add_sublocation(self, sublocation):
         self.sublocations.append(sublocation.doc_ref)

@@ -35,7 +35,7 @@ class CreateTimelineTest(TestCase):
 
         testing_utils._wait()
 
-        UserLocation.add_sublocation(
+        UserLocation.add_sublocation_with_id(
             self.from_location.doc_id, [self.sublocation.doc_id],
         )
 
@@ -44,7 +44,7 @@ class CreateTimelineTest(TestCase):
 
         testing_utils._wait()
 
-        UserLocation.add_sublocation(
+        UserLocation.add_sublocation_with_id(
             self.to_location.doc_id, [self.sublocation.doc_id]
         )
 
@@ -78,14 +78,16 @@ class CreateTimelineTest(TestCase):
 
     def testCreateTimeline(self):
         orbit_id = Orbit.create_one()
-        Orbit.add_rider(
-            orbit_id=orbit_id, booking_id=self.rider_booking.doc_id,
-            pickup_sublocation_id=self.sublocation.doc_id,
-            dropoff_sublocation_id=self.sublocation.doc_id
+        Orbit.match(
+            orbit_id=orbit_id,
+            hosting_id=self.ride_host.doc_id,
+            rider_records=[
+                (self.rider_booking.doc_id,
+                 self.sublocation.doc_id,
+                 self.sublocation.doc_id)
+            ]
         )
-        Orbit.add_host(
-            orbit_id=orbit_id, hosting_id=self.ride_host.doc_id,
-        )
+
         obj = Orbit.get(doc_id=orbit_id)
         timeline = Timeline.new(orbit=obj)
         print(timeline._directions())

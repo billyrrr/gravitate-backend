@@ -52,13 +52,13 @@ class CreateUserLocationTest(TestCase):
         testing_utils._wait()
         user_location = UserLocation.get(doc_id=self.doc_id)
         d = user_location.to_dict()
-        assert d == {'obj_type': 'UserLocation', 'placeId': 'test_place_id_1',
+        assert d.items() >= {'obj_type': 'UserLocation', 'placeId': 'test_place_id_1',
                      'sublocations': [], 'doc_id': 'test_doc_id_1',
                      'userId': 'user_id_1',
                      'doc_ref': 'locations/test_doc_id_1',
                      'coordinates': {'longitude': -117.2428555,
                                      'latitude': 32.8794203},
-                     'address': 'Tenaya Hall, San Diego, CA 92161'}
+                     'address': 'Tenaya Hall, San Diego, CA 92161'}.items()
 
     def test_new(self):
         _ = UserLocationForm.new(
@@ -175,14 +175,14 @@ class CreateUserSublocationTest(TestCase):
         obj = UserLocationView.new(
             snapshot=snapshot
         )
-        assert obj.to_dict() == {
+        assert obj.to_dict().items() >= {
             'id': 'test_doc_id_1',
             'address': 'Tenaya Hall, San Diego, CA 92161',
             'latitude': 32.8794203,
             'longitude': -117.2428555,
             'placeId': 'test_place_id_1',
             'sublocations': []
-        }
+        }.items()
 
     def test_view_with_sublocation(self):
         main.user_sublocation_mediator.start()
@@ -215,7 +215,7 @@ class CreateUserSublocationTest(TestCase):
         obj = UserLocationView.new(
             snapshot=snapshot
         )
-        assert obj.to_dict() == {
+        assert obj.to_dict().items() >= {
             'id': 'test_doc_id_1',
             'address': 'Tenaya Hall, San Diego, CA 92161',
             'latitude': 32.8794203,
@@ -228,7 +228,7 @@ class CreateUserSublocationTest(TestCase):
                  'doc_id': 'sublocation_id',
                  'doc_ref': 'locations/sublocation_id',
                  'obj_type': 'Sublocation'}]
-        }
+        }.items()
 
     def tearDown(self) -> None:
         CTX.db.document(self.user_location_path).delete()
