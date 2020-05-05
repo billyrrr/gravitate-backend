@@ -43,7 +43,7 @@ from gravitate.api_server.orbit_service import OrbitCommandService, OrbitService
 # from gravitate.api_server.luggages_service_new import register_luggages_service_new
 from gravitate.api_server.utils import authenticate
 from gravitate.context import Context
-from gravitate import schemas
+from gravitate import schemas, CTX
 from gravitate.domain.bookings import RBMediator, RiderBookingView, \
     RiderBookingMutation, RiderBookingForm, RiderBookingReadModel, RiderTarget, \
     RiderBooking
@@ -63,9 +63,11 @@ from gravitate.domain.location.forms import UserLocationFormMediator, \
 
 # Flasgger docs
 # Create an APISpec
-from gravitate.domain.host_car.view_mediator import UserHostingMediator
+from gravitate.domain.host_car.view_mediator import UserHostingMediator, \
+    UserHostingEditMediator
 from gravitate.domain.location.view_models import UserLocationViewMediator
-from gravitate.domain.matcher.orbit import OrbitViewMediator, Orbit
+from gravitate.domain.matcher.orbit import OrbitViewMediator, Orbit, \
+    OrbitChatMediator
 from gravitate.domain.target.mediator import TargetMatchMediator
 
 spec = APISpec(
@@ -174,6 +176,10 @@ user_booking_mediator = UserBookingEditMediator(
     query=Context.db.collection_group("bookings_POST")
 )
 
+user_hosting_mediator = UserHostingEditMediator(
+    query=Context.db.collection_group("hostings_POST")
+)
+
 user_location_mediator = UserLocationFormMediator(
     query=Context.db.collection_group("locations_POST")
 )
@@ -190,11 +196,6 @@ booking_mediator = UserBookingMediator(
     query=RiderBooking.get_query()
 )
 
-booking_target_mediator = BookingTargetMediator(
-    query=RiderBooking.get_query()
-)
-
-
 ride_host_mediator = \
     RHMediator(view_model_cls=RideHostForm, app=app, mutation_cls=RideHostMutation)
 
@@ -210,6 +211,10 @@ hosting_mediator = UserHostingMediator(
 # )
 
 orbit_view_mediator = OrbitViewMediator(
+    query=Orbit.get_query()
+)
+
+orbit_chat_mediator = OrbitChatMediator(
     query=Orbit.get_query()
 )
 
@@ -247,16 +252,19 @@ def server_error(e):
 
 if __name__ == '__main__':
 
+    CTX._enable_logging()
+
     user_booking_mediator.start()
+    user_hosting_mediator.start()
     user_location_mediator.start()
     user_sublocation_mediator.start()
     user_location_view_mediator.start()
 
     booking_mediator.start()
-    booking_target_mediator.start()
     hosting_mediator.start()
     # target_match_mediator.start()
     orbit_view_mediator.start()
+    orbit_chat_mediator.start()
 
     # flasgger for hosting REST API docs
     template = spec.to_flasgger(

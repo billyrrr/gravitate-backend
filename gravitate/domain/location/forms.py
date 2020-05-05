@@ -100,7 +100,7 @@ class UserSublocationForm(view_model.ViewModel):
 
     def propagate_change(self):
         self.location.save()
-        self.user_location.add_sublocation(
+        UserLocation.add_sublocation(
             location_id=self.user_location.doc_id,
             sublocation_ids=[self.location.doc_id]
         )

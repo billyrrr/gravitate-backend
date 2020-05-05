@@ -86,7 +86,8 @@ class CreateTimelineTest(TestCase):
         self.rider_booking.save()
 
     def testMatch(self):
-        from gravitate.main import booking_target_mediator, orbit_view_mediator
+        from gravitate.main import orbit_view_mediator
+        from gravitate.algo_server import booking_target_mediator
 
         orbit_view_mediator.start()
 
@@ -127,6 +128,50 @@ class CreateTimelineTest(TestCase):
         else:
             # Should contain at least one element
             assert False
+
+    def testCreateTrip(self):
+
+        orbit_id = Orbit.create_one()
+        Orbit.add_rider(
+            orbit_id=orbit_id, booking_id=self.rider_booking.doc_id,
+            pickup_sublocation_id=self.a.doc_id,
+            dropoff_sublocation_id=self.b.doc_id
+        )
+        # obj = Orbit.get(doc_id=orbit_id)
+        Orbit.add_host(
+            orbit_id=orbit_id, hosting_id=self.ride_host.doc_id
+        )
+
+        testing_utils._wait()
+
+        CTX._enable_logging()
+        from gravitate.domain.matcher.orbit import OrbitTripMediator
+
+        orbit_trip_mediator = OrbitTripMediator(query=Orbit.get_query())
+        orbit_trip_mediator.start()
+
+        testing_utils._wait(factor=2)
+
+        # assert False
+
+        # for _doc in CTX.db.collection("Orbit").stream():
+        #     doc = _doc
+        #     break
+        # else:
+        #     raise
+        #
+        # view = OrbitView.new(snapshot=doc)
+        # is_iterable_but_not_string(view)
+
+        # for doc in CTX.db.collection(f"users/{self.userIds[1]}/bookings/{self.rider_booking.doc_id}/orbits").stream():
+        #     assert isinstance(doc, DocumentSnapshot)
+        #     print(doc.to_dict())
+        #     # assert False
+        #     json.dumps(doc.to_dict())
+        #     break
+        # else:
+        #     # Should contain at least one element
+        #     assert False
 
     def testCreateTimeline(self):
         orbit_id = Orbit.create_one()

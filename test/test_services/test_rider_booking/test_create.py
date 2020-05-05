@@ -1,13 +1,15 @@
 import sys
 from unittest import TestCase
 
-from gravitate import main
+from gravitate import main, CTX
 from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.location import UserLocation
 from gravitate.domain.location.models import LocationFactory
 from flask_boiler import testing_utils
 
 import time
+
+from gravitate.domain.user_new import User
 
 
 class CreateRiderBookingTest(TestCase):
@@ -72,3 +74,20 @@ class CreateRiderBookingTest(TestCase):
 
         for booking_id in self.booking_id_to_delete:
             RiderBooking.get(doc_id=booking_id).delete()
+
+
+class UserTest(TestCase):
+
+    def setUp(self) -> None:
+        CTX.db.document("users/testuserid1").set(document_data={
+            "email": "billrao@me.com",
+            "name": "Bill Rao"
+        })
+
+    def testGet(self):
+        user = User.get(doc_id="testuserid1")
+        assert user is not None
+
+    def tearDown(self) -> None:
+        CTX.db.document("users/testuserid1").delete()
+

@@ -3,6 +3,7 @@ import warnings
 from google.cloud.firestore import Query
 
 from flask_boiler import schema, fields, domain_model, attrs
+from flask_boiler.query import run_transaction
 from google.cloud.firestore_v1 import transactional
 
 from gravitate import CTX
@@ -89,29 +90,18 @@ class UserLocation(Location):
         return self.coordinates["longitude"]
 
     @classmethod
-    def add_sublocation(cls, location_id, sublocation_ids):
-        transaction = CTX.db.transaction()
+    @run_transaction
+    def add_sublocation(cls, location_id, sublocation_ids, transaction=None):
+        location = cls.get(doc_id=location_id)
+        for sublocation_id in sublocation_ids:
+            sublocation = Sublocation.get(
+                doc_id=sublocation_id,
+            )
+            location._add_sublocation(sublocation)
 
-        @transactional
-        def _add_sublocation_transactional(
-                transaction, location_id, sublocation_ids):
-            location = cls.get(doc_id=location_id, transaction=transaction)
-            for sublocation_id in sublocation_ids:
-                sublocation = Sublocation.get(
-                    doc_id=sublocation_id,
-                    transaction=transaction
-                )
-                location._add_sublocation(sublocation)
-
-            location.save(transaction=transaction)
-            # _ = [sublocation.save(transaction=transaction)
-            #      for sublocation in sublocations ]
-
-        return _add_sublocation_transactional(
-            transaction=transaction,
-            location_id=location_id,
-            sublocation_ids=sublocation_ids
-        )
+        location.save()
+        # _ = [sublocation.save(transaction=transaction)
+        #      for sublocation in sublocations ]
 
     def _add_sublocation(self, sublocation):
         self.sublocations.append(sublocation.doc_ref)
@@ -142,6 +132,13 @@ class Sublocation(Location):
             latitude=self.coordinates["latitude"],
             longitude=self.coordinates["longitude"],
             address=self.address
+        )
+
+    def to_trip_place(self):
+        return dict(
+            latitude=self.coordinates["latitude"],
+            longitude=self.coordinates["longitude"],
+            address=self.road_name
         )
 
 

@@ -1,15 +1,16 @@
 from flask_boiler.view_model import ViewModel
 from flask_boiler import attrs
 
+from gravitate.domain.bookings import RiderBooking
 from gravitate.domain.location.models import Sublocation
 
 
 class CoriderView(ViewModel):
 
     user = attrs.bproperty(import_required=True, export_enabled=False)
-    booking = attrs.bproperty(import_required=True, export_enabled=False)
+    booking: RiderBooking = attrs.bproperty(import_required=True, export_enabled=False)
     pickup_location: Sublocation = attrs.bproperty(import_required=True, export_enabled=False)
-    dropoff_location = attrs.bproperty(import_required=True, export_enabled=False)
+    dropoff_location: Sublocation = attrs.bproperty(import_required=True, export_enabled=False)
 
     name = attrs.bproperty()
     pickup_address = attrs.bproperty()

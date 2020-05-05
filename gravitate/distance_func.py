@@ -32,6 +32,8 @@ def edge_weight( params_a:dict, params_b:dict, max_dist:float = 5000):
 
     if params_a["rid"] == params_b["rid"]:
         return inf
+    elif params_a["user_id"] == params_b["user_id"]:
+        return inf
 
     a_from = (params_a["from_lat"], params_a["from_lng"])
     b_from = (params_b["from_lat"], params_b["from_lng"])

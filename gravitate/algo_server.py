@@ -8,14 +8,21 @@ from flask_boiler.view.query_delta import ProtocolBase
 from google.cloud.firestore import Query
 from google.cloud.firestore import DocumentSnapshot
 
+from gravitate import CTX
 from gravitate.domain import bookings
 from gravitate.domain.bookings import RiderBooking, RiderTarget
+from gravitate.domain.bookings.view_mediator import BookingTargetMediator
 from gravitate.domain.host_car import RideHostTarget
 from gravitate.domain.matcher.orbit import Orbit
 from gravitate.domain.target import Target
 from gravitate.domain import host_car
 
 from gravitate.distance_func import edge_weight
+
+
+booking_target_mediator = BookingTargetMediator(
+    query=RiderBooking.get_query()
+)
 
 
 class RiderTargetMediator(QueryMediator):
@@ -56,7 +63,8 @@ class HostTargetSearchMediator(QueryMediator):
                 from_id=obj.from_location.doc_id,
                 to_lat=obj.to_location.coordinates["latitude"],
                 to_lng=obj.to_location.coordinates["longitude"],
-                to_id=obj.to_location.doc_id
+                to_id=obj.to_location.doc_id,
+                user_id=obj.user_id
             )
 
             ts = dict(
@@ -122,12 +130,17 @@ class TargetRepo:
 
 
 if __name__ == '__main__':
+
+    booking_target_mediator.start()
+
     target_repo = TargetRepo()
     rider_target_mediator = RiderTargetMediator(
         target_repo=target_repo,
         query=RiderTarget.get_query()
     )
     rider_target_mediator.start()
+
+    time.sleep(10)
 
     host_target_search_mediator = HostTargetSearchMediator(
         target_repo=target_repo,

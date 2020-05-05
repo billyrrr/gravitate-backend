@@ -1,6 +1,8 @@
 import time
-from typing import Type
+from datetime import datetime
+from typing import Type, Dict
 
+import requests
 from flask_boiler import attrs
 from flask_boiler import schema, fields, domain_model
 from flask_boiler.struct import Struct
@@ -165,20 +167,27 @@ class OrbitView(ViewModel):
     host_user = attrs.bproperty()
     status = attrs.bproperty()
     timeline = attrs.bproperty()
+    _id = attrs.bproperty(data_key="id")
+
+    @_id.getter
+    def _id(self):
+        return self.store.orbit.doc_id
 
     @status.getter
     def status(self):
         return self.store.orbit.status
 
-    @coriders.getter
-    def coriders(self):
+    @property
+    def _coriders(self) -> Dict[str, CoriderView]:
         res = dict()
         for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
             if ticket["userWillDrive"]:
                 continue
             user = User.get(doc_id=user_id)
-            pickup_location = Sublocation.get(doc_id=ticket["pickupSublocationId"])
-            dropoff_location = Sublocation.get(doc_id=ticket["dropoffSublocationId"])
+            pickup_location = Sublocation.get(
+                doc_id=ticket["pickupSublocationId"])
+            dropoff_location = Sublocation.get(
+                doc_id=ticket["dropoffSublocationId"])
             booking_id = ticket["bookingId"]
             booking = self.store.bookings[booking_id]
             view = CoriderView.new(
@@ -187,16 +196,24 @@ class OrbitView(ViewModel):
                 dropoff_location=dropoff_location,
                 booking=booking
             )
-            res[user_id] = view.to_view_dict()
+            res[user_id] = view
         return res
 
-    @host_user.getter
-    def host_user(self):
+    @coriders.getter
+    def coriders(self):
+        return {key: val.to_view_dict() for key, val in self._coriders.items()}
+
+    @property
+    def _driver(self) -> RideHostUserView:
         for user_id, ticket in self.store.orbit.user_ticket_pairs.items():
             if not ticket["userWillDrive"]:
                 continue
             user = User.get(doc_id=user_id)
-            return RideHostUserView.new(user=user).to_view_dict()
+            return RideHostUserView.new(user=user)
+
+    @host_user.getter
+    def host_user(self):
+        return self._driver.to_view_dict()
 
     @timeline.getter
     def timeline(self):
@@ -240,7 +257,7 @@ class OrbitView(ViewModel):
 
 class OrbitViewMediator(QueryMediator):
     """
-    Forwards a rider booking to a user subcollection
+    Forwards an orbit to a user subcollection
     """
 
     model_cls = Orbit
@@ -254,3 +271,83 @@ class OrbitViewMediator(QueryMediator):
                 once=True,
                 f_notify=mediator.notify
             )
+
+
+class OrbitTripMediator(QueryMediator):
+    model_cls = Orbit
+
+    def notify(self, data, _id):
+        return  # TODO: change
+
+        doc_ref: DocumentReference = CTX.db.document(f"orders/{_id}")
+        doc_ref.set(document_data=data)
+        # url = "https://us-central1-hypertrack-multiride-driver.cloudfunctions.net/serverCreateOrder"
+        # resp = requests.post(url, json=data)
+        # if resp.status_code != 200:
+        #     raise Exception(f"Operation failed: {resp.status_code} {resp.content}")
+
+    class Protocol(ProtocolBase):
+
+        @staticmethod
+        def on_create(snapshot, mediator):
+            obj = OrbitView.new(
+                snapshot=snapshot,
+                once=True
+            )
+
+            driver = {
+                        "device_id": "",
+                        "id": obj._driver.user._id,
+                        "name": obj._driver.name,
+                        "phone_number": "",
+                        "role": "rider"
+                    },
+
+            for user_id, val in obj._coriders.items():
+                trip = {
+                    "status": "ACCEPTED",
+                    "rider": {
+                        "device_id": "",
+                        "id": val.user._id,
+                        "name": val.user.name,
+                        "phone_number": "",
+                        "role": "rider"
+                    },
+                    "driver": driver,
+                    "pickup": val.pickup_location.to_trip_place(),
+                    "dropoff": val.dropoff_location.to_trip_place(),
+                    "created_at": datetime.now().isoformat(timespec='seconds') + "Z",  # TODO: check timezone settings
+                    "updated_at": datetime.now().isoformat(
+                        timespec='seconds') + "Z", # TODO: check timezone settings
+                }
+                mediator.notify(data=trip, _id=val.booking.doc_id)
+
+
+class OrbitChatMediator(QueryMediator):
+    """
+    Set up chat for orbit
+    """
+
+    model_cls = Orbit
+
+    class Protocol(ProtocolBase):
+
+        @staticmethod
+        def on_create(snapshot, mediator):
+            obj = Orbit.from_snapshot(snapshot)
+            users = list(obj.user_ticket_pairs)
+            doc_ref = CTX.db.collection("Conversations").document(obj.doc_id)
+            from datetime import datetime as dt
+            doc_ref.set(document_data={
+                "id": obj.doc_id,
+                "isRead": {
+                        user_id: False
+                    for user_id in users
+                },
+                "lastMessage": "Orbit updated ",
+                "timestamp": int(dt.now().timestamp()),
+                "userIDs": users
+            })
+
+        on_update = on_create
+

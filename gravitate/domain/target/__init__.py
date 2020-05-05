@@ -21,6 +21,8 @@ class TargetSchema(schema.Schema):
     to_id = fields.Raw()
     origin_geohash = fields.Raw(dump_only=True)
     destination_geohash = fields.Raw(dump_only=True)
+    user_id = fields.Raw()
+
 
 
 class TargetNodeSchema(schema.Schema):
@@ -32,6 +34,7 @@ class TargetNodeSchema(schema.Schema):
     earliest_departure = fields.Raw()
     latest_departure = fields.Raw()
     r_ref = fields.Relationship(nested=False)
+    user_id = fields.Raw()
     from_lat = fields.Raw()
     from_lng = fields.Raw()
     from_id = fields.Raw()
@@ -91,7 +94,7 @@ class Target(domain_model.DomainModel):
     def to_graph_node(self):
         keys = {"from_lat", "from_lng", "from_id", "to_lat", "to_lng", "to_id",
                 "earliest_arrival", "latest_arrival", "earliest_departure",
-                "latest_departure", "doc_id"}
+                "latest_departure", "doc_id", "user_id"}
         _d = TargetNodeSchema().dump(self)
         d = {key: _d[key] for key in keys}
         r_ref: DocumentReference = self.r_ref

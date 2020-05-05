@@ -90,7 +90,8 @@ class BookingTargetMediator(ViewMediatorDeltaDAV):
                         from_id=from_sublocation.doc_id,
                         to_lat=to_sublocation.coordinates["latitude"],
                         to_lng=to_sublocation.coordinates["longitude"],
-                        to_id=to_sublocation.doc_id
+                        to_id=to_sublocation.doc_id,
+                        user_id=obj.user_id
                     )
 
                     ts = dict(

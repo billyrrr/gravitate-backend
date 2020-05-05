@@ -26,6 +26,8 @@ class LocationModelTest(TestCase):
 class CreateUserLocationTest(TestCase):
 
     def setUp(self):
+        testing_utils._delete_all(CTX, subcollection_name="sublocations_POST")
+        testing_utils._delete_all(CTX, collection_name="locations")
         self.user_id = "user_id_1"
         self.doc_id = "test_doc_id_1"
         self.expected_path = "users/user_id_1/locations_POST/test_doc_id_1"
@@ -72,6 +74,10 @@ class CreateUserLocationTest(TestCase):
 class CreateUserSublocationTest(TestCase):
 
     def setUp(self):
+
+        testing_utils._delete_all(CTX, subcollection_name="sublocations_POST")
+        testing_utils._delete_all(CTX, collection_name="locations")
+
         self.user_id = "user_id_1"
         self.user_location_id = "test_doc_id_1"
         self.doc_id = "sublocation_id"
