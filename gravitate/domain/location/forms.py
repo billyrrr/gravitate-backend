@@ -68,7 +68,6 @@ class UserLocationFormMediator(view.QueryMediator):
 
         on_update = on_create
 
-
 class UserSublocationForm(view_model.ViewModel):
 
     class Meta:
@@ -107,27 +106,34 @@ class UserSublocationForm(view_model.ViewModel):
         )
 
 
-class UserSublocationFormMediator(view.QueryMediator):
+class UserSublocationFormMediator(view.OnSnapshotTasksMixin,
+                                  view.QueryMediator):
 
     def notify(self, obj):
         obj.propagate_change()
 
-    class Protocol(view.ProtocolBase):
+    async def on_create(self, snapshot: DocumentSnapshot, transaction):
+        """ Invoked when a new instance of UserSublocation is created
+                in firestore.
 
-        @staticmethod
-        @run_transaction
-        def on_create(snapshot: DocumentSnapshot, mediator, transaction):
-            doc_ref = snapshot.reference
-            # Do a redundant get to register document to transaction
-            _ = transaction.get(doc_ref)
+        TODO: check concurrency issues when running async functions
+            in parallel; see if context var can be overriden when
+            awaiting another task
 
-            # user_id = doc_ref.parent.parent.parent.parent.id
-            doc_id = doc_ref.id
-            user_location_id = doc_ref.parent.parent.id
-            form = UserSublocationForm.new(
-                user_location_id=user_location_id, doc_id=doc_id)
-            form.update_vals(with_raw=snapshot.to_dict())
-            mediator.notify(obj=form)
-            snapshot.reference.delete()
+        :param snapshot:
+        :param transaction:
+        :return:
+        """
 
-        on_update = on_create
+        doc_ref = snapshot.reference
+        # Do a redundant get to register document to transaction
+        _ = transaction.get(doc_ref)
+
+        # user_id = doc_ref.parent.parent.parent.parent.id
+        doc_id = doc_ref.id
+        user_location_id = doc_ref.parent.parent.id
+        form = UserSublocationForm.new(
+            user_location_id=user_location_id, doc_id=doc_id)
+        form.update_vals(with_raw=snapshot.to_dict())
+        self.notify(obj=form)
+        snapshot.reference.delete()
