@@ -54,6 +54,8 @@ from gravitate.domain.host_car import RHMediator, RideHostView, \
 from gravitate.domain.location import UserLocation
 from gravitate.domain.location.forms import UserLocationFormMediator, \
     UserSublocationFormMediator
+from gravitate.domain.matcher.orbit import OrbitTripMediator
+
 
 # Firebase Admin SDK
 # Deprecated: Moved to be invoked by app engine cron on '/groupAll'
@@ -218,6 +220,12 @@ orbit_chat_mediator = OrbitChatMediator(
     query=Orbit.get_query()
 )
 
+"""
+Coordinates trips 
+"""
+orbit_trip_mediator = OrbitTripMediator(query=Orbit.get_query())
+
+
 @app.route('/contextTest', methods=['POST', 'PUT'])
 def add_noauth_test_data():
     """ Description
@@ -265,6 +273,7 @@ if __name__ == '__main__':
     # target_match_mediator.start()
     orbit_view_mediator.start()
     orbit_chat_mediator.start()
+    orbit_trip_mediator.start()
 
     # flasgger for hosting REST API docs
     template = spec.to_flasgger(

@@ -112,7 +112,8 @@ class UserSublocationFormMediator(view.OnSnapshotTasksMixin,
     def notify(self, obj):
         obj.propagate_change()
 
-    async def on_create(self, snapshot: DocumentSnapshot, transaction):
+    @run_transaction
+    def on_create(self, snapshot: DocumentSnapshot, transaction):
         """ Invoked when a new instance of UserSublocation is created
                 in firestore.
 

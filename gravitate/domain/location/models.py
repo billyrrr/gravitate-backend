@@ -131,6 +131,13 @@ class Sublocation(Location):
 
     road_name = attrs.bproperty(import_required=False, export_required=False)
 
+    @road_name.getter
+    def road_name(self):
+        if hasattr(self._attrs, "road_name"):
+            return self._attrs.road_name
+        else:
+            return self.address
+
     @classmethod
     def get_with_latlng(cls, *, latitude, longitude):
         res = gmaps.reverse_geocode(

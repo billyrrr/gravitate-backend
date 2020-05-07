@@ -5,13 +5,14 @@ from typing import Type, Dict
 import requests
 from flask_boiler import attrs
 from flask_boiler import schema, fields, domain_model
+from flask_boiler.query import run_transaction
 from flask_boiler.struct import Struct
 from flask_boiler.utils import snapshot_to_obj
-from flask_boiler.view import QueryMediator, ProtocolBase
+from flask_boiler.view import QueryMediator, ProtocolBase, OnSnapshotTasksMixin
 from flask_boiler.view_model import ViewModel
 from flask_boiler.business_property_store import BPSchema
 from google.cloud.firestore import DocumentSnapshot, DocumentReference, Query
-from google.cloud.firestore_v1 import transactional
+from google.cloud.firestore_v1 import transactional, Transaction
 
 from gravitate import CTX
 from gravitate.domain.bookings import RiderBooking
@@ -273,12 +274,13 @@ class OrbitViewMediator(QueryMediator):
             )
 
 
-class OrbitTripMediator(QueryMediator):
+class OrbitTripMediator(OnSnapshotTasksMixin, QueryMediator):
+    """
+    Modifies trip with values provided from orbit
+    """
     model_cls = Orbit
 
     def notify(self, data, _id):
-        return  # TODO: change
-
         doc_ref: DocumentReference = CTX.db.document(f"orders/{_id}")
         doc_ref.set(document_data=data)
         # url = "https://us-central1-hypertrack-multiride-driver.cloudfunctions.net/serverCreateOrder"
@@ -286,41 +288,78 @@ class OrbitTripMediator(QueryMediator):
         # if resp.status_code != 200:
         #     raise Exception(f"Operation failed: {resp.status_code} {resp.content}")
 
-    class Protocol(ProtocolBase):
+    @run_transaction
+    def on_create(self, snapshot: DocumentSnapshot, transaction: Transaction):
+        obj = OrbitView.new(
+            snapshot=snapshot,
+            once=True
+        )
 
-        @staticmethod
-        def on_create(snapshot, mediator):
-            obj = OrbitView.new(
-                snapshot=snapshot,
-                once=True
-            )
+        driver = {
+                     "device_id": "",
+                     "id": obj._driver.user._id,
+                     "name": obj._driver.name,
+                     "phone_number": "",
+                     "role": "driver"
+                 }
 
-            driver = {
-                        "device_id": "",
-                        "id": obj._driver.user._id,
-                        "name": obj._driver.name,
-                        "phone_number": "",
-                        "role": "rider"
-                    },
+        for user_id, val in obj._coriders.items():
+            trip = {
+                "status": "ACCEPTED",
+                "rider": {
+                    "device_id": "",
+                    "id": val.user._id,
+                    "name": val.user.name,
+                    "phone_number": "",
+                    "role": "rider"
+                },
+                "driver": driver,
+                "pickup": val.pickup_location.to_trip_place(),
+                "dropoff": val.dropoff_location.to_trip_place(),
+                "created_at": datetime.now().isoformat(
+                    timespec='seconds') + "Z",  # TODO: check timezone settings
+                "updated_at": datetime.now().isoformat(
+                    timespec='seconds') + "Z",  # TODO: check timezone settings
+            }
+            doc_ref: DocumentReference = CTX.db.document(
+                f"orders/{val.booking.doc_id}")
+            transaction.set(reference=doc_ref, document_data=trip)
 
-            for user_id, val in obj._coriders.items():
-                trip = {
-                    "status": "ACCEPTED",
-                    "rider": {
-                        "device_id": "",
-                        "id": val.user._id,
-                        "name": val.user.name,
-                        "phone_number": "",
-                        "role": "rider"
-                    },
-                    "driver": driver,
-                    "pickup": val.pickup_location.to_trip_place(),
-                    "dropoff": val.dropoff_location.to_trip_place(),
-                    "created_at": datetime.now().isoformat(timespec='seconds') + "Z",  # TODO: check timezone settings
-                    "updated_at": datetime.now().isoformat(
-                        timespec='seconds') + "Z", # TODO: check timezone settings
-                }
-                mediator.notify(data=trip, _id=val.booking.doc_id)
+    # class Protocol(ProtocolBase):
+    #
+    #     @staticmethod
+    #     def on_create(snapshot, mediator):
+    #         obj = OrbitView.new(
+    #             snapshot=snapshot,
+    #             once=True
+    #         )
+    #
+    #         driver = {
+    #                     "device_id": "",
+    #                     "id": obj._driver.user._id,
+    #                     "name": obj._driver.name,
+    #                     "phone_number": "",
+    #                     "role": "rider"
+    #                 },
+    #
+    #         for user_id, val in obj._coriders.items():
+    #             trip = {
+    #                 "status": "ACCEPTED",
+    #                 "rider": {
+    #                     "device_id": "",
+    #                     "id": val.user._id,
+    #                     "name": val.user.name,
+    #                     "phone_number": "",
+    #                     "role": "rider"
+    #                 },
+    #                 "driver": driver,
+    #                 "pickup": val.pickup_location.to_trip_place(),
+    #                 "dropoff": val.dropoff_location.to_trip_place(),
+    #                 "created_at": datetime.now().isoformat(timespec='seconds') + "Z",  # TODO: check timezone settings
+    #                 "updated_at": datetime.now().isoformat(
+    #                     timespec='seconds') + "Z", # TODO: check timezone settings
+    #             }
+    #             mediator.notify(data=trip, _id=val.booking.doc_id)
 
 
 class OrbitChatMediator(QueryMediator):
